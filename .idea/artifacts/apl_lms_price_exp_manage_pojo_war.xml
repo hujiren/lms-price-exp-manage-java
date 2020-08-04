@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="apl-lms-price-exp-manage-pojo:war">
+    <output-path>$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master/apl-lms-price-exp-manage-pojo/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>apl-lms-price-exp-manage-pojo</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="apl-lms-price-exp-manage-pojo-Unknown.war">
+      <element id="artifact" artifact-name="apl-lms-price-exp-manage-pojo:war exploded" />
+    </root>
+  </artifact>
+</component>

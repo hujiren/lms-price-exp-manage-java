@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="apl-lms-price-exp-impl:war">
+    <output-path>$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>apl-lms-price-exp-impl</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="apl-lms-price-exp-impl.war">
+      <element id="artifact" artifact-name="apl-lms-price-exp-impl:war exploded" />
+    </root>
+  </artifact>
+</component>
