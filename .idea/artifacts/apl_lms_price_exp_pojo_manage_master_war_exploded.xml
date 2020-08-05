@@ -15,7 +15,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master/target/apl-lms-price-exp-manage-pojo-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master/target/apl-lms-price-exp-manage-pojo-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="apl-lms-price-exp-pojo-manage-master/web/Web" />
     </root>

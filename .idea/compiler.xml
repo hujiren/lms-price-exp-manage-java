@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="apl-lms-price-exp-manage-impl" />
         <module name="apl-lms-price-exp-manage-app" />
         <module name="apl-lms-price-exp-manage-pojo" />
       </profile>
@@ -16,7 +17,9 @@
       <module name="apl-lms-price-exp-manage-impl-master" target="8" />
       <module name="apl-lms-price-exp-manage-java" target="1.5" />
       <module name="apl-lms-price-exp-manage-pojo" target="8" />
-      <module name="apl-lms-price-exp-pojo-manage-master" target="1.5" />
+      <module name="apl-lms-price-exp-manage-pojo (1)" target="1.5" />
+      <module name="apl-lms-price-exp-manage-pojo-master" target="1.5" />
+      <module name="apl-lms-price-exp-pojo-manage-master" target="8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

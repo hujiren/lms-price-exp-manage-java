@@ -2,7 +2,7 @@
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master" />
-    <file type="web" url="file://$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master" />
+    <file type="web" url="file://$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master" />
   </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
@@ -12,12 +12,8 @@
       <list>
         <option value="$PROJECT_DIR$/apl-lms-price-exp-manage-impl/pom.xml" />
         <option value="$PROJECT_DIR$/apl-lms-price-exp-pojo/pom.xml" />
-        <option value="$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-app/pom.xml" />
-        <option value="$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/pom.xml" />
-        <option value="$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl/pom.xml" />
-        <option value="$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master/pom.xml" />
-        <option value="$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master/apl-lms-price-exp-manage-pojo/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master/pom.xml" />
       </list>
     </option>
   </component>

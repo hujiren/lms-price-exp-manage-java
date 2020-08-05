@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: apl-lms-price-exp-manage-app
+
+  profiles:
+    include:
+      common, apl-lms-price-exp-manage-app

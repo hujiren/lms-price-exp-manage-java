@@ -11,11 +11,11 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="apl-lms-price-exp-manage-pojo" />
+          <element id="module-output" name="apl-lms-price-exp-manage-pojo-master" />
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master/apl-lms-price-exp-manage-pojo/target/apl-lms-price-exp-manage-pojo-Unknown/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master/apl-lms-price-exp-manage-pojo/target/apl-lms-price-exp-manage-pojo-Unknown/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="apl-lms-price-exp-manage-pojo/web/Web" />
     </root>

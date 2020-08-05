@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-app/apl-lms-price-exc-manage-app.iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-app/apl-lms-price-exc-manage-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl/apl-lms-price-exp-manage-impl.iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl/apl-lms-price-exp-manage-impl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl-master.iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-app/apl-lms-price-exp-manage-app.iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-app/apl-lms-price-exp-manage-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl/apl-lms-price-exp-manage-impl (1).iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl/apl-lms-price-exp-manage-impl (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl (2).iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-impl (2).iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/apl-lms-price-exp-manage-java.iml" filepath="$PROJECT_DIR$/.idea/apl-lms-price-exp-manage-java.iml" />
-      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master/apl-lms-price-exp-manage-pojo/apl-lms-price-exp-manage-pojo.iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master/apl-lms-price-exp-manage-pojo/apl-lms-price-exp-manage-pojo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master/apl-lms-price-exp-pojo-manage-master.iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-pojo-manage-master/apl-lms-price-exp-pojo-manage-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master/apl-lms-price-exp-manage-pojo/apl-lms-price-exp-manage-pojo.iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master/apl-lms-price-exp-manage-pojo/apl-lms-price-exp-manage-pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master/apl-lms-price-exp-manage-pojo/apl-lms-price-exp-manage-pojo (1).iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master/apl-lms-price-exp-manage-pojo/apl-lms-price-exp-manage-pojo (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master/apl-lms-price-exp-manage-pojo-master.iml" filepath="$PROJECT_DIR$/apl-lms-price-exp-manage-pojo-master/apl-lms-price-exp-manage-pojo-master.iml" />
     </modules>
   </component>
 </project>
