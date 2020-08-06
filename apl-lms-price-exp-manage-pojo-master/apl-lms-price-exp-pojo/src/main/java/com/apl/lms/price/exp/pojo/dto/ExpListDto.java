@@ -26,7 +26,7 @@ public class ExpListDto extends Model<ExpListDto> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "价格表id" , required = true)
+    @ApiModelProperty(name = "id" , value = "价格表id", required = true)
     private Long id;
 
     @ApiModelProperty(name = "priceCode" , value = "价格表代码" , required = true)
