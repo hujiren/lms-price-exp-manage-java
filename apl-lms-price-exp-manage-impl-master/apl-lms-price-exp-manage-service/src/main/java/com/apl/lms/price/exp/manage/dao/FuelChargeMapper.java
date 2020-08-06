@@ -1,11 +1,9 @@
 package com.apl.lms.price.exp.manage.dao;
 
-import com.apl.lms.price.exp.manage.pojo.dto.ExpListKeyDto;
-import com.apl.lms.price.exp.manage.pojo.dto.FuelChargeKeyDto;
-import com.apl.lms.price.exp.manage.pojo.po.ExpListPo;
-import com.apl.lms.price.exp.manage.pojo.po.FuelChargePo;
-import com.apl.lms.price.exp.manage.pojo.vo.ExpListVo;
-import com.apl.lms.price.exp.manage.pojo.vo.FuelChargeVo;
+
+import com.apl.lms.price.exp.pojo.dto.FuelChargeKeyDto;
+import com.apl.lms.price.exp.pojo.po.FuelChargePo;
+import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;

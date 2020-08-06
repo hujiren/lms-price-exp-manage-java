@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.dao.FuelChargeMapper">
 
     <!--分页查询燃油费列表-->
-    <select id="getList" resultType="com.apl.lms.price.exp.manage.pojo.vo.FuelChargeVo">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.FuelChargeVo">
         select
             id, start_date, end_date, fuel_charge
         from
