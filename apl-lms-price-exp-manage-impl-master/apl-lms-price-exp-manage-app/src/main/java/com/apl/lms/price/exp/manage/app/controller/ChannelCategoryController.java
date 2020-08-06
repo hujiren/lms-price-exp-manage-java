@@ -1,4 +1,5 @@
 package com.apl.lms.price.exp.manage.app.controller;
+
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
@@ -14,6 +15,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.sql.DataSource;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -29,6 +32,9 @@ public class ChannelCategoryController {
 
     @Autowired
     ChannelCategoryService channelCategoryService;
+
+    @Autowired
+    DataSource dataSource;
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取渠道类型列表" , notes = "根据关键字来查询")
