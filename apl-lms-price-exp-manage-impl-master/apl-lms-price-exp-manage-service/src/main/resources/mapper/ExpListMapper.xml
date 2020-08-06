@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.dao.ExpListMapper">
 
     <!--分页查询快递价格-->
-    <select id="getExpList" resultType="com.apl.lms.price.exp.manage.pojo.vo.ExpListVo">
+    <select id="getExpList" resultType="com.apl.lms.price.exp.pojo.vo.ExpListVo">
         select
             id, price_code, price_name, sale_name, start_date, end_date, currency, channel_category, zone_tab_id, volume_weight_cardinal,
             account_type, account_no, customer_groups, customer_ids, forwarder_id, price_status, aging, special_commodity, sale_remark,

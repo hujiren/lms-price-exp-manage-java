@@ -30,7 +30,7 @@
 
         <dependency>
             <groupId>com.apl</groupId>
-            <artifactId>apl-lms-price-exp-manage-pojo</artifactId>
+            <artifactId>apl-lms-price-exp-pojo</artifactId>
             <version>1.0.0</version>
         </dependency>
 
@@ -42,20 +42,6 @@
 
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>maven-ali</id>
-            <url>http://maven.aliyun.com/nexus/content/groups/public//</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>
@@ -71,4 +57,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

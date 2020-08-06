@@ -1,11 +1,9 @@
 package com.apl.lms.price.exp.manage.app.controller;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.manage.pojo.dto.ChannelCateGoryDto;
-import com.apl.lms.price.exp.manage.pojo.dto.ChannelCateGoryKeyDto;
-import com.apl.lms.price.exp.manage.pojo.dto.ExpListDto;
-import com.apl.lms.price.exp.manage.pojo.po.ChannelCateGoryPo;
-import com.apl.lms.price.exp.manage.pojo.vo.ChannelCateGoryVo;
+import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
+import com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
