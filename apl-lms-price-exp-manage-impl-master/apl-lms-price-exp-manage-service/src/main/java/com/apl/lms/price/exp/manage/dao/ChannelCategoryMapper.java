@@ -20,7 +20,7 @@ import java.util.List;
 public interface ChannelCategoryMapper extends BaseMapper<ChannelCateGoryPo> {
 
     /**
-     * 获取快递价格分页信息列表
+     * 获取渠道类型分页信息列表
      * @param page
      * @param channelCateGoryKeyDto
      * @return

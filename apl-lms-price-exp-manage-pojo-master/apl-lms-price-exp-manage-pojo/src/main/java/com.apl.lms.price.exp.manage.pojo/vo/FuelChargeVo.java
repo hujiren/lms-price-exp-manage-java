@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.pojo.po;
+package com.apl.lms.price.exp.manage.pojo.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import springfox.documentation.spring.web.json.Json;
 
 import java.sql.Timestamp;
 
@@ -20,8 +19,8 @@ import java.sql.Timestamp;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("price_fuel_charge")
-@ApiModel(value="燃油费  持久化对象", description="燃油费 持久化对象")
-public class FuelChargePo extends Model<FuelChargePo> {
+@ApiModel(value="燃油费  返回对象", description="燃油费 返回对象")
+public class FuelChargeVo extends Model<FuelChargeVo> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)

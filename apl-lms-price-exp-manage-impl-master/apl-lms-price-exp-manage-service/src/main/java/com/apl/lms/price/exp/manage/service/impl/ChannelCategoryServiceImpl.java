@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.impl.service.impl;
+package com.apl.lms.price.exp.manage.service.impl;
 
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
@@ -7,9 +7,7 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.dao.ChannelCategoryMapper;
 import com.apl.lms.price.exp.manage.pojo.dto.ChannelCateGoryDto;
 import com.apl.lms.price.exp.manage.pojo.dto.ChannelCateGoryKeyDto;
-import com.apl.lms.price.exp.manage.pojo.dto.ExpListDto;
 import com.apl.lms.price.exp.manage.pojo.po.ChannelCateGoryPo;
-import com.apl.lms.price.exp.manage.pojo.po.ExpListPo;
 import com.apl.lms.price.exp.manage.pojo.vo.ChannelCateGoryVo;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -43,7 +41,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     }
 
     /**
-     * 分页查询
+     * 分页查询渠道类型
      * @param pageDto
      * @param channelCateGoryKeyDto
      * @return
@@ -78,7 +76,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     }
 
     /**
-     * 修改
+     * 更新渠道类型
      * @param channelCateGoryDto
      * @return
      */
@@ -96,7 +94,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     }
 
     /**
-     * 添加
+     * 新增渠道类型
      * @param channelCateGoryDto
      * @return
      */

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.dao.FuelChargeMapper">
+
+    <!--分页查询燃油费列表-->
+    <select id="getList" resultType="com.apl.lms.price.exp.manage.pojo.vo.FuelChargeVo">
+        select
+            id, start_date, end_date, fuel_charge
+        from
+            price_fuel_charge
+        where
+            1=1
+            <if test="key.fuelCharge != null">
+                and fuel_charge = #{key.fuelCharge}
+            </if>
+            <if test="key.startDate != null and key.endDate != null">
+                and (locate(#{kd.startCode}, start_date)>0
+                and (locate(#{kd.endCode}, end_date)>0
+            </if>
+    </select>
+
+    <!--根据id删除燃油费-->
+    <delete id="delById">
+        delete from price_fuel_charge where id = #{id}
+    </delete>
+
+    <!--更新燃油费-->
+    <update id="updFuelCharge">
+        update price_fuel_charge set start_date = #{po.startDate}, end_date = #{po.endDate}, fuel_charge = #{po.fuelCharge} where id = #{po.id}
+    </update>
+
+
+    <!--新增燃油费-->
+    <insert id="insertFuelCharge">
+        insert into price_fuel_charge(id, start_date, end_date, fuel_charge) values (#{po.id}, #{po.startDate}, #{po.endDate}, #{po.fuelCharge})
+    </insert>
+
+</mapper>

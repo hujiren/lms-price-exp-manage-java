@@ -42,7 +42,7 @@ public class ChannelCategoryController {
     }
 
     @PostMapping(value = "/delete")
-    @ApiOperation(value =  "删除" , notes = "根据id删除")
+    @ApiOperation(value =  "删除" , notes = "根据id删除渠道类型")
     @ApiImplicitParam(name = "id",value = "渠道类型id",required = true  , paramType = "query")
     public ResultUtil<Boolean> delete(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 
@@ -59,9 +59,9 @@ public class ChannelCategoryController {
 
     @PostMapping(value = "/insert")
     @ApiOperation(value =  "新增渠道类型" , notes = "新增渠道类型")
-    @ApiImplicitParam(name = "channelCateGoryPo", value = "渠道类型持久化对象", required = true, paramType = "query")
-    public ResultUtil<Long> insert(@NotNull(message = "渠道类型对象") @Validated ChannelCateGoryDto channelCateGoryPo){
+    @ApiImplicitParam(name = "channelCateGoryDto", value = "渠道类型持久化对象", required = true, paramType = "query")
+    public ResultUtil<Long> insert(@NotNull(message = "渠道类型对象") @Validated ChannelCateGoryDto channelCateGoryDto){
 
-        return channelCategoryService.insChannelCategory(channelCateGoryPo);
+        return channelCategoryService.insChannelCategory(channelCateGoryDto);
     }
 }
