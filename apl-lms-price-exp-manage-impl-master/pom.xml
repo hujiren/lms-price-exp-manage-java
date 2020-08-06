@@ -10,7 +10,7 @@
 
   <modules>
     <module>apl-lms-price-exp-manage-app</module>
-    <module>apl-lms-price-exp-manage-impl</module>
+    <module>apl-lms-price-exp-manage-service</module>
   </modules>
 
   <build>

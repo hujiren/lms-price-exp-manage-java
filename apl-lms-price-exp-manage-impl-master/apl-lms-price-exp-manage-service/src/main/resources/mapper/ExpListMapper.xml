@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.dao.ExpListMapper">
+
+    <!--分页查询快递价格-->
+    <select id="getExpList" resultType="com.apl.lms.price.exp.manage.pojo.vo.ExpListVo">
+        select
+            id, price_code, price_name, sale_name, start_date, end_date, currency, channel_category, zone_tab_id, volume_weight_cardinal,
+            account_type, account_no, customer_groups, customer_ids, forwarder_id, price_status, aging, special_commodity, sale_remark,
+            forwarder_remark, quote_price_id, quote_price_final_id, price_form
+        from
+            price_exp_list
+        where
+            1=1
+            <if test="key.channelCategory != null">
+                and channel_category = #{key.channelCategory}
+            </if>
+            <if test="key.volumeWeightCardinal > 0">
+                and volume_weight_cardinal = #{key.volumeWeightCardinal}
+            </if>
+            <if test="key.accountType >= 0">
+                and account_type = #{key.accountType}
+            </if>
+            <if test="key.priceStatus >= 0 and key.priceStatus &lt; 4">
+                and price_status = #{key.priceStatus}
+            </if>
+            <if test="key.priceStatus >= 0 and key.priceStatus = 4">
+                and price_status = #{key.priceStatus}
+                and date_sub(CURDATE(),INTERVAL 3 DAY) > DATE(end_date)
+            </if>
+            <if test="key.priceStatus >= 0 and key.priceStatus = 5">
+                and price_status = #{key.priceStatus}
+                and end_date &lt; now()
+            </if>
+            <if test="key.keyWord != null">
+                and (locate(#{kd.keyword}, price_code)>0
+                or (locate(#{kd.keyword}, price_name)>0
+                or (locate(#{kd.keyword}, sale_name)>0
+            </if>
+
+    </select>
+
+    <!--根据id删除快递价格-->
+    <delete id="delById">
+        delete from price_exp_list where id = #{id}
+    </delete>
+
+    <!--更新快递价格-->
+    <update id="updExpList">
+        update
+            price_exp_list
+        set
+            price_code = #{po.priceCode}, price_name = #{po.priceName}, sale_name = #{po.saleName}, start_date = #{po.startDate},
+            end_date = #{po.endDate}, currency = #{po.currency}, channel_category = #{po.channelCategory}, zone_tab_id = #{po.zoneTabId},
+            volume_weight_cardinal = #{po.volumeWeightCardinal}, account_type = #{po.accountType}, account_no = #{po.accountNo},
+            customer_groups = #{po.customerGroups}, customer_ids = #{po.customerIds}, forwarder_id = #{po.forwarderId},
+            price_status = #{po.priceStatus}, aging = #{po.aging}, special_commodity = #{po.specialCommodity}, sale_remark = #{po.saleRemark},
+            forwarder_remark = #{po.forwarderRemark}
+        where
+            id = #{po.id}
+    </update>
+
+    <!--新增快递价格-->
+    <insert id="insertExpList">
+        insert into
+            price_exp_list(id, price_code, price_name, sale_name, start_date, end_date, currency, channel_category, zone_tab_id,
+            volume_weight_cardinal, account_type, account_no, customer_groups, customer_ids, forwarder_id, price_status, aging,
+            special_commodity, sale_remark, forwarder_remark, quote_price_id, quote_price_final_id, price_form)
+        values
+            (#{po.id}, #{po.priceCode}, #{po.priceName}, #{po.saleName}, #{po.startDate}, #{po.endDate}, #{po.currency}, #{po.channelCategory},
+            #{po.zoneTabId}, #{po.volumeWeightCardinal}, #{po.accountType}, #{po.accountNo}, #{po.customerGroups}, #{po.customerIds},
+            #{po.forwarderId}, #{po.priceStatus}, #{po.aging}, #{po.specialCommodity}, #{po.saleRemark}, #{po.forwarderRemark},
+            #{po.quotePriceId}, #{po.quotePriceFinalId}, #{po.priceForm})
+    </insert>
+</mapper>

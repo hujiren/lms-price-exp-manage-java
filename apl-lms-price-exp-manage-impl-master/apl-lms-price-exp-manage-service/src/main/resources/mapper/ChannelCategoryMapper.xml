@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.dao.ChannelCategoryMapper">
+
+    <!--分页查询渠道类型-->
+    <select id="getList" resultType="com.apl.lms.price.exp.manage.pojo.vo.ChannelCateGoryVo">
+        select
+            id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_weigh_cardinal
+        from
+            price_channel_category
+        where
+            (locate(#{kd.keyword}, price_code)>0
+    </select>
+
+    <!--根据id删除渠道类型-->
+    <delete id="delById">
+        delete from price_channel_category where id = #{id}
+    </delete>
+
+    <!--更新渠道类型-->
+    <update id="updChannelCategory">
+        update
+            price_channel_category
+        set
+            channel_category = #{po.channelCategory}, weight_way = #{po.weightWay}, volume_weight_way = #{po.volumeWeightWay},
+            carrier = #{po.carrier}, cargo_type = #{po.cargoType}, volume_weigh_cardinal = #{po.volumeWeighCardinal}
+        where
+            id = #{po.id}
+    </update>
+
+    <!--新增渠道类型-->
+    <insert id="insertChannelCategory">
+        insert into
+            price_channel_category(id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_weigh_cardinal)
+        values
+            (#{po.id}, #{po.channelCategory}, #{po.weightWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeWeighCardinal})
+    </insert>
+</mapper>
