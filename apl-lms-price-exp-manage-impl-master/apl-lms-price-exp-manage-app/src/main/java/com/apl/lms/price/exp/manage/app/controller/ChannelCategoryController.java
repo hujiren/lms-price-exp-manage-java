@@ -34,14 +34,10 @@ public class ChannelCategoryController {
     @Autowired
     ChannelCategoryService channelCategoryService;
 
-    @Autowired
-    DataSource dataSource;
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取渠道类型列表" , notes = "根据关键字来查询")
-    @ApiImplicitParam(name = "ChannelCateGoryKeyDto",value = "渠道类型查询",required = true  , paramType = "query")
-    public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto ,
-                                                       @NotNull(message = "渠道类型对象不能为空") @Validated ChannelCateGoryKeyDto channelCateGoryKeyDto){
+    public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto , @Validated ChannelCateGoryKeyDto channelCateGoryKeyDto){
 
         return channelCategoryService.getList(pageDto, channelCateGoryKeyDto);
     }
@@ -56,8 +52,7 @@ public class ChannelCategoryController {
 
     @PostMapping(value = "/update")
     @ApiOperation(value =  "更新" , notes = "根据id更新渠道类型")
-    @ApiImplicitParam(name = "channelCateGoryDto", value = "渠道类型更新对象", required = true, paramType = "query")
-    public ResultUtil<Boolean> update(@NotNull(message = "渠道类型对象不能为空") @Validated ChannelCateGoryDto channelCateGoryDto){
+    public ResultUtil<Boolean> update(@Validated ChannelCateGoryDto channelCateGoryDto){
 
         return channelCategoryService.updChannelCategory(channelCateGoryDto);
     }
