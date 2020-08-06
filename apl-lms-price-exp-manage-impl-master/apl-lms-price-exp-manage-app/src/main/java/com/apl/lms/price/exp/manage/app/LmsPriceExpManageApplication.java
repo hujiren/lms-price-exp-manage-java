@@ -21,14 +21,11 @@ import javax.sql.DataSource;
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
 
-
-
     public static void main(String[] args) {
 
         //com.apl.db.datasource.DataSourceConfig
         //com.apl.db.adb.AdbContext
         //com.apl.lib.config.SwaggerConfig
-
         SpringApplication.run(LmsPriceExpManageApplication.class , args);
     }
 }

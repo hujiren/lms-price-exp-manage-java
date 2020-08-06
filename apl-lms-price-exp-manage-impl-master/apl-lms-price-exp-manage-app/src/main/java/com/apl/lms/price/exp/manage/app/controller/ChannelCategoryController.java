@@ -2,6 +2,7 @@ package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
 import com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo;
@@ -63,9 +64,10 @@ public class ChannelCategoryController {
 
     @PostMapping(value = "/insert")
     @ApiOperation(value =  "新增渠道类型" , notes = "新增渠道类型")
-    @ApiImplicitParam(name = "channelCateGoryDto", value = "渠道类型持久化对象", required = true, paramType = "query")
-    public ResultUtil<Long> insert(@NotNull(message = "渠道类型对象") @Validated ChannelCateGoryDto channelCateGoryDto){
+    public ResultUtil<Long> insert(@Validated ChannelCateGoryDto channelCateGoryDto){
 
         return channelCategoryService.insChannelCategory(channelCateGoryDto);
     }
+
+
 }
