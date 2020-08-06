@@ -4,7 +4,7 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
-import com.apl.lms.price.exp.manage.dao.ExpListMapper;
+import com.apl.lms.price.exp.manage.mapper.ExpListMapper;
 import com.apl.lms.price.exp.pojo.dto.ExpListDto;
 import com.apl.lms.price.exp.pojo.dto.ExpListKeyDto;
 import com.apl.lms.price.exp.pojo.po.ExpListPo;

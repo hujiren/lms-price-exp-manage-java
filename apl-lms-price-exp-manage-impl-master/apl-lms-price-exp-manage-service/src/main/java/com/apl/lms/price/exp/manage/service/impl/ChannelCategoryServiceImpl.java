@@ -4,7 +4,7 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
-import com.apl.lms.price.exp.manage.dao.ChannelCategoryMapper;
+import com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCateGoryPo;
