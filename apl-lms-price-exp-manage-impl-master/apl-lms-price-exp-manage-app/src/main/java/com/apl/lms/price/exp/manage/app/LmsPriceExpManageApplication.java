@@ -10,11 +10,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @date 2020/8/6 - 11:15
  */
 @SpringBootApplication(
-        scanBasePackages = {"com.apl.lms.price.exp.manage.service" ,
+        scanBasePackages = {"com.apl.lms.price.exp.manage.service",
                 "com.apl.db.abatis",
                 "com.apl.db.adb",
                 "com.apl.lib",
-                "com.apl.cache"})
+                "com.apl.cache",
+                "com.apl.lms.price.exp.manage.app"})
 @MapperScan("com.apl.lms.price.exp.manage.dao")
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
