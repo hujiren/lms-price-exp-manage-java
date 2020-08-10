@@ -4,12 +4,13 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
-import com.apl.lms.price.exp.manage.dao.ChannelCategoryMapper;
-import com.apl.lms.price.exp.manage.pojo.dto.ChannelCateGoryDto;
-import com.apl.lms.price.exp.manage.pojo.dto.ChannelCateGoryKeyDto;
-import com.apl.lms.price.exp.manage.pojo.po.ChannelCateGoryPo;
-import com.apl.lms.price.exp.manage.pojo.vo.ChannelCateGoryVo;
+import com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
+import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryInsertDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
+import com.apl.lms.price.exp.pojo.po.ChannelCateGoryPo;
+import com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     }
 
     /**
-     * 分页查询渠道类型
+     * 分页查询
      * @param pageDto
      * @param channelCateGoryKeyDto
      * @return
@@ -76,7 +77,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     }
 
     /**
-     * 更新渠道类型
+     * 修改
      * @param channelCateGoryDto
      * @return
      */
@@ -94,18 +95,18 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     }
 
     /**
-     * 新增渠道类型
-     * @param channelCateGoryDto
+     * 添加
+     * @param channelCateGoryInsertDto
      * @return
      */
     @Override
-    public ResultUtil<Long> insChannelCategory(ChannelCateGoryDto channelCateGoryDto) {
+    public ResultUtil<Long> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto) {
 
         ChannelCateGoryPo channelCateGoryPo = new ChannelCateGoryPo();
-        BeanUtils.copyProperties(channelCateGoryDto, channelCateGoryPo);
+        BeanUtils.copyProperties(channelCateGoryInsertDto, channelCateGoryPo);
         channelCateGoryPo.setId(SnowflakeIdWorker.generateId());
 
-        Integer integer = baseMapper.insertChannelCategory(channelCateGoryPo);
+        Integer integer = baseMapper.addChannelCategory(channelCateGoryPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }

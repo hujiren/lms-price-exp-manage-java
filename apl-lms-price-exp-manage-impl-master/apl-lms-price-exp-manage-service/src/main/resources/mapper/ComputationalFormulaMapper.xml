@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.ComputationalFormulaMapper">
+
+    <!--分页查询燃油费列表-->
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo">
+        select
+            id, price_id, formula, price_zone, country, starting_weight, ending_weight, packing_type
+        from
+        price_computational_formula
+        where
+            1=1
+            <if test="key.formula != null">
+                and formula = #{key.formula}
+            </if>
+            <if test="key.priceZone != null">
+                and priceZone = #{key.priceZone}
+            </if>
+            <if test="key.country != null">
+                and country = #{key.country}
+            </if>
+            <if test="key.startingWeight != null">
+                and starting_weight = #{key.startingWeight}
+            </if>
+            <if test="key.endingWeight != null">
+                and ending_weight = #{key.endingWeight}
+            </if>
+            <if test="key.packingType != null">
+                and packing_type = #{key.packingType}
+            </if>
+            <if test="key.keyword != null">
+                and (locate(#{key.formula}, formula)>0
+                or (locate(#{key.priceZone}, price_zone)>0
+                or (locate(#{key.country}, country)>0
+                or (locate(#{key.packingType}, packing_type)>0
+            </if>
+    </select>
+
+    <!--根据id删除计算公式-->
+    <delete id="delById">
+        delete from price_computational_formula where id = #{id}
+    </delete>
+
+    <!--更新计算公式-->
+    <update id="updComputationalFormula">
+        update
+            price_computational_formula
+        set
+            price_id = #{po.priceId}, formula = #{po.formula}, price_zone = #{po.priceZone}, country = #{po.country},
+            starting_weight = #{po.startingWeight}, ending_weight = #{po.endingWeight}, packing_type = #{po.packingType}
+        where
+            id = #{po.id}
+    </update>
+
+    <!--新增计算公式-->
+    <insert id="addComputationalFormula">
+        insert into
+            price_computational_formula(id, price_id, formula, price_zone, country, starting_weight, ending_weight, packing_type)
+        values
+            (#{po.id}, #{po.priceId}, #{po.formula}, #{po.priceZone}, #{po.country}, #{po.startingWeight}, #{po.endingWeight}, #{po.packingType})
+    </insert>
+
+
+</mapper>

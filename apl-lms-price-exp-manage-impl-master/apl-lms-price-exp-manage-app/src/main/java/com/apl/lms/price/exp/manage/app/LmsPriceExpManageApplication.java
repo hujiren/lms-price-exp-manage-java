@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
                 "com.apl.lib",
                 "com.apl.cache",
                 "com.apl.lms.price.exp.manage.app"})
-@MapperScan("com.apl.lms.price.exp.manage.dao")
+@MapperScan("com.apl.lms.price.exp.manage.mapper")
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
 

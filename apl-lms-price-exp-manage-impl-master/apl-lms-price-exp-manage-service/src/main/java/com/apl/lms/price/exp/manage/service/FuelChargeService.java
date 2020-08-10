@@ -2,14 +2,11 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.manage.pojo.dto.ExpListDto;
-import com.apl.lms.price.exp.manage.pojo.dto.ExpListKeyDto;
-import com.apl.lms.price.exp.manage.pojo.dto.FuelChargeDto;
-import com.apl.lms.price.exp.manage.pojo.dto.FuelChargeKeyDto;
-import com.apl.lms.price.exp.manage.pojo.po.ExpListPo;
-import com.apl.lms.price.exp.manage.pojo.po.FuelChargePo;
-import com.apl.lms.price.exp.manage.pojo.vo.ExpListVo;
-import com.apl.lms.price.exp.manage.pojo.vo.FuelChargeVo;
+import com.apl.lms.price.exp.pojo.dto.FuelChargeDto;
+import com.apl.lms.price.exp.pojo.dto.FuelChargeInsertDto;
+import com.apl.lms.price.exp.pojo.dto.FuelChargeKeyDto;
+import com.apl.lms.price.exp.pojo.po.FuelChargePo;
+import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -43,10 +40,10 @@ public interface FuelChargeService extends IService<FuelChargePo> {
 
     /**
      * 新增燃油费
-     * @param fuelChargeDto
+     * @param fuelChargeInsertDto
      * @return
      */
-    ResultUtil<Long> insFuelCharge(FuelChargeDto fuelChargeDto);
+    ResultUtil<Long> addFulCharge(FuelChargeInsertDto fuelChargeInsertDto);
 
 
 
