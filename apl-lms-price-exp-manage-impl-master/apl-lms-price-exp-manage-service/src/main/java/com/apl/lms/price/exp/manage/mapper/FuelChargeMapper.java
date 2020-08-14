@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -23,10 +24,12 @@ public interface FuelChargeMapper extends BaseMapper<FuelChargePo> {
     /**
      * 获取燃油费分页信息列表
      * @param page
-     * @param expListKeyDto
      * @return
      */
-    List<FuelChargeVo> getList(Page<FuelChargeVo> page, @Param("key") FuelChargeKeyDto expListKeyDto);
+    List<FuelChargeVo> getList(Page<FuelChargeVo> page,
+                               @Param("key") FuelChargeKeyDto expListKeyDt,
+                               @Param("startTimes") Timestamp startTimes,
+                               @Param("endTimes") Timestamp endTimes);
 
     /**
      * 根据Id删除燃油费
@@ -43,7 +46,7 @@ public interface FuelChargeMapper extends BaseMapper<FuelChargePo> {
     Integer updFuelCharge(@Param("po") FuelChargePo fuelChargePo);
 
     /**
-     * 新增快递价格
+     * 新增燃油费
      * @param fuelChargePo
      * @return
      */

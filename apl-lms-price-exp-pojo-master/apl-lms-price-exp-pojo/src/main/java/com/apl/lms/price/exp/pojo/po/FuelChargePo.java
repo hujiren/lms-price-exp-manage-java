@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.sql.Timestamp;
 
@@ -17,7 +16,6 @@ import java.sql.Timestamp;
  * @date 2020/8/6 - 14:13
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @TableName("price_fuel_charge")
 @ApiModel(value="燃油费  持久化对象", description="燃油费 持久化对象")
 public class FuelChargePo extends Model<FuelChargePo> {

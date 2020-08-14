@@ -2,8 +2,8 @@ package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryInsertDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
 import com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
@@ -16,8 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.sql.DataSource;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -29,7 +27,7 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/channel-category")
 @Validated
 @Api(value = "渠道类型",tags = "渠道类型")
-public class ChannelCategoryController {
+public class  ChannelCategoryController {
 
     @Autowired
     ChannelCategoryService channelCategoryService;
@@ -37,7 +35,7 @@ public class ChannelCategoryController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取渠道类型列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto , @Validated ChannelCateGoryKeyDto channelCateGoryKeyDto){
+    public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto , ChannelCateGoryKeyDto channelCateGoryKeyDto){
 
         return channelCategoryService.getList(pageDto, channelCateGoryKeyDto);
     }
@@ -59,10 +57,9 @@ public class ChannelCategoryController {
 
     @PostMapping(value = "/insert")
     @ApiOperation(value =  "新增渠道类型" , notes = "新增渠道类型")
-    public ResultUtil<Long> insert(@Validated ChannelCateGoryDto channelCateGoryDto){
+    public ResultUtil<String> insert( @Validated ChannelCateGoryInsertDto channelCateGoryInsertDto){
 
-        return channelCategoryService.insChannelCategory(channelCateGoryDto);
+        return channelCategoryService.addChannelCategory(channelCateGoryInsertDto);
     }
-
 
 }

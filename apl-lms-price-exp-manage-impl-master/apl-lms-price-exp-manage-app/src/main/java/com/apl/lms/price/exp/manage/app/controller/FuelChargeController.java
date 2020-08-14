@@ -2,10 +2,9 @@ package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
-import com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo;
-import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
+import com.apl.lms.price.exp.manage.service.FuelChargeService;
+import com.apl.lms.price.exp.pojo.dto.*;
+import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,38 +29,35 @@ import javax.validation.constraints.NotNull;
 public class FuelChargeController {
 
     @Autowired
-    ChannelCategoryService channelCategoryService;
+    FuelChargeService fuelChargeService;
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取燃油费列表" , notes = "根据关键字来查询")
-    @ApiImplicitParam(name = "ChannelCateGoryKeyDto",value = "渠道类型查询",required = true  , paramType = "query")
-    public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto ,
-                                                       @NotNull(message = "渠道类型对象不能为空") @Validated ChannelCateGoryKeyDto channelCateGoryKeyDto){
+    public ResultUtil<Page<FuelChargeVo>> getList(PageDto pageDto ,
+                                                  @Validated FuelChargeKeyDto fuelChargeKeyDto){
 
-        return channelCategoryService.getList(pageDto, channelCateGoryKeyDto);
+        return fuelChargeService.getList(pageDto, fuelChargeKeyDto);
     }
 
     @PostMapping(value = "/delete")
     @ApiOperation(value =  "删除" , notes = "根据id删除")
-    @ApiImplicitParam(name = "id",value = "渠道类型id",required = true  , paramType = "query")
+    @ApiImplicitParam(name = "id",value = "燃油费Id",required = true  , paramType = "query")
     public ResultUtil<Boolean> delete(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 
-        return channelCategoryService.delChannelCategory(id);
+        return fuelChargeService.delFuelCharge(id);
     }
 
     @PostMapping(value = "/update")
-    @ApiOperation(value =  "更新" , notes = "根据id更新渠道类型")
-    @ApiImplicitParam(name = "channelCateGoryDto", value = "渠道类型更新对象", required = true, paramType = "query")
-    public ResultUtil<Boolean> update(@NotNull(message = "渠道类型对象不能为空") @Validated ChannelCateGoryDto channelCateGoryDto){
+    @ApiOperation(value =  "更新" , notes = "根据id更新燃油费")
+    public ResultUtil<Boolean> update( @Validated FuelChargeDto fuelChargeDto){
 
-        return channelCategoryService.updChannelCategory(channelCateGoryDto);
+        return fuelChargeService.updFuelCharge(fuelChargeDto);
     }
 
     @PostMapping(value = "/insert")
-    @ApiOperation(value =  "新增渠道类型" , notes = "新增渠道类型")
-    @ApiImplicitParam(name = "channelCateGoryPo", value = "渠道类型持久化对象", required = true, paramType = "query")
-    public ResultUtil<Long> insert(@NotNull(message = "渠道类型对象") @Validated ChannelCateGoryDto channelCateGoryPo){
+    @ApiOperation(value =  "新增燃油费" , notes = "新增燃油费")
+    public ResultUtil<String> insert( @Validated FuelChargeInsertDto fuelChargeInsertDto){
 
-        return channelCategoryService.insChannelCategory(channelCateGoryPo);
+        return fuelChargeService.addFulCharge(fuelChargeInsertDto);
     }
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpListMapper">
+
+    <!--分页查询快递价格-->
+    <select id="getExpList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpListVo">
+        select
+            id, price_code, price_name, sale_name, start_date, end_date, currency, channel_category, zone_tab_id, volume_weight_cardinal,
+            account_type, account_no, customer_ids, forwarder_id, price_status, aging, special_commodity, sale_remark,
+            forwarder_remark, quote_price_id, quote_price_final_id, price_form, customer_groups_id, customer_groups_name, customer_ids_name
+        from
+            price_exp_list
+        where
+            1=1
+            <if test="key.channelCategory != null">
+                and channel_category = ${key.channelCategory}
+            </if>
+            <if test="key.volumeWeightCardinal != null">
+                and volume_weight_cardinal = ${key.volumeWeightCardinal}
+            </if>
+            <if test="key.accountType != null">
+                and account_type = ${key.accountType}
+            </if>
+            <if test="key.priceStatus != null and key.priceStatus &lt; 4">
+                and price_status = ${key.priceStatus}
+            </if>
+            <if test="key.priceStatus != null and key.priceStatus == 4">
+                and price_status = ${key.priceStatus}
+                and date_sub(CURDATE(),INTERVAL 3 DAY) > DATE(end_date)
+            </if>
+            <if test="key.priceStatus != null and key.priceStatus == 5">
+                and price_status = ${key.priceStatus}
+                and end_date &lt; now()
+            </if>
+            <if test="key.customerGroupsName != null">
+                and customer_groups_name = ${key.customerGroupsName}
+            </if>
+            <if test="key.keyWord != null">
+                and LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            </if>
+
+    </select>
+
+    <!--根据ids批删除快递价格-->
+    <delete id="delById">
+        delete from price_exp_list where id in
+        <foreach collection="ids" close=")" open="(" item="row" separator="," index="">
+            #{row}
+        </foreach>
+    </delete>
+
+    <!--更新快递价格-->
+    <update id="updExpList">
+        update
+            price_exp_list
+        set
+            price_code = #{po.priceCode}, price_name = #{po.priceName}, sale_name = #{po.saleName}, start_date = #{po.startDate},
+            end_date = #{po.endDate}, currency = #{po.currency}, channel_category = #{po.channelCategory}, zone_tab_id = #{po.zoneTabId},
+            volume_weight_cardinal = #{po.volumeWeightCardinal}, account_type = #{po.accountType}, account_no = #{po.accountNo},
+            customer_groups_id = #{po.customerGroupsId, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
+            customer_ids = #{po.customerIds, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
+            forwarder_id = #{po.forwarderId},
+            customer_groups_name = #{po.customerGroupsName}, customer_ids_name = #{po.customerName},
+            price_status = #{po.priceStatus}, aging = #{po.aging},
+            special_commodity = #{po.specialCommodity, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
+            sale_remark = #{po.saleRemark},
+            forwarder_remark = #{po.forwarderRemark}
+        where
+            id = #{po.id}
+    </update>
+
+    <!--新增快递价格-->
+    <insert id="insertExpList">
+        insert into
+            price_exp_list(id, price_code, price_name, sale_name, start_date, end_date, currency, channel_category, zone_tab_id,
+            volume_weight_cardinal, account_type, account_no, customer_ids, forwarder_id, price_status, aging,
+            special_commodity, sale_remark, forwarder_remark, quote_price_id, quote_price_final_id, price_form, customer_groups_id,
+            customer_groups_name, customer_ids_name)
+        values
+            (#{po.id}, #{po.priceCode}, #{po.priceName}, #{po.saleName}, #{po.startDate}, #{po.endDate}, #{po.currency}, #{po.channelCategory},
+            #{po.zoneTabId}, #{po.volumeWeightCardinal}, #{po.accountType}, #{po.accountNo},
+            #{po.customerIds, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
+            #{po.forwarderId}, #{po.priceStatus}, #{po.aging},
+            #{po.specialCommodity, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
+            #{po.saleRemark},#{po.forwarderRemark},
+            #{po.quotePriceId}, #{po.quotePriceFinalId},  #{po.priceForm},
+            #{po.customerGroupsId, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
+            #{po.customerGroupsName}, #{po.customerName})
+    </insert>
+
+</mapper>

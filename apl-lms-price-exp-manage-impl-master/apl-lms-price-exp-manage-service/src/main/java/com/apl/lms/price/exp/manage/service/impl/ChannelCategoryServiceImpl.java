@@ -1,15 +1,16 @@
-package com.apl.lms.price.exp.manage.impl.service.impl;
+package com.apl.lms.price.exp.manage.service.impl;
 
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper;
+import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryInsertDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCateGoryPo;
 import com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo;
-import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -95,21 +96,21 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
 
     /**
      * 添加
-     * @param channelCateGoryDto
+     * @param channelCateGoryInsertDto
      * @return
      */
     @Override
-    public ResultUtil<Long> insChannelCategory(ChannelCateGoryDto channelCateGoryDto) {
+    public ResultUtil<String> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto) {
 
         ChannelCateGoryPo channelCateGoryPo = new ChannelCateGoryPo();
-        BeanUtils.copyProperties(channelCateGoryDto, channelCateGoryPo);
+        BeanUtils.copyProperties(channelCateGoryInsertDto, channelCateGoryPo);
         channelCateGoryPo.setId(SnowflakeIdWorker.generateId());
 
-        Integer integer = baseMapper.insertChannelCategory(channelCateGoryPo);
+        Integer integer = baseMapper.addChannelCategory(channelCateGoryPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, channelCateGoryPo.getId());
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, channelCateGoryPo.getId().toString());
     }
 
 

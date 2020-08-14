@@ -7,9 +7,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="apl-lms-price-exp-pojo" />
         <module name="apl-lms-price-exp-manage-app" />
         <module name="apl-lms-price-exp-manage-service" />
+      </profile>
+      <profile name="Annotation profile for apl-lms-price-exp-manage-java" enabled="true">
+        <sourceOutputDir name="../../apl-lms-price-exp-manage-pojo-master/apl-lms-price-exp-pojo/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../../apl-lms-price-exp-manage-pojo-master/apl-lms-price-exp-pojo/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="apl-lms-price-exp-pojo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

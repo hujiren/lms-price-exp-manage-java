@@ -7,15 +7,16 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.FuelChargeMapper;
 import com.apl.lms.price.exp.manage.service.FuelChargeService;
 import com.apl.lms.price.exp.pojo.dto.FuelChargeDto;
+import com.apl.lms.price.exp.pojo.dto.FuelChargeInsertDto;
 import com.apl.lms.price.exp.pojo.dto.FuelChargeKeyDto;
 import com.apl.lms.price.exp.pojo.po.FuelChargePo;
 import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -41,17 +42,24 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
     /**
      * 分页查询快递价格
      * @param pageDto
-     * @param expListKeyDto
+     * @param
      * @return
      */
     @Override
-    public ResultUtil<Page<FuelChargeVo>> getList(PageDto pageDto, FuelChargeKeyDto expListKeyDto) {
+    public ResultUtil<Page<FuelChargeVo>> getList(PageDto pageDto, FuelChargeKeyDto fuelChargeKeyDto) {
 
         Page<FuelChargeVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
 
-        List<FuelChargeVo> fuelChargeVoList = baseMapper.getList(page, expListKeyDto);
+        Timestamp startTimes = null;
+        Timestamp endTimes = null;
+        if(fuelChargeKeyDto.getEndDate() != null && fuelChargeKeyDto.getStartDate() != null) {
+            startTimes = new Timestamp(fuelChargeKeyDto.getStartDate());
+            endTimes = new Timestamp(fuelChargeKeyDto.getEndDate());
+        }
+
+        List<FuelChargeVo> fuelChargeVoList = baseMapper.getList(page, fuelChargeKeyDto, startTimes, endTimes);
 
         page.setRecords(fuelChargeVoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
@@ -81,8 +89,10 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
     public ResultUtil<Boolean> updFuelCharge(FuelChargeDto fuelChargeDto) {
 
         FuelChargePo fuelChargePo = new FuelChargePo();
-        BeanUtils.copyProperties(fuelChargeDto, fuelChargePo);
-
+        fuelChargePo.setStartDate(new Timestamp(fuelChargeDto.getStartDate()));
+        fuelChargePo.setEndDate(new Timestamp(fuelChargeDto.getEndDate()));
+        fuelChargePo.setFuelCharge(fuelChargeDto.getFuelCharge());
+        fuelChargePo.setId(fuelChargeDto.getId());
         Integer integer = baseMapper.updFuelCharge(fuelChargePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
@@ -92,20 +102,22 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
 
     /**
      * 新增燃油费
-     * @param fuelChargeDto
+     * @param fuelChargeInsertDto
      * @return
      */
     @Override
-    public ResultUtil<Long> insFuelCharge(FuelChargeDto fuelChargeDto) {
+    public ResultUtil<String> addFulCharge(FuelChargeInsertDto fuelChargeInsertDto) {
 
         FuelChargePo fuelChargePo = new FuelChargePo();
-        BeanUtils.copyProperties(fuelChargeDto, fuelChargePo);
+        fuelChargePo.setEndDate(new Timestamp(fuelChargeInsertDto.getEndDate()));
+        fuelChargePo.setStartDate(new Timestamp(fuelChargeInsertDto.getStartDate()));
+        fuelChargePo.setFuelCharge(fuelChargeInsertDto.getFuelCharge());
         fuelChargePo.setId(SnowflakeIdWorker.generateId());
 
         Integer integer = baseMapper.insertFuelCharge(fuelChargePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, fuelChargePo.getId());
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, fuelChargePo.getId().toString());
     }
 }

@@ -8,14 +8,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @author hjr start
  * @date 2020/8/5 - 18:00
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @TableName("price_channel_category")
 @ApiModel(value="渠道类型  持久化对象", description="渠道类型 持久化对象")
 public class ChannelCateGoryPo extends Model<ChannelCateGoryPo> {
@@ -40,6 +38,6 @@ public class ChannelCateGoryPo extends Model<ChannelCateGoryPo> {
     @ApiModelProperty(name = "cargoType" , value = "运件类型" , required = true)
     private Integer cargoType;
 
-    @ApiModelProperty(name = "volumeWeighCardinal" , value = "体积基数" , required = true)
-    private String volumeWeighCardinal;
+    @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积基数" , required = true)
+    private Integer volumeWeightCardinal;
 }

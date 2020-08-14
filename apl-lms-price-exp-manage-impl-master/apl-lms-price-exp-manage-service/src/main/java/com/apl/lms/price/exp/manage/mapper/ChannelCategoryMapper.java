@@ -1,5 +1,4 @@
 package com.apl.lms.price.exp.manage.mapper;
-
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCateGoryPo;
 import com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo;
@@ -47,7 +46,7 @@ public interface ChannelCategoryMapper extends BaseMapper<ChannelCateGoryPo> {
      * @param channelCateGoryPo
      * @return
      */
-    Integer insertChannelCategory(@Param("po") ChannelCateGoryPo channelCateGoryPo);
+    Integer addChannelCategory(@Param("po") ChannelCateGoryPo channelCateGoryPo);
 
 
 

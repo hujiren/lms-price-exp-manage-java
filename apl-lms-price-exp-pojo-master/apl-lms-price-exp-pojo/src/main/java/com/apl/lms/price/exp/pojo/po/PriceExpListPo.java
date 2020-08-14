@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.pojo.vo;
+package com.apl.lms.price.exp.pojo.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -8,24 +8,21 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import springfox.documentation.spring.web.json.Json;
-
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author hjr start
  * @date 2020/8/5 - 10:36
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @TableName("price_exp_list")
-@ApiModel(value="快递价格表  返回对象", description="快递价格表 返回对象")
-public class ExpListVo extends Model<ExpListVo> {
+@ApiModel(value="快递价格表  持久化对象", description="快递价格表 持久化对象")
+public class PriceExpListPo extends Model<PriceExpListPo> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "价格表id" , hidden = true)
+    @ApiModelProperty(name = "id" , value = "价格表id" , required = true)
     private Long id;
 
     @ApiModelProperty(name = "priceCode" , value = "价格表代码" , required = true)
@@ -46,8 +43,8 @@ public class ExpListVo extends Model<ExpListVo> {
     @ApiModelProperty(name = "currency" , value = "币制" , required = true)
     private String currency;
 
-    @ApiModelProperty(name = "channelCateGory" , value = "渠道类型" , required = true)
-    private String channelCateGory;
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)
+    private String channelCategory;
 
     @ApiModelProperty(name = "zoneTabId" , value = "分区表Id" , required = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -62,15 +59,21 @@ public class ExpListVo extends Model<ExpListVo> {
     @ApiModelProperty(name = "accountNo" , value = "快递账号" , required = true)
     private String accountNo;
 
-    @ApiModelProperty(name = "customerGroups" , value = "客户组" , required = true)
-    private Json customerGroups;
+    @ApiModelProperty(name = "customerGroupsId" , value = "客户组id" , required = true)
+    private List<String> customerGroupsId;
+
+    @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称" , required = true)
+    private String customerGroupsName;
 
     @ApiModelProperty(name = "customerIds" , value = "客户ids" , required = true)
-    private Json customerIds;
+    private List<String> customerIds;
+
+    @ApiModelProperty(name = "customerName" , value = "客户名称" , required = true)
+    private String customerName;
 
     @ApiModelProperty(name = "forWarderId" , value = "货代id" , required = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long forWarderId;
+    private Long forwarderId;
 
     @ApiModelProperty(name = "priceStatus" , value = "价格表状态 1正常 2计账 3无效" , required = true)
     private Integer priceStatus;
@@ -79,7 +82,7 @@ public class ExpListVo extends Model<ExpListVo> {
     private String aging;
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品" , required = true)
-    private Json specialCommodity;
+    private List<String> specialCommodity;
 
     @ApiModelProperty(name = "saleRemark" , value = "销售备注" , required = true)
     private String saleRemark;
