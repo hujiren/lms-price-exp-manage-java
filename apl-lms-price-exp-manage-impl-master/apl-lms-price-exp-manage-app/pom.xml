@@ -28,12 +28,6 @@
             <version>1.0.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.apl</groupId>
-            <artifactId>apl-lms-price-exp-pojo</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
 
     </dependencies>
 
@@ -52,7 +46,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.apl.inner.sys.InnerSysApplication</mainClass>
+                    <mainClass>com.apl.lms.price.exp.manage.app.LmsPriceExpManageApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

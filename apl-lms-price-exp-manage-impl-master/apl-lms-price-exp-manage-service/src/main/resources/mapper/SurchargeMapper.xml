@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.common.mapper.SurchargeMapper">
+
+    <!-- 查找附加费列表-->
+    <select id="getList" resultType="com.apl.lms.common.query.manage.dto.SurchargeDto">
+        SELECT
+            id,
+            charge_name,
+            computing_formula,
+            currency
+        FROM
+            surcharge
+        where
+            1=1
+        <if test="key.keyword != null">
+            and (locate(#{kd.keyword}, charge_name)>0
+        </if>
+    </select>
+
+    <!--根据Id删除附加费-->
+    <delete id="delById">
+        delete from surcharge where id = #{id}
+    </delete>
+
+    <!--更新附加费-->
+    <update id="updSurcharge">
+        update surcharge set charge_name = #{po.chargeName}, computing_formula = #{po.computingFormula}, currency = #{po.currency} where id = #{po.id}
+    </update>
+
+    <!--插入附加费-->
+    <insert id="addSurcharge">
+        insert into surcharge(id, charge_name, computing_formula, currency) values (#{po.id}, #{po.chargeName}, #{po.computingFormula}, #{po.currency})
+    </insert>
+</mapper>

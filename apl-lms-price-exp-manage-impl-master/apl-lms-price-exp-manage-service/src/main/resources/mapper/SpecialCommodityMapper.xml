@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.SpecialCommodityMapper">
+
+    <!-- 查找特殊物品列表-->
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.SpecialCommodityDto">
+        SELECT
+            id,
+            special_commodity_name
+        FROM
+            special_commodity
+        where
+            1=1
+        <if test="key.keyword != null">
+            and (locate(#{kd.keyword}, special_commodity_name)>0
+        </if>
+    </select>
+
+    <!--根据Id删除特殊物品-->
+    <delete id="delById">
+        delete from special_commodity where id = #{id}
+    </delete>
+
+    <!--更新特殊物品-->
+    <update id="updSpecialCommodity">
+        update special_commodity set special_commodity_name = #{po.specialCommodityName} where id = #{po.id}
+    </update>
+
+    <!--插入特殊物品-->
+    <insert id="addSpecialCommodity">
+        insert into special_commodity(id, special_commodity_name) values (#{po.id}, #{po.specialCommodityName})
+    </insert>
+</mapper>
