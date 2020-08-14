@@ -31,6 +31,7 @@ public class JsonTypeHandlerPg extends BaseTypeHandler<Object> {
         MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);//驼峰映射
 
         ExpListPo expListPo = MAPPER.readValue(data, ExpListPo.class);
+        //
 
         return expListPo;
     }
