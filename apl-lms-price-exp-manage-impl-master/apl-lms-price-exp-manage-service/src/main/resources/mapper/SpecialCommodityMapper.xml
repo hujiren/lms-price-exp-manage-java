@@ -3,31 +3,34 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.SpecialCommodityMapper">
 
     <!-- 查找特殊物品列表-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.SpecialCommodityDto">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo">
         SELECT
             id,
             special_commodity_name
         FROM
-            special_commodity
+            price_special_commodity
         where
             1=1
         <if test="key.keyword != null">
-            and (locate(#{kd.keyword}, special_commodity_name)>0
+            and special_commodity_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
 
     <!--根据Id删除特殊物品-->
     <delete id="delById">
-        delete from special_commodity where id = #{id}
+        delete from price_special_commodity where id = #{id}
     </delete>
 
     <!--更新特殊物品-->
     <update id="updSpecialCommodity">
-        update special_commodity set special_commodity_name = #{po.specialCommodityName} where id = #{po.id}
+        update price_special_commodity set special_commodity_name = #{po.specialCommodityName} where id = #{po.id}
     </update>
 
-    <!--插入特殊物品-->
+    <!--批量插入特殊物品-->
     <insert id="addSpecialCommodity">
-        insert into special_commodity(id, special_commodity_name) values (#{po.id}, #{po.specialCommodityName})
+        <foreach collection="po" close="" open="" item="row" separator=";" index="">
+            insert into price_special_commodity(id, special_commodity_name) values (#{row.id}, #{row.specialCommodityName})
+        </foreach>
+
     </insert>
 </mapper>

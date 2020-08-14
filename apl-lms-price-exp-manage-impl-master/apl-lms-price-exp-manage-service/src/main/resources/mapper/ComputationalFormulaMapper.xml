@@ -10,9 +10,6 @@
         price_computational_formula
         where
             1=1
-            <if test="key.formula != null">
-                and formula = #{key.formula}
-            </if>
             <if test="key.priceZone != null">
                 and priceZone = #{key.priceZone}
             </if>
@@ -20,19 +17,18 @@
                 and country = #{key.country}
             </if>
             <if test="key.startingWeight != null">
-                and starting_weight = #{key.startingWeight}
+                and starting_weight &lt;= #{key.startingWeight}
             </if>
             <if test="key.endingWeight != null">
-                and ending_weight = #{key.endingWeight}
+                and ending_weight >= #{key.endingWeight}
             </if>
             <if test="key.packingType != null">
                 and packing_type = #{key.packingType}
             </if>
             <if test="key.keyword != null">
-                and (locate(#{key.formula}, formula)>0
-                or (locate(#{key.priceZone}, price_zone)>0
-                or (locate(#{key.country}, country)>0
-                or (locate(#{key.packingType}, packing_type)>0
+                and price_zone LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or country LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or packing_type LIKE CONCAT( '%' , #{key.keyword} , '%' )
             </if>
     </select>
 

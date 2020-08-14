@@ -1,9 +1,10 @@
 package com.apl.lms.price.exp.manage.app.controller;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.common.query.manage.dto.*;
-import com.apl.lms.common.service.SpecialCommodityService;
-import com.apl.lms.common.service.SurchargeService;
+import com.apl.lms.price.exp.manage.service.SurchargeService;
+import com.apl.lms.price.exp.pojo.dto.SurchargeDto;
+import com.apl.lms.price.exp.pojo.dto.SurchargeInsertDto;
+import com.apl.lms.price.exp.pojo.dto.SurchargeKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -11,10 +12,12 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author hjr start
@@ -32,7 +35,7 @@ public class SurchargeController {
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取特殊物品列表" , notes = "根据关键字来查询")
     public ResultUtil<Page<SurchargeDto>> getList(PageDto pageDto ,
-                                                         @Validated SurchargeKeyDto surchargeKeyDto){
+                                                  @Validated SurchargeKeyDto surchargeKeyDto){
         return surchargeService.getList(pageDto, surchargeKeyDto);
     }
 
@@ -51,10 +54,10 @@ public class SurchargeController {
         return surchargeService.updSurcharge(surchargeDto);
     }
 
-    @PostMapping(value = "/insert")
-    @ApiOperation(value =  "新增" , notes = "新增附加费")
-    public ResultUtil<Long> insert( @Validated SurchargeInsertDto surchargeInsertDto){
+    @PostMapping(value = "/insert-batch")
+    @ApiOperation(value =  "批量新增" , notes = "批量新增附加费")
+    public ResultUtil<Integer> insertBatch(@RequestBody List<SurchargeDto> surchargeDtoList){
 
-        return surchargeService.addSurcharge(surchargeInsertDto);
+        return surchargeService.addSurcharge(surchargeDtoList);
     }
 }

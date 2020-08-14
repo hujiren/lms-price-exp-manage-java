@@ -44,7 +44,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
      */
     @Override
     public ResultUtil<Page<ComputationalFormulaVo>> getList(PageDto pageDto, ComputationalFormulaKeyDto computationalFormulaKeyDto) {
-
+        
         Page<ComputationalFormulaVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());

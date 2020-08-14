@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -39,10 +42,17 @@ public class PriceZoneController {
         return priceZoneService.getList(pageDto, priceZoneInsertKeyDto);
     }
 
+    @PostMapping(value = "/get")
+    @ApiOperation(value =  "获取快递分区详细" , notes = "查询")
+    @ApiImplicitParam(name = "id",value = "id",required = true  , paramType = "query")
+    public ResultUtil<Page<PriceZoneVo>> getList(@NotNull @Min(value = 0, message = "id不可小于0") Long id){
+
+        return priceZoneService.get(id);
+    }
+
     @PostMapping(value = "/delete")
     @ApiOperation(value =  "批量删除" , notes = "根据ids批量删除")
-    @ApiImplicitParam(name = "ids",value = "快递分区Ids",required = true  , paramType = "query")
-    public ResultUtil<Boolean> deleteBatch(@NotEmpty(message = "ids不能为空") @RequestBody List<Long> ids){
+    public ResultUtil<Boolean> deleteBatch( @RequestBody List<Long> ids){
 
         return priceZoneService.delBatchPriceZone(ids);
     }

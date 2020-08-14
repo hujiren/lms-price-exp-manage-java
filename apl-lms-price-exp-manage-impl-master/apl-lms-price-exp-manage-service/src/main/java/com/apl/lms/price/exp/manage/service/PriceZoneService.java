@@ -45,6 +45,10 @@ public interface PriceZoneService extends IService<PriceZonePo> {
      */
     ResultUtil<Long> addPriceZone(PriceZoneInsertDto priceZoneInsertDto);
 
-
-
+    /**
+     * 获取快递分区详细
+     * @param id
+     * @return
+     */
+    ResultUtil<Page<PriceZoneVo>> get(Long id);
 }

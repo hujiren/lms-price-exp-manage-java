@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("surcharge")
+@TableName("price_surcharge")
 @ApiModel(value = "附加费持久化对象", description = "附加费持久化对象")
 public class SurchargeDto {
 

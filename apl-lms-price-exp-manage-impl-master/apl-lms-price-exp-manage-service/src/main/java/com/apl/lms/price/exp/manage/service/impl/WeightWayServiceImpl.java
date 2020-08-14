@@ -4,9 +4,11 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
-import com.apl.lms.common.mapper.WeightWayMapper;
-import com.apl.lms.common.query.manage.dto.*;
-import com.apl.lms.common.service.WeightWayService;
+import com.apl.lms.price.exp.manage.mapper.WeightWayMapper;
+import com.apl.lms.price.exp.manage.service.WeightWayService;
+import com.apl.lms.price.exp.pojo.dto.WeightWayDto;
+import com.apl.lms.price.exp.pojo.dto.WeightWayInsertDto;
+import com.apl.lms.price.exp.pojo.dto.WeightWayKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -72,21 +74,22 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
     }
 
     /**
-     * 添加附加费
-     * @param weightWayInsertDto
+     * 批量添加附加费
+     * @param weightWayInsertDtoList
      * @return
      */
     @Override
-    public ResultUtil<Long> addWeightWay(WeightWayInsertDto weightWayInsertDto) {
+    public ResultUtil<Integer> addWeightWay(List<WeightWayInsertDto> weightWayInsertDtoList) {
 
-        WeightWayDto weightWayDto = new WeightWayDto();
-        BeanUtils.copyProperties(weightWayInsertDto, weightWayDto);
-        weightWayDto.setId(SnowflakeIdWorker.generateId());
+        for (WeightWayInsertDto weightWayDto : weightWayInsertDtoList) {
 
-        Integer integer = baseMapper.addWeightWay(weightWayDto);
+            weightWayDto.setId(SnowflakeIdWorker.generateId());
+        }
+
+        Integer integer = baseMapper.addWeightWay(weightWayInsertDtoList);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, weightWayDto.getId());
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
     }
 }

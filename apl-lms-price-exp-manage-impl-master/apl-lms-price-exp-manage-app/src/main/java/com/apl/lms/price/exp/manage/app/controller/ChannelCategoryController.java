@@ -2,7 +2,6 @@ package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryInsertDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
@@ -17,8 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.sql.DataSource;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -38,11 +35,7 @@ public class  ChannelCategoryController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取渠道类型列表" , notes = "根据关键字来查询")
-<<<<<<< HEAD
     public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto , ChannelCateGoryKeyDto channelCateGoryKeyDto){
-=======
-    public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto , @Validated ChannelCateGoryKeyDto channelCateGoryKeyDto){
->>>>>>> 9324ee530aa72dfdf6d4c73774c7f395b1e2ba9b
 
         return channelCategoryService.getList(pageDto, channelCateGoryKeyDto);
     }
@@ -64,14 +57,9 @@ public class  ChannelCategoryController {
 
     @PostMapping(value = "/insert")
     @ApiOperation(value =  "新增渠道类型" , notes = "新增渠道类型")
-<<<<<<< HEAD
-    public ResultUtil<Long> insert( @Validated ChannelCateGoryInsertDto channelCateGoryInsertDto){
-=======
-    public ResultUtil<Long> insert(@Validated ChannelCateGoryDto channelCateGoryDto){
->>>>>>> 9324ee530aa72dfdf6d4c73774c7f395b1e2ba9b
+    public ResultUtil<String> insert( @Validated ChannelCateGoryInsertDto channelCateGoryInsertDto){
 
         return channelCategoryService.addChannelCategory(channelCateGoryInsertDto);
     }
-
 
 }

@@ -100,7 +100,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      * @return
      */
     @Override
-    public ResultUtil<Long> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto) {
+    public ResultUtil<String> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto) {
 
         ChannelCateGoryPo channelCateGoryPo = new ChannelCateGoryPo();
         BeanUtils.copyProperties(channelCateGoryInsertDto, channelCateGoryPo);
@@ -110,7 +110,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, channelCateGoryPo.getId());
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, channelCateGoryPo.getId().toString());
     }
 
 

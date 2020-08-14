@@ -13,9 +13,6 @@ import lombok.Data;
 @ApiModel(value="计算公式  查询对象", description="计算公式 查询对象")
 public class ComputationalFormulaKeyDto extends Model<ComputationalFormulaKeyDto> {
 
-    @ApiModelProperty(name = "formula" , value = "公式")
-    private String formula;
-
     @ApiModelProperty(name = "priceZone" , value = "分区")
     private String priceZone;
 
@@ -41,12 +38,6 @@ public class ComputationalFormulaKeyDto extends Model<ComputationalFormulaKeyDto
         return keyword;
     }
 
-    public String getFormula() {
-        if (formula != null && formula.trim().equals(""))
-            formula = null;
-
-        return formula;
-    }
 
     public String getPriceZone() {
         if (priceZone != null && priceZone.trim().equals(""))

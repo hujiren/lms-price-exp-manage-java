@@ -26,7 +26,10 @@ public interface FuelChargeMapper extends BaseMapper<FuelChargePo> {
      * @param page
      * @return
      */
-    List<FuelChargeVo> getList(Page<FuelChargeVo> page, @Param("key") FuelChargeKeyDto expListKeyDt, @Param("startTimes") Timestamp startTimes, @Param("endTimes") Timestamp endTimes);
+    List<FuelChargeVo> getList(Page<FuelChargeVo> page,
+                               @Param("key") FuelChargeKeyDto expListKeyDt,
+                               @Param("startTimes") Timestamp startTimes,
+                               @Param("endTimes") Timestamp endTimes);
 
     /**
      * 根据Id删除燃油费

@@ -48,8 +48,8 @@ public class ChannelCateGoryDto extends Model<ChannelCateGoryDto> {
     @NotNull(message = "运件类型不能为空")
     private Integer cargoType;
 
-    @ApiModelProperty(name = "volumeWeighCardinal" , value = "体积基数" , required = true)
+    @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积基数" , required = true)
     @Range(min = 1, message = "体重基数不能小于1")
     @NotNull(message = "体积基数不能为空")
-    private Integer volumeWeighCardinal;
+    private Integer volumeWeightCardinal;
 }

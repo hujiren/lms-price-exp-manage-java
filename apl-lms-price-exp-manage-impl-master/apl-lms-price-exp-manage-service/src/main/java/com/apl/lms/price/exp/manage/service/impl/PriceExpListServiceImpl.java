@@ -101,7 +101,7 @@ public class PriceExpListServiceImpl extends ServiceImpl<PriceExpListMapper, Pri
         priceExpListPo.setVolumeWeightCardinal(priceExpListDto.getVolumeWeightCardinal());
         priceExpListPo.setZoneTabId(priceExpListDto.getZoneTabId());
         priceExpListPo.setCustomerGroupsName(priceExpListDto.getCustomerGroupsName());
-        priceExpListPo.setCustomerIdsName(priceExpListDto.getCustomerIdsName());
+        priceExpListPo.setCustomerName(priceExpListDto.getCustomerName());
 
         priceExpListPo.setSpecialCommodity(priceExpListDto.getSpecialCommodity());
 
@@ -155,7 +155,7 @@ public class PriceExpListServiceImpl extends ServiceImpl<PriceExpListMapper, Pri
         priceExpListPo.setVolumeWeightCardinal(priceExpListInsertDto.getVolumeWeightCardinal());
         priceExpListPo.setZoneTabId(priceExpListInsertDto.getZoneTabId());
         priceExpListPo.setCustomerGroupsName(priceExpListInsertDto.getCustomerGroupsName());
-        priceExpListPo.setCustomerIdsName(priceExpListInsertDto.getCustomerIdsName());
+        priceExpListPo.setCustomerName(priceExpListInsertDto.getCustomerName());
 
         priceExpListPo.setSpecialCommodity(priceExpListInsertDto.getSpecialCommodity());
 

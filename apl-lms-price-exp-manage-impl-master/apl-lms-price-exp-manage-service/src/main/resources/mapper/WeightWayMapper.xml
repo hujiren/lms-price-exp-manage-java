@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.apl.lms.common.mapper.WeightWayMapper">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.WeightWayMapper">
 
     <!-- 查找计泡方式列表-->
-    <select id="getList" resultType="com.apl.lms.common.query.manage.dto.WeightWayDto">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.WeightWayDto">
         SELECT
             id,
             weight_way_name,
             computing_formula
         FROM
-            weight_way
+            price_weight_way
         where
             1=1
         <if test="key.keyword != null">
-            and (locate(#{kd.keyword}, weight_way_name)>0
+            and weight_way_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
 
     <!--根据Id删除附加费-->
     <delete id="delById">
-        delete from weight_way where id = #{id}
+        delete from price_weight_way where id = #{id}
     </delete>
 
     <!--更新附加费-->
     <update id="updWeightWay">
-        update weight_way set weight_way_name = #{po.weightWayName}, computing_formula = #{po.computingFormula} where id = #{po.id}
+        update price_weight_way set weight_way_name = #{po.weightWayName}, computing_formula = #{po.computingFormula} where id = #{po.id}
     </update>
 
-    <!--插入附加费-->
+    <!--批量插入附加费-->
     <insert id="addWeightWay">
-        insert into weight_way (id, weight_way_name, computing_formula) values (#{po.id}, #{po.weightWayName}, #{po.computingFormula})
+        <foreach collection="po" close="" open="" item="row" separator=";" index="">
+            insert into price_weight_way (id, weight_way_name, computing_formula) values (#{row.id}, #{row.weightWayName}, #{row.computingFormula})
+        </foreach>
+
     </insert>
 </mapper>

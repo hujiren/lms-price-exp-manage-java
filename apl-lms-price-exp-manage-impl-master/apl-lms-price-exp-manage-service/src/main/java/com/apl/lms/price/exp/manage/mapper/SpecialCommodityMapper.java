@@ -1,7 +1,10 @@
 package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.dto.SpecialCommodityDto;
+import com.apl.lms.price.exp.pojo.dto.SpecialCommodityInsertDto;
 import com.apl.lms.price.exp.pojo.dto.SpecialCommodityKeyDto;
+import com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -27,7 +30,7 @@ public interface SpecialCommodityMapper extends BaseMapper<SpecialCommodityDto> 
      * @Author:
      * @Date: 2020-08-08
      */
-    List<SpecialCommodityDto> getList(Page page, @Param("key") SpecialCommodityKeyDto specialCommodityKeyDto);
+    List<SpecialCommodityVo> getList(Page page, @Param("key") SpecialCommodityKeyDto specialCommodityKeyDto);
 
     /**
      * 根据Id删除特殊物品
@@ -44,9 +47,9 @@ public interface SpecialCommodityMapper extends BaseMapper<SpecialCommodityDto> 
     Integer updSpecialCommodity(@Param("po") SpecialCommodityDto specialCommodityDto);
 
     /**
-     * 插入特殊物品
-     * @param specialCommodityDto
+     * 批量插入特殊物品
+     * @param specialCommodityInsertDtoList
      * @return
      */
-    Integer addSpecialCommodity(@Param("po") SpecialCommodityDto specialCommodityDto);
+    Integer addSpecialCommodity(@Param("po") List<SpecialCommodityInsertDto> specialCommodityInsertDtoList);
 }

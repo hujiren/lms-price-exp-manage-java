@@ -22,7 +22,7 @@ public interface PriceZoneMapper extends BaseMapper<PriceZonePo> {
      * @param page
      * @return
      */
-    List<PriceZoneVo> getList(Page<PriceZoneVo> page, @Param("key") PriceZoneInsertKeyDto priceZoneInsertKeyDto);
+    List<PriceZoneVo> getList(Page<PriceZoneVo> page, @Param("dto") PriceZoneInsertKeyDto priceZoneInsertKeyDto);
 
     /**
      * 根据Id删除快递分区
@@ -45,6 +45,10 @@ public interface PriceZoneMapper extends BaseMapper<PriceZonePo> {
      */
     Integer addPriceZone(@Param("po") PriceZonePo priceZonePo);
 
-
-
+    /**
+     * 根据id获取分区详细
+     * @param id
+     * @return
+     */
+    PriceZoneVo getById(@Param("id") Long id);
 }

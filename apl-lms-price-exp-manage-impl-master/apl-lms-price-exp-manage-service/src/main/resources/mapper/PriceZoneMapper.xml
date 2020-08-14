@@ -3,20 +3,24 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceZoneMapper">
 
     <!--分页查询快递分区列表-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneVo">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneVo" parameterType="com.apl.lms.price.exp.pojo.dto.PriceZoneInsertKeyDto">
         select
             id, channel_category, zone_name
         from
-        price_zone
+            price_zone
         where
-            1=1
-            <if test="key.keyword != null">
-                and (locate(#{key.keyword}, channel_category)>0
-            </if>
-            <if test="key.keyword != null">
+           1=1
+        <if test="dto.channelCategory != null">
+            and channel_category =  #{dto.channelCategory, jdbcType=VARCHAR}
+        </if>
+        <if test="dto.keyword != null">
+            and zone_name LIKE CONCAT( '%' , #{dto.keyword, jdbcType=VARCHAR} , '%' )
+        </if>
+    </select>
 
-                and (locate(#{key.keyword}, zone_name)>0
-            </if>
+    <!--根据Id获取分区详细-->
+    <select id="getById" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneVo">
+        select id, channel_category, zone_name from price_zone where id = #{id}
     </select>
 
     <!--根据id删除快递分区-->

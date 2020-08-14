@@ -13,11 +13,10 @@ import javax.sql.DataSource;
  * @date 2020/8/6 - 11:15
  */
 @SpringBootApplication(
-        scanBasePackages = {"com.apl.lms.price.exp.manage.service",
+        scanBasePackages = {"com.apl.lms.price.exp.manage",
                 "com.apl.db.abatis",
                 "com.apl.lib",
-                "com.apl.cache",
-                "com.apl.lms.price.exp.manage.app"})
+                "com.apl.cache"})
 @MapperScan("com.apl.lms.price.exp.manage.mapper")
 @EnableSwagger2
 public class LmsPriceExpManageApplication {

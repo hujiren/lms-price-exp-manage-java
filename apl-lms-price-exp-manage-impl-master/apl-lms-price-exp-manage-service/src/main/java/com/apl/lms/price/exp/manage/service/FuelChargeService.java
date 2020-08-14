@@ -43,7 +43,7 @@ public interface FuelChargeService extends IService<FuelChargePo> {
      * @param fuelChargeInsertDto
      * @return
      */
-    ResultUtil<Long> addFulCharge(FuelChargeInsertDto fuelChargeInsertDto);
+    ResultUtil<String> addFulCharge(FuelChargeInsertDto fuelChargeInsertDto);
 
 
 

@@ -106,7 +106,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
      * @return
      */
     @Override
-    public ResultUtil<Long> addFulCharge(FuelChargeInsertDto fuelChargeInsertDto) {
+    public ResultUtil<String> addFulCharge(FuelChargeInsertDto fuelChargeInsertDto) {
 
         FuelChargePo fuelChargePo = new FuelChargePo();
         fuelChargePo.setEndDate(new Timestamp(fuelChargeInsertDto.getEndDate()));
@@ -118,6 +118,6 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, fuelChargePo.getId());
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, fuelChargePo.getId().toString());
     }
 }

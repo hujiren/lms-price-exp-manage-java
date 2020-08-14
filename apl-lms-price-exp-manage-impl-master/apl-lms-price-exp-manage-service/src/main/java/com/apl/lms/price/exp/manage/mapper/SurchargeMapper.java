@@ -1,7 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.common.query.manage.dto.SurchargeDto;
-import com.apl.lms.common.query.manage.dto.SurchargeKeyDto;
+import com.apl.lms.price.exp.pojo.dto.SurchargeDto;
+import com.apl.lms.price.exp.pojo.dto.SurchargeKeyDto;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -44,11 +44,11 @@ public interface SurchargeMapper extends BaseMapper<SurchargeDto> {
     Integer updSurcharge(@Param("po") SurchargeDto surchargeDto);
 
     /**
-     * 新增附加费
-     * @param surchargeDto
+     * 批量新增附加费
+     * @param surchargeDtoList
      * @return
      */
-    Integer addSurcharge(@Param("po") SurchargeDto surchargeDto);
+    Integer addSurcharge(@Param("po") List<SurchargeDto> surchargeDtoList);
 
 
 

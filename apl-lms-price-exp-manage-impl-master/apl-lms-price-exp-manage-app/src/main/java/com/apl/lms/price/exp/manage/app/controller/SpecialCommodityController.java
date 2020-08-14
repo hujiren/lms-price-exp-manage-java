@@ -1,20 +1,25 @@
 package com.apl.lms.price.exp.manage.app.controller;
 import com.apl.lib.pojo.dto.PageDto;
+import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
-import com.apl.lms.common.query.manage.dto.SpecialCommodityInsertDto;
-import com.apl.lms.common.query.manage.dto.SpecialCommodityKeyDto;
-import com.apl.lms.common.service.SpecialCommodityService;
+import com.apl.lms.price.exp.manage.service.SpecialCommodityService;
+import com.apl.lms.price.exp.pojo.dto.SpecialCommodityDto;
+import com.apl.lms.price.exp.pojo.dto.SpecialCommodityInsertDto;
+import com.apl.lms.price.exp.pojo.dto.SpecialCommodityKeyDto;
+import com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author hjr start
@@ -31,8 +36,8 @@ public class SpecialCommodityController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取特殊物品列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<SpecialCommodityDto>> getList(PageDto pageDto ,
-                                                         @Validated SpecialCommodityKeyDto specialCommodityKeyDto){
+    public ResultUtil<Page<SpecialCommodityVo>> getList(PageDto pageDto ,
+                                                        @Validated SpecialCommodityKeyDto specialCommodityKeyDto){
         return specialCommodityService.getList(pageDto, specialCommodityKeyDto);
     }
 
@@ -51,10 +56,10 @@ public class SpecialCommodityController {
         return specialCommodityService.updSpecialCommodity(specialCommodityDto);
     }
 
-    @PostMapping(value = "/insert")
-    @ApiOperation(value =  "新增" , notes = "新增特殊物品")
-    public ResultUtil<Long> insert( @Validated SpecialCommodityInsertDto specialCommodityInsertDto){
+    @PostMapping(value = "/insert-batch")
+    @ApiOperation(value =  "批量新增" , notes = "批量新增特殊物品")
+    public ResultUtil<Integer> insertBatch( @RequestBody List<SpecialCommodityInsertDto> specialCommodityInsertDtoList){
 
-        return specialCommodityService.addSpecialCommodity(specialCommodityInsertDto);
+        return specialCommodityService.addSpecialCommodity(specialCommodityInsertDtoList);
     }
 }

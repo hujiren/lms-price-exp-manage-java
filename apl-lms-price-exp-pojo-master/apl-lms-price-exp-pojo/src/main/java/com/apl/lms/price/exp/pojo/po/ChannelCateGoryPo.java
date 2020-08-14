@@ -38,6 +38,6 @@ public class ChannelCateGoryPo extends Model<ChannelCateGoryPo> {
     @ApiModelProperty(name = "cargoType" , value = "运件类型" , required = true)
     private Integer cargoType;
 
-    @ApiModelProperty(name = "volumeWeighCardinal" , value = "体积基数" , required = true)
-    private Integer volumeWeighCardinal;
+    @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积基数" , required = true)
+    private Integer volumeWeightCardinal;
 }

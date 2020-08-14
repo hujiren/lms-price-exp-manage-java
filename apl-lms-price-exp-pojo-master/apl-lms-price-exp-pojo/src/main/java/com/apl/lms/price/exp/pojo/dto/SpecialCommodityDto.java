@@ -17,14 +17,11 @@ import javax.validation.constraints.NotNull;
  * @date 2020/8/8 - 9:17
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("special_commodity")
 @ApiModel(value = "特殊物品持久化对象", description = "特殊物品持久化对象")
 public class SpecialCommodityDto {
 
     @ApiModelProperty(name = "id", value = "特殊物品id", required = true)
     @TableId(value = "id", type = IdType.INPUT)
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @NotNull(message = "特殊物品Id不能为空")
     private Long id;
 

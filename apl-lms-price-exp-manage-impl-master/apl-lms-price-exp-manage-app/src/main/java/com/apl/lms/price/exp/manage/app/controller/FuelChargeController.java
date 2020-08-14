@@ -56,7 +56,7 @@ public class FuelChargeController {
 
     @PostMapping(value = "/insert")
     @ApiOperation(value =  "新增燃油费" , notes = "新增燃油费")
-    public ResultUtil<Long> insert( @Validated FuelChargeInsertDto fuelChargeInsertDto){
+    public ResultUtil<String> insert( @Validated FuelChargeInsertDto fuelChargeInsertDto){
 
         return fuelChargeService.addFulCharge(fuelChargeInsertDto);
     }

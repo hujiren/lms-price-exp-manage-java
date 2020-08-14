@@ -43,7 +43,7 @@ public interface ChannelCategoryService extends IService<ChannelCateGoryPo> {
      * @param channelCateGoryInsertDto
      * @return
      */
-    ResultUtil<Long> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto);
+    ResultUtil<String> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto);
 
 
 

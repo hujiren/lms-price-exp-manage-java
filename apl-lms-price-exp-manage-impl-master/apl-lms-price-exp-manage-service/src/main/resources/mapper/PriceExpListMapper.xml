@@ -36,9 +36,9 @@
                 and customer_groups_name = ${key.customerGroupsName}
             </if>
             <if test="key.keyWord != null">
-                and (locate(${kd.keyword}, price_code)>0
-                or (locate(${kd.keyword}, price_name)>0
-                or (locate(${kd.keyword}, sale_name)>0
+                and LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
             </if>
 
     </select>
@@ -62,7 +62,7 @@
             customer_groups_id = #{po.customerGroupsId, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
             customer_ids = #{po.customerIds, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
             forwarder_id = #{po.forwarderId},
-            customer_groups_name = #{po.customerGroupsName}, customer_ids_name = #{po.customerIdsName},
+            customer_groups_name = #{po.customerGroupsName}, customer_ids_name = #{po.customerName},
             price_status = #{po.priceStatus}, aging = #{po.aging},
             special_commodity = #{po.specialCommodity, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
             sale_remark = #{po.saleRemark},
@@ -87,7 +87,7 @@
             #{po.saleRemark},#{po.forwarderRemark},
             #{po.quotePriceId}, #{po.quotePriceFinalId},  #{po.priceForm},
             #{po.customerGroupsId, typeHandler=com.apl.lms.price.exp.manage.JsonTypeHandlerPg},
-            #{po.customerGroupsName}, #{po.customerIdsName})
+            #{po.customerGroupsName}, #{po.customerName})
     </insert>
 
 </mapper>

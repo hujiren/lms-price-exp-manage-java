@@ -80,9 +80,9 @@ public class PriceExpListInsertDto extends Model<PriceExpListInsertDto> {
 //    @NotEmpty(message = "客户ids不能为空")
     private List<Long> customerIds;
 
-    @ApiModelProperty(name = "customerIdsName" , value = "客户ids名称")
-//    @NotEmpty(message = "客户ids名称不能为空")
-    private String customerIdsName;
+    @ApiModelProperty(name = "customerName" , value = "客户名称")
+//    @NotEmpty(message = "客户名称不能为空")
+    private String customerName;
 
     @ApiModelProperty(name = "forwarderId" , value = "货代id")
     @JsonFormat(shape = JsonFormat.Shape.STRING)

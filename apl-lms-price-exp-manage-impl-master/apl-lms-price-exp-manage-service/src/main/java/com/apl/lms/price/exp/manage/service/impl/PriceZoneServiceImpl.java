@@ -56,6 +56,22 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
     }
 
     /**
+     * 获取详细
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<Page<PriceZoneVo>> get(Long id) {
+
+        PriceZoneVo priceZoneVo =  baseMapper.getById(id);
+        if(priceZoneVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneVo);
+    }
+
+    /**
      * 根据id删除燃油费
      * @param ids
      * @return

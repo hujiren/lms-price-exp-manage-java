@@ -51,4 +51,5 @@ public class PriceExpListVo extends Model<PriceExpListVo> {
     @ApiModelProperty(name = "aging" , value = "时效" , required = true)
     private String aging;
 
+
 }

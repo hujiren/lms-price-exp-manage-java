@@ -65,8 +65,8 @@ public class PriceExpInfoVo extends Model<PriceExpInfoVo> {
     @ApiModelProperty(name = "customerIds" , value = "客户ids" , required = true)
     private List<String> customerIds;
 
-    @ApiModelProperty(name = "customerIdsName" , value = "客户ids名称" , required = true)
-    private String customerIdsName;
+    @ApiModelProperty(name = "customerName" , value = "客户名称" , required = true)
+    private String customerName;
 
     @ApiModelProperty(name = "forWarderId" , value = "货代id" , required = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING)

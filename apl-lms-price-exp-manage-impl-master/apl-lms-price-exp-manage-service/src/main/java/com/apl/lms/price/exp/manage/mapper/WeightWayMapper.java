@@ -1,6 +1,8 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.common.query.manage.dto.*;
+import com.apl.lms.price.exp.pojo.dto.WeightWayDto;
+import com.apl.lms.price.exp.pojo.dto.WeightWayInsertDto;
+import com.apl.lms.price.exp.pojo.dto.WeightWayKeyDto;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -43,11 +45,11 @@ public interface WeightWayMapper extends BaseMapper<WeightWayDto> {
     Integer updWeightWay(@Param("po") WeightWayDto weightWayDto);
 
     /**
-     * 新增计泡方式
-     * @param weightWayDto
+     * 批量新增计泡方式
+     * @param weightWayInsertDtoList
      * @return
      */
-    Integer addWeightWay(@Param("po") WeightWayDto weightWayDto);
+    Integer addWeightWay(@Param("po") List<WeightWayInsertDto> weightWayInsertDtoList);
 
 
 
