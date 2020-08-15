@@ -48,9 +48,9 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
         Page<PriceZoneVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
-
+        if(priceZoneInsertKeyDto.getChannelCategory() != null)
+        priceZoneInsertKeyDto.setChannelCategory(priceZoneInsertKeyDto.getChannelCategory().toUpperCase());
         List<PriceZoneVo> priceZoneVoList = baseMapper.getList(page, priceZoneInsertKeyDto);
-
         page.setRecords(priceZoneVoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }

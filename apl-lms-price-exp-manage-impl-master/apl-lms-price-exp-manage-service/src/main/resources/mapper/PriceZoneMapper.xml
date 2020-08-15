@@ -11,10 +11,10 @@
         where
            1=1
         <if test="dto.channelCategory != null">
-            and channel_category =  #{dto.channelCategory, jdbcType=VARCHAR}
+            and channel_category =  #{dto.channelCategory}
         </if>
         <if test="dto.keyword != null">
-            and zone_name LIKE CONCAT( '%' , #{dto.keyword, jdbcType=VARCHAR} , '%' )
+            and zone_name LIKE CONCAT( '%' , #{dto.keyword} , '%' )
         </if>
     </select>
 
