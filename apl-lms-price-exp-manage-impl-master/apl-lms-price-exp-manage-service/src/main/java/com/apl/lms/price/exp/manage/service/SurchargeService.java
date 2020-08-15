@@ -46,6 +46,6 @@ public interface SurchargeService extends IService<SurchargeDto> {
          * @author hjr
          * @since 2020-08-08
          */
-        ResultUtil<Integer> addSurcharge(List<SurchargeDto> surchargeDtoList);
+        ResultUtil<Integer> addSurcharge(List<SurchargeInsertDto> surchargeInsertDtoList);
 
 }

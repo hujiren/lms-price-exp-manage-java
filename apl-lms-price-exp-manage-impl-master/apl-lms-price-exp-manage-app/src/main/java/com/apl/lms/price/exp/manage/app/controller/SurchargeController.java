@@ -56,8 +56,8 @@ public class SurchargeController {
 
     @PostMapping(value = "/insert-batch")
     @ApiOperation(value =  "批量新增" , notes = "批量新增附加费")
-    public ResultUtil<Integer> insertBatch(@RequestBody List<SurchargeDto> surchargeDtoList){
+    public ResultUtil<Integer> insertBatch(@RequestBody List<SurchargeInsertDto> surchargeInsertDtoList){
 
-        return surchargeService.addSurcharge(surchargeDtoList);
+        return surchargeService.addSurcharge(surchargeInsertDtoList);
     }
 }

@@ -75,18 +75,18 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
 
     /**
      * 添加附加费
-     * @param surchargeDtoList
+     * @param surchargeInsertDtoList
      * @return
      */
     @Override
-    public ResultUtil<Integer> addSurcharge(List<SurchargeDto> surchargeDtoList) {
+    public ResultUtil<Integer> addSurcharge(List<SurchargeInsertDto> surchargeInsertDtoList) {
 
-        for (SurchargeDto surchargeDto : surchargeDtoList) {
+        for (SurchargeInsertDto surchargeDtoList : surchargeInsertDtoList) {
 
-            surchargeDto.setId(SnowflakeIdWorker.generateId());
+            surchargeDtoList.setId(SnowflakeIdWorker.generateId());
         }
 
-        Integer integer = baseMapper.addSurcharge(surchargeDtoList);
+        Integer integer = baseMapper.addSurcharge(surchargeInsertDtoList);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }

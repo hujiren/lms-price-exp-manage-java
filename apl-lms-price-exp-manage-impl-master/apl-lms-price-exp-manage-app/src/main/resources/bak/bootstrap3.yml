@@ -7,6 +7,7 @@ spring:
 
   shardingsphere:
     datasource:
+      names2: pricezone
       names: pricezone, pricebase, explist
 
       pricezone:
@@ -35,7 +36,7 @@ spring:
         price_zone:
           actual-data-nodes: pricezone.price_zone
 
-        price_channel_category:
+        price_channel_categor:
           actual-data-nodes: pricebase.price_channel_category
 
         price_fuel_charge:
@@ -76,15 +77,15 @@ spring:
 
 logging:
   level:
-    com.apl.lms.price.exp.manage.mapper: debug
+    com.apl.lms.price.exp.manage.mapper: debug #trace
 
 apl:
   swagger:
     title: LMS-快递价格管理
     description: LMS-快递价格管理
     basePackage: com.apl.lms.price.exp.manage.app.controller
-    sysProduct: pms
-    subSysCode: apl_lms_price_exp_list
+  sysProduct: pms
+  subSysCode: apl_lms_price_exp_list
 
 mybatis-plus:
   mapper-locations: file:apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-service/src/main/resources/mapper/*.xml

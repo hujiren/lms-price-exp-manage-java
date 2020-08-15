@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage;
+package com.apl.lms.price.exp.manage.mybatisTypeHandler;
 
 import com.apl.lms.price.exp.pojo.po.PriceExpListPo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -8,9 +8,7 @@ import lombok.SneakyThrows;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.postgresql.util.PGobject;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,13 +19,13 @@ import java.sql.SQLException;
  * @date 2020/6/11 - 10:10
  */
 @Component
-public class JsonTypeHandlerPg extends BaseTypeHandler<Object> {
+public class PriceExpListTypeHandler extends BaseTypeHandler<PriceExpListPo> {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final PGobject PGOBJECT = new PGobject();
     @SneakyThrows
     @Override
-    public Object getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public PriceExpListPo getNullableResult(ResultSet rs, String columnName) throws SQLException {
 
         String data = rs.getString(columnName);
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);//忽略未知属性
@@ -39,7 +37,7 @@ public class JsonTypeHandlerPg extends BaseTypeHandler<Object> {
     }
 
     @Override
-    public void setNonNullParameter(PreparedStatement preparedStatement, int i, Object o, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement preparedStatement, int i, PriceExpListPo o, JdbcType jdbcType) throws SQLException {
 
         if (preparedStatement != null) {
 
@@ -50,12 +48,12 @@ public class JsonTypeHandlerPg extends BaseTypeHandler<Object> {
     }
 
     @Override
-    public Object getNullableResult(ResultSet resultSet, int i) throws SQLException {
+    public PriceExpListPo getNullableResult(ResultSet resultSet, int i) throws SQLException {
         return null;
     }
 
     @Override
-    public Object getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
+    public PriceExpListPo getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
         return null;
     }
 
