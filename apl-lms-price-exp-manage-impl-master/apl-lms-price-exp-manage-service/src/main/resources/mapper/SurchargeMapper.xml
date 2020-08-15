@@ -31,7 +31,7 @@
     <!--批量插入附加费-->
     <insert id="addSurcharge">
 
-        <foreach collection="po" index="" separator=";" item="row" open="(" close=")">
+        <foreach collection="po" index="" separator=";" item="row" open="" close="">
             insert into price_surcharge(id, charge_name, computing_formula, currency) values (#{row.id}, #{row.chargeName}, #{row.computingFormula}, #{row.currency})
         </foreach>
 

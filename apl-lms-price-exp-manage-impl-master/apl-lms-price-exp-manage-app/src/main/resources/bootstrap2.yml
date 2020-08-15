@@ -1,0 +1,85 @@
+server:
+  port: 9250
+
+spring:
+  #redis 相关配置
+  redis:
+    database: 1
+    host: 192.168.1.185
+    port: 6379
+    password: 123456
+    timeout: 60
+    lettuce:
+      pool:
+        max-idle: 30
+        max-active: 8
+        max-wait: 10000
+        min-idle: 10
+
+  main:
+    allow-bean-definition-overriding: true
+
+
+dataSources:
+  pricezone: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.1.185:5432/apl_lms_price_zone?characterEncoding=utf-8
+    username: postgres
+    password: 123456
+
+  pricebase: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.1.185:5432/apl_lms_price_base?characterEncoding=utf-8
+    username: postgres
+    password: 123456
+
+  explist: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.1.185:5432/apl_lms_price_exp_list?characterEncoding=utf-8
+    username: postgres
+    password: 123456
+
+shardingRule:
+  tables:
+    price_channel_categor:
+      actualDataNodes: pricebase.price_channel_category
+
+    price_fuel_charge:
+      actualDataNodes: pricebase.price_fuel_charge
+
+    price_special_commodity:
+      actualDataNodes: pricebase.price_special_commodity
+
+    price_surcharge:
+      actualDataNodes: pricebase.price_surcharge
+
+    price_weight_way:
+      actualDataNodes: pricebase.price_weight_way
+
+    price_computational_formula:
+      actualDataNodes: explist.price_computational_formula
+
+    price_exp_list:
+      actualDataNodes: explist.price_exp_list
+
+    price_zone:
+      actualDataNodes: pricezone.price_zone
+
+
+
+logging:
+  level:
+    com.apl.lms.price.exp.manage.mapper: debug #trace
+
+apl:
+  swagger:
+    title: LMS-快递价格管理
+    description: LMS-快递价格管理
+    basePackage: com.apl.lms.price.exp.manage.app.controller
+  sysProduct: pms
+  subSysCode: apl_lms_price_exp_list
+
+mybatis-plus:
+  mapper-locations: file:apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-service/src/main/resources/mapper/*.xml
+  pagination:
+    dialectType: postgresql
