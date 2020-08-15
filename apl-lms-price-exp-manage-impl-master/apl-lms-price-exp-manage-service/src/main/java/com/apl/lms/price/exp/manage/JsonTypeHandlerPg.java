@@ -33,12 +33,7 @@ public class JsonTypeHandlerPg extends BaseTypeHandler<Object> {
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);//忽略未知属性
         MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);//驼峰映射
 
-<<<<<<< HEAD:apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-service/src/main/java/com/apl/lms/price/exp/manage/utils/JsonTypeHandlerPg.java
-        ExpListPo expListPo = MAPPER.readValue(data, ExpListPo.class);
-        //
-=======
         PriceExpListPo pgData = MAPPER.readValue(data, PriceExpListPo.class);
->>>>>>> origin/master:apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-service/src/main/java/com/apl/lms/price/exp/manage/JsonTypeHandlerPg.java
 
         return pgData;
     }

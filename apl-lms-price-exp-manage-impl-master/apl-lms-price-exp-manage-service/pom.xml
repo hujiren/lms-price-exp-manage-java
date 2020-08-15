@@ -28,12 +28,6 @@
             <version>1.0.0</version>
         </dependency>
 
-        <!--<dependency>
-           <groupId>com.alibaba</groupId>
-           <artifactId>druid-spring-boot-starter</artifactId>
-           <version>1.1.18</version>
-       </dependency>-->
-
         <dependency>
             <groupId>com.apl</groupId>
             <artifactId>apl-lms-price-exp-pojo</artifactId>
@@ -44,6 +38,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.14</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+            <version>4.0.0-RC1</version>
         </dependency>
 
     </dependencies>
