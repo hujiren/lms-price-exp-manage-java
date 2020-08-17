@@ -47,13 +47,13 @@ spring:
     sharding:
       tables:
         price_exp_list:
-          actual-data-nodes: explist.price_exp_list
-          #actual-data-nodes: explist$->{0..1}.price_exp_list
-          #database-strategy:
-          #  standard:
-          #    sharding-column: id
-          #    precise-algorithm-class-name: com.apl.lms.price.exp.manage.sharding.PriceExpListDbPreciseShardingAlgorithm
-          #    range-algorithm-class-name: com.apl.lms.price.exp.manage.sharding.PriceExpListDbRangeShardingAlgorithm
+          #actual-data-nodes: explist.price_exp_list
+          actual-data-nodes: explist$->{0..1}.price_exp_list
+          database-strategy:
+            standard:
+              sharding-column: id
+              precise-algorithm-class-name: com.apl.lms.price.exp.manage.sharding.PriceExpListDbPreciseShardingAlgorithm
+              range-algorithm-class-name: com.apl.lms.price.exp.manage.sharding.PriceExpListDbRangeShardingAlgorithm
 
         price_computational_formula:
           actual-data-nodes: explist.price_computational_formula
