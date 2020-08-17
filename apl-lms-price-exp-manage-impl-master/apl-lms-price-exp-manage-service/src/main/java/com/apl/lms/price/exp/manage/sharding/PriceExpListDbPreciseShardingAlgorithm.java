@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 @Component
-public class PriceZoneDbPreciseShardingAlgorithm implements PreciseShardingAlgorithm<Long> {
+public class PriceExpListDbPreciseShardingAlgorithm implements PreciseShardingAlgorithm<Long> {
 
     /**
      *
@@ -19,11 +19,11 @@ public class PriceZoneDbPreciseShardingAlgorithm implements PreciseShardingAlgor
     public String doSharding(Collection<String> collection, PreciseShardingValue<Long> preciseShardingValue) {
 
         // 分片字段值
-        Long value = preciseShardingValue.getValue();
+        //Long value = preciseShardingValue.getValue();
 
-        Long n = value % 2 + 1;
+        //Long n = value % 2 + 1;
 
-        return "pricezone"+n;
+        return "explist";
         //throw new UnsupportedOperationException();
     }
 

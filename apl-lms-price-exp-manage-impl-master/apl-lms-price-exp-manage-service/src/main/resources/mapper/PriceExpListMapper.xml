@@ -11,7 +11,8 @@
         from
             price_exp_list
         where
-            1=1
+            id&gt;=2 and id&lt;=10
+            <!--1=1
             <if test="key.channelCategory != null">
                 and channel_category = ${key.channelCategory}
             </if>
@@ -40,6 +41,7 @@
                 or price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
                 or sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
             </if>
+            -->
 
     </select>
 
