@@ -34,6 +34,11 @@ spring:
       tables:
         price_zone:
           actual-data-nodes: pricezone.price_zone
+          #actual-data-nodes: pricezone$->{1..2}.price_zone
+          #database-strategy:
+          #  standard:
+          #    sharding-column: id
+          #    precise-algorithm-class-name: com.apl.lms.price.exp.manage.sharding.PriceZoneDbPreciseShardingAlgorithm
 
         price_channel_category:
           actual-data-nodes: pricebase.price_channel_category

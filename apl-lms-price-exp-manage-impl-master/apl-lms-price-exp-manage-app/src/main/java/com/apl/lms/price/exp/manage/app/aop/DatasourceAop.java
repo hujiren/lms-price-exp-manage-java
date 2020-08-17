@@ -3,6 +3,7 @@ package com.apl.lms.price.exp.manage.app.aop;
 import com.apl.cache.AplCacheUtil;
 import com.apl.db.abatis.MyBatisPlusConfig;
 import com.apl.db.datasource.DataSourceContextHolder;
+import com.apl.lib.app.MyAppContext;
 import com.apl.lib.constants.CommonAplConstants;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
@@ -29,6 +30,8 @@ public class DatasourceAop {
 
     @Around("datasourceAop()")
     public Object doInvoke(ProceedingJoinPoint pjp) throws Throwable {
+
+        //MyAppContext.dbCacheUtil = aplCacheUtil;
 
         Object proceed = null;
         try {
