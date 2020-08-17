@@ -9,7 +9,6 @@ import java.util.Collection;
 @Component
 public class PriceZoneDbPreciseShardingAlgorithm implements PreciseShardingAlgorithm<Long> {
 
-
     /**
      *
      * @param collection  库名集合
@@ -21,7 +20,6 @@ public class PriceZoneDbPreciseShardingAlgorithm implements PreciseShardingAlgor
 
         // 分片字段值
         Long value = preciseShardingValue.getValue();
-
 
         Long n = value % 2 + 1;
 
