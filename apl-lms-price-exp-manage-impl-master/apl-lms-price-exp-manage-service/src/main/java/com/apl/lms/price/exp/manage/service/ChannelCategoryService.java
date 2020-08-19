@@ -45,6 +45,10 @@ public interface ChannelCategoryService extends IService<ChannelCateGoryPo> {
      */
     ResultUtil<String> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto);
 
-
-
+    /**
+     * 获取渠道类型详细
+     * @param id
+     * @return
+     */
+    ResultUtil<ChannelCateGoryVo> getChannelCategory(Long id);
 }

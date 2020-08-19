@@ -34,16 +34,14 @@ public class PriceExpListDto extends Model<PriceExpListDto> {
     @NotBlank(message = "价格表名称不能为空")
     private String priceName;
 
-    @ApiModelProperty(name = "saleName" , value = "销售名称")
-//    @NotBlank(message = "销售名称不能为空")
+    @ApiModelProperty(name = "saleName" , value = "销售名称", required = true)
+    @NotBlank(message = "销售名称名称不能为空")
     private String saleName;
 
-    @ApiModelProperty(name = "startDate" , value = "起始日期")
-//    @NotNull(message = "起始日期不能为空")
+    @ApiModelProperty(name = "startDate" , value = "起始日期", required = true)
     private Long startDate;
 
-    @ApiModelProperty(name = "endDate" , value = "截止日期")
-//    @NotNull(message = "截止日期不能为空")
+    @ApiModelProperty(name = "endDate" , value = "截止日期", required = true)
     private Long endDate;
 
     @ApiModelProperty(name = "currency" , value = "币制" , required = true)
@@ -54,22 +52,19 @@ public class PriceExpListDto extends Model<PriceExpListDto> {
     @NotBlank(message = "渠道类型不能为空")
     private String channelCategory;
 
-    @ApiModelProperty(name = "zoneTabId" , value = "分区表Id")
+    @ApiModelProperty(name = "zoneTabId" , value = "分区表Id", required = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-//    @NotNull(message = "分区表Id类型不能为空")
     private Long zoneTabId;
 
     @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积重基数" , required = true)
     @NotNull(message = "体积重基数不能为空")
     private Integer volumeWeightCardinal;
 
-    @ApiModelProperty(name = "accountType" , value = "账号类型 1代理账号 2贸易账号 3第三方账号")
+    @ApiModelProperty(name = "accountType" , value = "账号类型 1代理账号 2贸易账号 3第三方账号", required = true)
     @TypeValidator(value = {"0","1","2","3"} , message = "账号类型错误")
-//    @NotNull(message = "账号类型账号类型不能为空")
     private Integer accountType;
 
-    @ApiModelProperty(name = "accountNo" , value = "快递账号")
-//    @NotBlank(message = "快递账号不能为空")
+    @ApiModelProperty(name = "accountNo" , value = "快递账号", required = true)
     private String accountNo;
 
     @ApiModelProperty(name = "customerGroupsId" , value = "客户组id" , required = true)
@@ -80,15 +75,15 @@ public class PriceExpListDto extends Model<PriceExpListDto> {
     @NotEmpty(message = "客户组不能为空")
     private String customerGroupsName;
 
-    @ApiModelProperty(name = "customerIds" , value = "客户ids")
-//    @NotEmpty(message = "客户ids不能为空")
+    @ApiModelProperty(name = "customerIds" , value = "客户ids", required = true)
+    @NotEmpty(message = "客户ids不能为空")
     private List<Long> customerIds;
 
-    @ApiModelProperty(name = "customerName" , value = "客户名称")
-//    @NotEmpty(message = "客户名称不能为空")
+    @ApiModelProperty(name = "customerName" , value = "客户名称", required = true)
+    @NotEmpty(message = "客户名称不能为空")
     private String customerName;
 
-    @ApiModelProperty(name = "forwarderId" , value = "货代id")
+    @ApiModelProperty(name = "forwarderId" , value = "货代id", required = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long forwarderId;
 
@@ -97,18 +92,32 @@ public class PriceExpListDto extends Model<PriceExpListDto> {
     @NotNull(message = "价格表状态不能为空")
     private Integer priceStatus;
 
-    @ApiModelProperty(name = "aging" , value = "时效")
-//    @NotBlank(message = "时效不能为空")
+    @ApiModelProperty(name = "aging" , value = "时效", required = true)
     private String aging;
 
-    @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-//    @NotEmpty(message = "特殊物品不能为空")
-    private List<String> specialCommodity;
+    @ApiModelProperty(name = "specialCommodity" , value = "特殊物品", required = true)
+    @NotEmpty(message = "特殊物品不能为空")
+    private List<Long> specialCommodity;
 
-    @ApiModelProperty(name = "saleRemark" , value = "销售备注")
+    @ApiModelProperty(name = "saleRemark" , value = "销售备注", required = true)
     private String saleRemark;
 
-    @ApiModelProperty(name = "forwarderRemark" , value = "货代备注")
+    @ApiModelProperty(name = "forwarderRemark" , value = "货代备注", required = true)
     private String forwarderRemark;
+
+
+    public String getCustomerName() {
+        if (customerName != null && customerName.trim().equals(""))
+            customerName = null;
+
+        return customerName;
+    }
+
+    public String getCustomerGroupsName() {
+        if (customerGroupsName != null && customerGroupsName.trim().equals(""))
+            customerGroupsName = null;
+
+        return customerGroupsName;
+    }
 
 }

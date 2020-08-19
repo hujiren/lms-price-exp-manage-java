@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 public class ComputationalFormulaInsertDto extends Model<ComputationalFormulaInsertDto> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceId" , value = "价格清单id", hidden = true)
+    @ApiModelProperty(name = "priceId" , value = "价格清单id", required = true)
     private Long priceId;
 
     @ApiModelProperty(name = "formula" , value = "公式", required = true)
@@ -43,5 +43,6 @@ public class ComputationalFormulaInsertDto extends Model<ComputationalFormulaIns
     @ApiModelProperty(name = "packingType" , value = "包裹类型", required = true)
     @NotBlank(message = "包裹类型不能为空")
     private String packingType;
-    
+
+
 }

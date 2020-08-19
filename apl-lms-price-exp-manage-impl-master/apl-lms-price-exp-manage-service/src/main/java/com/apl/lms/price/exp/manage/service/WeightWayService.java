@@ -20,32 +20,38 @@ import java.util.List;
  */
 public interface WeightWayService extends IService<WeightWayDto> {
 
-        /**
-         * @Desc: 分页查找 计泡方式列表
-         * @author hjr
-         * @since 2020-08-08
-         */
-        ResultUtil<Page<WeightWayDto>> getList(PageDto pageDto, WeightWayKeyDto weightWayKeyDto);
+    /**
+     * @Desc: 分页查找 计泡方式列表
+     * @author hjr
+     * @since 2020-08-08
+     */
+    ResultUtil<Page<WeightWayDto>> getList(PageDto pageDto, WeightWayKeyDto weightWayKeyDto);
 
-        /**
-         * @Desc: 根据Id删除计泡方式
-         * @author hjr
-         * @since 2020-08-08
-         */
-        ResultUtil<Boolean> delWeightWay(Long id);
+    /**
+     * @Desc: 根据Id删除计泡方式
+     * @author hjr
+     * @since 2020-08-08
+     */
+    ResultUtil<Boolean> delWeightWay(Long id);
 
-        /**
-         * @Desc: 更新计泡方式
-         * @author hjr
-         * @since 2020-08-08
-         */
-        ResultUtil<Boolean> updWeightWay(WeightWayDto weightWayDto);
+    /**
+     * @Desc: 更新计泡方式
+     * @author hjr
+     * @since 2020-08-08
+     */
+    ResultUtil<Boolean> updWeightWay(WeightWayDto weightWayDto);
 
-        /**
-         * @Desc: 批量新增计泡方式
-         * @author hjr
-         * @since 2020-08-08
-         */
-        ResultUtil<Integer> addWeightWay(List<WeightWayInsertDto> weightWayInsertDtoList);
+    /**
+     * @Desc: 批量新增计泡方式
+     * @author hjr
+     * @since 2020-08-08
+     */
+    ResultUtil<Integer> addWeightWay(List<WeightWayInsertDto> weightWayInsertDtoList);
 
+    /**
+     * 获取计泡方式详情
+     * @param id
+     * @return
+     */
+    ResultUtil<WeightWayDto> getWeightWay(Long id);
 }

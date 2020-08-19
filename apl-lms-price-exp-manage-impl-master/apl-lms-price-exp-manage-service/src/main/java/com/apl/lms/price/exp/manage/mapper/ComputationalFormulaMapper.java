@@ -46,6 +46,10 @@ public interface ComputationalFormulaMapper extends BaseMapper<ComputationalForm
      */
     Integer addComputationalFormula(@Param("po") ComputationalFormulaPo computationalFormulaPo);
 
-
-
+    /**
+     * 获取计算公式详细
+     * @param id
+     * @return
+     */
+    ComputationalFormulaVo getComputationalFormula(@Param("id") Long id);
 }

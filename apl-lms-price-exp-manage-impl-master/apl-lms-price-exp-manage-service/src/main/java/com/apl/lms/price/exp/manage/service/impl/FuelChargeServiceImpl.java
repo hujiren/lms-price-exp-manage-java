@@ -93,6 +93,12 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         fuelChargePo.setEndDate(new Timestamp(fuelChargeDto.getEndDate()));
         fuelChargePo.setFuelCharge(fuelChargeDto.getFuelCharge());
         fuelChargePo.setId(fuelChargeDto.getId());
+
+        FuelChargeVo fuelChargeVo = baseMapper.getFuelCharge(fuelChargePo.getId());
+        if(fuelChargeVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+
         Integer integer = baseMapper.updFuelCharge(fuelChargePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
@@ -119,5 +125,20 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, fuelChargePo.getId().toString());
+    }
+
+    /**
+     * 获取燃油费详细
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<FuelChargeVo> getFuelCharge(Long id) {
+
+        FuelChargeVo fuelChargeVo = baseMapper.getFuelCharge(id);
+        if(fuelChargeVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, fuelChargeVo);
     }
 }

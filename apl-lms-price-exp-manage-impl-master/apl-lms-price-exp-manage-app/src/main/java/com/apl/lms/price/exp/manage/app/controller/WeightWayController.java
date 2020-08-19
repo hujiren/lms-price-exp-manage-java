@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -58,5 +60,13 @@ public class WeightWayController {
     public ResultUtil<Integer> insertBatch( @RequestBody List<WeightWayInsertDto> weightWayInsertDtoList){
 
         return weightWayService.addWeightWay(weightWayInsertDtoList);
+    }
+
+    @PostMapping(value = "/get")
+    @ApiOperation(value =  "获取计泡方式详细" , notes = "获取计泡方式详细")
+    @ApiImplicitParam(name = "id", value = "计泡方式id", required = true, paramType = "query")
+    public ResultUtil<WeightWayDto> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+
+        return weightWayService.getWeightWay(id);
     }
 }

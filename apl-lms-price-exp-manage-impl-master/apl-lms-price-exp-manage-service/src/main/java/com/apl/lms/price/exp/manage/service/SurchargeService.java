@@ -20,32 +20,39 @@ import java.util.List;
  */
 public interface SurchargeService extends IService<SurchargeDto> {
 
-        /**
-         * @Desc: 分页查找 附加费列表
-         * @author hjr
-         * @since 2020-08-08
-         */
-        ResultUtil<Page<SurchargeDto>>getList(PageDto pageDto, SurchargeKeyDto surchargeKeyDto);
+    /**
+     * @Desc: 分页查找 附加费列表
+     * @author hjr
+     * @since 2020-08-08
+     */
+    ResultUtil<Page<SurchargeDto>> getList(PageDto pageDto, SurchargeKeyDto surchargeKeyDto);
 
-        /**
-         * @Desc: 根据Id删除附加费
-         * @author hjr
-         * @since 2020-08-08
-         */
-        ResultUtil<Boolean> delSurcharge(Long id);
+    /**
+     * @Desc: 根据Id删除附加费
+     * @author hjr
+     * @since 2020-08-08
+     */
+    ResultUtil<Boolean> delSurcharge(Long id);
 
-        /**
-         * @Desc: 更新附加费
-         * @author hjr
-         * @since 2020-08-08
-         */
-        ResultUtil<Boolean> updSurcharge(SurchargeDto surchargeDto);
+    /**
+     * @Desc: 更新附加费
+     * @author hjr
+     * @since 2020-08-08
+     */
+    ResultUtil<Boolean> updSurcharge(SurchargeDto surchargeDto);
 
-        /**
-         * @Desc: 批量新增新增附加费
-         * @author hjr
-         * @since 2020-08-08
-         */
-        ResultUtil<Integer> addSurcharge(List<SurchargeInsertDto> surchargeInsertDtoList);
+    /**
+     * @Desc: 批量新增新增附加费
+     * @author hjr
+     * @since 2020-08-08
+     */
+    ResultUtil<Integer> addSurcharge(List<SurchargeInsertDto> surchargeInsertDtoList);
 
+    /**
+     * 获取附加费详细
+     *
+     * @param id
+     * @return
+     */
+    ResultUtil<SurchargeDto> getSurcharge(Long id);
 }

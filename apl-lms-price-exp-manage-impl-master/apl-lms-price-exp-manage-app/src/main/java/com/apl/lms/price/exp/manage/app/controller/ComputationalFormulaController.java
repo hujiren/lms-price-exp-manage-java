@@ -60,4 +60,13 @@ public class ComputationalFormulaController {
 
         return computationalFormulaService.addComputationalFormula(computationalFormulaInsertDto);
     }
+
+    @PostMapping(value = "/get")
+    @ApiOperation(value =  "获取计算公式详细" , notes = "获取计算公式详细")
+    @ApiImplicitParam(name = "id",value = "计算公式id",required = true  , paramType = "query")
+    public ResultUtil<ComputationalFormulaVo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+
+        return computationalFormulaService.getComputationalFormula(id);
+    }
+
 }

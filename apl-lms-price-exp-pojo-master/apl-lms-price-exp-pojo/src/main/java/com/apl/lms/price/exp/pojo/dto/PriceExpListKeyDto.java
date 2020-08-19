@@ -29,10 +29,16 @@ public class PriceExpListKeyDto {
     @TypeValidator(value = {"0","1","2","3","4","5"} , message = "价格表状态错误")
     private Integer priceStatus;
 
-    @ApiModelProperty(name = "customerGroupsName", value = "客户组名称")
-    private String customerGroupsName;
+    @ApiModelProperty(name = "customerGroupsId", value = "客户组id")
+    private Long customerGroupsId;
 
-    @ApiModelProperty(name = "keyword", value = "关键词")
+    @ApiModelProperty(name = "customerId", value = "客户id")
+    private Long customerId;
+
+    @ApiModelProperty(name = "forwarderId", value = "货代id")
+    private Long forwarderId;
+
+    @ApiModelProperty(name = "keyword", value = "关键词: 按客户名称, 价格表名称, 销售名称模糊查询")
     private String keyword;
 
     public String getKeyword() {
@@ -42,12 +48,6 @@ public class PriceExpListKeyDto {
         return keyword;
     }
 
-    public String getCustomerGroupsName() {
-        if (customerGroupsName != null && customerGroupsName.trim().equals(""))
-            customerGroupsName = null;
-
-        return customerGroupsName;
-    }
 
     public String getChannelCategory() {
         if (channelCategory != null && channelCategory.trim().equals(""))

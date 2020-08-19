@@ -43,6 +43,10 @@ public interface ComputationalFormulaService extends IService<ComputationalFormu
      */
     ResultUtil<Long> addComputationalFormula(ComputationalFormulaInsertDto computationalFormulaInsertDto);
 
-
-
+    /**
+     * 获取计算公式详细
+     * @param id
+     * @return
+     */
+    ResultUtil<ComputationalFormulaVo> getComputationalFormula(Long id);
 }

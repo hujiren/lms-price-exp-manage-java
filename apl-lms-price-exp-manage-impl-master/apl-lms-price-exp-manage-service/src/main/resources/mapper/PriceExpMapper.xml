@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpMapper">
+
+    <!--分页查询快递价格-->
+    <select id="getExpList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpListVo">
+        select
+            id,
+            price_name,
+            sale_name,
+            start_date,
+            end_date,
+            channel_category,
+            volume_weight_cardinal,
+            account_type,
+            customer_groups_name,
+            customer_name,
+            special_commodity,
+            price_status,
+            aging
+        from
+            price_exp_list
+        where
+            1=1
+            <if test="key.channelCategory != null">
+                and channel_category = #{key.channelCategory}
+            </if>
+            <if test="key.volumeWeightCardinal != null">
+                and volume_weight_cardinal = #{key.volumeWeightCardinal}
+            </if>
+            <if test="key.accountType != null">
+                and account_type = #{key.accountType}
+            </if>
+            <if test="key.customerId != null">
+                and customer_ids @> #{key.customerId}
+            </if>
+            <if test="key.forwarderId != null">
+                and forwarder_id = #{key.forwarderId}
+            </if>
+            <if test="key.priceStatus != null and key.priceStatus &lt; 4">
+                and price_status = #{key.priceStatus}
+            </if>
+            <if test="key.priceStatus != null and key.priceStatus == 4">
+                and end_date - now() > '0 day' and end_date - now() &lt;= '3 day'
+            </if>
+            <if test="key.priceStatus != null and key.priceStatus == 5">
+                and end_date - now() &lt;= '3 day'
+            </if>
+            <if test="key.customerGroupsId != null">
+                and customer_groups_id @> #{key.customerGroupsId}
+            </if>
+            <if test="key.keyWord != null">
+                and customer_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            </if>
+
+    </select>
+
+    <!--根据ids批删除快递价格-->
+    <delete id="delById">
+        delete from price_exp_list where id in
+        <foreach collection="ids" close=")" open="(" item="row" separator="," index="">
+            #{row}
+        </foreach>
+    </delete>
+
+    <!--更新快递价格-->
+    <update id="updExpList">
+       update
+            price_exp_list
+        set
+            price_code = #{po.priceCode},
+            price_name = #{po.priceName},
+            sale_name = #{po.saleName},
+            start_date = #{po.startDate},
+            end_date = #{po.endDate},
+            currency = #{po.currency},
+            channel_category = #{po.channelCategory},
+            zone_tab_id = #{po.zoneTabId},
+            volume_weight_cardinal = #{po.volumeWeightCardinal},
+            account_type = #{po.accountType},
+            account_no = #{po.accountNo},
+            customer_groups_id = #{po.customerGroupsId,typeHandler=com.apl.lms.price.exp.manage.mybatisTypeHandler.PriceExpCustomerGroupsIdTypeHandler},
+            customer_groups_name = #{po.customerGroupsName},
+            customer_ids = #{po.customerIds,typeHandler=com.apl.lms.price.exp.manage.mybatisTypeHandler.PriceExpCustomerGroupsIdTypeHandler},
+            customer_name = #{po.customerName},
+            forwarder_id = #{po.forwarderId},
+            price_status = #{po.priceStatus},
+            aging = #{po.aging},
+            special_commodity = #{po.specialCommodity,typeHandler=com.apl.lms.price.exp.manage.mybatisTypeHandler.PriceExpCustomerGroupsIdTypeHandler},
+            sale_remark = #{po.saleRemark},
+            forwarder_remark = #{po.forwarderRemark}
+        where
+            id = #{po.id}
+    </update>
+
+    <!--新增快递价格-->
+    <insert id="insertExpList">
+        insert into
+             price_exp_list(id, price_code, price_name, sale_name, start_date, end_date, currency, channel_category, zone_tab_id,
+             volume_weight_cardinal, account_type, account_no, customer_groups_id, customer_groups_name, customer_ids, customer_name,
+             forwarder_id, price_status, aging, special_commodity, sale_remark, forwarder_remark, quote_price_id, quote_price_final_id, price_form)
+         values
+             (#{po.id},
+             #{po.priceCode},
+             #{po.priceName},
+             #{po.saleName},
+             #{po.startDate},
+             #{po.endDate},
+             #{po.currency},
+             #{po.channelCategory},
+             #{po.zoneTabId},
+             #{po.volumeWeightCardinal},
+             #{po.accountType},
+             #{po.accountNo},
+             #{po.customerGroupsId,typeHandler=com.apl.lms.price.exp.manage.mybatisTypeHandler.PriceExpCustomerGroupsIdTypeHandler},
+             #{po.customerGroupsName},
+             #{po.customerIds,typeHandler=com.apl.lms.price.exp.manage.mybatisTypeHandler.PriceExpCustomerGroupsIdTypeHandler},
+             #{po.customerName},
+             #{po.forwarderId},
+             #{po.priceStatus},
+             #{po.aging},
+             #{po.specialCommodity,typeHandler=com.apl.lms.price.exp.manage.mybatisTypeHandler.PriceExpCustomerGroupsIdTypeHandler},
+             #{po.saleRemark},
+             #{po.forwarderRemark},
+             #{po.quotePriceId},
+             #{po.quotePriceFinalId},
+             #{po.priceForm})
+     </insert>
+
+
+    <!--获取快递价格详情-->
+    <select id="getExpListInfo" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpInfoVo">
+       select
+            id, price_code, price_name, sale_name, start_date, end_date, currency, channel_category, zone_tab_id, volume_weight_cardinal,
+            account_type, account_no, customer_groups_id, customer_groups_name, customer_ids, customer_name, forwarder_id, price_status, aging,
+            special_commodity, sale_remark, forwarder_remark, price_form
+        from
+            price_exp_list where id = #{id}
+    </select>
+
+    <!--校验id是否存在啊-->
+    <select id="getExpListById" resultType="java.lang.Long">
+        select id from price_exp_list where id = #{id}
+    </select>
+
+</mapper>

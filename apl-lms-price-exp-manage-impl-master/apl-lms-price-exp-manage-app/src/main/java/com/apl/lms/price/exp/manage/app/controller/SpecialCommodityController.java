@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -61,5 +63,13 @@ public class SpecialCommodityController {
     public ResultUtil<Integer> insertBatch( @RequestBody List<SpecialCommodityInsertDto> specialCommodityInsertDtoList){
 
         return specialCommodityService.addSpecialCommodity(specialCommodityInsertDtoList);
+    }
+
+    @PostMapping(value = "/get")
+    @ApiOperation(value =  "获取特殊物品详细" , notes = "获取特殊物品详细")
+    @ApiImplicitParam(name = "id", value = "特殊物品Id", required = true, paramType = "query")
+    public ResultUtil<SpecialCommodityVo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+
+        return specialCommodityService.getSpecialCommodity(id);
     }
 }

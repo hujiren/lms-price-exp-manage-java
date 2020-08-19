@@ -56,5 +56,11 @@
             (#{po.id}, #{po.priceId}, #{po.formula}, #{po.priceZone}, #{po.country}, #{po.startingWeight}, #{po.endingWeight}, #{po.packingType})
     </insert>
 
-
+    <!--获取计算公式详细-->
+    <select id="getComputationalFormula" resultType="com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo">
+        select
+            id, price_id, formula, price_zone, country, starting_weight, ending_weight, packing_type
+        from
+            price_computational_formula where id = #{id}
+    </select>
 </mapper>

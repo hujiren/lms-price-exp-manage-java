@@ -40,4 +40,11 @@
         values
             (#{po.id}, #{po.channelCategory}, #{po.weightWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeWeightCardinal})
     </insert>
+
+    <select id="getChannelCateGory" resultType="com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo">
+        select
+            id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_weight_cardinal
+        from
+            price_channel_category where id = #{id}
+    </select>
 </mapper>

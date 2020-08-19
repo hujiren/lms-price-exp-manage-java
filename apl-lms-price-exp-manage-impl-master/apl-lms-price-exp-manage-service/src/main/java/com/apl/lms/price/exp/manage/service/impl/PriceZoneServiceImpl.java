@@ -5,6 +5,7 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceZoneMapper;
+import com.apl.lms.price.exp.manage.mybatisTypeHandler.PriceExpCustomerGroupsVoTypeHandler;
 import com.apl.lms.price.exp.manage.service.PriceZoneService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZonePo;
@@ -14,6 +15,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,6 +71,7 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
         }
 
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneVo);
     }
 
@@ -96,6 +100,12 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
 
         PriceZonePo priceZonePo = new PriceZonePo();
         BeanUtils.copyProperties(priceZoneDto, priceZonePo);
+
+        PriceZoneVo priceZoneVo =  baseMapper.getById(priceZonePo.getId());
+        if(priceZoneVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+        }
+
         Integer integer = baseMapper.updPriceZone(priceZonePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
@@ -114,7 +124,6 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
         PriceZonePo priceZonePo = new PriceZonePo();
         BeanUtils.copyProperties(priceZoneInsertDto, priceZonePo);
         priceZonePo.setId(SnowflakeIdWorker.generateId());
-
         Integer integer = baseMapper.addPriceZone(priceZonePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);

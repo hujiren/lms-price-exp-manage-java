@@ -51,7 +51,10 @@ public interface WeightWayMapper extends BaseMapper<WeightWayDto> {
      */
     Integer addWeightWay(@Param("po") List<WeightWayInsertDto> weightWayInsertDtoList);
 
-
-
-
+    /**
+     * 获取计泡方式详情
+     * @param id
+     * @return
+     */
+    WeightWayDto getWeightWay(@Param("id") Long id);
 }

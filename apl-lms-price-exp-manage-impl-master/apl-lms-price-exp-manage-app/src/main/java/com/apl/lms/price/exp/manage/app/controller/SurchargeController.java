@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -59,5 +60,13 @@ public class SurchargeController {
     public ResultUtil<Integer> insertBatch(@RequestBody List<SurchargeInsertDto> surchargeInsertDtoList){
 
         return surchargeService.addSurcharge(surchargeInsertDtoList);
+    }
+
+    @PostMapping(value = "/get")
+    @ApiOperation(value =  "获取附加费详细" , notes = "获取附加费详细")
+    @ApiImplicitParam(name = "id", value = "特殊物品Id", required = true, paramType = "query")
+    public ResultUtil<SurchargeDto> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+
+        return surchargeService.getSurcharge(id);
     }
 }

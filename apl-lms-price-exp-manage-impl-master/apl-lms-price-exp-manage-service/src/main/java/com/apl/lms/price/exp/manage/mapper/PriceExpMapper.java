@@ -2,6 +2,7 @@ package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.dto.PriceExpListKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpListPo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpListVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @Mapper
 @Repository
-public interface PriceExpListMapper extends BaseMapper<PriceExpListPo> {
+public interface PriceExpMapper extends BaseMapper<PriceExpListPo> {
 
     /**
      * 获取快递价格分页信息列表
@@ -47,4 +48,18 @@ public interface PriceExpListMapper extends BaseMapper<PriceExpListPo> {
      * @return
      */
     Integer insertExpList(@Param("po") PriceExpListPo priceExpListPo);
+
+    /**
+     * 获取快递价格详情
+     * @param id
+     * @return
+     */
+    PriceExpInfoVo getExpListInfo(@Param("id") Long id);
+
+    /**
+     * 校验id是否存在
+     * @param id
+     * @return
+     */
+    Long getExpListById(@Param("id") Long id);
 }

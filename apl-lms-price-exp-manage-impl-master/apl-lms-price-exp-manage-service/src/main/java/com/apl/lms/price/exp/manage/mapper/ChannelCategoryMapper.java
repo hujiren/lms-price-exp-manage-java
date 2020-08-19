@@ -48,6 +48,10 @@ public interface ChannelCategoryMapper extends BaseMapper<ChannelCateGoryPo> {
      */
     Integer addChannelCategory(@Param("po") ChannelCateGoryPo channelCateGoryPo);
 
-
-
+    /**
+     * 根据id查询对应列表
+     * @param id
+     * @return
+     */
+    ChannelCateGoryVo getChannelCateGory(@Param("id") Long id);
 }

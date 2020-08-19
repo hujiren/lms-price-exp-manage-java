@@ -10,9 +10,12 @@
         <module name="apl-lms-price-exp-pojo" />
         <module name="apl-lms-price-exp-manage-app" />
         <module name="apl-lms-price-exp-manage-service" />
+        <module name="apl-lms-price-exp-lib" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="apl-lms-price-exp-lib" target="8" />
+      <module name="apl-lms-price-exp-lib-master" target="8" />
       <module name="apl-lms-price-exp-manage-app" target="8" />
       <module name="apl-lms-price-exp-manage-impl-master" target="1.5" />
       <module name="apl-lms-price-exp-manage-java" target="1.5" />

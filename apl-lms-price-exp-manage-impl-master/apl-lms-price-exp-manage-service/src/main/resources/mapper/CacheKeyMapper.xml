@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.CacheMapper">
+
+    <!--查询特殊物品缓存-->
+    <select id="addSpecialCommodityCache">
+        SELECT
+            concat('JOIN_CACHE:special_commodity_',  ${innerOrgId}, '_', id) AS cache_key,
+            id,
+            special_commodity_name
+        from
+            price_special_commodity
+        where
+        <if test="minKey>0 and minKey==maxKey">
+            id = #{keys}
+        </if>
+        <if test="minKey!=maxKey">
+            id BETWEEN #{minKey} AND #{maxKey} AND id in(#{keys})
+        </if>
+        <if test="(minKey == null or minKey&lt;=0) and (maxKey == null or maxKey&gt;=0)">
+            1 = 2
+        </if>
+    </select>
+
+    <!--查询附加费缓存-->
+    <select id="addSurchargeCache">
+        SELECT
+            concat('JOIN_CACHE:surcharge_cache_',  ${innerOrgId}, '_', id) AS cache_key,
+            id,
+            charge_name,
+            computing_formula,
+            currency
+        from
+            price_surcharge
+        where
+        <if test="minKey>0 and minKey==maxKey">
+            id = #{keys}
+        </if>
+        <if test="minKey!=maxKey">
+            id BETWEEN #{minKey} AND #{maxKey} AND id in(#{keys})
+        </if>
+        <if test="(minKey == null or minKey&lt;=0) and (maxKey == null or maxKey&gt;=0)">
+            1 = 2
+        </if>
+    </select>
+
+    <!--查询计泡方式缓存-->
+    <select id="addWeightWayCache">
+        select
+            concat('JOIN_CACHE:weight_way_',  ${innerOrgId}, '_', id) AS cache_key,
+            id,
+            weight_way_name,
+            computing_formula
+        from
+            price_weight_way
+        where
+        <if test="minKey>0 and minKey==maxKey">
+            id = #{keys}
+        </if>
+        <if test="minKey!=maxKey">
+            id BETWEEN #{minKey} AND #{maxKey} AND id in(#{keys})
+        </if>
+        <if test="(minKey == null or minKey&lt;=0) and (maxKey == null or maxKey&gt;=0)">
+            1 = 2
+        </if>
+    </select>
+</mapper>

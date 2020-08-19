@@ -34,4 +34,9 @@
         </foreach>
 
     </insert>
+
+    <!--获取计泡方式详情-->
+    <select id="getWeightWay" resultType="com.apl.lms.price.exp.pojo.dto.WeightWayDto">
+        select id,weight_way_name,computing_formula from price_weight_way where id = #{id}
+    </select>
 </mapper>
