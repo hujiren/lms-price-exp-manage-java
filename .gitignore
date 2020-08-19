@@ -4,4 +4,4 @@
 **/.DS_Store
 target/
 **/*..mv.db
-config/bootstrap2.yml
+config/
