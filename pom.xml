@@ -9,6 +9,7 @@
     <modules>
         <module>apl-lms-price-exp-manage-impl-master</module>
         <module>apl-lms-price-exp-pojo-master</module>
+        <module>apl-lms-price-exp-lib-master</module>
     </modules>
 
 

@@ -16,7 +16,8 @@ import javax.sql.DataSource;
         scanBasePackages = {"com.apl.lms.price.exp.manage",
                 "com.apl.db.abatis",
                 "com.apl.lib",
-                "com.apl.cache"})
+                "com.apl.cache",
+                "com.apl.lms.price.exp.lib"})
 @MapperScan("com.apl.lms.price.exp.manage.mapper")
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
