@@ -3,9 +3,9 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.CacheMapper">
 
     <!--查询特殊物品缓存-->
-    <select id="addSpecialCommodityCache">
+    <select id="addSpecialCommodityCache" resultType="java.util.Map">
         SELECT
-            concat('JOIN_CACHE:special_commodity_',  ${innerOrgId}, '_', id) AS cache_key,
+            concat('JOIN_CACHE:special_commodity_',  #{innerOrgId}, '_', id) AS cache_key,
             id,
             special_commodity_name
         from
@@ -23,7 +23,7 @@
     </select>
 
     <!--查询附加费缓存-->
-    <select id="addSurchargeCache">
+    <select id="addSurchargeCache" resultType="java.util.Map">
         SELECT
             concat('JOIN_CACHE:surcharge_cache_',  ${innerOrgId}, '_', id) AS cache_key,
             id,
@@ -45,7 +45,7 @@
     </select>
 
     <!--查询计泡方式缓存-->
-    <select id="addWeightWayCache">
+    <select id="addWeightWayCache" resultType="java.util.Map">
         select
             concat('JOIN_CACHE:weight_way_',  ${innerOrgId}, '_', id) AS cache_key,
             id,

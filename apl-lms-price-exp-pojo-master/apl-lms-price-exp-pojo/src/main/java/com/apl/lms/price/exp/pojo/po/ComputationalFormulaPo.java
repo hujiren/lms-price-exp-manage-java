@@ -29,7 +29,7 @@ public class ComputationalFormulaPo extends Model<ComputationalFormulaPo> {
     @ApiModelProperty(name = "priceId" , value = "价格清单id", required = true)
     private Long priceId;
 
-    @ApiModelProperty(name = "formula" , value = "公式", required = true)
+    @ApiModelProperty(name = "formula" , value = "公式")
     private String formula;
 
     @ApiModelProperty(name = "priceZone" , value = "分区", required = true)
@@ -38,10 +38,10 @@ public class ComputationalFormulaPo extends Model<ComputationalFormulaPo> {
     @ApiModelProperty(name = "country" , value = "国家", required = true)
     private String country;
 
-    @ApiModelProperty(name = "startingWeight" , value = "起始重量", required = true)
+    @ApiModelProperty(name = "startingWeight" , value = "起始重量")
     private Double startingWeight;
 
-    @ApiModelProperty(name = "endingWeight" , value = "截止重量", required = true)
+    @ApiModelProperty(name = "endingWeight" , value = "截止重量")
     private Double endingWeight;
 
     @ApiModelProperty(name = "packingType" , value = "包裹类型", required = true)

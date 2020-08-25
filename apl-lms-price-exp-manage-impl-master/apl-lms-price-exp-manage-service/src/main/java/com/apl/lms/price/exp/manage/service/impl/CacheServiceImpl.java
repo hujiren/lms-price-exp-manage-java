@@ -34,7 +34,7 @@ public class CacheServiceImpl implements CacheService {
     @Override
     public ResultUtil<Boolean> addSpecialCommodityCache(String keys, Long minKey, Long maxKey) {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
-        Map<String, SpecialCommodityCacheBo> maps = cacheMapper.addSpecialCommodityCache(keys, minKey, maxKey);
+        Map<String, SpecialCommodityCacheBo> maps = cacheMapper.addSpecialCommodityCache(keys, minKey, maxKey, securityUser.getInnerOrgId());
         if(null != maps && maps.size()>0) {
             redisTemplate.opsForValue().multiSet(maps);
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
@@ -46,7 +46,7 @@ public class CacheServiceImpl implements CacheService {
     @Override
     public ResultUtil<Boolean> addSurchargeCache(String keys, Long minKey, Long maxKey) {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
-        Map<String, SurchargeCacheBo> maps = cacheMapper.addSurchargeCache(keys, minKey, maxKey);
+        Map<String, SurchargeCacheBo> maps = cacheMapper.addSurchargeCache(keys, minKey, maxKey, securityUser.getInnerOrgId());
         if(null != maps && maps.size()>0) {
             redisTemplate.opsForValue().multiSet(maps);
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
@@ -58,7 +58,7 @@ public class CacheServiceImpl implements CacheService {
     @Override
     public ResultUtil<Boolean> addWeightWayCache(String keys, Long minKey, Long maxKey) {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
-        Map<String, WeightWayCacheBo> maps = cacheMapper.addWeightWayCache(keys, minKey, maxKey);
+        Map<String, WeightWayCacheBo> maps = cacheMapper.addWeightWayCache(keys, minKey, maxKey, securityUser.getInnerOrgId());
         if(null != maps && maps.size()>0) {
             redisTemplate.opsForValue().multiSet(maps);
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);

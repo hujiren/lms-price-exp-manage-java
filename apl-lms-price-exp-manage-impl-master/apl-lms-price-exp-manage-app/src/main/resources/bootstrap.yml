@@ -7,7 +7,7 @@ spring:
 
   shardingsphere:
     datasource:
-      names: pricebase, pricezone, explist, explist0, explist1
+      names: pricebase, pricezone, explist, explist0, explist1, develop, pricedata
 
       pricezone:
         type: com.alibaba.druid.pool.DruidDataSource
@@ -44,6 +44,20 @@ spring:
         username: postgres
         password: 123456
 
+      pricedata:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://192.168.1.185:5432/apl_lms_price_data?characterEncoding=utf-8
+        username: postgres
+        password: 123456
+
+      develop:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://192.168.1.185:5432/apl_lms_price_develop?characterEncoding=utf-8
+        username: postgres
+        password: 123456
+
     sharding:
       tables:
         price_exp_list:
@@ -57,6 +71,18 @@ spring:
 
         price_computational_formula:
           actual-data-nodes: explist.price_computational_formula
+
+        price_exp_axis:
+          actual-data-nodes: explist.price_exp_axis
+
+        price_exp_cost:
+          actual-data-nodes: explist.price_exp_cost
+
+        price_exp_main:
+          actual-data-nodes: explist.price_exp_main
+
+        price_exp_sale:
+          actual-data-nodes: explist.price_exp_sale
 
         price_zone:
           actual-data-nodes: pricezone.price_zone
@@ -76,7 +102,11 @@ spring:
         price_weight_way:
           actual-data-nodes: pricebase.price_weight_way
 
+        price_exp_data:
+          actual-data-nodes: pricedata.price_exp_data
 
+        price_exp_develop_info:
+          actual-data-nodes: develop.price_exp_develop_info
   #redis 相关配置
   redis:
     database: 1
@@ -106,7 +136,9 @@ apl:
     sysProduct: pms
     subSysCode: apl_lms_price_exp_list
 
+
 mybatis-plus:
   mapper-locations: file:apl-lms-price-exp-manage-impl-master/apl-lms-price-exp-manage-service/src/main/resources/mapper/*.xml
   pagination:
     dialectType: postgresql
+    tenantTableFilter: price_exp_main

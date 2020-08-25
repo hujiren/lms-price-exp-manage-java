@@ -11,18 +11,12 @@ import java.sql.Timestamp;
  * @date 2020/8/5 - 10:36
  */
 @Data
-@ApiModel(value="快递价格表  返回对象", description="快递价格表 返回对象")
-public class PriceExpListVo extends Model<PriceExpListVo> {
+@ApiModel(value="销售价格表  返回对象", description="销售价格表 返回对象")
+public class PriceExpSaleListVo extends Model<PriceExpSaleListVo> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "价格表id" , hidden = true)
+    @ApiModelProperty(name = "id" , value = "价格主表id")
     private Long id;
-
-    @ApiModelProperty(name = "priceName" , value = "价格表名称")
-    private String priceName;
-
-    @ApiModelProperty(name = "saleName" , value = "销售名称")
-    private String saleName;
 
     @ApiModelProperty(name = "startDate" , value = "起始日期")
     private Timestamp startDate;
@@ -30,8 +24,8 @@ public class PriceExpListVo extends Model<PriceExpListVo> {
     @ApiModelProperty(name = "endDate" , value = "截止日期")
     private Timestamp endDate;
 
-    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
-    private String channelCategory;
+    @ApiModelProperty(name = "currency" , value = "币制")
+    private String currency;
 
     @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积重基数")
     private Integer volumeWeightCardinal;
@@ -39,23 +33,34 @@ public class PriceExpListVo extends Model<PriceExpListVo> {
     @ApiModelProperty(name = "accountType" , value = "账号类型")
     private Integer accountType;
 
+    @ApiModelProperty(name = "mainStatus" , value = "主表状态")
+    private Integer mainStatus;
+
+    @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
+    private String specialCommodity;
+
+    @ApiModelProperty(name = "priceExpSaleId" , value = "销售价格表Id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long priceExpSaleId;
+
+    @ApiModelProperty(name = "priceCode" , value = "销售价格表代码")
+    private String priceCode;
+
     @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称")
     private String customerGroupsName;
 
     @ApiModelProperty(name = "customersName" , value = "客户名称")
     private String customerName;
 
-    @ApiModelProperty(name = "forwarderName" , value = "货代名称")
-    private String forwarderName;
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
+    private String channelCategory;
 
-    @ApiModelProperty(name = "forwarderName" , value = "货代名称")
-    private String specialCommodity;
-
-    @ApiModelProperty(name = "priceStatus" , value = "价格表状态 1正常 2计账 3无效")
+    @ApiModelProperty(name = "priceStatus" , value = "价格表状态")
     private Integer priceStatus;
 
-    @ApiModelProperty(name = "aging" , value = "时效")
-    private String aging;
+
+
+
 
 
 }

@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.manage.mybatisTypeHandler;
 
-import com.apl.lms.price.exp.pojo.po.PriceExpListPo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -14,7 +13,6 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,10 +27,10 @@ public class PriceExpCustomerGroupsIdTypeHandler extends BaseTypeHandler<List> {
 
 
     @Override
-    public void setNonNullParameter(PreparedStatement preparedStatement, int i, List customerGroupsIdList, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement preparedStatement, int i, List list, JdbcType jdbcType) throws SQLException {
         PGobject jsonObject = new PGobject();
         jsonObject.setType("json");
-        jsonObject.setValue(customerGroupsIdList.toString());
+        jsonObject.setValue(list.toString());
         preparedStatement.setObject(i, jsonObject);
     }
 
@@ -51,6 +49,7 @@ public class PriceExpCustomerGroupsIdTypeHandler extends BaseTypeHandler<List> {
     }
 
 
+    
     @Override
     public List getNullableResult(ResultSet resultSet, int i) throws SQLException {
         return null;

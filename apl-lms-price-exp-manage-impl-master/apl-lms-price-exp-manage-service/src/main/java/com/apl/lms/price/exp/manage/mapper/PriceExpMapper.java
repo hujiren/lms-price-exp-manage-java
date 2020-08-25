@@ -1,9 +1,11 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.price.exp.pojo.dto.PriceExpListKeyDto;
-import com.apl.lms.price.exp.pojo.po.PriceExpListPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpInfoVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpListVo;
+import com.apl.lms.price.exp.pojo.dto.PriceExpCostListKeyDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
+import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,43 +20,24 @@ import java.util.List;
  */
 @Mapper
 @Repository
-public interface PriceExpMapper extends BaseMapper<PriceExpListPo> {
+public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
 
     /**
-     * 获取快递价格分页信息列表
+     * 分页查询销售价格列表
      * @param page
-     * @param priceExpListKeyDto
+     * @param priceExpSaleListKeyDto
      * @return
      */
-    List<PriceExpListVo> getExpList(Page page, @Param("key") PriceExpListKeyDto priceExpListKeyDto);
+    List<PriceExpSaleListVo> getPriceExpSaleList(Page<PriceExpSaleListVo> page, @Param("key") PriceExpSaleListKeyDto priceExpSaleListKeyDto);
 
     /**
-     * 根据Ids批删除快递价格
-     * @param ids
+     * 分页查询成本价格列表
+     * @param page
+     * @param priceExpCostListKeyDto
      * @return
      */
-    Integer delById(@Param("ids") List<Long> ids);
+    List<PriceExpCostListVo> getPriceExpCostList(Page<PriceExpCostListVo> page, @Param("key") PriceExpCostListKeyDto priceExpCostListKeyDto);
 
-    /**
-     * 更新快递价格
-     * @param priceExpListPo
-     * @return
-     */
-    Integer updExpList(@Param("po") PriceExpListPo priceExpListPo);
-
-    /**
-     * 新增快递价格
-     * @param priceExpListPo
-     * @return
-     */
-    Integer insertExpList(@Param("po") PriceExpListPo priceExpListPo);
-
-    /**
-     * 获取快递价格详情
-     * @param id
-     * @return
-     */
-    PriceExpInfoVo getExpListInfo(@Param("id") Long id);
 
     /**
      * 校验id是否存在
@@ -62,4 +45,25 @@ public interface PriceExpMapper extends BaseMapper<PriceExpListPo> {
      * @return
      */
     Long getExpListById(@Param("id") Long id);
+
+    /**
+     * 新增价格表主表
+     * @param priceExpMainPo
+     * @return
+     */
+    Boolean insertPriceExpMain(@Param("po") PriceExpMainPo priceExpMainPo);
+
+    /**
+     * 获取主表详情
+     * @param id
+     * @return
+     */
+    PriceExpSaleInfoVo getPriceExpMainInfoById(@Param("id") Long id);
+
+    /**
+     * 根据主表id查询多租户id
+     * @param priceMainId
+     * @return
+     */
+    Long getInnerOrgId(@Param("id") Long priceMainId);
 }

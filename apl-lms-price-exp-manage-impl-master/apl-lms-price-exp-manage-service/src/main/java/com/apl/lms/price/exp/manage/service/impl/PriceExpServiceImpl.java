@@ -1,24 +1,29 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.exception.AplException;
 import com.apl.lib.pojo.dto.PageDto;
+import com.apl.lib.security.SecurityUser;
+import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
+import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.manage.mapper.PriceExpMapper;
-import com.apl.lms.price.exp.manage.service.PriceExpService;
-import com.apl.lms.price.exp.pojo.dto.PriceExpListDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpListInsertDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpListKeyDto;
+import com.apl.lms.price.exp.manage.service.*;
+import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.entity.Customer;
 import com.apl.lms.price.exp.pojo.entity.CustomerGroupInfo;
-import com.apl.lms.price.exp.pojo.po.PriceExpListPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpInfoVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpListVo;
+import com.apl.lms.price.exp.pojo.po.*;
+import com.apl.lms.price.exp.pojo.vo.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import java.sql.Timestamp;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +33,16 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpListPo> implements PriceExpService {
+public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMainPo> implements PriceExpService {
 
     enum ExpListServiceCode {
-        ;
+        PRICE_EXP_MAIN_SAVE_DATA_FAILED("PRICE_EXP_MAIN_SAVE_DATA_FAILED", "保存价格主表数据失败"),
+        PRICE_EXP_SALE_SAVE_DATA_FAILED("PRICE_EXP_SALE_SAVE_DATA_FAILED", "保存销售价格表数据失败"),
+        PRICE_EXP_COST_SAVE_DATA_FAILED("PRICE_EXP_COST_SAVE_DATA_FAILED", "保存成本价格表数据失败"),
+        PRICE_EXP_AXIS_SAVE_DATA_FAILED("PRICE_EXP_AXIS_SAVE_DATA_FAILED", "保存价格表轴数据失败"),
+        PRICE_EXP_DATA_SAVE_DATA_FAILED("PRICE_EXP_DATA_SAVE_DATA_FAILED", "保存价格表数据失败"),
+        PRICE_EXP_DEVELOP_INFO_SAVE_DATA_FAILED("PRICE_EXP_DEVELOP_INFO_SAVE_DATA_FAILED", "保存价格表扩展数据失败"),
+        ID_IS_NOT_EXITS("ID_IS_NOT_EXITS", "id不存在");
 
         private String code;
         private String msg;
@@ -42,183 +53,635 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpLis
         }
     }
 
+    @Autowired
+    PriceExpDataService priceExpDataService;
+
+    @Autowired
+    PriceExpDevelopInfoService priceExpDevelopInfoService;
+
+    @Autowired
+    PriceExpAxisService priceExpAxisService;
+
+    @Autowired
+    PriceExpCostService priceExpCostService;
+
+    @Autowired
+    PriceExpSaleService priceExpSaleService;
+
     /**
-     * 分页查询快递价格
+     * 分页查询销售价格列表
      * @param pageDto
-     * @param priceExpListKeyDto
+     * @param priceExpSaleListKeyDto
      * @return
      */
     @Override
-    public ResultUtil<Page<PriceExpListVo>> getPriceExpList(PageDto pageDto, PriceExpListKeyDto priceExpListKeyDto) {
+    public ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
 
-        Page<PriceExpListVo> page = new Page();
+        Page<PriceExpSaleListVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
 
-        List<PriceExpListVo> priceExpListVoList = baseMapper.getExpList(page, priceExpListKeyDto);
+        List<PriceExpSaleListVo> priceExpListVoSaleList = baseMapper.getPriceExpSaleList(page, priceExpSaleListKeyDto);
 
-        page.setRecords(priceExpListVoList);
+        page.setRecords(priceExpListVoSaleList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
     /**
-     * 根据ids批量删除快递价格
-     * @param ids
+     * 分页查询成本价格列表
+     * @param pageDto
+     * @param priceExpCostListKeyDto
      * @return
      */
     @Override
-    public ResultUtil<Boolean> delPriceExp(List<Long> ids) {
+    public ResultUtil<Page<PriceExpCostListVo>> getPriceExpCostList(PageDto pageDto, PriceExpCostListKeyDto priceExpCostListKeyDto) {
 
-        Integer integer = baseMapper.delById(ids);
-        if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
-        }
-        return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
+        Page<PriceExpCostListVo> page = new Page();
+        page.setCurrent(pageDto.getPageIndex());
+        page.setSize(pageDto.getPageSize());
+
+        List<PriceExpCostListVo> priceExpListVoCostList = baseMapper.getPriceExpCostList(page, priceExpCostListKeyDto);
+
+        page.setRecords(priceExpListVoCostList);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
     /**
-     * 更新快递价格
-     * @param priceExpListDto
-     * @return
-     */
-    @Override
-    public ResultUtil<Boolean> updPriceExp(PriceExpListDto priceExpListDto) {
-
-        Long id = baseMapper.getExpListById(priceExpListDto.getId());
-        if(id == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL.code, "id不存在", null);
-        }
-
-        PriceExpListPo priceExpListPo = new PriceExpListPo();
-        priceExpListPo.setId(priceExpListDto.getId());
-        priceExpListPo.setPriceCode(priceExpListDto.getPriceCode());
-        priceExpListPo.setPriceName(priceExpListDto.getPriceName());
-        priceExpListPo.setSaleName(priceExpListDto.getSaleName());
-        priceExpListPo.setStartDate(new Timestamp(priceExpListDto.getStartDate()));
-        priceExpListPo.setEndDate(new Timestamp(priceExpListDto.getEndDate()));
-        priceExpListPo.setCurrency(priceExpListDto.getCurrency());
-        priceExpListPo.setChannelCategory(priceExpListDto.getChannelCategory());
-        priceExpListPo.setZoneTabId(priceExpListDto.getZoneTabId());
-        priceExpListPo.setVolumeWeightCardinal(priceExpListDto.getVolumeWeightCardinal());
-        priceExpListPo.setAccountType(priceExpListDto.getAccountType());
-        priceExpListPo.setAccountNo(priceExpListDto.getAccountNo());
-        priceExpListPo.setCustomerGroupsId( priceExpListDto.getCustomerGroupsId());
-        priceExpListPo.setCustomerGroupsName(priceExpListDto.getCustomerGroupsName());
-        priceExpListPo.setCustomerIds(priceExpListDto.getCustomerIds());
-        priceExpListPo.setCustomerName(priceExpListDto.getCustomerName());
-        priceExpListPo.setForwarderId(priceExpListDto.getForwarderId());
-        priceExpListPo.setPriceStatus(priceExpListDto.getPriceStatus());
-        priceExpListPo.setAging(priceExpListDto.getAging());
-        priceExpListPo.setSpecialCommodity(priceExpListDto.getSpecialCommodity());
-        priceExpListPo.setSaleRemark(priceExpListDto.getSaleRemark());
-        priceExpListPo.setForwarderRemark(priceExpListDto.getForwarderRemark());
-
-        Integer integer = baseMapper.updExpList(priceExpListPo);
-        if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
-        }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
-    }
-
-    /**
-     * 新增快递价格
-     * @param priceExpListInsertDto
-     * @return
-     */
-    @Override
-    public ResultUtil<Long> insPriceExp(PriceExpListInsertDto priceExpListInsertDto) {
-
-        PriceExpListPo priceExpListPo = new PriceExpListPo();
-        priceExpListPo.setAccountNo(priceExpListInsertDto.getAccountNo());
-        priceExpListPo.setAging(priceExpListInsertDto.getAging());
-        priceExpListPo.setAccountType(priceExpListInsertDto.getAccountType());
-        priceExpListPo.setChannelCategory(priceExpListInsertDto.getChannelCategory());
-        priceExpListPo.setCurrency(priceExpListInsertDto.getCurrency());
-        priceExpListPo.setEndDate(new Timestamp(priceExpListInsertDto.getEndDate()));
-        priceExpListPo.setForwarderId(priceExpListInsertDto.getForwarderId());
-        priceExpListPo.setForwarderRemark(priceExpListInsertDto.getForwarderRemark());
-        priceExpListPo.setPriceCode(priceExpListInsertDto.getPriceCode());
-        priceExpListPo.setPriceName(priceExpListInsertDto.getPriceName());
-        priceExpListPo.setPriceStatus(priceExpListInsertDto.getPriceStatus());
-        priceExpListPo.setSaleRemark(priceExpListInsertDto.getSaleRemark());
-        priceExpListPo.setStartDate(new Timestamp(priceExpListInsertDto.getStartDate()));
-        priceExpListPo.setVolumeWeightCardinal(priceExpListInsertDto.getVolumeWeightCardinal());
-        priceExpListPo.setZoneTabId(priceExpListInsertDto.getZoneTabId());
-        priceExpListPo.setCustomerGroupsName(priceExpListInsertDto.getCustomerGroupsName());
-        priceExpListPo.setCustomerName(priceExpListInsertDto.getCustomerName());
-        priceExpListPo.setSpecialCommodity(priceExpListInsertDto.getSpecialCommodity());
-        priceExpListPo.setCustomerIds(priceExpListInsertDto.getCustomerIds());
-        priceExpListPo.setCustomerGroupsId( priceExpListInsertDto.getCustomerGroupsId());
-        priceExpListPo.setId(SnowflakeIdWorker.generateId());
-        priceExpListPo.setSaleName(priceExpListInsertDto.getSaleName());
-        priceExpListPo.setPriceForm(0);
-        priceExpListPo.setQuotePriceFinalId(0);
-        priceExpListPo.setQuotePriceId(0);
-        Integer integer = baseMapper.insertExpList(priceExpListPo);
-        if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
-        }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceExpListPo.getId());
-    }
-
-    /**
-     * 获取快递价格详情
+     * 获取销售价格详情
      * @param id
      * @return
      */
     @Override
-    public ResultUtil<PriceExpInfoVo> getPriceExpInfo(Long id) {
+    public ResultUtil<PriceExpSaleInfoVo> getPriceExpSaleInfo(Long id) {
 
-        PriceExpInfoVo priceExpInfoVo = baseMapper.getExpListInfo(id);
+        //查询主表
+        PriceExpSaleInfoVo priceExpSaleInfoVo = baseMapper.getPriceExpMainInfoById(id);
 
-        priceExpInfoVo.setCustomerGroupsId(priceExpInfoVo.getCustomerGroupsId().replace("[", "").replace("]", "")
-        .replaceAll(" ",""));
-
-        priceExpInfoVo.setCustomerIds(priceExpInfoVo.getCustomerIds().replace("[", "").replace("]", "")
-        .replaceAll(" ",""));
-
-        priceExpInfoVo.setSpecialCommodity(priceExpInfoVo.getSpecialCommodity().replace("[", "").replace("]", "")
-        .replaceAll(" ",""));
-
-        if(priceExpInfoVo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        if(priceExpSaleInfoVo == null){
+            throw new AplException(CommonStatusCode.GET_FAIL.code, "主表Id不存在", null);
         }
 
-        if (priceExpInfoVo.getCustomerIds() != null && priceExpInfoVo.getCustomerName() != null) {
-            String customerIds = priceExpInfoVo.getCustomerIds();
-            String customerNames = priceExpInfoVo.getCustomerName();
+        priceExpSaleInfoVo.setSpecialCommodity(priceExpSaleInfoVo.getSpecialCommodity().replace("[", "").replace("]", "")
+                .replaceAll(" ", ""));
 
-            List<Customer> customerList = new ArrayList<>();
+        //查询销售价格表并组装
+        PriceExpSaleVo priceExpSaleVo = priceExpSaleService.getPriceExpSaleInfoByMainId(id);
+        if(priceExpSaleVo != null){
+            priceExpSaleInfoVo.setPriceCode(priceExpSaleVo.getPriceCode());
+            priceExpSaleInfoVo.setPriceName(priceExpSaleVo.getPriceName());
+            priceExpSaleInfoVo.setPriceStatus(priceExpSaleVo.getPriceStatus());
+            priceExpSaleInfoVo.setChannelCategory(priceExpSaleVo.getChannelCategory());
+            priceExpSaleInfoVo.setCustomerGroupsName(priceExpSaleVo.getCustomerGroupsName());
+            priceExpSaleInfoVo.setCustomerName(priceExpSaleInfoVo.getCustomerName());
 
-            String[] customerIdArr = customerIds.split(",");
-            String[] customerNameArr = customerNames.split(",");
-            for(int i = 0; i < customerIdArr.length; i++){
-                Customer customer = new Customer();
-                customer.setCustomerId(Long.valueOf(customerIdArr[i]));
-                customer.setCustomerName(customerNameArr[i]);
-                customerList.add(customer);
+            priceExpSaleInfoVo.setCustomerGroupsId(priceExpSaleVo.getCustomerGroupsId().replace("[", "").replace("]", "")
+                    .replaceAll(" ", ""));
+
+            priceExpSaleInfoVo.setCustomerIds(priceExpSaleVo.getCustomerIds().replace("[", "").replace("]", "")
+                    .replaceAll(" ", ""));
+
+            //组装客户List (客户id, 客户名称)
+            if (priceExpSaleVo.getCustomerIds() != null && priceExpSaleVo.getCustomerName() != null) {
+                String customerIds = priceExpSaleVo.getCustomerIds();
+                String customerNames = priceExpSaleVo.getCustomerName();
+
+                List<Customer> customerList = new ArrayList<>();
+
+                String[] customerIdArr = customerIds.split(",");
+                String[] customerNameArr = customerNames.split(",");
+                for (int i = 0; i < customerIdArr.length; i++) {
+                    Customer customer = new Customer();
+                    customer.setCustomerId(Long.valueOf(customerIdArr[i]));
+                    customer.setCustomerName(customerNameArr[i]);
+                    customerList.add(customer);
+                }
+                priceExpSaleInfoVo.setCustomers(customerList);
             }
-            priceExpInfoVo.setCustomers(customerList);
-        }
+            //组装客户组List(客户组id, 客户组名称)
+            if (priceExpSaleVo.getCustomerGroupsId() != null && priceExpSaleVo.getCustomerGroupsName() != null) {
+                String customerGroupsIds = priceExpSaleVo.getCustomerGroupsId();
+                String customerGroupsName = priceExpSaleVo.getCustomerGroupsName();
 
-        if (priceExpInfoVo.getCustomerGroupsId() != null && priceExpInfoVo.getCustomerGroupsName() != null) {
-            String customerGroupsIds = priceExpInfoVo.getCustomerGroupsId();
-            String customerGroupsName = priceExpInfoVo.getCustomerGroupsName();
+                List<CustomerGroupInfo> customerGroupInfoList = new ArrayList<>();
 
-            List<CustomerGroupInfo> customerGroupInfoList = new ArrayList<>();
+                String[] customerGroupIdArr = customerGroupsIds.split(",");
+                String[] customerGroupNameArr = customerGroupsName.split(",");
 
-            String[] customerGroupIdArr = customerGroupsIds.split(",");
-            String[] customerGroupNameArr = customerGroupsName.split(",");
-
-            for (int i = 0; i < customerGroupIdArr.length; i++) {
-                CustomerGroupInfo customerGroupInfo = new CustomerGroupInfo();
-                customerGroupInfo.setCustomerGroupsId(Long.valueOf(customerGroupIdArr[i]));
-                customerGroupInfo.setCustomerGroupsName(customerGroupNameArr[i]);
-                customerGroupInfoList.add(customerGroupInfo);
+                for (int i = 0; i < customerGroupIdArr.length; i++) {
+                    CustomerGroupInfo customerGroupInfo = new CustomerGroupInfo();
+                    customerGroupInfo.setCustomerGroupsId(Long.valueOf(customerGroupIdArr[i]));
+                    customerGroupInfo.setCustomerGroupsName(customerGroupNameArr[i]);
+                    customerGroupInfoList.add(customerGroupInfo);
+                }
+                priceExpSaleInfoVo.setCustomerGroupInfo(customerGroupInfoList);
             }
-            priceExpInfoVo.setCustomerGroupInfo(customerGroupInfoList);
         }
 
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpInfoVo);
+        //获取轴数据信息并组装
+        PriceExpAxisPo priceExpAxisPo = priceExpAxisService.getPriceExpAxisInfoByMainId(id);
+        if(priceExpSaleInfoVo != null){
+            priceExpSaleInfoVo.setAxisTransverse(priceExpAxisPo.getAxisTransverse());
+            priceExpSaleInfoVo.setAxisPortrait(priceExpAxisPo.getAxisPortrait());
+        }
+
+        //获取扩展信息并组装
+        PriceExpDevelopInfoPo priceExpDevelopInfoPo = priceExpDevelopInfoService.getDevelopInfoByMainId(id);
+        if(priceExpSaleInfoVo != null){
+            priceExpSaleInfoVo.setSaleRemark(priceExpDevelopInfoPo.getSaleRemark());
+            priceExpSaleInfoVo.setPartnerRemark(priceExpDevelopInfoPo.getPartnerRemark());
+        }
+
+
+        //获取主数据信息并组装
+        PriceExpDataVo priceExpDataVo = priceExpDataService.getPriceExpDataInfoByMainId(id);
+        if(priceExpDataVo != null){
+            priceExpSaleInfoVo.setPriceData(priceExpDataVo.getPriceData().replace("[", "").replace("]", "")
+                    .replaceAll(" ", ""));
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataVo);
+    }
+
+    /**
+     * 获取成本价格详情
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(Long id) {
+
+        PriceExpCostInfoVo priceExpCostInfoVo = new PriceExpCostInfoVo();
+        //查询主表
+        PriceExpSaleInfoVo priceExpSaleInfoVo = baseMapper.getPriceExpMainInfoById(id);
+
+        if(priceExpSaleInfoVo == null){
+            ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.code, "主表Id不正确",  null);
+        }
+
+        BeanUtil.copyProperties(priceExpSaleInfoVo, priceExpCostInfoVo);
+
+        priceExpCostInfoVo.setSpecialCommodity(priceExpCostInfoVo.getSpecialCommodity().replace("[", "").replace("]", "")
+                .replaceAll(" ", ""));
+
+        //查询成本价格表并组装
+        PriceExpCostVo priceExpCostVo = priceExpCostService.getPriceExpCostInfo(id);
+        if(priceExpCostVo != null){
+        priceExpCostInfoVo.setPartnerId(priceExpCostVo.getPartnerId());
+        priceExpCostInfoVo.setPriceStatus(priceExpCostVo.getPriceStatus());
+        priceExpCostInfoVo.setPriceCode(priceExpCostVo.getPriceCode());
+        priceExpCostInfoVo.setPriceName(priceExpCostVo.getPriceName());
+        priceExpCostInfoVo.setChannelCategory(priceExpCostVo.getChannelCategory());
+        }
+
+        //获取轴数据信息并组装
+        PriceExpAxisPo priceExpAxisPo = priceExpAxisService.getPriceExpAxisInfoByMainId(id);
+        if(priceExpSaleInfoVo != null){
+            priceExpCostInfoVo.setAxisTransverse(priceExpAxisPo.getAxisTransverse());
+            priceExpCostInfoVo.setAxisPortrait(priceExpAxisPo.getAxisPortrait());
+        }
+
+        //获取扩展信息并组装
+        PriceExpDevelopInfoPo priceExpDevelopInfoPo = priceExpDevelopInfoService.getDevelopInfoByMainId(id);
+        if(priceExpSaleInfoVo != null){
+            priceExpCostInfoVo.setSaleRemark(priceExpDevelopInfoPo.getSaleRemark());
+            priceExpCostInfoVo.setPartnerRemark(priceExpDevelopInfoPo.getPartnerRemark());
+        }
+
+        //获取主数据信息并组装
+        PriceExpDataVo priceExpDataVo = priceExpDataService.getPriceExpDataInfoByMainId(id);
+        if(priceExpDataVo != null){
+            priceExpCostInfoVo.setPriceData(priceExpDataVo.getPriceData().replace("[", "").replace("]", "")
+                    .replaceAll(" ", ""));
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataVo);
+    }
+
+
+    /**
+     * 更新销售价格
+     * @param priceExpMainUpdateDto
+     * @param priceExpSaleUpdateDto
+     * @param priceExpAxisUpdateDto
+     * @param priceExpDataUpdateDto
+     * @param priceExpDevelopInfoUpdateDto
+     * @return
+     */
+    @Override
+    @Transactional
+    public ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
+                                               PriceExpSaleUpdateDto priceExpSaleUpdateDto,
+                                               PriceExpAxisUpdateDto priceExpAxisUpdateDto,
+                                               PriceExpDataUpdateDto priceExpDataUpdateDto,
+                                               PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto) {
+
+        Boolean saveSuccess = false;
+
+        //更新主表
+        PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
+        BeanUtil.copyProperties(priceExpMainUpdateDto, priceExpMainPo);
+        SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+        priceExpMainPo.setInnerOrgId(securityUser.getInnerOrgId());
+        saveSuccess = priceExpMainPo.updateById();
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.msg, null);
+        }
+
+        //更新销售价格表
+        PriceExpSalePo priceExpSalePo = new PriceExpSalePo();
+        BeanUtil.copyProperties(priceExpSaleUpdateDto, priceExpSalePo);
+        priceExpSalePo.setPriceMainId(priceExpMainPo.getId());
+        saveSuccess = priceExpSaleService.updateByPriceExpMainId(priceExpSalePo);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.msg, null);
+        }
+
+        //更新价格表轴数据
+        PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
+        BeanUtil.copyProperties(priceExpAxisUpdateDto, priceExpAxisPo);
+        priceExpAxisPo.setPriceId(priceExpMainUpdateDto.getId());
+        saveSuccess = priceExpAxisService.updateByPriceExpMainId(priceExpAxisPo);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.msg, null);
+        }
+
+        //更新价格表内数据
+        PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
+        BeanUtil.copyProperties(priceExpDataUpdateDto, priceExpDataPo);
+        priceExpDataPo.setPriceId(priceExpMainUpdateDto.getId());
+        saveSuccess = priceExpDataService.updateByPriceExpMainId(priceExpDataPo);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.msg, null);
+        }
+
+        //更新价格表扩展数据
+        PriceExpDevelopInfoPo priceExpDevelopInfoPo = new PriceExpDevelopInfoPo();
+        BeanUtil.copyProperties(priceExpDevelopInfoUpdateDto, priceExpDevelopInfoPo);
+        priceExpDevelopInfoPo.setPriceId(priceExpMainUpdateDto.getId());
+        saveSuccess = priceExpDevelopInfoService.updateByPriceExpMainId(priceExpDevelopInfoPo);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_DEVELOP_INFO_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_DEVELOP_INFO_SAVE_DATA_FAILED.msg, null);
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
+    }
+
+    /**
+     * 更新成本价格表
+     * @param priceExpMainUpdateDto
+     * @param priceExpCostUpdateDto
+     * @param priceExpAxisUpdateDto
+     * @param priceExpDataUpdateDto
+     * @param priceExpDevelopInfoUpdateDto
+     * @return
+     */
+    @Override
+    @Transactional
+    public ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
+                                               PriceExpCostUpdateDto priceExpCostUpdateDto,
+                                               PriceExpAxisUpdateDto priceExpAxisUpdateDto,
+                                               PriceExpDataUpdateDto priceExpDataUpdateDto,
+                                               PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto) {
+
+        Boolean saveSuccess = false;
+
+        //更新主表
+        PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
+        BeanUtil.copyProperties(priceExpMainUpdateDto, priceExpMainPo);
+        SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+        priceExpMainPo.setInnerOrgId(securityUser.getInnerOrgId());
+        saveSuccess = priceExpMainPo.updateById();
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.msg, null);
+        }
+
+        //更新成本价格表
+        PriceExpCostPo priceExpCostPo = new PriceExpCostPo();
+        BeanUtil.copyProperties(priceExpCostUpdateDto, priceExpCostPo);
+        priceExpCostPo.setPriceMainId(priceExpMainPo.getId());
+        saveSuccess = priceExpCostService.updateByPriceExpMainId(priceExpCostPo);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_COST_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_COST_SAVE_DATA_FAILED.msg, null);
+        }
+
+        //更新价格表轴数据
+        PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
+        BeanUtil.copyProperties(priceExpAxisUpdateDto, priceExpAxisPo);
+        priceExpAxisPo.setPriceId(priceExpMainUpdateDto.getId());
+        saveSuccess = priceExpAxisService.updateByPriceExpMainId(priceExpAxisPo);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.msg, null);
+        }
+
+        //更新价格表内数据
+        PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
+        BeanUtil.copyProperties(priceExpDataUpdateDto, priceExpDataPo);
+        priceExpDataPo.setPriceId(priceExpMainUpdateDto.getId());
+        saveSuccess = priceExpDataService.updateByPriceExpMainId(priceExpDataPo);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.msg, null);
+        }
+
+        //更新价格表扩展数据
+        PriceExpDevelopInfoPo priceExpDevelopInfoPo = new PriceExpDevelopInfoPo();
+        BeanUtil.copyProperties(priceExpDevelopInfoUpdateDto, priceExpDevelopInfoPo);
+        priceExpDevelopInfoPo.setPriceId(priceExpMainUpdateDto.getId());
+        saveSuccess = priceExpDevelopInfoService.updateByPriceExpMainId(priceExpDevelopInfoPo);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_DEVELOP_INFO_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_DEVELOP_INFO_SAVE_DATA_FAILED.msg, null);
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
+    }
+
+    /**
+     * 根据id删除成本价格数据
+     * @param id
+     * @return
+     */
+    @Override
+    @Transactional
+    public ResultUtil<Boolean> deleteCostPrice(Long id) {
+
+        //先得到主表id
+        Long priceMainId = priceExpCostService.getPriceDataId(id);
+        if(priceMainId == 0){
+            throw new AplException(CommonStatusCode.SYSTEM_FAIL.code, "成本价格表Id无效", null);
+        }
+        //根据id删除成本价格表信息
+        priceExpCostService.deleteById(id);
+        //根据id删除备注表信息
+        priceExpDevelopInfoService.deleteByPriceId(id);
+
+        //通过主表id得到成本价格表中关联数据的累计条数
+        Integer priceDataIdCount = priceExpCostService.getPriceDataIdCount(priceMainId);
+
+        //如果成本表中没有该主表id对应的数据
+        if(priceDataIdCount == 0){
+
+            //通过主表id查询销售表中的数据统计
+            Integer priceDataIdCount2 = priceExpSaleService.getPriceDataIdCount(priceMainId);
+
+            //如果销售价格表中也没有该主表id对应的关联数据
+            if(priceDataIdCount2 == 0){
+
+                //根据主表id查询租户id
+                Long innerOrgId = baseMapper.getInnerOrgId(priceMainId);
+                SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+
+                if( securityUser.getInnerOrgId() == innerOrgId){
+
+                    //如果是庄家, 则删除主表数据
+                    baseMapper.deleteById(priceMainId);
+                    //删除轴数据
+                    priceExpAxisService.deleteByPriceExpMainId(priceMainId);
+                    //删除主数据
+                    priceExpDataService.deleteByPriceExpMainId(priceMainId);
+
+                }
+            }
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
+    }
+
+    /**
+     * 根据id删除销售价格表数据
+     * @param id
+     * @return
+     */
+    @Override
+    @Transactional
+    public ResultUtil<Boolean> deleteSalePrice(Long id) {
+
+        //先得到主表id
+        Long priceMainId = priceExpSaleService.getPriceDataId(id);
+        if(priceMainId == 0){
+            throw new AplException(CommonStatusCode.SYSTEM_FAIL.code, "成本价格表Id无效", null);
+        }
+        //根据id删除销售价格表信息
+        priceExpSaleService.deleteById(id);
+        //根据id删除备注表信息
+        priceExpDevelopInfoService.deleteByPriceId(id);
+
+        //通过主表id得到销售价格表中关联数据的累计条数
+        Integer priceDataIdCount = priceExpSaleService.getPriceDataIdCount(priceMainId);
+
+        //如果销售表中没有该主表id对应的数据
+        if(priceDataIdCount == 0){
+
+            //通过主表id查询成本表中的数据统计
+            Integer priceDataIdCount2 = priceExpCostService.getPriceDataIdCount(priceMainId);
+
+            //如果成本价格表中也没有该主表id对应的关联数据
+            if(priceDataIdCount2 == 0){
+
+                //根据主表id查询租户id
+                Long innerOrgId = baseMapper.getInnerOrgId(priceMainId);
+                SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+
+                if( securityUser.getInnerOrgId() == innerOrgId){
+
+                    //如果是庄家, 则删除主表数据
+                    baseMapper.deleteById(priceMainId);
+                    //删除轴数据
+                    priceExpAxisService.deleteByPriceExpMainId(priceMainId);
+                    //删除主数据
+                    priceExpDataService.deleteByPriceExpMainId(priceMainId);
+
+                }
+            }
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
+    }
+
+    /**
+     * 新增快递价格
+     * @param priceExpMainInsertDto
+     * @param priceExpSaleAddDto
+     * @param priceExpCostAddDto
+     * @param priceExpAxisInsertDto
+     * @param priceExpDataInsertDto
+     * @return
+     */
+    @Override
+    public ResultUtil<Long> addExpPrice(PriceExpMainInsertDto priceExpMainInsertDto,
+                                        PriceExpSaleAddDto priceExpSaleAddDto,
+                                        PriceExpCostAddDto priceExpCostAddDto,
+                                        PriceExpAxisInsertDto priceExpAxisInsertDto,
+                                        PriceExpDataInsertDto priceExpDataInsertDto) {
+
+        Boolean saveSuccess = false;
+
+        Long priceId = SnowflakeIdWorker.generateId();
+        //保存价格主表数据
+        PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
+        BeanUtil.copyProperties(priceExpMainInsertDto, priceExpMainPo);
+        priceExpMainPo.setId(priceId);
+        SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+        priceExpMainPo.setInnerOrgId(securityUser.getInnerOrgId());
+        priceExpMainPo.setMainStatus(1);
+        saveSuccess = priceExpMainPo.insert();
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.msg, null);
+        }
+        //,com.apl.lms.price.exp.manage.mybatisTypeHandler.PriceExpCustomerGroupsIdTypeHandler
+        //保存销售价格表数据
+        PriceExpSalePo priceExpSalePo = new PriceExpSalePo();
+        BeanUtil.copyProperties(priceExpSaleAddDto, priceExpSalePo);
+        priceExpSalePo.setId(SnowflakeIdWorker.generateId());
+        priceExpSalePo.setQuotePriceFinalId(0L);
+        priceExpSalePo.setQuotePriceId(0L);
+        priceExpSalePo.setPriceStatus(1);
+        priceExpSalePo.setPriceMainId(priceId);
+        priceExpSalePo.setPriceCode(priceExpSaleAddDto.getSalePriceCode());
+        priceExpSalePo.setPriceName(priceExpSaleAddDto.getSalePriceName());
+        priceExpSalePo.setChannelCategory(priceExpSaleAddDto.getSaleChannelCategory());
+        saveSuccess = priceExpSalePo.insert();
+        if(!saveSuccess){
+            throw new AplException(CommonStatusCode.SAVE_FAIL.code, "销售价格数据保存失败", null);
+        }
+
+        //保存销售价格扩展数据失败
+        PriceExpDevelopInfoPo priceExpDevelopInfoPo = new PriceExpDevelopInfoPo();
+        priceExpDevelopInfoPo.setId(SnowflakeIdWorker.generateId());
+        priceExpDevelopInfoPo.setPriceId(priceExpSalePo.getId());
+        priceExpDevelopInfoPo.setPartnerRemark(priceExpSaleAddDto.getPartnerRemark());
+        priceExpDevelopInfoPo.setSaleRemark(priceExpSaleAddDto.getSaleRemark());
+        saveSuccess = priceExpDevelopInfoPo.insert();
+        if(!saveSuccess){
+            throw new AplException(CommonStatusCode.SAVE_FAIL.code, "扩展数据保存失败", null);
+        }
+
+        //保存成本价格数据
+        PriceExpCostPo priceExpCostPo = new PriceExpCostPo();
+        BeanUtil.copyProperties(priceExpCostAddDto, priceExpCostPo);
+        priceExpCostPo.setId(SnowflakeIdWorker.generateId());
+        priceExpCostPo.setPriceStatus(1);
+        priceExpCostPo.setQuotePriceFinalId(0l);
+        priceExpCostPo.setQuotePriceId(0l);
+        priceExpCostPo.setPriceMainId(priceId);
+        priceExpCostPo.setPriceCode(priceExpCostAddDto.getCostPriceCode());
+        priceExpCostPo.setPriceName(priceExpCostAddDto.getCostPriceName());
+        priceExpCostPo.setChannelCategory(priceExpCostAddDto.getCostChannelCategory());
+        saveSuccess = priceExpCostPo.insert();
+        if(!saveSuccess){
+            throw new AplException(CommonStatusCode.SAVE_FAIL.code, "成本价格数据保存失败", null);
+        }
+
+        //保存成本价格扩展价格数据
+        PriceExpDevelopInfoPo priceExpDevelopInfoPo1 = new PriceExpDevelopInfoPo();
+        priceExpDevelopInfoPo1.setId(SnowflakeIdWorker.generateId());
+        priceExpDevelopInfoPo1.setPriceId(priceExpCostPo.getId());
+        priceExpDevelopInfoPo1.setPartnerRemark(priceExpCostAddDto.getCostPartnerRemark());
+        priceExpDevelopInfoPo1.setSaleRemark(priceExpCostAddDto.getCostSaleRemark());
+        saveSuccess = priceExpDevelopInfoPo1.insert();
+        if(!saveSuccess){
+            throw new AplException(CommonStatusCode.SAVE_FAIL.code, "扩展信息保存失败", null);
+        }
+
+        //保存价格表轴数据
+        PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
+        BeanUtil.copyProperties(priceExpAxisInsertDto, priceExpAxisPo);
+        priceExpAxisPo.setId(SnowflakeIdWorker.generateId());
+        priceExpAxisPo.setPriceId(priceId);
+        saveSuccess = priceExpAxisPo.insert();
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.msg, null);
+        }
+
+        //保存价格表内数据
+        PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
+        BeanUtil.copyProperties(priceExpDataInsertDto, priceExpDataPo);
+        priceExpDataPo.setId(SnowflakeIdWorker.generateId());
+        priceExpDataPo.setPriceId(priceId);
+        saveSuccess = priceExpDataPo.insert();
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.msg, null);
+        }
+
+
+
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceId);
+    }
+
+    /**
+     * 插入销售价格数据和备注
+     * @param priceExpSaleAddDto
+     * @return
+     */
+    @Override
+    @Transactional
+    public ResultUtil<Long> addSalePrice(PriceExpSaleAddDto priceExpSaleAddDto) {
+
+        Boolean saveSuccess = false;
+        PriceExpSalePo priceExpSalePo = new PriceExpSalePo();
+        BeanUtil.copyProperties(priceExpSaleAddDto, priceExpSalePo);
+        priceExpSalePo.setId(SnowflakeIdWorker.generateId());
+        priceExpSalePo.setQuotePriceFinalId(0L);
+        priceExpSalePo.setQuotePriceId(0L);
+        priceExpSalePo.setPriceStatus(1);
+        saveSuccess = priceExpSalePo.insert();
+        if(!saveSuccess){
+            throw new AplException(CommonStatusCode.SAVE_FAIL.code, "销售价格数据保存失败", null);
+        }
+
+        PriceExpDevelopInfoPo priceExpDevelopInfoPo = new PriceExpDevelopInfoPo();
+        priceExpDevelopInfoPo.setId(SnowflakeIdWorker.generateId());
+        priceExpDevelopInfoPo.setPriceId(priceExpSalePo.getId());
+        priceExpDevelopInfoPo.setPartnerRemark(priceExpSaleAddDto.getPartnerRemark());
+        priceExpDevelopInfoPo.setSaleRemark(priceExpSaleAddDto.getSaleRemark());
+        saveSuccess = priceExpDevelopInfoPo.insert();
+        if(!saveSuccess){
+            throw new AplException(CommonStatusCode.SAVE_FAIL.code, "扩展数据保存失败", null);
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceExpSalePo.getId());
+    }
+
+    /**
+     * 插入成本价格数据和备注
+     * @param priceExpCostAddDto
+     * @return
+     */
+    @Override
+    @Transactional
+    public ResultUtil<Long> addCostPrice(PriceExpCostAddDto priceExpCostAddDto) {
+
+        Boolean saveSuccess = false;
+        PriceExpCostPo priceExpCostPo = new PriceExpCostPo();
+        BeanUtil.copyProperties(priceExpCostAddDto, priceExpCostPo);
+        priceExpCostPo.setId(SnowflakeIdWorker.generateId());
+        priceExpCostPo.setPriceStatus(1);
+        priceExpCostPo.setQuotePriceFinalId(0l);
+        priceExpCostPo.setQuotePriceId(0l);
+        saveSuccess = priceExpCostPo.insert();
+        if(!saveSuccess){
+            throw new AplException(CommonStatusCode.SAVE_FAIL.code, "成本价格数据保存失败", null);
+        }
+
+        PriceExpDevelopInfoPo priceExpDevelopInfoPo = new PriceExpDevelopInfoPo();
+        priceExpDevelopInfoPo.setId(SnowflakeIdWorker.generateId());
+        priceExpDevelopInfoPo.setPriceId(priceExpCostPo.getId());
+        priceExpDevelopInfoPo.setPartnerRemark(priceExpCostAddDto.getCostPartnerRemark());
+        priceExpDevelopInfoPo.setSaleRemark(priceExpCostAddDto.getCostSaleRemark());
+        saveSuccess = priceExpDevelopInfoPo.insert();
+        if(!saveSuccess){
+            throw new AplException(CommonStatusCode.SAVE_FAIL.code, "扩展信息保存失败", null);
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceExpCostPo.getId());
     }
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper">
+
+    <!--根据priceId删除数据-->
+    <delete id="deleteByPriceExpMainId">
+        delete from price_exp_axis where price_id = #{id}
+    </delete>
+
+    <!--根据主表id更新数据-->
+    <update id="updateByPriceExpMainId">
+        update
+            price_exp_axis
+        set
+            axis_transverse = #{po.axisTransverse},
+            axis_portrait = #{po.axisPortrait}
+        where
+            price_id = #{po.priceId}
+    </update>
+
+    <!--根据主表id获取详细数据-->
+    <select id="getPriceExpAxisInfoByMainId" resultType="com.apl.lms.price.exp.pojo.po.PriceExpAxisPo">
+        select
+            axis_transverse,
+            axis_portrait
+        from
+            price_exp_axis
+        where
+            price_id = #{id}
+    </select>
+</mapper>

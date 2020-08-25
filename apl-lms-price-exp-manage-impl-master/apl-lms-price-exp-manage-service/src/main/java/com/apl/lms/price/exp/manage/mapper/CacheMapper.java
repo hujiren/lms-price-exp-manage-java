@@ -18,13 +18,22 @@ public interface CacheMapper extends BaseMapper {
 
     //添加特殊物品缓存
     @MapKey("cacheKey")
-    Map<String, SpecialCommodityCacheBo> addSpecialCommodityCache(@Param("key") String keys, @Param("minKey") Long minKey, @Param("maxKey") Long maxKey);
+    Map<String, SpecialCommodityCacheBo> addSpecialCommodityCache(@Param("key") String keys,
+                                                                  @Param("minKey") Long minKey,
+                                                                  @Param("maxKey") Long maxKey,
+                                                                  @Param("innerOrgId") Long innerOrgId);
 
     //添加附加费缓存
     @MapKey("cacheKey")
-    Map<String, SurchargeCacheBo> addSurchargeCache(@Param("key") String keys, @Param("minKey") Long minKey, @Param("maxKey") Long maxKey);
+    Map<String, SurchargeCacheBo> addSurchargeCache(@Param("key") String keys,
+                                                    @Param("minKey") Long minKey,
+                                                    @Param("maxKey") Long maxKey,
+                                                    @Param("innerOrgId") Long innerOrgId);
 
     //添加计泡方式缓存
     @MapKey("cacheKey")
-    Map<String, WeightWayCacheBo> addWeightWayCache(@Param("key") String keys, @Param("minKey") Long minKey, @Param("maxKey") Long maxKey);
+    Map<String, WeightWayCacheBo> addWeightWayCache(@Param("key") String keys,
+                                                    @Param("minKey") Long minKey,
+                                                    @Param("maxKey") Long maxKey,
+                                                    @Param("innerOrgId") Long innerOrgId);
 }
