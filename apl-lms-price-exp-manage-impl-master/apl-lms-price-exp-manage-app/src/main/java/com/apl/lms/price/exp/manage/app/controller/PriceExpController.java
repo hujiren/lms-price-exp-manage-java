@@ -50,22 +50,22 @@ public class PriceExpController {
 
     @PostMapping(value = "/get-sale-info")
     @ApiOperation(value = "获取销售价格详情", notes = "获取销售价格详情")
-    @ApiImplicitParam(name = "id", value = "价格主表id", required = true, paramType = "query")
-    public ResultUtil<PriceExpSaleInfoVo> getPriceExpSaleInfo(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+    @ApiImplicitParam(name = "id", value = "销售价格表id", required = true, paramType = "query")
+    public ResultUtil<PriceExpSaleInfoVo> getPriceExpSaleInfo(@NotNull(message = "销售id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
 
         return priceExpService.getPriceExpSaleInfo(id);
     }
 
     @PostMapping(value = "/get-cost-info")
     @ApiOperation(value = "获取成本价格详情", notes = "获取成本价格详情")
-    @ApiImplicitParam(name = "id", value = "价格主表id", required = true, paramType = "query")
-    public ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+    @ApiImplicitParam(name = "id", value = "成本价格表id", required = true, paramType = "query")
+    public ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(@NotNull(message = "成本id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
 
         return priceExpService.getPriceExpCostInfo(id);
     }
 
     @PostMapping(value = "/add-exp-price")
-    @ApiOperation(value = "新增销售价格", notes = "新增销售价格")
+    @ApiOperation(value = "新增快递价格", notes = "新增快递价格")
     public ResultUtil<Long> addExpPrice(PriceExpMainInsertDto priceExpMainInsertDto,
                                         PriceExpSaleAddDto priceExpSaleAddDto,
                                         PriceExpCostAddDto priceExpCostAddDto,
@@ -112,7 +112,6 @@ public class PriceExpController {
 
             //校验主价格表对象
             ApiParamValidate.validate(priceExpMainInsertDto);
-            ApiParamValidate.notEmpty("priceDataId", priceExpMainInsertDto.getPriceDataId());
             ApiParamValidate.notEmpty("startWeight", priceExpMainInsertDto.getStartWeight().toString());
             ApiParamValidate.notEmpty("endWeight", priceExpMainInsertDto.getEndWeight().toString());
             ApiParamValidate.notEmpty("pricePublishedId", priceExpMainInsertDto.getPricePublishedId());
@@ -135,26 +134,64 @@ public class PriceExpController {
 
     @PostMapping(value = "/update-sale-price")
     @ApiOperation(value = "更新销售价格表", notes = "根据Id修改销售价格表")
-    public ResultUtil<Boolean> updateSalePrice(@Validated PriceExpMainUpdateDto priceExpMainUpdateDto,
+    public ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
                                                @Validated PriceExpSaleUpdateDto priceExpSaleUpdateDto,
-                                               @Validated PriceExpAxisUpdateDto priceExpAxisUpdateDto,
-                                               @Validated PriceExpDataUpdateDto priceExpDataUpdateDto,
-                                               @Validated PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto) {
+                                               PriceExpAxisUpdateDto priceExpAxisUpdateDto,
+                                               PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto) {
+        if(priceExpMainUpdateDto != null){
+            ApiParamValidate.validate(priceExpMainUpdateDto);
+            ApiParamValidate.notEmpty("id", priceExpMainUpdateDto.getId());
+            ApiParamValidate.notEmpty("startWeight", priceExpMainUpdateDto.getStartWeight().toString());
+            ApiParamValidate.notEmpty("endWeight", priceExpMainUpdateDto.getEndWeight().toString());
+            ApiParamValidate.notEmpty("aging", priceExpMainUpdateDto.getAging());
+        }
 
-        return priceExpService.updateSalePrice(priceExpMainUpdateDto, priceExpSaleUpdateDto, priceExpAxisUpdateDto, priceExpDataUpdateDto, priceExpDevelopInfoUpdateDto);
+        if(priceExpAxisUpdateDto != null){
+            ApiParamValidate.validate(priceExpAxisUpdateDto);
+            ApiParamValidate.notEmpty("id", priceExpAxisUpdateDto.getId());
+        }
+
+        if(priceExpDevelopInfoUpdateDto != null){
+            ApiParamValidate.validate(priceExpDevelopInfoUpdateDto);
+            ApiParamValidate.notEmpty("id", priceExpDevelopInfoUpdateDto.getId());
+        }
+
+        return priceExpService.updateSalePrice(priceExpMainUpdateDto, priceExpSaleUpdateDto, priceExpAxisUpdateDto, priceExpDevelopInfoUpdateDto);
     }
 
     @PostMapping(value = "/update-cost-price")
     @ApiOperation(value = "更新成本价格表", notes = "根据Id修改成本价格表")
-    public ResultUtil<Boolean> updateCostPrice(@Validated PriceExpMainUpdateDto priceExpMainUpdateDto,
+    public ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
                                                @Validated PriceExpCostUpdateDto priceExpCostUpdateDto,
-                                               @Validated PriceExpAxisUpdateDto priceExpAxisUpdateDto,
-                                               @Validated PriceExpDataUpdateDto priceExpDataUpdateDto,
-                                               @Validated PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto) {
+                                               PriceExpAxisUpdateDto priceExpAxisUpdateDto,
+                                               PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto) {
 
-        return priceExpService.updateCostPrice(priceExpMainUpdateDto, priceExpCostUpdateDto, priceExpAxisUpdateDto, priceExpDataUpdateDto, priceExpDevelopInfoUpdateDto);
+        if(priceExpMainUpdateDto != null){
+            ApiParamValidate.validate(priceExpMainUpdateDto);
+            ApiParamValidate.notEmpty("id", priceExpMainUpdateDto.getId());
+            ApiParamValidate.notEmpty("startWeight", priceExpMainUpdateDto.getStartWeight().toString());
+            ApiParamValidate.notEmpty("endWeight", priceExpMainUpdateDto.getEndWeight().toString());
+            ApiParamValidate.notEmpty("aging", priceExpMainUpdateDto.getAging());
+        }
+
+        if(priceExpAxisUpdateDto != null){
+            ApiParamValidate.validate(priceExpAxisUpdateDto);
+            ApiParamValidate.notEmpty("id", priceExpAxisUpdateDto.getId());
+        }
+
+        if(priceExpDevelopInfoUpdateDto != null){
+            ApiParamValidate.validate(priceExpDevelopInfoUpdateDto);
+            ApiParamValidate.notEmpty("id", priceExpDevelopInfoUpdateDto.getId());
+        }
+        
+        return priceExpService.updateCostPrice(priceExpMainUpdateDto, priceExpCostUpdateDto, priceExpAxisUpdateDto, priceExpDevelopInfoUpdateDto);
     }
 
+    @PostMapping(value = "/update-price-data")
+    @ApiOperation(value = "更新主表数据", notes = "更新主表数据")
+    public ResultUtil<Boolean> updatePriceData(PriceExpDataUpdateDto priceExpMainUpdateDto){
+        return priceExpService.updatePriceData(priceExpMainUpdateDto);
+    }
 
     @PostMapping(value = "/delete-cost-price")
     @ApiOperation(value = "删除成本价格表", notes = "根据Id删除成本价格表")

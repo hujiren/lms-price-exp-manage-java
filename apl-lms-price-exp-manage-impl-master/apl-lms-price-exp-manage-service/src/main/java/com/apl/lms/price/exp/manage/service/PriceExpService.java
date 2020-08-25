@@ -10,6 +10,7 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * @author hjr start
@@ -53,14 +54,12 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param priceExpMainUpdateDto
      * @param priceExpSaleUpdateDto
      * @param priceExpAxisUpdateDto
-     * @param priceExpDataUpdateDto
      * @param priceExpDevelopInfoUpdateDto
      * @return
      */
     ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
                                         PriceExpSaleUpdateDto priceExpSaleUpdateDto,
                                         PriceExpAxisUpdateDto priceExpAxisUpdateDto,
-                                        PriceExpDataUpdateDto priceExpDataUpdateDto,
                                         PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto);
 
     /**
@@ -68,14 +67,12 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param priceExpMainUpdateDto
      * @param priceExpCostUpdateDto
      * @param priceExpAxisUpdateDto
-     * @param priceExpDataUpdateDto
      * @param priceExpDevelopInfoUpdateDto
      * @return
      */
     ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
-                                        PriceExpCostUpdateDto priceExpCostUpdateDto,
+                                        @Validated PriceExpCostUpdateDto priceExpCostUpdateDto,
                                         PriceExpAxisUpdateDto priceExpAxisUpdateDto,
-                                        PriceExpDataUpdateDto priceExpDataUpdateDto,
                                         PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto);
 
     /**
@@ -120,4 +117,11 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
                                  PriceExpCostAddDto priceExpCostAddDto,
                                  PriceExpAxisInsertDto priceExpAxisInsertDto,
                                  PriceExpDataInsertDto priceExpDataInsertDto);
+
+    /**
+     * 更新价格表数据
+     * @param priceExpMainUpdateDto
+     * @return
+     */
+    ResultUtil<Boolean> updatePriceData(PriceExpDataUpdateDto priceExpMainUpdateDto);
 }

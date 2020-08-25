@@ -22,6 +22,7 @@ public class PriceExpSaleUpdateDto extends Model<PriceExpSaleUpdateDto> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @ApiModelProperty(name = "id" , value = "销售价格表Id", required = true)
+    @NotNull(message = "销售价格表id不能为空")
     private Long id;
 
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
@@ -56,4 +57,7 @@ public class PriceExpSaleUpdateDto extends Model<PriceExpSaleUpdateDto> {
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;
+
+    @ApiModelProperty(name = "priceMainId" , value = "价格主表id", hidden = true)
+    private Long priceMainId;
 }

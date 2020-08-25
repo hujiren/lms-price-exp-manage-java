@@ -7,21 +7,35 @@
         update
             price_exp_sale
         set
-           price_code = #{po.priceCode},
-           price_name = #{po.priceName},
-           customer_groups_id = #{po.customerGroupsId},
-           customer_groups_name = #{po.customerGroupsName},
-           customer_ids = #{po.customerIds},
-           customer_name = #{po.customerName},
-           price_status = #{po.priceStatus},
-           channel_category = #{po.channelCategory}
+            <if test="po.priceCode != null">
+                price_code = #{po.priceCode},
+            </if>
+            <if test="po.customerGroupsId != null">
+                customer_groups_id = #{po.customerGroupsId},
+            </if>
+            <if test="po.customerGroupsName != null">
+                customer_groups_name = #{po.customerGroupsName},
+            </if>
+            <if test="po.customerIds != null">
+                customer_ids = #{po.customerIds},
+            </if>
+            <if test="po.customerName != null">
+                customer_name = #{po.customerName},
+            </if>
+            <if test="po.channelCategory != null">
+                channel_category = #{po.channelCategory},
+            </if>
+            price_name = #{po.priceName},
+            price_status = #{po.priceStatus}
+
         where
-           price_main_id = #{po.priceMainId}
+            id = #{po.id}
     </update>
 
     <!--根据主表id获取销售价格表Id-->
     <select id="getPriceExpSaleInfoByMainId" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo">
         select
+            id,
             price_code,
             price_name,
             customer_groups_id,
@@ -29,11 +43,12 @@
             customer_ids,
             customer_name,
             price_status,
-            channel_category
+            channel_category,
+            price_main_id
         from
             price_exp_sale
         where
-            price_main_id = #{id}
+            id = #{id}
     </select>
 
     <!--根据主表id获取数据统计数量-->

@@ -5,15 +5,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.ser.impl.MapEntrySerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -22,12 +17,12 @@ import java.util.List;
  * @Date 2020/8/20 14:36
  */
 @Data
-@ApiModel(value="销售价格主表  持久化对象", description="销售价格主表 持久化对象")
+@ApiModel(value="快递价格主表  持久化对象", description="快递价格主表 持久化对象")
 public class PriceExpMainUpdateDto extends Model<PriceExpMainUpdateDto> {
 
     @TableId(value = "id", type = IdType.INPUT)
-    @ApiModelProperty(name = "id" , value = "销售价格主表Id", required = true)
-    @NotNull(message = "销售价格主表Id不能为空")
+    @ApiModelProperty(name = "id" , value = "快递价格主表Id")
+    @NotNull(message = "快递价格主表Id不能为空")
     private Long id;
 
     @ApiModelProperty(name = "startDate" , value = "起始日期")
@@ -73,26 +68,26 @@ public class PriceExpMainUpdateDto extends Model<PriceExpMainUpdateDto> {
 //    @NotNull(message = "价格表格式不能为空")
     private Integer priceForm;
 
-    @ApiModelProperty(name = "priceDataId" , value = "价格数据表id", required = true)
+    @ApiModelProperty(name = "priceDataId" , value = "价格数据表id", hidden = true)
     @NotNull(message = "价格数据表Id不能为空")
     private Long priceDataId;
 
-    @ApiModelProperty(name = "startWeight" , value = "起始重")
-//    @NotNull(message = "起始重量不能为空")
+    @ApiModelProperty(name = "startWeight" , value = "起始重", required = true)
+    @NotNull(message = "起始重量不能为空")
     private Double startWeight;
 
-    @ApiModelProperty(name = "endWeight" , value = "截止重")
-//    @NotNull(message = "截止重量不能为空")
+    @ApiModelProperty(name = "endWeight" , value = "截止重", required = true)
+    @NotNull(message = "截止重量不能为空")
     private Double endWeight;
 
-    @ApiModelProperty(name = "pricePublishedId" , value = "公布价id", required = true)
-    @NotNull(message = "公布价id不能为空")
+    @ApiModelProperty(name = "pricePublishedId" , value = "公布价id", hidden = true)
+//    @NotNull(message = "公布价id不能为空")
     private Long pricePublishedId;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     @TypeValidator(value = {"1","2"} , message = "公布价值错误")
     private Integer isPublishedPrice;
 
-    @ApiModelProperty(name = "aging" , value = "时效")
+    @ApiModelProperty(name = "aging" , value = "时效", required = true)
     private String aging;
 }

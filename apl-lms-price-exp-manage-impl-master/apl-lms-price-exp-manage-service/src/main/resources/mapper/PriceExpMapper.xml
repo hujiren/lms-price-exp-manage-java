@@ -26,24 +26,22 @@
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>
-        <if test="key.mainStatus != null">
 
-            <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
-                and main.main_status = #{key.mainStatus}
-            </if>
-            <if test="key.mainStatus == 4">
-                and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
-            </if>
-            <if test="key.mainStatus == 5">
-                and now() - main.end_date > '0 day'
-            </if>
-
+        <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
+            and main.main_status = #{key.mainStatus}
         </if>
+        <if test="key.mainStatus == 4">
+            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
+        </if>
+        <if test="key.mainStatus == 5">
+            and now() - main.end_date > '0 day'
+        </if>
+
         <if test="key.customerGroupsId != null">
-            and sale.customer_groups_id @> #{key.customerGroupsId}
+            and sale.customer_groups_id @> ${key.customerGroupsId}
         </if>
         <if test="key.customerId != null">
-            and sale.customer_ids @> #{key.customerId}
+            and sale.customer_ids @> ${key.customerId}
         </if>
         <if test="key.priceStatus != null and key.priceStatus > 0">
             and sale.price_status = #{key.priceStatus}
@@ -62,7 +60,7 @@
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
             main.id, main.start_date, main.end_date, main.currency, main.volume_weight_cardinal, main.account_type,
-            main.main_status, main.special_commodity
+            main.main_status, main.special_commodity,
             cost.id as priceExpCostId, cost.price_status, cost.price_code, cost.channel_category
         from
             price_exp_main main
@@ -81,18 +79,14 @@
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>
-        <if test="key.mainStatus != null">
-
-            <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
-                and main.main_status = #{key.mainStatus}
-            </if>
-            <if test="key.mainStatus == 4">
-                and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
-            </if>
-            <if test="key.mainStatus == 5">
-                and now() - main.end_date > '0 day'
-            </if>
-
+        <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
+            and main.main_status = #{key.mainStatus}
+        </if>
+        <if test="key.mainStatus == 4">
+            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
+        </if>
+        <if test="key.mainStatus == 5">
+            and now() - main.end_date > '0 day'
         </if>
         <if test="key.partnerId != null">
             and cost.partner_id = #{key.partnerId}
@@ -166,7 +160,7 @@
 
     <!--根据主表id查询多租户id-->
     <select id="getInnerOrgId" resultType="java.lang.Long">
-        select inner_org_id from price_exp_main where inner_org_id = #{id}
+        select inner_org_id from price_exp_main where id = #{id}
     </select>
 
 </mapper>

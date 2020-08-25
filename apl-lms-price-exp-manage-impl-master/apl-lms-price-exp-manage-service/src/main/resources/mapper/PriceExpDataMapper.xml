@@ -7,16 +7,6 @@
         delete from price_exp_data where price_id = #{id}
     </delete>
 
-    <!--根据主表id更新数据-->
-    <update id="updateByPriceExpMainId">
-        update
-            price_exp_data
-        set
-            price_data = #{po.priceData}
-        where
-            price_id = #{po.priceId}
-    </update>
-
     <!--根据主表id获取详细数据-->
     <select id="getPriceExpDataInfoByMainId" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpDataVo">
         select
@@ -26,4 +16,14 @@
         where
             price_id = #{id}
     </select>
+
+    <!--根据id获取租户id-->
+    <select id="getInnerOrgId" resultType="java.lang.Long">
+        select inner_org_id from price_exp_data where id = #{id}
+    </select>
+
+    <!--更新-->
+    <update id="updatePriceExpData">
+        update price_exp_data set price_data = #{po.priceData,com.apl.lms.price.exp.manage.TypeHandler.DataTypeHandler} where id = #{po.id}
+    </update>
 </mapper>

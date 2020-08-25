@@ -52,7 +52,7 @@ public class PriceExpMainInsertDto extends Model<PriceExpMainInsertDto> {
     @ApiModelProperty(name = "priceForm" , value = "价格表格式 1横向 2纵向")
     private Integer priceForm;
 
-    @ApiModelProperty(name = "priceDataId" , value = "价格数据表id")
+    @ApiModelProperty(name = "priceDataId" , value = "价格数据表id", hidden = true)
     @NotNull(message = "价格数据表Id不能为空")
     private Long priceDataId;
 

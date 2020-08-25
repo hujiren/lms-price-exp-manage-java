@@ -21,16 +21,23 @@ public interface PriceExpDataMapper extends BaseMapper<PriceExpDataPo> {
     Integer deleteByPriceExpMainId(@Param("id") Long priceExpMainId);
 
     /**
-     * 根据主表id更新数据
-     * @param priceExpDataPo
-     * @return
-     */
-    Integer updateByPriceExpMainId(@Param("po") PriceExpDataPo priceExpDataPo);
-
-    /**
      * 根据主表id获取详细数据
      * @param id
      * @return
      */
     PriceExpDataVo getPriceExpDataInfoByMainId(@Param("id") Long id);
+
+    /**
+     * 根据id查询d多租户id
+     * @param id
+     * @return
+     */
+    Long getInnerOrgId(@Param("id") Long id);
+
+    /**
+     * 更新
+     * @param priceExpDataPo
+     * @return
+     */
+    Integer updatePriceExpData(@Param("po") PriceExpDataPo priceExpDataPo);
 }

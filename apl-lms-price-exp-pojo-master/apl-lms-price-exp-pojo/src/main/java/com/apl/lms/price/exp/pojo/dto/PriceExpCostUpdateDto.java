@@ -20,7 +20,10 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value="成本价格表  持久化对象", description="成本价格表 持久化对象")
 public class PriceExpCostUpdateDto extends Model<PriceExpCostUpdateDto> {
 
-
+    @TableId(value = "id", type = IdType.INPUT)
+    @ApiModelProperty(name = "id" , value = "成本价格主表Id", required = true)
+    @NotNull(message = "成本价格主表Id不能为空")
+    private Long id;
 
     @ApiModelProperty(name = "partnerId" , value = "合作商Id", required = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -49,4 +52,8 @@ public class PriceExpCostUpdateDto extends Model<PriceExpCostUpdateDto> {
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)
     @NotBlank(message = "渠道类型不能为空")
     private String channelCategory;
+
+    @ApiModelProperty(name = "priceMainId" , value = "主表Id", hidden = true)
+    @NotBlank(message = "主表id")
+    private Long priceMainId;
 }

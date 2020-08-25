@@ -24,18 +24,6 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
     }
 
     /**
-     * 根据主表id更新数据
-     * @param priceExpAxisPo
-     * @return
-     */
-    @Override
-    public Boolean updateByPriceExpMainId(PriceExpAxisPo priceExpAxisPo) {
-
-        Integer i = baseMapper.updateByPriceExpMainId(priceExpAxisPo);
-        return i > 0 ? true : false;
-    }
-
-    /**
      * 根据主表id获取详细数据
      * @param id
      * @return

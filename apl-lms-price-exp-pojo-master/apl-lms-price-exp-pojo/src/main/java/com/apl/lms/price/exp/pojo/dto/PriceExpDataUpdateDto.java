@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -19,6 +20,11 @@ import java.util.List;
 @ApiModel(value="价格表数据  更新对象", description="价格表数据 更新对象")
 public class PriceExpDataUpdateDto extends Model<PriceExpDataUpdateDto> {
 
+
+    @TableId(value = "id", type = IdType.INPUT)
+    @ApiModelProperty(name = "id" , value = "价格表数据Id", required = true)
+    @NotNull(message = "价格表数据Id不能为空")
+    private Long id;
 
     @ApiModelProperty(name = "priceId" , value = "价格表主表id", hidden = true)
     private Long priceId;

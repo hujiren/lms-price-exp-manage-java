@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.mybatisTypeHandler;
+package com.apl.lms.price.exp.manage.TypeHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;

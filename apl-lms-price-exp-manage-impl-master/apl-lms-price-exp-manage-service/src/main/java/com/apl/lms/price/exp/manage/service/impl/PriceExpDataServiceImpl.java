@@ -20,14 +20,24 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     }
 
     @Override
-    public Boolean updateByPriceExpMainId(PriceExpDataPo priceExpDataPo) {
+    public PriceExpDataVo getPriceExpDataInfoByMainId(Long id) {
+        return baseMapper.getPriceExpDataInfoByMainId(id);
+    }
 
-        Integer i = baseMapper.updateByPriceExpMainId(priceExpDataPo);
-        return i > 0 ? true : false;
+
+    @Override
+    public Long getInnerOrgId(Long id) {
+        return baseMapper.getInnerOrgId(id);
     }
 
     @Override
-    public PriceExpDataVo getPriceExpDataInfoByMainId(Long id) {
-        return baseMapper.getPriceExpDataInfoByMainId(id);
+    public Boolean updatePriceExpData(PriceExpDataPo priceExpDataPo) {
+
+        Integer integer = baseMapper.updatePriceExpData(priceExpDataPo);
+
+        if(integer < 1){
+            return false;
+        }
+        return true;
     }
 }

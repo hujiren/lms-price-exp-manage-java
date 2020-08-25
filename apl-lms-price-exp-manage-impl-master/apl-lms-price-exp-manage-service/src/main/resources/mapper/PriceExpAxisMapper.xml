@@ -7,17 +7,6 @@
         delete from price_exp_axis where price_id = #{id}
     </delete>
 
-    <!--根据主表id更新数据-->
-    <update id="updateByPriceExpMainId">
-        update
-            price_exp_axis
-        set
-            axis_transverse = #{po.axisTransverse},
-            axis_portrait = #{po.axisPortrait}
-        where
-            price_id = #{po.priceId}
-    </update>
-
     <!--根据主表id获取详细数据-->
     <select id="getPriceExpAxisInfoByMainId" resultType="com.apl.lms.price.exp.pojo.po.PriceExpAxisPo">
         select

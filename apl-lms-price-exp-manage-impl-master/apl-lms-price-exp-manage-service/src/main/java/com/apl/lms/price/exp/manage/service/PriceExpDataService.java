@@ -19,16 +19,23 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
     Integer deleteByPriceExpMainId(Long priceExpMainId);
 
     /**
-     * 根据价格主表更新数据
-     * @param priceExpDataPo
-     * @return
-     */
-    Boolean updateByPriceExpMainId(PriceExpDataPo priceExpDataPo);
-
-    /**
      * 根据主表id获取主数据信息
      * @param id
      * @return
      */
     PriceExpDataVo getPriceExpDataInfoByMainId(Long id);
+
+    /**
+     * 获取多租户id
+     * @param id
+     * @return
+     */
+    Long getInnerOrgId(Long id);
+
+    /**
+     * 更新
+     * @param priceExpDataPo
+     * @return
+     */
+    Boolean updatePriceExpData(PriceExpDataPo priceExpDataPo);
 }

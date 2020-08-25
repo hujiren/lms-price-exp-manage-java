@@ -20,13 +20,6 @@ public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
     Integer deleteByPriceExpMainId(@Param("id") Long priceExpMainId);
 
     /**
-     * 根据主表id更新数据
-     * @param priceExpAxisPo
-     * @return
-     */
-    Integer updateByPriceExpMainId(@Param("po") PriceExpAxisPo priceExpAxisPo);
-
-    /**
      * 根据主表id获取详细数据
      * @param id
      * @return

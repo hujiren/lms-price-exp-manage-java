@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author hjr start
@@ -21,6 +22,10 @@ import javax.validation.constraints.NotBlank;
 @ApiModel(value="价格表扩展数据  更新对象", description="价格表扩展数据 更新对象")
 public class PriceExpDevelopInfoUpdateDto extends Model<PriceExpDevelopInfoUpdateDto> {
 
+    @TableId(value = "id", type = IdType.INPUT)
+    @ApiModelProperty(name = "id" , value = "扩展数据表Id")
+    @NotNull(message = "扩展数据Id不能为空")
+    private Long id;
 
     @ApiModelProperty(name = "priceId" , value = "价格表主表id", hidden = true)
     private Long priceId;
