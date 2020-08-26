@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.typeHandler;
+package com.apl.lms.price.exp.pojo.handler;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,18 +20,18 @@ import java.util.List;
  * @date 2020/6/11 - 10:10
 */
 @Component
-public class DataTypeHandler extends BaseTypeHandler<List> {
+public class CustomerGroupsIdTypeHandler extends BaseTypeHandler<List> {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final PGobject PGOBJECT = new PGobject();
+    //private static final PGobject PGOBJECT = new PGobject();
 
 
     @Override
     public void setNonNullParameter(PreparedStatement preparedStatement, int i, List list, JdbcType jdbcType) throws SQLException {
-//        PGobject jsonObject = new PGobject();
-        PGOBJECT.setType("json");
-        PGOBJECT.setValue(list.toString());
-        preparedStatement.setObject(i, PGOBJECT);
+        PGobject jsonObject = new PGobject();
+        jsonObject.setType("json");
+        jsonObject.setValue(list.toString());
+        preparedStatement.setObject(i, jsonObject);
     }
 
     @SneakyThrows
