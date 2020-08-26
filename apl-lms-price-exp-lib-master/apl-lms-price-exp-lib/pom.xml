@@ -8,19 +8,6 @@
 
     <dependencies>
 
-        <!-- 动态数据源 -->
-        <dependency>
-            <groupId>com.apl</groupId>
-            <artifactId>apl-db</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.apl</groupId>
-            <artifactId>apl-cache</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
         <!-- mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -33,25 +20,12 @@
             <artifactId>apl-lib</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>5.2.6.RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.apl</groupId>
-            <artifactId>apl-wms-warehouse-pojo</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.apl</groupId>
-            <artifactId>apl-wms-warehouse-pojo</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.14</version>
+        </dependency>
 
     </dependencies>
 
