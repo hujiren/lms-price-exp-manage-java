@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.TypeHandler;
+package com.apl.lms.price.exp.manage.typeHandler;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

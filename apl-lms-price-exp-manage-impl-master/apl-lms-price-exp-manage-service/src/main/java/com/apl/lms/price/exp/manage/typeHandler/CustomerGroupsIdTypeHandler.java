@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.TypeHandler;
+package com.apl.lms.price.exp.manage.typeHandler;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +20,7 @@ import java.util.List;
  * @date 2020/6/11 - 10:10
 */
 @Component
-public class PriceExpCustomerGroupsIdTypeHandler extends BaseTypeHandler<List> {
+public class CustomerGroupsIdTypeHandler extends BaseTypeHandler<List> {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     //private static final PGobject PGOBJECT = new PGobject();
