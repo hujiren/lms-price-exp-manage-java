@@ -1,8 +1,5 @@
-package com.apl.lms.price.exp.lib.handler;
+package com.apl.lms.price.exp.lib.typeHandler;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import lombok.SneakyThrows;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.postgresql.util.PGobject;
@@ -13,6 +10,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CommonJsonbHandler  extends BaseTypeHandler<List> {
+
+    //private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void setNonNullParameter(PreparedStatement preparedStatement, int i, List list, JdbcType jdbcType) throws SQLException {

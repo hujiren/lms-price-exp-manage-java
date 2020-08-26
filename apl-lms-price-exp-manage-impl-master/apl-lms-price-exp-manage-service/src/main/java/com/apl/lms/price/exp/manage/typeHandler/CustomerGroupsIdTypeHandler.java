@@ -23,7 +23,6 @@ import java.util.List;
 public class CustomerGroupsIdTypeHandler extends BaseTypeHandler<List> {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    //private static final PGobject PGOBJECT = new PGobject();
 
 
     @Override
