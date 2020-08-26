@@ -36,4 +36,9 @@
         </foreach>
 
     </insert>
+
+    <!--获取附加费详细-->
+    <select id="getSurcharge" resultType="com.apl.lms.price.exp.pojo.dto.SurchargeDto">
+        select id,charge_name,computing_formula,currency from price_surcharge where id = #{id}
+    </select>
 </mapper>

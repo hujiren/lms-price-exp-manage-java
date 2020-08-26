@@ -17,10 +17,10 @@ import javax.validation.constraints.NotNull;
 public class ComputationalFormulaInsertDto extends Model<ComputationalFormulaInsertDto> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceId" , value = "价格清单id", hidden = true)
+    @ApiModelProperty(name = "priceId" , value = "价格清单id", required = true)
     private Long priceId;
 
-    @ApiModelProperty(name = "formula" , value = "公式", required = true)
+    @ApiModelProperty(name = "formula" , value = "公式")
     @NotBlank(message = "公式不能为空")
     private String formula;
 
@@ -32,16 +32,17 @@ public class ComputationalFormulaInsertDto extends Model<ComputationalFormulaIns
     @NotBlank(message = "国家不能为空")
     private String country;
 
-    @ApiModelProperty(name = "startingWeight" , value = "起始重量", required = true)
+    @ApiModelProperty(name = "startingWeight" , value = "起始重量")
     @NotNull(message = "起始重量不能为空")
     private Double startingWeight;
 
-    @ApiModelProperty(name = "endingWeight" , value = "截止重量", required = true)
+    @ApiModelProperty(name = "endingWeight" , value = "截止重量")
     @NotNull(message = "截止重量不能为空")
     private Double endingWeight;
 
     @ApiModelProperty(name = "packingType" , value = "包裹类型", required = true)
     @NotBlank(message = "包裹类型不能为空")
     private String packingType;
-    
+
+
 }

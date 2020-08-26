@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpMapper">
+
+    <!--分页查询销售价格列表-->
+    <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
+        select
+            main.id, main.start_date, main.end_date, main.currency, main.volume_weight_cardinal, main.account_type,
+            main.main_status, main.special_commodity,
+            sale.id as priceExpSaleId, sale.price_code, sale.customer_groups_name, sale.customer_name,
+            sale.channel_category, sale.price_status
+        from
+            price_exp_main main
+        left join
+            price_exp_sale sale
+        on
+            main.id = sale.price_main_id
+        where
+            1=1
+        <if test="key.volumeWeightCardinal != null">
+            and main.volume_weight_cardinal = #{key.volumeWeightCardinal}
+        </if>
+        <if test="key.isPublishedPrice != null and key.isPublishedPrice > 0">
+            and main.is_published_price = #{key.isPublishedPrice}
+        </if>
+        <if test="key.accountType != null">
+            and main.account_type = #{key.accountType}
+        </if>
+
+        <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
+            and main.main_status = #{key.mainStatus}
+        </if>
+        <if test="key.mainStatus == 4">
+            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
+        </if>
+        <if test="key.mainStatus == 5">
+            and now() - main.end_date > '0 day'
+        </if>
+
+        <if test="key.customerGroupsId != null">
+            and sale.customer_groups_id @> ${key.customerGroupsId}
+        </if>
+        <if test="key.customerId != null">
+            and sale.customer_ids @> ${key.customerId}
+        </if>
+        <if test="key.priceStatus != null and key.priceStatus > 0">
+            and sale.price_status = #{key.priceStatus}
+        </if>
+        <if test="key.channelCategory != null">
+            and sale.channel_category = #{key.channelCategory}
+        </if>
+        <if test="key.keyWord != null">
+            and sale.customer_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            or sale.price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            or sale.customer_groups_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+        </if>
+    </select>
+
+    <!--分页查询成本价格列表-->
+    <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
+        select
+            main.id, main.start_date, main.end_date, main.currency, main.volume_weight_cardinal, main.account_type,
+            main.main_status, main.special_commodity,
+            cost.id as priceExpCostId, cost.price_status, cost.price_code, cost.channel_category
+        from
+            price_exp_main main
+        left join
+            price_exp_cost cost
+        on
+            main.id = cost.price_main_id
+        where
+            1=1
+        <if test="key.volumeWeightCardinal != null">
+            and main.volume_weight_cardinal = #{key.volumeWeightCardinal}
+        </if>
+        <if test="key.isPublishedPrice != null and key.isPublishedPrice > 0">
+            and main.is_published_price = #{key.isPublishedPrice}
+        </if>
+        <if test="key.accountType != null">
+            and main.account_type = #{key.accountType}
+        </if>
+        <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
+            and main.main_status = #{key.mainStatus}
+        </if>
+        <if test="key.mainStatus == 4">
+            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
+        </if>
+        <if test="key.mainStatus == 5">
+            and now() - main.end_date > '0 day'
+        </if>
+        <if test="key.partnerId != null">
+            and cost.partner_id = #{key.partnerId}
+        </if>
+        <if test="key.priceStatus != null and key.priceStatus > 0">
+            and cost.price_status = #{key.priceStatus}
+        </if>
+        <if test="key.channelCategory != null">
+            and cost.channel_category = #{key.channelCategory}
+        </if>
+        <if test="key.keyWord != null">
+            and cost.price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+        </if>
+    </select>
+
+    <!--新增快递价格-->
+    <insert id="insertPriceExpMain">
+        insert into
+             price_exp_main(id, start_date, end_date, currency, zone_id, volume_weight_cardinal, account_type, account_no,
+             main_status, special_commodity, price_form, price_data_id, start_weight, end_weight, price_published_id,
+             is_published_price, aging, inner_org_id)
+         values
+             (#{po.id},
+             #{po.startDate},
+             #{po.endDate},
+             #{po.currency},
+             #{po.zoneId},
+             #{po.volumeWeightCardinal},
+             #{po.accountType},
+             #{po.accountNo},
+             #{po.mainStatus},
+             #{po.specialCommodity},
+             #{po.priceForm},
+             #{po.priceDataId},
+             #{po.startWeight},
+             #{po.endWeight},
+             #{po.pricePublishedId},
+             #{po.isPublishedPrice},
+             #{po.aging},
+             #{po.innerOrgId})
+     </insert>
+
+    <!--校验id是否存在啊-->
+    <select id="getExpListById" resultType="java.lang.Long">
+        select id from price_exp_list where id = #{id}
+    </select>
+
+    <!--获取主表详细-->
+    <select id="getPriceExpMainInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo">
+        select
+            id,
+            start_date,
+            end_date,
+            currency,
+            zone_id,
+            volume_weight_cardinal,
+            account_type,
+            account_no,
+            main_status,
+            special_commodity,
+            price_form,
+            start_weight,
+            end_weight,
+            is_published_price,
+            aging
+        from
+            price_exp_main
+        where
+            id = #{id}
+    </select>
+
+    <!--根据主表id查询多租户id-->
+    <select id="getInnerOrgId" resultType="java.lang.Long">
+        select inner_org_id from price_exp_main where id = #{id}
+    </select>
+
+</mapper>

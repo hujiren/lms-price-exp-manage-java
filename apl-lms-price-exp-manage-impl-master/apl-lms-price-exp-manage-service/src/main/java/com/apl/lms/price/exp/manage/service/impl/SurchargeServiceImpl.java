@@ -66,6 +66,11 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
     @Override
     public ResultUtil<Boolean> updSurcharge(SurchargeDto surchargeDto) {
 
+        SurchargeDto surchargeDto2 = baseMapper.getSurcharge(surchargeDto.getId());
+        if(surchargeDto == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+
         Integer integer = baseMapper.updSurcharge(surchargeDto);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
@@ -91,5 +96,21 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
+    }
+
+    /**
+     * 获取附加费详细
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<SurchargeDto> getSurcharge(Long id) {
+
+        SurchargeDto surchargeDto = baseMapper.getSurcharge(id);
+        if(surchargeDto == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, surchargeDto);
     }
 }

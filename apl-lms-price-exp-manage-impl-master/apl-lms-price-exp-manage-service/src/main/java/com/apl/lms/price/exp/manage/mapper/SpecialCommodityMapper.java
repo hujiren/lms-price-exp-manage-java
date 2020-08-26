@@ -25,6 +25,7 @@ import java.util.List;
 @Repository
 public interface SpecialCommodityMapper extends BaseMapper<SpecialCommodityDto> {
 
+
     /**
      * @Desc: 查找特殊物品列表
      * @Author:
@@ -52,4 +53,11 @@ public interface SpecialCommodityMapper extends BaseMapper<SpecialCommodityDto> 
      * @return
      */
     Integer addSpecialCommodity(@Param("po") List<SpecialCommodityInsertDto> specialCommodityInsertDtoList);
+
+    /**
+     * 获取特殊物品详细
+     * @param id
+     * @return
+     */
+    SpecialCommodityVo getSpecialCommodity(@Param("id") Long id);
 }

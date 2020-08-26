@@ -18,6 +18,18 @@
 
         <dependency>
             <groupId>com.apl</groupId>
+            <artifactId>apl-lms-price-exp-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.shardingsphere</groupId>
+            <artifactId>sharding-transaction-spring</artifactId>
+            <version>3.1.0.M1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.apl</groupId>
             <artifactId>apl-cache</artifactId>
             <version>1.0.0</version>
         </dependency>
@@ -47,6 +59,22 @@
         </dependency>
 
     </dependencies>
+
+
+    <repositories><!-- 代码库 -->
+        <repository>
+            <id>maven-ali</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public//</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
 
     <build>

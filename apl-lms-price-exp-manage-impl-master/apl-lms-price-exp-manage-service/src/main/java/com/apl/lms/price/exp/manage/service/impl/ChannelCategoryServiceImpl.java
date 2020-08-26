@@ -87,6 +87,11 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
         ChannelCateGoryPo channelCateGoryPo = new ChannelCateGoryPo();
         BeanUtils.copyProperties(channelCateGoryDto, channelCateGoryPo);
 
+        ChannelCateGoryVo channelCateGoryVo = baseMapper.getChannelCateGory(channelCateGoryDto.getId());
+
+        if(channelCateGoryVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL.getCode(), "id不存在", null);
+        }
         Integer integer = baseMapper.updChannelCategory(channelCateGoryPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
@@ -105,7 +110,6 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
         ChannelCateGoryPo channelCateGoryPo = new ChannelCateGoryPo();
         BeanUtils.copyProperties(channelCateGoryInsertDto, channelCateGoryPo);
         channelCateGoryPo.setId(SnowflakeIdWorker.generateId());
-
         Integer integer = baseMapper.addChannelCategory(channelCateGoryPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
@@ -113,5 +117,20 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, channelCateGoryPo.getId().toString());
     }
 
+    /**
+     * 获取渠道类型详细
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<ChannelCateGoryVo> getChannelCategory(Long id) {
 
+        ChannelCateGoryVo channelCateGory = baseMapper.getChannelCateGory(id);
+
+        if(channelCateGory == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, channelCateGory);
+    }
 }

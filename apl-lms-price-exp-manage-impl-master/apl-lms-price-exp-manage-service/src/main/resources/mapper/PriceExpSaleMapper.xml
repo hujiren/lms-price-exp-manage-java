@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpSaleMapper">
+
+    <!--根据主表id更新数据-->
+    <update id="updateByPriceExpMainId">
+        update
+            price_exp_sale
+        set
+            <if test="po.priceCode != null">
+                price_code = #{po.priceCode},
+            </if>
+            <if test="po.customerGroupsId != null">
+                customer_groups_id = #{po.customerGroupsId},
+            </if>
+            <if test="po.customerGroupsName != null">
+                customer_groups_name = #{po.customerGroupsName},
+            </if>
+            <if test="po.customerIds != null">
+                customer_ids = #{po.customerIds},
+            </if>
+            <if test="po.customerName != null">
+                customer_name = #{po.customerName},
+            </if>
+            <if test="po.channelCategory != null">
+                channel_category = #{po.channelCategory},
+            </if>
+            price_name = #{po.priceName},
+            price_status = #{po.priceStatus}
+
+        where
+            id = #{po.id}
+    </update>
+
+    <!--根据主表id获取销售价格表Id-->
+    <select id="getPriceExpSaleInfoByMainId" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo">
+        select
+            id,
+            price_code,
+            price_name,
+            customer_groups_id,
+            customer_groups_name,
+            customer_ids,
+            customer_name,
+            price_status,
+            channel_category,
+            price_main_id
+        from
+            price_exp_sale
+        where
+            id = #{id}
+    </select>
+
+    <!--根据主表id获取数据统计数量-->
+    <select id="getPriceDataIdCount" resultType="java.lang.Integer">
+        select count(id) from price_exp_sale where price_main_id = #{id}
+    </select>
+
+    <!--根据id得到主表id-->
+    <select id="getPriceDataId" resultType="java.lang.Long">
+        select price_main_id from price_exp_sale where id = #{id}
+    </select>
+</mapper>

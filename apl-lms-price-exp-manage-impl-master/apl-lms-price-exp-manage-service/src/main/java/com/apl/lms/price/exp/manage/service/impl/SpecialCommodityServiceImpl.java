@@ -67,6 +67,12 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
     public ResultUtil<Boolean> updSpecialCommodity(SpecialCommodityDto specialCommodityDto) {
 
         Integer integer = baseMapper.updSpecialCommodity(specialCommodityDto);
+
+        SpecialCommodityVo specialCommodityVo = baseMapper.getSpecialCommodity(specialCommodityDto.getId());
+        if(specialCommodityVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -90,5 +96,20 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
+    }
+
+    /**
+     * 获取特殊物品详细
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<SpecialCommodityVo> getSpecialCommodity(Long id) {
+
+        SpecialCommodityVo specialCommodityVo = baseMapper.getSpecialCommodity(id);
+        if(specialCommodityVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, specialCommodityVo);
     }
 }

@@ -45,6 +45,10 @@ public interface FuelChargeService extends IService<FuelChargePo> {
      */
     ResultUtil<String> addFulCharge(FuelChargeInsertDto fuelChargeInsertDto);
 
-
-
+    /**
+     * 获取燃油费详情
+     * @param id
+     * @return
+     */
+    ResultUtil<FuelChargeVo> getFuelCharge(Long id);
 }

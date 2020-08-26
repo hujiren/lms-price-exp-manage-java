@@ -32,7 +32,6 @@ public class  ChannelCategoryController {
     @Autowired
     ChannelCategoryService channelCategoryService;
 
-
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取渠道类型列表" , notes = "根据关键字来查询")
     public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto , ChannelCateGoryKeyDto channelCateGoryKeyDto){
@@ -60,6 +59,14 @@ public class  ChannelCategoryController {
     public ResultUtil<String> insert( @Validated ChannelCateGoryInsertDto channelCateGoryInsertDto){
 
         return channelCategoryService.addChannelCategory(channelCateGoryInsertDto);
+    }
+
+    @PostMapping(value = "/get")
+    @ApiOperation(value =  "获取渠道类型详细" , notes = "获取渠道类型详细")
+    @ApiImplicitParam(name = "id",value = "渠道类型id",required = true, paramType = "query")
+    public ResultUtil<ChannelCateGoryVo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+        
+        return channelCategoryService.getChannelCategory(id);
     }
 
 }

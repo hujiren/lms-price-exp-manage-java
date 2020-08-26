@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpCostMapper">
+
+    <!--根据主表id更新数据-->
+    <update id="updateByPriceExpMainId">
+        update
+            price_exp_cost
+        set
+            partner_id = #{po.partnerId},
+            price_status = #{po.priceStatus},
+            price_code = #{po.priceCode},
+            price_name = #{po.priceName},
+            channel_category = #{po.channelCategory}
+        where
+            price_main_id = #{po.quotePriceId}
+    </update>
+
+
+    <!--根据主表id获取详情-->
+    <select id="getPriceExpCostInfo" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostVo">
+        select
+            id,
+            partner_id,
+            price_status,
+            price_code,
+            price_name,
+            channel_category,
+            price_main_id
+        from
+            price_exp_cost
+        where
+            id = #{id}
+    </select>
+
+    <!--根据id获取主表id-->
+    <select id="getPriceDataId" resultType="java.lang.Long">
+        select price_main_id from price_exp_cost where id = #{id}
+    </select>
+
+    <!--根据主表id获取统计条数-->
+    <select id="getPriceDataIdCount" resultType="java.lang.Integer">
+        select count(id) from price_exp_cost where price_main_id = #{id}
+    </select>
+</mapper>

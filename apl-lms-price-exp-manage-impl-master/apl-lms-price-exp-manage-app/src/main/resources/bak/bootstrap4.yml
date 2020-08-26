@@ -6,7 +6,7 @@ spring:
     name: apl-lms-price-exp-manage-app
 
   datasource:
-    url: jdbc:postgresql://192.168.1.185:5432/apl_lms_price_zone
+    url: jdbc:postgresql://192.168.1.185:5432/apl_lms_price_exp_list?characterEncoding=utf-8
     username: postgres
     password: 123456
     driver-class-name: org.postgresql.Driver

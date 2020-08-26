@@ -4,6 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.sql.DataSource;
@@ -16,16 +17,20 @@ import javax.sql.DataSource;
         scanBasePackages = {"com.apl.lms.price.exp.manage",
                 "com.apl.db.abatis",
                 "com.apl.lib",
-                "com.apl.cache"})
+                "com.apl.cache",
+                "com.apl.lms.price.exp.lib"},
+        exclude = {
+            JtaAutoConfiguration.class
+        })
 @MapperScan("com.apl.lms.price.exp.manage.mapper")
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
 
     public static void main(String[] args) {
 
-        //com.apl.db.datasource.DataSourceConfig
-        //com.apl.db.adb.AdbContext
-        //com.apl.lib.config.SwaggerConfig
+        //com.apl.db.abatis
+        //mybatis-plus.pagination.tenantTableFilter
+
         SpringApplication.run(LmsPriceExpManageApplication.class , args);
     }
 }

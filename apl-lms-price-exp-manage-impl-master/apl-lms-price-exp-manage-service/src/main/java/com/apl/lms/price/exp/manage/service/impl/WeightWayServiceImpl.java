@@ -92,4 +92,18 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
     }
+
+    /**
+     * 获取计泡方式详情
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<WeightWayDto> getWeightWay(Long id) {
+        WeightWayDto weightWayDto = baseMapper.getWeightWay(id);
+        if(weightWayDto == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, weightWayDto);
+    }
 }

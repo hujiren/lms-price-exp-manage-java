@@ -54,10 +54,11 @@ public class FuelChargeController {
         return fuelChargeService.updFuelCharge(fuelChargeDto);
     }
 
-    @PostMapping(value = "/insert")
-    @ApiOperation(value =  "新增燃油费" , notes = "新增燃油费")
-    public ResultUtil<String> insert( @Validated FuelChargeInsertDto fuelChargeInsertDto){
+    @PostMapping(value = "/get")
+    @ApiOperation(value =  "获取燃油费详细" , notes = "获取燃油费详细")
+    @ApiImplicitParam(name = "id",value = "燃油费Id",required = true  , paramType = "query")
+    public ResultUtil<FuelChargeVo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 
-        return fuelChargeService.addFulCharge(fuelChargeInsertDto);
+        return fuelChargeService.getFuelCharge(id);
     }
 }

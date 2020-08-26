@@ -52,6 +52,10 @@ public interface FuelChargeMapper extends BaseMapper<FuelChargePo> {
      */
     Integer insertFuelCharge(@Param("po") FuelChargePo fuelChargePo);
 
-
-
+    /**
+     * 获取燃油费详细
+     * @param id
+     * @return
+     */
+    FuelChargeVo getFuelCharge(@Param("id") Long id);
 }

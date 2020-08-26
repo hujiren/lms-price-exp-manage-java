@@ -51,7 +51,10 @@ public interface SurchargeMapper extends BaseMapper<SurchargeDto> {
      */
     Integer addSurcharge(@Param("po") List<SurchargeInsertDto> surchargeInsertDtoList);
 
-
-
-
+    /**
+     * 获取附加费详细
+     * @param id
+     * @return
+     */
+    SurchargeDto getSurcharge(@Param("id") Long id);
 }

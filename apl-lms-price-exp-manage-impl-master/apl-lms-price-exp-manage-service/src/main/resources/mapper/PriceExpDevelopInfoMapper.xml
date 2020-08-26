@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpDevelopInfoMapper">
+
+    <delete id="deleteByPriceId">
+        delete from price_exp_develop_info where price_id = #{id}
+    </delete>
+
+    <!--根据主表Id更新数据-->
+    <update id="updateByPriceExpMainId">
+        update
+            price_exp_develop_info
+        set
+            sale_remark = #{po.saleRemark},
+            partner_remark = #{po.partnerRemark}
+        where
+            price_id = #{po.priceId}
+    </update>
+
+    <!--根据主表id获取详细信息-->
+    <select id="getDevelopInfoByMainId" resultType="com.apl.lms.price.exp.pojo.po.PriceExpDevelopInfoPo">
+        select
+            sale_remark,
+            partner_remark
+        from
+            price_exp_develop_info
+        where
+            price_id = #{id}
+    </select>
+
+</mapper>

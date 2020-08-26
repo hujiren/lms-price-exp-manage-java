@@ -80,6 +80,12 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
 
         ComputationalFormulaPo computationalFormulaPo = new ComputationalFormulaPo();
         BeanUtils.copyProperties(computationalFormulaDto, computationalFormulaPo);
+
+        ComputationalFormulaVo computationalFormulaVo = baseMapper.getComputationalFormula(computationalFormulaDto.getId());
+        if(computationalFormulaVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+
         Integer integer = baseMapper.updComputationalFormula(computationalFormulaPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
@@ -103,5 +109,20 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, computationalFormulaPo.getId());
+    }
+
+    /**
+     * 获取计算公式详细
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<ComputationalFormulaVo> getComputationalFormula(Long id) {
+
+        ComputationalFormulaVo computationalFormulaVo = baseMapper.getComputationalFormula(id);
+        if(computationalFormulaVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, computationalFormulaVo);
     }
 }
