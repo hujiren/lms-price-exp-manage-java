@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.pojo.handler;
+package com.apl.lms.price.exp.manage.typeHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
