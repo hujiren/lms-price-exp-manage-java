@@ -1,5 +1,7 @@
 package com.apl.lms.price.exp.lib.handler;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import lombok.SneakyThrows;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -21,11 +23,19 @@ public class CommonJsonbHandler  extends BaseTypeHandler<List> {
     }
 
 
-    @SneakyThrows
     @Override
     public List getNullableResult(ResultSet rs, String columnName) throws SQLException {
 
         return null;
+
+        /*String data = rs.getString(columnName);
+
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);//忽略未知属性
+        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);//驼峰映射
+
+        List customerGroupsIdList = objectMapper.readValue(data, List.class);
+
+        return customerGroupsIdList;*/
     }
 
 
