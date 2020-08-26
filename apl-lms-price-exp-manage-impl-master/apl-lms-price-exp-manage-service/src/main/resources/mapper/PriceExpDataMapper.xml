@@ -24,6 +24,6 @@
 
     <!--更新-->
     <update id="updatePriceExpData">
-        update price_exp_data set price_data = #{po.priceData,com.apl.lms.price.exp.manage.TypeHandler.DataTypeHandler} where id = #{po.id}
+        update price_exp_data set price_data = #{po.priceData} where id = #{po.id}
     </update>
 </mapper>
