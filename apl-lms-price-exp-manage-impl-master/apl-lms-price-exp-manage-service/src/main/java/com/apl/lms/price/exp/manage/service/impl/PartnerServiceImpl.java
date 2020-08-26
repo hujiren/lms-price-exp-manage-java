@@ -1,12 +1,14 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PartnerMapper;
 import com.apl.lms.price.exp.manage.service.PartnerService;
 import com.apl.lms.price.exp.pojo.dto.PartnerKeyDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpPartnerDto;
+import com.apl.lms.price.exp.pojo.dto.PartnerDto;
 import com.apl.lms.price.exp.pojo.po.PartnerPo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -59,12 +61,18 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
     }
 
     @Override
-    public ResultUtil<Integer> addPartner(List<PriceExpPartnerDto> priceExpPartnerDtoList) {
-        return null;
+    public ResultUtil<Integer> addPartner(PartnerDto partnerDto) {
+
+        PartnerPo partnerPo = new PartnerPo();
+        BeanUtil.copyProperties(partnerDto, partnerPo);
+        partnerPo.setId(SnowflakeIdWorker.generateId());
+        Integer integer = baseMapper.insert(partnerPo);
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
     }
 
     @Override
     public ResultUtil<PartnerPo> getPartner(Long id) {
-        return null;
+        PartnerPo partnerPo = baseMapper.selectById(id);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, partnerPo);
     }
 }

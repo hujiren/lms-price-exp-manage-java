@@ -12,13 +12,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author hjr start
@@ -57,10 +55,10 @@ public class PartnerController {
     }
 
     @PostMapping(value = "/insert")
-    @ApiOperation(value =  "新增" , notes = "批量新增服务商")
-    public ResultUtil<Integer> insert(@RequestBody List<PriceExpPartnerDto> priceExpPartnerDtoList){
+    @ApiOperation(value =  "新增" , notes = "新增服务商")
+    public ResultUtil<Integer> insert(@Validated PartnerDto partnerDto){
 
-        return partnerService.addPartner(priceExpPartnerDtoList);
+        return partnerService.addPartner(partnerDto);
     }
 
     @PostMapping(value = "/get")
