@@ -26,4 +26,10 @@ public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
      */
     PriceExpAxisPo getPriceExpAxisInfoByMainId(@Param("id") Long id);
 
+    /**
+     * 新增
+     * @param priceExpAxisPo
+     * @return
+     */
+    Integer insertAxis(@Param("po") PriceExpAxisPo priceExpAxisPo);
 }

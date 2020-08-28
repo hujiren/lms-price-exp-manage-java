@@ -1,15 +1,10 @@
 package com.apl.lms.price.exp.pojo.dto;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,6 +19,6 @@ import java.util.List;
 public class PriceExpDataAddDto extends Model<PriceExpDataAddDto> implements Serializable {
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
-    @NotBlank(message = "价格表数据不能为空")
+    @NotEmpty(message = "价格表数据不能为空")
     private List priceData;
 }

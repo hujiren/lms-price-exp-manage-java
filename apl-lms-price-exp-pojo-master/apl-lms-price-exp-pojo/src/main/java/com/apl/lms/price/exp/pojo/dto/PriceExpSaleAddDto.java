@@ -26,6 +26,6 @@ public class PriceExpSaleAddDto extends Model<PriceExpSaleAddDto> {
     @ApiModelProperty(name = "customerName" , value = "客户名称")
     private String customerName;
 
-    @ApiModelProperty(name = "remark" , value = "备注")
-    private String remark;
+    @ApiModelProperty(name = "saleRemark" , value = "销售备注")
+    private String saleRemark;
 }

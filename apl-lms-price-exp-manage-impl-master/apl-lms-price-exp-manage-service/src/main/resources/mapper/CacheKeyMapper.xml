@@ -64,4 +64,26 @@
             1 = 2
         </if>
     </select>
+
+    <!--添加服务商缓存-->
+    <select id="addPartnerCache">
+        select
+            concat('JOIN_CACHE:partner_',  ${innerOrgId}, '_', id) AS cache_key,
+            id,
+            partner_code,
+            partner_short_name,
+            partner_full_name
+        from
+            partner
+        where
+        <if test="minKey>0 and minKey==maxKey">
+            id = #{keys}
+        </if>
+        <if test="minKey!=maxKey">
+            id BETWEEN #{minKey} AND #{maxKey} AND id in(#{keys})
+        </if>
+        <if test="(minKey == null or minKey&lt;=0) and (maxKey == null or maxKey&gt;=0)">
+            1 = 2
+        </if>
+    </select>
 </mapper>

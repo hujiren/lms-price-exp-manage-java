@@ -20,9 +20,9 @@ import java.util.List;
 @ApiModel(value="快递价格主表  持久化对象", description="快递价格主表 持久化对象")
 public class PriceExpMainUpdateDto extends Model<PriceExpMainUpdateDto> {
 
-    @TableId(value = "id", type = IdType.INPUT)
-    @ApiModelProperty(name = "id" , value = "快递价格主表Id")
-    private Long id;
+//    @TableId(value = "id", type = IdType.INPUT)
+//    @ApiModelProperty(name = "id" , value = "快递价格主表Id")
+//    private Long id;
 
     @ApiModelProperty(name = "startDate" , value = "起始日期")
     private Long startDate;

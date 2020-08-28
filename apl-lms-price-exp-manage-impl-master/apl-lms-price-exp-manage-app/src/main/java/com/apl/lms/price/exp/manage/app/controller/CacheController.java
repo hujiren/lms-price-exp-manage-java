@@ -30,6 +30,13 @@ public class CacheController {
         return cacheService.addSpecialCommodityCache(keys, minKey, maxKey);
     }
 
+    @PostMapping("/add-partner-cache")
+    @ApiOperation(value = "添加服务商缓存")
+    public ResultUtil<Boolean> addPartnerCache(@RequestParam("keys") String keys, Long minKey, Long maxKey){
+
+        return cacheService.addPartnerCache(keys, minKey, maxKey);
+    }
+
     @PostMapping("/add-surcharge-cache")
     @ApiOperation(value = "添加附加费缓存")
     public ResultUtil<Boolean> addSurchargeCache(@RequestParam("keys") String keys, Long minKey, Long maxKey){

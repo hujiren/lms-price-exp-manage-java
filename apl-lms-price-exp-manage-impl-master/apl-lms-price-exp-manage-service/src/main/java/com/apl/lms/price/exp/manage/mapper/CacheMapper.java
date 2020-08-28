@@ -1,4 +1,5 @@
 package com.apl.lms.price.exp.manage.mapper;
+import com.apl.lms.price.exp.lib.cache.bo.PartnerCacheBo;
 import com.apl.lms.price.exp.lib.cache.bo.SpecialCommodityCacheBo;
 import com.apl.lms.price.exp.lib.cache.bo.SurchargeCacheBo;
 import com.apl.lms.price.exp.lib.cache.bo.WeightWayCacheBo;
@@ -36,4 +37,10 @@ public interface CacheMapper extends BaseMapper {
                                                     @Param("minKey") Long minKey,
                                                     @Param("maxKey") Long maxKey,
                                                     @Param("innerOrgId") Long innerOrgId);
+    //添加服务商缓存
+    @MapKey("cacheKey")
+    Map<String, PartnerCacheBo> addPartnerCache(@Param("key") String keys,
+                                                @Param("minKey") Long minKey,
+                                                @Param("maxKey") Long maxKey,
+                                                @Param("innerOrgId") Long innerOrgId);
 }

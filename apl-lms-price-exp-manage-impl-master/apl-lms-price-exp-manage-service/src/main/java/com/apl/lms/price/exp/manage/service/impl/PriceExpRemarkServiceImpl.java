@@ -33,4 +33,14 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
     public PriceExpRemarkPo getDevelopInfoById(Long id) {
         return baseMapper.selectById(id);
     }
+
+    /**
+     * 更新
+     * @param priceExpRemarkPo
+     * @return
+     */
+    @Override
+    public Integer updateRemark(PriceExpRemarkPo priceExpRemarkPo) {
+        return baseMapper.updateById(priceExpRemarkPo);
+    }
 }

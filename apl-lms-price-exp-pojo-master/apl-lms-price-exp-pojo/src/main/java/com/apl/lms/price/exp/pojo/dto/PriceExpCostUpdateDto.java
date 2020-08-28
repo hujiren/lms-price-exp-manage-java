@@ -22,7 +22,7 @@ public class PriceExpCostUpdateDto extends Model<PriceExpCostUpdateDto> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @ApiModelProperty(name = "id" , value = "成本价格主表Id", required = true)
-    @NotNull(message = "成本价格主表Id不能为空")
+    @NotNull(message = "成本价格表Id不能为空")
     private Long id;
 
     @ApiModelProperty(name = "partnerId" , value = "服务商Id", required = true)
@@ -45,6 +45,6 @@ public class PriceExpCostUpdateDto extends Model<PriceExpCostUpdateDto> {
     @NotBlank(message = "渠道类型不能为空")
     private String channelCategory;
 
-    @ApiModelProperty(name = "priceMainId" , value = "主表Id")
+    @ApiModelProperty(name = "priceMainId" , value = "主表Id",required = true)
     private Long priceMainId;
 }

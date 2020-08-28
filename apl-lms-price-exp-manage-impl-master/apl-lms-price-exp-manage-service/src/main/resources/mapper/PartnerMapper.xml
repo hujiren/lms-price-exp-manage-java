@@ -7,7 +7,7 @@
         select
             id, partner_code, partner_short_name, partner_full_name
         from
-        price_partner
+            partner
         where
             1=1
         <if test="key.keyword != null">
@@ -17,10 +17,5 @@
         </if>
 
     </select>
-
-    <!--插入服务商-->
-    <insert id="insertPartner">
-        insert into price_partner(id, partner_code, partner_short_name, partner_full_name) values(po.id, po.partnerCode, po.partnerShortName, po.partnerFullName)
-    </insert>
 
 </mapper>

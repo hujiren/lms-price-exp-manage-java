@@ -8,7 +8,7 @@
             id,
             special_commodity_name
         FROM
-            price_special_commodity
+            special_commodity
         where
             1=1
         <if test="key.keyword != null">
@@ -18,25 +18,25 @@
 
     <!--根据Id删除特殊物品-->
     <delete id="delById">
-        delete from price_special_commodity where id = #{id}
+        delete from special_commodity where id = #{id}
     </delete>
 
     <!--更新特殊物品-->
     <update id="updSpecialCommodity">
-        update price_special_commodity set special_commodity_name = #{po.specialCommodityName} where id = #{po.id}
+        update special_commodity set special_commodity_name = #{po.specialCommodityName} where id = #{po.id}
     </update>
 
     <!--批量插入特殊物品-->
     <insert id="addSpecialCommodity">
 
         <foreach collection="po" close="" open="" item="row" separator=";" index="">
-            insert into price_special_commodity(id, special_commodity_name) values (${row.id}, #{row.specialCommodityName})
+            insert into special_commodity(id, special_commodity_name) values (${row.id}, #{row.specialCommodityName})
         </foreach>
 
     </insert>
 
     <!--获取特殊物品详细-->
     <select id="getSpecialCommodity" resultType="com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo">
-        select id,special_commodity_name from price_special_commodity where id = #{id}
+        select id,special_commodity_name from special_commodity where id = #{id}
     </select>
 </mapper>

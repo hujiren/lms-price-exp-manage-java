@@ -16,7 +16,8 @@ import javax.validation.constraints.NotBlank;
 public class PriceExpCostAddDto extends Model<PriceExpCostAddDto> {
 
 
-    @ApiModelProperty(name = "partnerId" , value = "服务商id")
+    @ApiModelProperty(name = "partnerId" , value = "服务商id", required = true)
+    @NotBlank(message = "服务商id不能为空")
     private Long partnerId;
 
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
@@ -30,7 +31,7 @@ public class PriceExpCostAddDto extends Model<PriceExpCostAddDto> {
     @NotBlank(message = "渠道类型不能为空")
     private String channelCategory;
 
-    @ApiModelProperty(name = "remark", value = "备注")
-    private String remark;
+    @ApiModelProperty(name = "partnerRemark", value = "服务商备注")
+    private String partnerRemark;
 
 }

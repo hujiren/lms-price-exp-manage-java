@@ -23,10 +23,10 @@ public class PriceExpRemarkPo extends Model<PriceExpRemarkPo> implements Seriali
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id")
+    @ApiModelProperty(name = "id", required = true)
     private Long id;
 
-    @ApiModelProperty(name = "remark" , value = "备注")
+    @ApiModelProperty(name = "remark" , value = "备注", required = true)
     private String remark;
 
 }

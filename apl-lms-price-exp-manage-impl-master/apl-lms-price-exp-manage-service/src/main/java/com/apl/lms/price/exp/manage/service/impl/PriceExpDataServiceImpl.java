@@ -43,7 +43,8 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
         priceExpDataPo.setPriceData(priceExpDataAddDto.getPriceData());
         priceExpDataPo.setPriceMainId(priceMainId);
-        Boolean saveSuccess = priceExpDataPo.insert();
-        return saveSuccess;
+        Integer saveSuccess = baseMapper.insertData(priceExpDataPo);
+
+        return saveSuccess > 0 ? true :false;
     }
 }

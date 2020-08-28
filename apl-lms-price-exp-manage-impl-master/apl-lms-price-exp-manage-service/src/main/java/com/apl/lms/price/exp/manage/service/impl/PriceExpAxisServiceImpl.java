@@ -48,7 +48,7 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
         PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
         BeanUtil.copyProperties(priceExpAxisAddDto, priceExpAxisPo);
         priceExpAxisPo.setPriceMainId(priceMainId);
-        Boolean saveSuccess = priceExpAxisPo.insert();
-        return saveSuccess;
+        Integer saveSuccess = baseMapper.insertAxis(priceExpAxisPo);
+        return saveSuccess > 0 ? true : false;
     }
 }

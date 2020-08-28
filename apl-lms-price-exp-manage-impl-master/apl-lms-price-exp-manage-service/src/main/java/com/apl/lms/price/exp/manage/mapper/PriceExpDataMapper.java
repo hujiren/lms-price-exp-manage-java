@@ -34,4 +34,10 @@ public interface PriceExpDataMapper extends BaseMapper<PriceExpDataPo> {
      */
     Long getInnerOrgId(@Param("id") Long id);
 
+    /**
+     * 新增
+     * @param priceExpDataPo
+     * @return
+     */
+    Integer insertData(@Param("po") PriceExpDataPo priceExpDataPo);
 }

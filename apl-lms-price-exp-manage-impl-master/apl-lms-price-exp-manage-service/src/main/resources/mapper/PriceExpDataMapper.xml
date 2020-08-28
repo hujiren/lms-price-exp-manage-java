@@ -22,4 +22,8 @@
         select inner_org_id from price_exp_data where price_main_id = #{id}
     </select>
 
+    <!--新增-->
+    <insert id="insertData">
+        insert into price_exp_data(price_main_id, price_data) values (#{po.priceMainId}, #{po.priceData,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler})
+    </insert>
 </mapper>

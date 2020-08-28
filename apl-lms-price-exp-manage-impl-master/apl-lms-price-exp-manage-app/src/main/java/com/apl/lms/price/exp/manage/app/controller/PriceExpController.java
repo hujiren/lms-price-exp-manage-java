@@ -5,6 +5,7 @@ import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
+import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,7 +50,6 @@ public class PriceExpController {
         return priceExpService.getPriceExpCostList(pageDto, priceExpCostListKeyDto);
     }
 
-    
     @PostMapping(value = "/get-published-price-list")
     @ApiOperation(value = "获取公布价列表", notes = "获取公布价")
     public ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, @Validated PriceExpCostListKeyDto priceExpCostListKeyDto) {
@@ -76,11 +77,11 @@ public class PriceExpController {
 
     @PostMapping(value = "/add-price")
     @ApiOperation(value = "新增快递价格", notes = "新增快递价格")
-    public ResultUtil<Long> addPrice(@Validated PriceExpMainAddDto priceExpMainAddDto,
+    public ResultUtil<Long> addPrice(@Validated @RequestBody PriceExpMainAddDto priceExpMainAddDto,
                                      @Validated PriceExpCostAddDto priceExpCostAddDto,
-                                     @Validated PriceExpSaleAddDto priceExpSaleAddDto,
+                                     @Validated @RequestBody PriceExpSaleAddDto priceExpSaleAddDto,
                                      @Validated PriceExpAxisAddDto priceExpAxisAddDto,
-                                     @Validated PriceExpDataAddDto priceExpDataAddDto) {
+                                     @Validated @RequestBody PriceExpDataAddDto priceExpDataAddDto) {
 
         return priceExpService.addExpPrice(priceExpMainAddDto,priceExpCostAddDto, priceExpSaleAddDto, priceExpAxisAddDto, priceExpDataAddDto);
     }
@@ -92,7 +93,6 @@ public class PriceExpController {
                                                @Validated PriceExpSaleUpdateDto priceExpSaleUpdateDto) {
         if(priceExpMainUpdateDto != null){
             ApiParamValidate.validate(priceExpMainUpdateDto);
-            ApiParamValidate.notEmpty("id", priceExpMainUpdateDto.getId());
             ApiParamValidate.notEmpty("startWeight", priceExpMainUpdateDto.getStartWeight().toString());
             ApiParamValidate.notEmpty("endWeight", priceExpMainUpdateDto.getEndWeight().toString());
             ApiParamValidate.notEmpty("startDate", priceExpMainUpdateDto.getStartDate().toString());
@@ -109,7 +109,6 @@ public class PriceExpController {
 
         if(priceExpMainUpdateDto != null){
             ApiParamValidate.validate(priceExpMainUpdateDto);
-            ApiParamValidate.notEmpty("id", priceExpMainUpdateDto.getId());
             ApiParamValidate.notEmpty("startWeight", priceExpMainUpdateDto.getStartWeight().toString());
             ApiParamValidate.notEmpty("endWeight", priceExpMainUpdateDto.getEndWeight().toString());
             ApiParamValidate.notEmpty("startDate", priceExpMainUpdateDto.getStartDate().toString());
@@ -117,6 +116,13 @@ public class PriceExpController {
         }
 
         return priceExpService.updateCostPrice(priceExpMainUpdateDto, priceExpCostUpdateDto);
+    }
+
+    @PostMapping(value = "/upd-remark")
+    @ApiOperation(value = "更新备注", notes = "根据Id更新备注")
+    public ResultUtil<Boolean> updRemark(@Validated PriceExpRemarkPo priceExpRemarkPo) {
+
+        return priceExpService.updRemark(priceExpRemarkPo);
     }
 
     @PostMapping(value = "/upd-price-data")

@@ -24,4 +24,11 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
      * @return
      */
     PriceExpRemarkPo getDevelopInfoById(Long id);
+
+    /**
+     * 更新
+     * @param priceExpRemarkPo
+     * @return
+     */
+    Integer updateRemark(PriceExpRemarkPo priceExpRemarkPo);
 }

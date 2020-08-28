@@ -65,7 +65,7 @@ public class  ChannelCategoryController {
     @ApiOperation(value =  "获取渠道类型详细" , notes = "获取渠道类型详细")
     @ApiImplicitParam(name = "id",value = "渠道类型id",required = true, paramType = "query")
     public ResultUtil<ChannelCategoryVo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
-        
+
         return channelCategoryService.getChannelCategory(id);
     }
 

@@ -19,13 +19,13 @@
 
     <!--根据id删除渠道类型-->
     <delete id="delById">
-        delete from price_channel_category where id = #{id}
+        delete from channel_category where id = #{id}
     </delete>
 
     <!--更新渠道类型-->
     <update id="updChannelCategory">
         update
-            price_channel_category
+            channel_category
         set
             channel_category = #{po.channelCategory}, weight_way = #{po.weightWay}, volume_weight_way = #{po.volumeWeightWay},
             carrier = #{po.carrier}, cargo_type = #{po.cargoType}, volume_divisor = #{po.volumeDivisor}
@@ -36,7 +36,7 @@
     <!--新增渠道类型-->
     <insert id="addChannelCategory">
         insert into
-            price_channel_category(id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_divisor)
+            channel_category(id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_divisor)
         values
             (#{po.id}, #{po.channelCategory}, #{po.weightWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeDivisor})
     </insert>
@@ -45,6 +45,6 @@
         select
             id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_divisor
         from
-            price_channel_category where id = #{id}
+            channel_category where id = #{id}
     </select>
 </mapper>

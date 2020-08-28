@@ -42,7 +42,7 @@ public class  PriceExpCostListKeyDto {
     @Min(value = 0, message = "成本价格表状态不能小于0")
     private Integer priceStatus;
 
-    @ApiModelProperty(name = "channelCategory", value = "渠道类型")
+    @ApiModelProperty(name = "channelCategory", value = "成本价渠道类型")
     private String channelCategory;
 
     @ApiModelProperty(name = "keyword", value = "关键词: 按价格表名称")

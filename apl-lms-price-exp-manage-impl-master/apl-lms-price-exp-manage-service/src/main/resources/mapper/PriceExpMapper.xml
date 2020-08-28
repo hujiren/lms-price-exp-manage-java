@@ -10,9 +10,9 @@
             sale.id as priceExpSaleId, sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
             sale.channel_category, sale.price_status
         from
-            price_exp_main main
-        left join
             price_exp_sale sale
+        left join
+            price_exp_main main
         on
             main.id = sale.price_main_id
         where
@@ -34,10 +34,10 @@
         </if>
 
         <if test="key.customerGroupsId != null">
-            and sale.customer_groups_id @> ${key.customerGroupsId}
+            and sale.customer_groups_id @> ${key.customerGroupsId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.QuerySaleListJsonbHandler}
         </if>
         <if test="key.customerId != null">
-            and sale.customer_ids @> ${key.customerId}
+            and sale.customer_ids @> ${key.customerId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.QuerySaleListJsonbHandler}
         </if>
         <if test="key.priceStatus != null and key.priceStatus > 0">
             and sale.price_status = #{key.priceStatus}
@@ -59,9 +59,9 @@
             main.main_status, main.special_commodity,
             cost.id as priceExpCostId, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
         from
-            price_exp_main main
-        left join
             price_exp_cost cost
+        left join
+            price_exp_main main
         on
             main.id = cost.price_main_id
         where
@@ -72,7 +72,7 @@
         <if test="key.isPublishedPrice != null">
             and main.is_published_price = 1
         </if>
-        <if test="key.isPublishedPrice = null">
+        <if test="key.isPublishedPrice == null">
             and main.is_published_price = 2
         </if>
         <if test="key.accountType != null">

@@ -22,7 +22,6 @@ import java.util.List;
 @ApiModel(value="价格表数据  持久化对象", description="价格表数据 持久化对象")
 public class PriceExpDataPo extends Model<PriceExpDataPo> implements Serializable {
 
-    @TableId(value = "priceMainId", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "priceMainId" , value = "价格主表Id", required = true)
     private Long priceMainId;

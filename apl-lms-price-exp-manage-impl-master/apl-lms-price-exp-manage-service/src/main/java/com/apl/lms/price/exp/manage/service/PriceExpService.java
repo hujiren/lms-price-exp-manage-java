@@ -5,6 +5,7 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
+import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
@@ -68,7 +69,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
     ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
                                         PriceExpCostUpdateDto priceExpCostUpdateDto);
 
-
     /**
      * 更新价格表数据
      * @param priceExpDataAddDto
@@ -76,6 +76,13 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<Boolean> updatePriceData(PriceExpDataAddDto priceExpDataAddDto, PriceExpAxisPo priceExpAxisPo);
+
+    /**
+     * 更新备注
+     * @param priceExpRemarkPo
+     * @return
+     */
+    ResultUtil<Boolean> updRemark(PriceExpRemarkPo priceExpRemarkPo);
 
     /**
      * 根据id删除成本价格数据

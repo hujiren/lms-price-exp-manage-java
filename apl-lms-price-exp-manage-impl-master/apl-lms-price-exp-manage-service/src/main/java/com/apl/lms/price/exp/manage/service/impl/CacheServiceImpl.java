@@ -5,6 +5,7 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lms.price.exp.lib.cache.bo.PartnerCacheBo;
 import com.apl.lms.price.exp.lib.cache.bo.SpecialCommodityCacheBo;
 import com.apl.lms.price.exp.lib.cache.bo.SurchargeCacheBo;
 import com.apl.lms.price.exp.lib.cache.bo.WeightWayCacheBo;
@@ -59,6 +60,18 @@ public class CacheServiceImpl implements CacheService {
     public ResultUtil<Boolean> addWeightWayCache(String keys, Long minKey, Long maxKey) {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
         Map<String, WeightWayCacheBo> maps = cacheMapper.addWeightWayCache(keys, minKey, maxKey, securityUser.getInnerOrgId());
+        if(null != maps && maps.size()>0) {
+            redisTemplate.opsForValue().multiSet(maps);
+            return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, false);
+    }
+
+    @Override
+    public ResultUtil<Boolean> addPartnerCache(String keys, Long minKey, Long maxKey) {
+        SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+        Map<String, PartnerCacheBo> maps = cacheMapper.addPartnerCache(keys, minKey, maxKey, securityUser.getInnerOrgId());
         if(null != maps && maps.size()>0) {
             redisTemplate.opsForValue().multiSet(maps);
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);

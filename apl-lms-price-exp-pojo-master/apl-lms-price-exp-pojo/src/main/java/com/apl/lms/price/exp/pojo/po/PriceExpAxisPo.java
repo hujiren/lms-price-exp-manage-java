@@ -20,7 +20,6 @@ import java.io.Serializable;
 @ApiModel(value="轴  持久化对象", description="轴 持久化对象")
 public class PriceExpAxisPo extends Model<PriceExpAxisPo> implements Serializable {
 
-    @TableId(value = "priceMainId", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "priceMainId" , value = "价格主表id", required = true)
     private Long priceMainId;

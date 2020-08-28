@@ -18,4 +18,8 @@
             price_id = #{id}
     </select>
 
+    <!--新增-->
+    <insert id="insertAxis">
+        insert into price_exp_axis(price_main_id, axis_transverse, axis_portrait) values (#{po.priceMainId}, #{po.axisTransverse}, #{po.axisPortrait})
+    </insert>
 </mapper>

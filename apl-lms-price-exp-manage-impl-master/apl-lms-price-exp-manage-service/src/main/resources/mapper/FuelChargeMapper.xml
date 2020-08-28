@@ -7,7 +7,7 @@
         select
             id, start_date, end_date, fuel_charge
         from
-            price_fuel_charge
+            fuel_charge
         where
             1=1
             <if test="key.fuelCharge != null">
@@ -22,21 +22,21 @@
 
     <!--根据id删除燃油费-->
     <delete id="delById">
-        delete from price_fuel_charge where id = #{id}
+        delete from fuel_charge where id = #{id}
     </delete>
 
     <!--更新燃油费-->
     <update id="updFuelCharge">
-        update price_fuel_charge set start_date = #{po.startDate}, end_date = #{po.endDate}, fuel_charge = #{po.fuelCharge} where id = #{po.id}
+        update fuel_charge set start_date = #{po.startDate}, end_date = #{po.endDate}, fuel_charge = #{po.fuelCharge} where id = #{po.id}
     </update>
 
     <!--新增燃油费-->
     <insert id="insertFuelCharge">
-        insert into price_fuel_charge(id, start_date, end_date, fuel_charge) values (#{po.id}, #{po.startDate}, #{po.endDate}, #{po.fuelCharge})
+        insert into fuel_charge(id, start_date, end_date, fuel_charge) values (#{po.id}, #{po.startDate}, #{po.endDate}, #{po.fuelCharge})
     </insert>
 
     <!--获取燃油费详细-->
     <select id="getFuelCharge" resultType="com.apl.lms.price.exp.pojo.vo.FuelChargeVo">
-        select id, start_date, end_date, fuel_charge from price_fuel_charge where id = #{id}
+        select id, start_date, end_date, fuel_charge from fuel_charge where id = #{id}
     </select>
 </mapper>
