@@ -48,8 +48,8 @@ public class PriceExpSalePo extends Model<PriceExpSalePo> {
     @ApiModelProperty(name = "quotePriceId" , value = "引用价格id")
     private Long quotePriceId;
 
-    @ApiModelProperty(name = "quotePriceFinalId" , value = "引用价格最终id")
-    private Long quotePriceFinalId;
+    //@ApiModelProperty(name = "quotePriceFinalId" , value = "引用价格最终id")
+    //private Long quotePriceFinalId;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;

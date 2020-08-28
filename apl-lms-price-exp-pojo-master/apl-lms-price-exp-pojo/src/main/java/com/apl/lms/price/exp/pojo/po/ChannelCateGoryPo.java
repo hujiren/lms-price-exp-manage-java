@@ -14,9 +14,9 @@ import lombok.Data;
  * @date 2020/8/5 - 18:00
  */
 @Data
-@TableName("price_channel_category")
+@TableName("channel_category")
 @ApiModel(value="渠道类型  持久化对象", description="渠道类型 持久化对象")
-public class ChannelCateGoryPo extends Model<ChannelCateGoryPo> {
+public class ChannelCategoryPo extends Model<ChannelCategoryPo> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -38,6 +38,6 @@ public class ChannelCateGoryPo extends Model<ChannelCateGoryPo> {
     @ApiModelProperty(name = "cargoType" , value = "运件类型" , required = true)
     private Integer cargoType;
 
-    @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积基数" , required = true)
-    private Integer volumeWeightCardinal;
+    @ApiModelProperty(name = "volumeDivisor" , value = "体积基数" , required = true)
+    private Integer volumeDivisor;
 }

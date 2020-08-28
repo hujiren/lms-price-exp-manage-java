@@ -4,7 +4,7 @@
 
     <!--根据priceId删除数据-->
     <delete id="deleteByPriceExpMainId">
-        delete from price_exp_axis where price_id = #{id}
+        delete from price_exp_axis where price_main_id = #{id}
     </delete>
 
     <!--根据主表id获取详细数据-->
@@ -17,4 +17,5 @@
         where
             price_id = #{id}
     </select>
+
 </mapper>

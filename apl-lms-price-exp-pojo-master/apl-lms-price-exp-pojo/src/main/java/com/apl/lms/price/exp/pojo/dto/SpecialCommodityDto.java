@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value = "特殊物品持久化对象", description = "特殊物品持久化对象")
+@TableName("special_commodity")
 public class SpecialCommodityDto {
 
     @ApiModelProperty(name = "id", value = "特殊物品id", required = true)

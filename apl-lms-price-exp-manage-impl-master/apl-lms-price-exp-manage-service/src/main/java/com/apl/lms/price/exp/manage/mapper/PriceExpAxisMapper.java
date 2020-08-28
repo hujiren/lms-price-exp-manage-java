@@ -25,4 +25,5 @@ public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
      * @return
      */
     PriceExpAxisPo getPriceExpAxisInfoByMainId(@Param("id") Long id);
+
 }

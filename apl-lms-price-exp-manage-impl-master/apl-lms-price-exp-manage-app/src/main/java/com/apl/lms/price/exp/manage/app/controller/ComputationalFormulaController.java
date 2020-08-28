@@ -39,24 +39,24 @@ public class ComputationalFormulaController {
         return computationalFormulaService.getList(pageDto, computationalFormulaKeyDto);
     }
 
-    @PostMapping(value = "/delete")
+    @PostMapping(value = "/del")
     @ApiOperation(value =  "删除" , notes = "根据id删除")
     @ApiImplicitParam(name = "id",value = "计算公式id",required = true  , paramType = "query")
-    public ResultUtil<Boolean> delete(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 
         return computationalFormulaService.delComputationalFormula(id);
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新计算公式")
-    public ResultUtil<Boolean> update(@Validated ComputationalFormulaDto computationalFormulaDto){
+    public ResultUtil<Boolean> upd(@Validated ComputationalFormulaDto computationalFormulaDto){
 
         return computationalFormulaService.updComputationalFormula(computationalFormulaDto);
     }
 
-    @PostMapping(value = "/insert")
+    @PostMapping(value = "/add")
     @ApiOperation(value =  "新增计算公式" , notes = "新增计算公式")
-    public ResultUtil<Long> insert(@Validated ComputationalFormulaInsertDto computationalFormulaInsertDto){
+    public ResultUtil<Long> add(@Validated ComputationalFormulaInsertDto computationalFormulaInsertDto){
 
         return computationalFormulaService.addComputationalFormula(computationalFormulaInsertDto);
     }

@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @Data
-@TableName("price_partner")
+@TableName("partner")
 @ApiModel(value="服务商  持久化对象", description="服务商 持久化对象")
 public class PartnerPo extends Model<PartnerPo> {
 

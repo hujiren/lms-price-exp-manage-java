@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.pojo.po;
+package com.apl.lms.price.exp.pojo.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
@@ -19,13 +20,8 @@ import java.util.List;
  */
 @Data
 @TableName(value = "price_exp_data")
-@ApiModel(value="价格表数据  持久化对象", description="价格表数据 持久化对象")
-public class PriceExpDataPo extends Model<PriceExpDataPo> implements Serializable {
-
-    @TableId(value = "priceMainId", type = IdType.INPUT)
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceMainId" , value = "价格主表Id", required = true)
-    private Long priceMainId;
+@ApiModel(value="价格表数据  插入对象", description="价格表数据 插入对象")
+public class PriceExpDataAddDto extends Model<PriceExpDataAddDto> implements Serializable {
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
     @NotBlank(message = "价格表数据不能为空")

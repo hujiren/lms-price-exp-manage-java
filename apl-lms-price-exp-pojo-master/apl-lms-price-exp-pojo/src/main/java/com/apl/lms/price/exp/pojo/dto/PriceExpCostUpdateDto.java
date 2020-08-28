@@ -25,24 +25,16 @@ public class PriceExpCostUpdateDto extends Model<PriceExpCostUpdateDto> {
     @NotNull(message = "成本价格主表Id不能为空")
     private Long id;
 
-    @ApiModelProperty(name = "partnerId" , value = "合作商Id", required = true)
+    @ApiModelProperty(name = "partnerId" , value = "服务商Id", required = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @NotNull(message = "合作商Id不能为空")
+    @NotNull(message = "服务商Id不能为空")
     private Long partnerId;
 
-    @ApiModelProperty(name = "quotePriceId" , value = "引用价格id", hidden = true)
-    private Long quotePriceId;
-
-    @ApiModelProperty(name = "quotePriceFinalId" , value = "引用价格最终id", hidden = true)
-    private Long quotePriceFinalId;
-
-    @ApiModelProperty(name = "priceStatus" , value = "成本价格表状态 1正常 2计账 3无效",required = true)
-    @NotNull(message = "价格表状态不能为空")
+    @ApiModelProperty(name = "priceStatus" , value = "成本价格表状态 1正常 2计账 3无效")
     @TypeValidator(value = {"0","1","2","3"} , message = "价格表状态错误")
     private Integer priceStatus;
 
-    @ApiModelProperty(name = "priceCode" , value = "价格表代码", required = true)
-    @NotBlank(message = "价格表代码不能为空")
+    @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;
 
     @ApiModelProperty(name = "priceName" , value = "价格表名称", required = true)
@@ -53,7 +45,6 @@ public class PriceExpCostUpdateDto extends Model<PriceExpCostUpdateDto> {
     @NotBlank(message = "渠道类型不能为空")
     private String channelCategory;
 
-    @ApiModelProperty(name = "priceMainId" , value = "主表Id", hidden = true)
-    @NotBlank(message = "主表id")
+    @ApiModelProperty(name = "priceMainId" , value = "主表Id")
     private Long priceMainId;
 }

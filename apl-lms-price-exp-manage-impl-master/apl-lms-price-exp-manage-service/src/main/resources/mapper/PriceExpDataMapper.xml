@@ -4,7 +4,7 @@
 
     <!--根据主表Id删除数据-->
     <delete id="deleteByPriceExpMainId">
-        delete from price_exp_data where price_id = #{id}
+        delete from price_exp_data where price_main_id = #{id}
     </delete>
 
     <!--根据主表id获取详细数据-->
@@ -19,11 +19,7 @@
 
     <!--根据id获取租户id-->
     <select id="getInnerOrgId" resultType="java.lang.Long">
-        select inner_org_id from price_exp_data where id = #{id}
+        select inner_org_id from price_exp_data where price_main_id = #{id}
     </select>
 
-    <!--更新-->
-    <update id="updatePriceExpData">
-        update price_exp_data set price_data = #{po.priceData} where id = #{po.id}
-    </update>
 </mapper>

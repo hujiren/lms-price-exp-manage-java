@@ -66,7 +66,7 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
         PartnerPo partnerPo = new PartnerPo();
         BeanUtil.copyProperties(partnerDto, partnerPo);
         partnerPo.setId(SnowflakeIdWorker.generateId());
-        Integer integer = baseMapper.insert(partnerPo);
+        Integer integer = baseMapper.insertPartner(partnerPo);
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
     }
 

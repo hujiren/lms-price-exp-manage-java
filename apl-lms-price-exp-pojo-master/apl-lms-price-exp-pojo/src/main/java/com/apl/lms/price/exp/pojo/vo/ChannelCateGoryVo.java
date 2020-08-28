@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value="渠道类型  返回对象", description="渠道类型 返回对象")
-public class ChannelCateGoryVo extends Model<ChannelCateGoryVo> {
+public class ChannelCategoryVo extends Model<ChannelCategoryVo> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -36,6 +36,6 @@ public class ChannelCateGoryVo extends Model<ChannelCateGoryVo> {
     @ApiModelProperty(name = "cargoType" , value = "运件类型" , required = true)
     private Integer cargoType;
 
-    @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积基数" , required = true)
-    private String volumeWeightCardinal;
+    @ApiModelProperty(name = "volumeDivisor" , value = "体积基数" , required = true)
+    private String volumeDivisor;
 }

@@ -35,8 +35,8 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long zoneId;
 
-    @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积重基数")
-    private Integer volumeWeightCardinal;
+    @ApiModelProperty(name = "volumeDivisor" , value = "体积除数")
+    private Integer volumeDivisor;
 
     @ApiModelProperty(name = "accountType" , value = "账号类型 1代理账号 2贸易账号 3第三方账号")
     private Integer accountType;
@@ -96,23 +96,9 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @ApiModelProperty(name = "priceStatus" , value = "状态 1正常 2计账 3无效")
     private Integer priceStatus;
 
-    //轴数据
-    @ApiModelProperty(name = "axisTransverse" , value = "表头横向数据")
-    private String axisTransverse;
-
-    @ApiModelProperty(name = "axisPortrait" , value = "表头纵向数据")
-    private String axisPortrait;
-
     //扩展数据
-    @ApiModelProperty(name = "saleRemark" , value = "销售备注")
-    private String saleRemark;
-
-    @ApiModelProperty(name = "partnerRemark" , value = "合作商备注")
-    private String partnerRemark;
-
-    //主要数据
-    @ApiModelProperty(name = "priceData" , value = "价格主表数据")
-    private String priceData;
+    @ApiModelProperty(name = "remark" , value = "备注")
+    private String remark;
 
 
 }

@@ -11,7 +11,3 @@ spring:
   profiles:
     include:
       common, apl-lms-price-exp-manage-app
-
-
-
-

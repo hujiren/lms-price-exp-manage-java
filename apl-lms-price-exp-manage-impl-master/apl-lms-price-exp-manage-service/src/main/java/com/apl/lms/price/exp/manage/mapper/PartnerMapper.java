@@ -18,4 +18,6 @@ import java.util.List;
 public interface PartnerMapper extends BaseMapper<PartnerPo> {
 
     List<PartnerPo> getList(Page<PartnerPo> page, @Param("key") PartnerKeyDto partnerKeyDto);
+
+    Integer insertPartner(@Param("po") PartnerPo partnerPo);
 }

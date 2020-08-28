@@ -3,6 +3,7 @@ package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostListKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpCostInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
@@ -66,4 +67,5 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     Long getInnerOrgId(@Param("id") Long priceMainId);
+
 }

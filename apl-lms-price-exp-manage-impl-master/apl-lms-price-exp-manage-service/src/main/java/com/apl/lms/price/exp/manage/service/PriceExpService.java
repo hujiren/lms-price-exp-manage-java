@@ -3,6 +3,7 @@ package com.apl.lms.price.exp.manage.service;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.*;
+import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
@@ -10,7 +11,6 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * @author hjr start
@@ -49,31 +49,33 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
     ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(Long id);
 
 
+
     /**
      * 更新销售价格
      * @param priceExpMainUpdateDto
      * @param priceExpSaleUpdateDto
-     * @param priceExpAxisUpdateDto
-     * @param priceExpDevelopInfoUpdateDto
      * @return
      */
     ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
-                                        PriceExpSaleUpdateDto priceExpSaleUpdateDto,
-                                        PriceExpAxisUpdateDto priceExpAxisUpdateDto,
-                                        PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto);
+                                        PriceExpSaleUpdateDto priceExpSaleUpdateDto);
 
     /**
      * 更新成本价格表
      * @param priceExpMainUpdateDto
      * @param priceExpCostUpdateDto
-     * @param priceExpAxisUpdateDto
-     * @param priceExpDevelopInfoUpdateDto
      * @return
      */
     ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
-                                        @Validated PriceExpCostUpdateDto priceExpCostUpdateDto,
-                                        PriceExpAxisUpdateDto priceExpAxisUpdateDto,
-                                        PriceExpDevelopInfoUpdateDto priceExpDevelopInfoUpdateDto);
+                                        PriceExpCostUpdateDto priceExpCostUpdateDto);
+
+
+    /**
+     * 更新价格表数据
+     * @param priceExpDataAddDto
+     * @param priceExpAxisPo
+     * @return
+     */
+    ResultUtil<Boolean> updatePriceData(PriceExpDataAddDto priceExpDataAddDto, PriceExpAxisPo priceExpAxisPo);
 
     /**
      * 根据id删除成本价格数据
@@ -89,6 +91,23 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     ResultUtil<Boolean> deleteSalePrice(Long id);
 
+
+    /**
+     * 新增快递价格
+     * @param priceExpMainAddDto
+     * @param priceExpSaleAddDto
+     * @param priceExpCostAddDto
+     * @param priceExpAxisAddDto
+     * @param priceExpDataAddDto
+     * @return
+     */
+    ResultUtil<Long> addExpPrice(PriceExpMainAddDto priceExpMainAddDto,
+                                 PriceExpCostAddDto priceExpCostAddDto,
+                                 PriceExpSaleAddDto priceExpSaleAddDto,
+                                 PriceExpAxisAddDto priceExpAxisAddDto,
+                                 PriceExpDataAddDto priceExpDataAddDto);
+
+
     /**
      * 新增销售价格
      * @param priceExpSaleAddDto
@@ -103,25 +122,4 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     ResultUtil<Long> addCostPrice(PriceExpCostAddDto priceExpCostAddDto);
 
-    /**
-     * 新增快递价格
-     * @param priceExpMainInsertDto
-     * @param priceExpSaleAddDto
-     * @param priceExpCostAddDto
-     * @param priceExpAxisInsertDto
-     * @param priceExpDataInsertDto
-     * @return
-     */
-    ResultUtil<Long> addExpPrice(PriceExpMainInsertDto priceExpMainInsertDto,
-                                 PriceExpSaleAddDto priceExpSaleAddDto,
-                                 PriceExpCostAddDto priceExpCostAddDto,
-                                 PriceExpAxisInsertDto priceExpAxisInsertDto,
-                                 PriceExpDataInsertDto priceExpDataInsertDto);
-
-    /**
-     * 更新价格表数据
-     * @param priceExpMainUpdateDto
-     * @return
-     */
-    ResultUtil<Boolean> updatePriceData(PriceExpDataUpdateDto priceExpMainUpdateDto);
 }

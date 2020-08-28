@@ -15,13 +15,6 @@ import org.springframework.stereotype.Repository;
 public interface PriceExpCostMapper extends BaseMapper<PriceExpCostPo> {
 
     /**
-     * 根据主表Id更新数据
-     * @param priceExpCostPo
-     * @return
-     */
-    Integer updateByPriceExpMainId(@Param("po") PriceExpCostPo priceExpCostPo);
-
-    /**
      * 根据主表Id获取详情
      * @param id
      * @return

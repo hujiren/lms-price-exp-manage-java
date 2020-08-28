@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.service;
 
+import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -32,10 +33,12 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      */
     Long getInnerOrgId(Long id);
 
+
     /**
-     * 更新
-     * @param priceExpDataPo
+     * 保存价格表数据
+     * @param priceMainId
+     * @param priceExpDataAddDto
      * @return
      */
-    Boolean updatePriceExpData(PriceExpDataPo priceExpDataPo);
+    Boolean addPriceExpData(Long priceMainId, PriceExpDataAddDto priceExpDataAddDto);
 }

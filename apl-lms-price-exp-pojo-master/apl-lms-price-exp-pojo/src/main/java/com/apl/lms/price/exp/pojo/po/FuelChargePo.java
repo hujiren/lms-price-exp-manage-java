@@ -16,7 +16,7 @@ import java.sql.Timestamp;
  * @date 2020/8/6 - 14:13
  */
 @Data
-@TableName("price_fuel_charge")
+@TableName("fuel_charge")
 @ApiModel(value="燃油费  持久化对象", description="燃油费 持久化对象")
 public class FuelChargePo extends Model<FuelChargePo> {
 

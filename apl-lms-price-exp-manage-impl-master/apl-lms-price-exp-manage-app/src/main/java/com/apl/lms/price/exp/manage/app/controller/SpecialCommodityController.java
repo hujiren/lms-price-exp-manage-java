@@ -51,14 +51,14 @@ public class SpecialCommodityController {
         return specialCommodityService.delSpecialCommodity(id);
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新特殊物品")
-    public ResultUtil<Boolean> update( @Validated SpecialCommodityDto specialCommodityDto){
+    public ResultUtil<Boolean> upd( @Validated SpecialCommodityDto specialCommodityDto){
 
         return specialCommodityService.updSpecialCommodity(specialCommodityDto);
     }
 
-    @PostMapping(value = "/insert-batch")
+    @PostMapping(value = "/add-batch")
     @ApiOperation(value =  "批量新增" , notes = "批量新增特殊物品")
     public ResultUtil<Integer> insertBatch( @RequestBody List<SpecialCommodityInsertDto> specialCommodityInsertDtoList){
 

@@ -44,20 +44,14 @@ public class PriceExpSaleUpdateDto extends Model<PriceExpSaleUpdateDto> {
     @ApiModelProperty(name = "customerName" , value = "客户名称")
     private String customerName;
 
-    @ApiModelProperty(name = "priceStatus" , value = "销售价格表状态 1正常 2计账 3无效", required = true)
+    @ApiModelProperty(name = "priceStatus" , value = "销售价格表状态 1正常 2计账 3无效")
     @TypeValidator(value = {"0","1","2","3"} , message = "销售价格表状态错误")
     @NotNull(message = "销售价格表状态不能为空")
     private Integer priceStatus;
 
-    @ApiModelProperty(name = "quotePriceId" , value = "引用价格id", hidden = true)
-    private Integer quotePriceId;
-
-    @ApiModelProperty(name = "quotePriceFinalId" , value = "引用价格最终id", hidden = true)
-    private Integer quotePriceFinalId;
-
-    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)
     private String channelCategory;
 
-    @ApiModelProperty(name = "priceMainId" , value = "价格主表id", hidden = true)
+    @ApiModelProperty(name = "priceMainId" , value = "主表Id")
     private Long priceMainId;
 }

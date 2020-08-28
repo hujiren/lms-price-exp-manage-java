@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 @ApiModel(value = "特殊物品插入对象", description = "特殊物品插入对象")
-@TableName("price_special_commodity")
+@TableName("special_commodity")
 public class SpecialCommodityInsertDto {
 
     @ApiModelProperty(name = "id", value = "特殊物品id", hidden = true)

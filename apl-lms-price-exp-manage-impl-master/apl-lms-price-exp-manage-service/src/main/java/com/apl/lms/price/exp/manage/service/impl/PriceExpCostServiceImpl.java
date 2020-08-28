@@ -1,6 +1,9 @@
 package com.apl.lms.price.exp.manage.service.impl;
+import cn.hutool.core.bean.BeanUtil;
+import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceExpCostMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpCostService;
+import com.apl.lms.price.exp.pojo.dto.PriceExpCostAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,19 +17,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, PriceExpCostPo> implements PriceExpCostService {
 
-    /**
-     * 根据主表id更新数据
-     * @param priceExpCostPo
-     * @return
-     */
-    @Override
-    public Boolean updateByPriceExpMainId(PriceExpCostPo priceExpCostPo) {
-
-        Integer i  = baseMapper.updateByPriceExpMainId(priceExpCostPo);
-
-        return i > 0 ? true : false;
-
-    }
 
     /**
      * 根据主表id获取成本价格详情
@@ -58,8 +48,31 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
         return baseMapper.getPriceDataIdCount(priceMainId);
     }
 
+
     /**
-     * 根据id删除数据
+     * 保存成本价格数据
+     * @param priceMainId
+     * @param priceExpCostAddDto
+     * @return
+     */
+    @Override
+    public Boolean addPriceExpCost(Long priceMainId, PriceExpCostAddDto priceExpCostAddDto, Long costId) {
+
+        PriceExpCostPo priceExpCostPo = new PriceExpCostPo();
+        BeanUtil.copyProperties(priceExpCostAddDto, priceExpCostPo);
+        priceExpCostPo.setId(costId);
+        priceExpCostPo.setPriceStatus(1);
+        priceExpCostPo.setQuotePriceId(0l);
+        priceExpCostPo.setPriceMainId(priceMainId);
+        priceExpCostPo.setPriceCode(priceExpCostAddDto.getPriceCode());
+        priceExpCostPo.setPriceName(priceExpCostAddDto.getPriceName());
+        priceExpCostPo.setChannelCategory(priceExpCostAddDto.getChannelCategory());
+        Boolean insertSuccess = priceExpCostPo.insert();
+        return insertSuccess;
+    }
+
+    /**
+     * 根据id删除
      * @param id
      * @return
      */

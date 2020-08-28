@@ -39,8 +39,8 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long zoneId;
 
-    @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积重基数")
-    private Integer volumeWeightCardinal;
+    @ApiModelProperty(name = "volumeDivisor" , value = "体积除数")
+    private Integer volumeDivisor;
 
     @ApiModelProperty(name = "accountType" , value = "账号类型 1代理账号 2贸易账号 3第三方账号")
     private Integer accountType;
@@ -48,23 +48,20 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "accountNo" , value = "快递账号")
     private String accountNo;
 
-    @ApiModelProperty(name = "mainStatus" , value = "主表状态 1正常 2计账 3无效")
-    private Integer mainStatus;
-
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private List<Long> specialCommodity;
 
     @ApiModelProperty(name = "priceForm" , value = "价格表格式 1横向 2纵向")
     private Integer priceForm;
 
-    @ApiModelProperty(name = "priceDataId" , value = "价格数据表id")
-    private Long priceDataId;
-
     @ApiModelProperty(name = "startWeight" , value = "起始重")
     private Double startWeight;
 
     @ApiModelProperty(name = "endWeight" , value = "截止重")
     private Double endWeight;
+
+    @ApiModelProperty(name = "mainStatus" , value = "主表状态 1正常 2计账 3无效")
+    private Integer mainStatus;
 
     @ApiModelProperty(name = "pricePublishedId" , value = "公布价id")
     private Long pricePublishedId;

@@ -9,8 +9,8 @@ import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryInsertDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
-import com.apl.lms.price.exp.pojo.po.ChannelCateGoryPo;
-import com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo;
+import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
+import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMapper, ChannelCateGoryPo> implements ChannelCategoryService {
+public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMapper, ChannelCategoryPo> implements ChannelCategoryService {
 
     enum ChannelCategoryServiceCode {
 
@@ -48,15 +48,15 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      * @return
      */
     @Override
-    public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto, ChannelCateGoryKeyDto channelCateGoryKeyDto) {
+    public ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto, ChannelCateGoryKeyDto channelCateGoryKeyDto) {
 
-        Page<ChannelCateGoryVo> page = new Page();
+        Page<ChannelCategoryVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
 
-        List<ChannelCateGoryVo> channelCateGoryVoList = baseMapper.getList(page, channelCateGoryKeyDto);
+        List<ChannelCategoryVo> channelCategoryVoList = baseMapper.getList(page, channelCateGoryKeyDto);
 
-        page.setRecords(channelCateGoryVoList);
+        page.setRecords(channelCategoryVoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
@@ -84,10 +84,10 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     @Override
     public ResultUtil<Boolean> updChannelCategory(ChannelCateGoryDto channelCateGoryDto) {
 
-        ChannelCateGoryPo channelCateGoryPo = new ChannelCateGoryPo();
+        ChannelCategoryPo channelCateGoryPo = new ChannelCategoryPo();
         BeanUtils.copyProperties(channelCateGoryDto, channelCateGoryPo);
 
-        ChannelCateGoryVo channelCateGoryVo = baseMapper.getChannelCateGory(channelCateGoryDto.getId());
+        ChannelCategoryVo channelCateGoryVo = baseMapper.getChannelCateGory(channelCateGoryDto.getId());
 
         if(channelCateGoryVo == null){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL.getCode(), "id不存在", null);
@@ -107,7 +107,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     @Override
     public ResultUtil<String> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto) {
 
-        ChannelCateGoryPo channelCateGoryPo = new ChannelCateGoryPo();
+        ChannelCategoryPo channelCateGoryPo = new ChannelCategoryPo();
         BeanUtils.copyProperties(channelCateGoryInsertDto, channelCateGoryPo);
         channelCateGoryPo.setId(SnowflakeIdWorker.generateId());
         Integer integer = baseMapper.addChannelCategory(channelCateGoryPo);
@@ -123,9 +123,9 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      * @return
      */
     @Override
-    public ResultUtil<ChannelCateGoryVo> getChannelCategory(Long id) {
+    public ResultUtil<ChannelCategoryVo> getChannelCategory(Long id) {
 
-        ChannelCateGoryVo channelCateGory = baseMapper.getChannelCateGory(id);
+        ChannelCategoryVo channelCateGory = baseMapper.getChannelCateGory(id);
 
         if(channelCateGory == null){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);

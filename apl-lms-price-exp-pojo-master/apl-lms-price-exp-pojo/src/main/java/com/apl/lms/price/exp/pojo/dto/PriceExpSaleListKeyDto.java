@@ -16,9 +16,9 @@ import javax.validation.constraints.Min;
 @ApiModel(value="销售价格表  按条件查询对象", description="销售价格表  按条件查询对象")
 public class PriceExpSaleListKeyDto {
 
-    @ApiModelProperty(name = "volumeWeightCardinal", value = "体积基数")
+    @ApiModelProperty(name = "volumeDivisor", value = "体积基数")
     @Range(min = 1, message = "体积基数不能小于1")
-    private Integer volumeWeightCardinal;
+    private Integer volumeDivisor;
 
     @ApiModelProperty(name = "accountType", value = "账号类型 1代理账号 2贸易账号 3第三方账号")
     @TypeValidator(value = {"0","1","2","3"} , message = "账号类型错误")
@@ -30,7 +30,7 @@ public class PriceExpSaleListKeyDto {
     @Min(value = 0, message = "价格主表状态不能小于0")
     private Integer mainStatus;
 
-    @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
+    @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是", hidden = true)
     @TypeValidator(value = {"0","1","2"} , message = "公布价错误")
     private Integer isPublishedPrice;
 

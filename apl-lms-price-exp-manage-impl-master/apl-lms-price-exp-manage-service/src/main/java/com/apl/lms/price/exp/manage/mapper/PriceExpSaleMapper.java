@@ -15,18 +15,11 @@ public interface PriceExpSaleMapper extends BaseMapper<PriceExpSalePo> {
 
 
     /**
-     * 根据主表Id更新数据
-     * @param priceExpSalePo
-     * @return
-     */
-    Integer updateByPriceExpMainId(@Param("po") PriceExpSalePo priceExpSalePo);
-
-    /**
      * 获取销售价格表详细信息
      * @param id
      * @return
      */
-    PriceExpSaleVo getPriceExpSaleInfoByMainId(@Param("id") Long id);
+    PriceExpSaleVo getPriceExpSaleInfoById(@Param("id") Long id);
 
     /**
      * 根据主表id获取数据统计数量

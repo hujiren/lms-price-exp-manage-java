@@ -39,19 +39,26 @@ public class FuelChargeController {
         return fuelChargeService.getList(pageDto, fuelChargeKeyDto);
     }
 
-    @PostMapping(value = "/delete")
+    @PostMapping(value = "/del")
     @ApiOperation(value =  "删除" , notes = "根据id删除")
     @ApiImplicitParam(name = "id",value = "燃油费Id",required = true  , paramType = "query")
-    public ResultUtil<Boolean> delete(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 
         return fuelChargeService.delFuelCharge(id);
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新燃油费")
-    public ResultUtil<Boolean> update( @Validated FuelChargeDto fuelChargeDto){
+    public ResultUtil<Boolean> upd( @Validated FuelChargeDto fuelChargeDto){
 
         return fuelChargeService.updFuelCharge(fuelChargeDto);
+    }
+
+    @PostMapping(value = "/add")
+    @ApiOperation(value =  "更新" , notes = "根据id更新燃油费")
+    public ResultUtil<String> add( @Validated FuelChargeInsertDto fuelChargeInsertDto){
+
+        return fuelChargeService.addFulCharge(fuelChargeInsertDto);
     }
 
     @PostMapping(value = "/get")

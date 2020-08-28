@@ -1,4 +1,6 @@
 package com.apl.lms.price.exp.manage.service;
+import com.apl.lms.price.exp.pojo.dto.PriceExpCostAddDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpSaleAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -12,18 +14,11 @@ import org.apache.ibatis.annotations.Param;
 public interface PriceExpSaleService extends IService<PriceExpSalePo> {
 
     /**
-     * 根据主表id更新数据
-     * @param priceExpSalePo
-     * @return
-     */
-    Boolean updateByPriceExpMainId(PriceExpSalePo priceExpSalePo);
-
-    /**
      * 获取销售价格表的详细信息
      * @param id
      * @return
      */
-    PriceExpSaleVo getPriceExpSaleInfoByMainId(Long id);
+    PriceExpSaleVo getPriceExpSaleInfoById(Long id);
 
     /**
      * 根据主表id获取数据统计数量
@@ -45,4 +40,14 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
      * @return
      */
     Integer deleteById(Long id);
+
+    /**
+     * 保存销售价
+     * @param priceExpCostAddDto
+     * @param priceExpSaleAddDto
+     * @param priceMainId
+     * @param saleId
+     * @return
+     */
+    Boolean addPriceExpSale(PriceExpCostAddDto priceExpCostAddDto, PriceExpSaleAddDto priceExpSaleAddDto, Long priceMainId, Long saleId);
 }

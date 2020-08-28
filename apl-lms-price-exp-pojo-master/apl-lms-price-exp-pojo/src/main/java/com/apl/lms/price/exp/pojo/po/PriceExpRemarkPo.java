@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -18,22 +17,16 @@ import java.io.Serializable;
  * @Date 2020/8/19 15:12
  */
 @Data
-@TableName(value = "price_exp_develop_info")
+@TableName(value = "price_exp_remark")
 @ApiModel(value="价格表扩展数据  持久化对象", description="价格表扩展数据 持久化对象")
-public class PriceExpDevelopInfoPo extends Model<PriceExpDevelopInfoPo> implements Serializable {
+public class PriceExpRemarkPo extends Model<PriceExpRemarkPo> implements Serializable {
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "价格表扩展数据id", hidden = true)
+    @ApiModelProperty(name = "id")
     private Long id;
 
-    @ApiModelProperty(name = "priceId" , value = "价格表主表id", hidden = true)
-    private Long priceId;
-
-    @ApiModelProperty(name = "saleRemark" , value = "销售备注")
-    private String saleRemark;
-
-    @ApiModelProperty(name = "partnerRemark" , value = "合作商备注")
-    private String partnerRemark;
+    @ApiModelProperty(name = "remark" , value = "备注")
+    private String remark;
 
 }

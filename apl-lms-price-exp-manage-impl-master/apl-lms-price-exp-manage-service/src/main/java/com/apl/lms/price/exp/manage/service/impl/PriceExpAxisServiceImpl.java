@@ -1,6 +1,8 @@
 package com.apl.lms.price.exp.manage.service.impl;
+import cn.hutool.core.bean.BeanUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAxisAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -32,5 +34,21 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
     public PriceExpAxisPo getPriceExpAxisInfoByMainId(Long id) {
         return baseMapper.getPriceExpAxisInfoByMainId(id);
 
+    }
+
+
+    /**
+     * 保存价格表轴数据
+     * @param priceMainId
+     * @param priceExpAxisAddDto
+     * @return
+     */
+    @Override
+    public Boolean addPriceExpAxis(Long priceMainId, PriceExpAxisAddDto priceExpAxisAddDto) {
+        PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
+        BeanUtil.copyProperties(priceExpAxisAddDto, priceExpAxisPo);
+        priceExpAxisPo.setPriceMainId(priceMainId);
+        Boolean saveSuccess = priceExpAxisPo.insert();
+        return saveSuccess;
     }
 }

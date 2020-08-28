@@ -5,7 +5,7 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryInsertDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
-import com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo;
+import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -34,29 +34,29 @@ public class  ChannelCategoryController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取渠道类型列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<ChannelCateGoryVo>> getList(PageDto pageDto , ChannelCateGoryKeyDto channelCateGoryKeyDto){
+    public ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto , ChannelCateGoryKeyDto channelCateGoryKeyDto){
 
         return channelCategoryService.getList(pageDto, channelCateGoryKeyDto);
     }
 
-    @PostMapping(value = "/delete")
+    @PostMapping(value = "/del")
     @ApiOperation(value =  "删除" , notes = "根据id删除渠道类型")
     @ApiImplicitParam(name = "id",value = "渠道类型id",required = true  , paramType = "query")
-    public ResultUtil<Boolean> delete(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 
         return channelCategoryService.delChannelCategory(id);
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新渠道类型")
-    public ResultUtil<Boolean> update(@Validated ChannelCateGoryDto channelCateGoryDto){
+    public ResultUtil<Boolean> upd(@Validated ChannelCateGoryDto channelCateGoryDto){
 
         return channelCategoryService.updChannelCategory(channelCateGoryDto);
     }
 
-    @PostMapping(value = "/insert")
+    @PostMapping(value = "/add")
     @ApiOperation(value =  "新增渠道类型" , notes = "新增渠道类型")
-    public ResultUtil<String> insert( @Validated ChannelCateGoryInsertDto channelCateGoryInsertDto){
+    public ResultUtil<String> add( @Validated ChannelCateGoryInsertDto channelCateGoryInsertDto){
 
         return channelCategoryService.addChannelCategory(channelCateGoryInsertDto);
     }
@@ -64,7 +64,7 @@ public class  ChannelCategoryController {
     @PostMapping(value = "/get")
     @ApiOperation(value =  "获取渠道类型详细" , notes = "获取渠道类型详细")
     @ApiImplicitParam(name = "id",value = "渠道类型id",required = true, paramType = "query")
-    public ResultUtil<ChannelCateGoryVo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    public ResultUtil<ChannelCategoryVo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
         
         return channelCategoryService.getChannelCategory(id);
     }

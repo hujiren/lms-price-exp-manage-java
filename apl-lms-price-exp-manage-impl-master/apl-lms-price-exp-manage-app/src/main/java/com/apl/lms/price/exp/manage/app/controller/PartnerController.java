@@ -39,24 +39,24 @@ public class PartnerController {
         return partnerService.getList(pageDto, partnerKeyDto);
     }
 
-    @PostMapping(value = "/delete")
+    @PostMapping(value = "/del")
     @ApiOperation(value =  "删除" , notes = "根据id删除")
     @ApiImplicitParam(name = "id", value = "服务商id", required = true, paramType = "query")
-    public ResultUtil<Boolean> delete(@NotNull(message = "id不能为空") Long id){
+    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") Long id){
 
         return partnerService.delPartner(id);
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新服务商")
-    public ResultUtil<Boolean> update( @Validated PartnerPo partnerPo){
+    public ResultUtil<Boolean> upd( @Validated PartnerPo partnerPo){
 
         return partnerService.updPartner(partnerPo);
     }
 
-    @PostMapping(value = "/insert")
+    @PostMapping(value = "/add")
     @ApiOperation(value =  "新增" , notes = "新增服务商")
-    public ResultUtil<Integer> insert(@Validated PartnerDto partnerDto){
+    public ResultUtil<Integer> add(@Validated PartnerDto partnerDto){
 
         return partnerService.addPartner(partnerDto);
     }

@@ -1,13 +1,10 @@
 package com.apl.lms.price.exp.pojo.vo;
-import com.apl.lms.price.exp.pojo.entity.Customer;
-import com.apl.lms.price.exp.pojo.entity.CustomerGroupInfo;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * @author hjr start
@@ -34,8 +31,8 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long zoneId;
 
-    @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积重基数")
-    private Integer volumeWeightCardinal;
+    @ApiModelProperty(name = "volumeDivisor" , value = "体积除数")
+    private Integer volumeDivisor;
 
     @ApiModelProperty(name = "accountType" , value = "账号类型 1代理账号 2贸易账号 3第三方账号")
     private Integer accountType;
@@ -71,7 +68,7 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     @ApiModelProperty(name = "priceName" , value = "价格表名称")
     private String priceName;
 
-    @ApiModelProperty(name = "partnerId" , value = "合作商id")
+    @ApiModelProperty(name = "partnerId" , value = "服务商id")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long partnerId;
 
@@ -81,23 +78,9 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     @ApiModelProperty(name = "priceStatus" , value = "状态 1正常 2计账 3无效")
     private Integer priceStatus;
 
-    //轴数据
-    @ApiModelProperty(name = "axisTransverse" , value = "表头横向数据")
-    private String axisTransverse;
-
-    @ApiModelProperty(name = "axisPortrait" , value = "表头纵向数据")
-    private String axisPortrait;
-
     //扩展数据
-    @ApiModelProperty(name = "saleRemark" , value = "销售备注")
-    private String saleRemark;
-
-    @ApiModelProperty(name = "partnerRemark" , value = "合作商备注")
-    private String partnerRemark;
-
-    //主要数据
-    @ApiModelProperty(name = "priceData" , value = "价格主表数据")
-    private String priceData;
+    @ApiModelProperty(name = "remark" , value = "销售备注")
+    private String remark;
 
 
 }

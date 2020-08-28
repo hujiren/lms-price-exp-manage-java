@@ -26,7 +26,7 @@ public class PriceExpCostVo extends Model<PriceExpCostVo> {
     @ApiModelProperty(name = "priceName" , value = "价格表名称")
     private String priceName;
 
-    @ApiModelProperty(name = "partnerId" , value = "合作商id")
+    @ApiModelProperty(name = "partnerId" , value = "服务商id")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long partnerId;
 

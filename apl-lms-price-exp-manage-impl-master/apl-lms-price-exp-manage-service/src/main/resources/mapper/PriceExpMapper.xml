@@ -5,9 +5,9 @@
     <!--分页查询销售价格列表-->
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
-            main.id, main.start_date, main.end_date, main.currency, main.volume_weight_cardinal, main.account_type,
+            main.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
             main.main_status, main.special_commodity,
-            sale.id as priceExpSaleId, sale.price_code, sale.customer_groups_name, sale.customer_name,
+            sale.id as priceExpSaleId, sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
             sale.channel_category, sale.price_status
         from
             price_exp_main main
@@ -17,16 +17,12 @@
             main.id = sale.price_main_id
         where
             1=1
-        <if test="key.volumeWeightCardinal != null">
-            and main.volume_weight_cardinal = #{key.volumeWeightCardinal}
-        </if>
-        <if test="key.isPublishedPrice != null and key.isPublishedPrice > 0">
-            and main.is_published_price = #{key.isPublishedPrice}
+        <if test="key.volumeDivisor != null">
+            and main.volume_divisor = #{key.volumeDivisor}
         </if>
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>
-
         <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
             and main.main_status = #{key.mainStatus}
         </if>
@@ -59,9 +55,9 @@
     <!--分页查询成本价格列表-->
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
-            main.id, main.start_date, main.end_date, main.currency, main.volume_weight_cardinal, main.account_type,
+            main.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
             main.main_status, main.special_commodity,
-            cost.id as priceExpCostId, cost.price_status, cost.price_code, cost.channel_category
+            cost.id as priceExpCostId, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
         from
             price_exp_main main
         left join
@@ -70,11 +66,14 @@
             main.id = cost.price_main_id
         where
             1=1
-        <if test="key.volumeWeightCardinal != null">
-            and main.volume_weight_cardinal = #{key.volumeWeightCardinal}
+        <if test="key.volumeDivisor != null">
+            and main.volume_divisor = #{key.volumeDivisor}
         </if>
-        <if test="key.isPublishedPrice != null and key.isPublishedPrice > 0">
-            and main.is_published_price = #{key.isPublishedPrice}
+        <if test="key.isPublishedPrice != null">
+            and main.is_published_price = 1
+        </if>
+        <if test="key.isPublishedPrice = null">
+            and main.is_published_price = 2
         </if>
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
@@ -105,7 +104,7 @@
     <!--新增快递价格-->
     <insert id="insertPriceExpMain">
         insert into
-             price_exp_main(id, start_date, end_date, currency, zone_id, volume_weight_cardinal, account_type, account_no,
+             price_exp_main(id, start_date, end_date, currency, zone_id, volume_divisor, account_type, account_no,
              main_status, special_commodity, price_form, price_data_id, start_weight, end_weight, price_published_id,
              is_published_price, aging, inner_org_id)
          values
@@ -114,7 +113,7 @@
              #{po.endDate},
              #{po.currency},
              #{po.zoneId},
-             #{po.volumeWeightCardinal},
+             #{po.volumeDivisor},
              #{po.accountType},
              #{po.accountNo},
              #{po.mainStatus},
@@ -142,7 +141,7 @@
             end_date,
             currency,
             zone_id,
-            volume_weight_cardinal,
+            volume_divisor,
             account_type,
             account_no,
             main_status,
@@ -162,5 +161,6 @@
     <select id="getInnerOrgId" resultType="java.lang.Long">
         select inner_org_id from price_exp_main where id = #{id}
     </select>
+
 
 </mapper>

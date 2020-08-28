@@ -1,4 +1,5 @@
 package com.apl.lms.price.exp.manage.service;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAxisAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -22,4 +23,13 @@ public interface PriceExpAxisService extends IService<PriceExpAxisPo> {
      * @return
      */
     PriceExpAxisPo getPriceExpAxisInfoByMainId(Long id);
+
+
+    /**
+     * 保存价格表轴数据
+     * @param priceMainId
+     * @param priceExpAxisAddDto
+     * @return
+     */
+    Boolean addPriceExpAxis(Long priceMainId, PriceExpAxisAddDto priceExpAxisAddDto);
 }

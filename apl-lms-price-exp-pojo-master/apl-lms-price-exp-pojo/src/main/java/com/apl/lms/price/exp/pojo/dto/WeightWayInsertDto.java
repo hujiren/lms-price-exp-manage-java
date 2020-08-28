@@ -1,14 +1,10 @@
 package com.apl.lms.price.exp.pojo.dto;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author hjr start
@@ -16,6 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value = "计泡方式插入对象", description = "计泡方式插入对象")
+@TableName("weight_way")
 public class WeightWayInsertDto {
 
     @ApiModelProperty(name = "id", value = "计泡方式Id", hidden = true)

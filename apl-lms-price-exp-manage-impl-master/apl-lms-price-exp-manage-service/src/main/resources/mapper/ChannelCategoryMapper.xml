@@ -3,11 +3,11 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper">
 
     <!--分页查询渠道类型-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo">
         select
-            id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_weight_cardinal
+            id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_divisor
         from
-            price_channel_category
+            channel_category
         where
             1=1
         <if test="key.keyword != null">
@@ -28,7 +28,7 @@
             price_channel_category
         set
             channel_category = #{po.channelCategory}, weight_way = #{po.weightWay}, volume_weight_way = #{po.volumeWeightWay},
-            carrier = #{po.carrier}, cargo_type = #{po.cargoType}, volume_weight_cardinal = #{po.volumeWeightCardinal}
+            carrier = #{po.carrier}, cargo_type = #{po.cargoType}, volume_divisor = #{po.volumeDivisor}
         where
             id = #{po.id}
     </update>
@@ -36,14 +36,14 @@
     <!--新增渠道类型-->
     <insert id="addChannelCategory">
         insert into
-            price_channel_category(id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_weight_cardinal)
+            price_channel_category(id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_divisor)
         values
-            (#{po.id}, #{po.channelCategory}, #{po.weightWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeWeightCardinal})
+            (#{po.id}, #{po.channelCategory}, #{po.weightWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeDivisor})
     </insert>
 
-    <select id="getChannelCateGory" resultType="com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo">
+    <select id="getChannelCateGory" resultType="com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo">
         select
-            id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_weight_cardinal
+            id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_divisor
         from
             price_channel_category where id = #{id}
     </select>

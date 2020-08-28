@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("price_weight_way")
+@TableName("weight_way")
 @ApiModel(value = "计泡方式持久化对象", description = "计泡方式持久化对象")
 public class WeightWayDto {
 

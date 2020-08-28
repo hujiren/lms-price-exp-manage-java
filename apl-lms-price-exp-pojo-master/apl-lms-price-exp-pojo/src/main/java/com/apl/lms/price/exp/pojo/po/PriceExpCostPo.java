@@ -22,15 +22,15 @@ public class PriceExpCostPo extends Model<PriceExpCostPo> {
     @ApiModelProperty(name = "id" , value = "成本价格主表Id")
     private Long id;
 
-    @ApiModelProperty(name = "partnerId" , value = "合作商id")
+    @ApiModelProperty(name = "partnerId" , value = "服务商id")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long partnerId;
 
     @ApiModelProperty(name = "quotePriceId" , value = "引用价格id")
     private Long quotePriceId;
 
-    @ApiModelProperty(name = "quotePriceFinalId" , value = "引用价格最终id")
-    private Long quotePriceFinalId;
+    //@ApiModelProperty(name = "quotePriceFinalId" , value = "引用价格最终id")
+    //private Long quotePriceFinalId;
 
     @ApiModelProperty(name = "priceStatus" , value = "成本价格表状态 1正常 2计账 3无效")
     private Integer priceStatus;

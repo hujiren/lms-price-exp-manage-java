@@ -48,14 +48,14 @@ public class WeightWayController {
         return weightWayService.delWeightWay(id);
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新计泡方式")
-    public ResultUtil<Boolean> update( @Validated WeightWayDto weightWayDto){
+    public ResultUtil<Boolean> upd( @Validated WeightWayDto weightWayDto){
 
         return weightWayService.updWeightWay(weightWayDto);
     }
 
-    @PostMapping(value = "/insert")
+    @PostMapping(value = "/add")
     @ApiOperation(value =  "批量新增" , notes = "批量新增新增计泡方式")
     public ResultUtil<Integer> insertBatch( @RequestBody List<WeightWayInsertDto> weightWayInsertDtoList){
 

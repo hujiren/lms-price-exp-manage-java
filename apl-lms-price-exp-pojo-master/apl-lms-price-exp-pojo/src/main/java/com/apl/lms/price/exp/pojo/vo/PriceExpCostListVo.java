@@ -29,8 +29,8 @@ public class PriceExpCostListVo extends Model<PriceExpCostListVo> {
     @ApiModelProperty(name = "currency" , value = "币制")
     private String currency;
 
-    @ApiModelProperty(name = "volumeWeightCardinal" , value = "体积重基数")
-    private Integer volumeWeightCardinal;
+    @ApiModelProperty(name = "volumeDivisor" , value = "体积除数")
+    private Integer volumeDivisor;
 
     @ApiModelProperty(name = "accountType" , value = "账号类型")
     private Integer accountType;
@@ -50,6 +50,9 @@ public class PriceExpCostListVo extends Model<PriceExpCostListVo> {
 
     @ApiModelProperty(name = "priceCode" , value = "成本价格表代码")
     private String priceCode;
+
+    @ApiModelProperty(name = "priceName" , value = "成本价格表名称")
+    private String priceName;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;

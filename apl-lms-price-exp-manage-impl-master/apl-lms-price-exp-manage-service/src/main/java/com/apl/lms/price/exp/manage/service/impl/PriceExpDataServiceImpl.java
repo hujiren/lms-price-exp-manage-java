@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.service.impl;
 import com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
+import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -30,14 +31,19 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         return baseMapper.getInnerOrgId(id);
     }
 
+    /**
+     * 保存价格表数据
+     * @param priceMainId
+     * @param priceExpDataAddDto
+     * @return
+     */
     @Override
-    public Boolean updatePriceExpData(PriceExpDataPo priceExpDataPo) {
+    public Boolean addPriceExpData(Long priceMainId, PriceExpDataAddDto priceExpDataAddDto) {
 
-        Integer integer = baseMapper.updatePriceExpData(priceExpDataPo);
-
-        if(integer < 1){
-            return false;
-        }
-        return true;
+        PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
+        priceExpDataPo.setPriceData(priceExpDataAddDto.getPriceData());
+        priceExpDataPo.setPriceMainId(priceMainId);
+        Boolean saveSuccess = priceExpDataPo.insert();
+        return saveSuccess;
     }
 }

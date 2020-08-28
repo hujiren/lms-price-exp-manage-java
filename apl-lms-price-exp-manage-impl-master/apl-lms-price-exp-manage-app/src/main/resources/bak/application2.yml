@@ -105,8 +105,8 @@ spring:
         price_exp_data:
           actual-data-nodes: pricedata.price_exp_data
 
-        price_exp_develop_info:
-          actual-data-nodes: develop.price_exp_develop_info
+        price_exp_remark:
+          actual-data-nodes: develop.price_exp_remark
 
   #redis 相关配置
   redis:

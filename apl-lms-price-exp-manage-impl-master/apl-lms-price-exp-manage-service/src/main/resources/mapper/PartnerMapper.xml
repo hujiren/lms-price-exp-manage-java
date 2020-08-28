@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PartnerMapper">
 
-    <!--分页查询渠道类型-->
+    <!--分页查询服务商-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.po.PartnerPo">
         select
             id, partner_code, partner_short_name, partner_full_name
@@ -18,34 +18,9 @@
 
     </select>
 
-    <!--根据id删除渠道类型-->
-    <delete id="delById">
-        delete from price_channel_category where id = #{id}
-    </delete>
-
-    <!--更新渠道类型-->
-    <update id="updChannelCategory">
-        update
-            price_channel_category
-        set
-            channel_category = #{po.channelCategory}, weight_way = #{po.weightWay}, volume_weight_way = #{po.volumeWeightWay},
-            carrier = #{po.carrier}, cargo_type = #{po.cargoType}, volume_weight_cardinal = #{po.volumeWeightCardinal}
-        where
-            id = #{po.id}
-    </update>
-
-    <!--新增渠道类型-->
-    <insert id="addChannelCategory">
-        insert into
-            price_channel_category(id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_weight_cardinal)
-        values
-            (#{po.id}, #{po.channelCategory}, #{po.weightWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeWeightCardinal})
+    <!--插入服务商-->
+    <insert id="insertPartner">
+        insert into price_partner(id, partner_code, partner_short_name, partner_full_name) values(po.id, po.partnerCode, po.partnerShortName, po.partnerFullName)
     </insert>
 
-    <select id="getChannelCateGory" resultType="com.apl.lms.price.exp.pojo.vo.ChannelCateGoryVo">
-        select
-            id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_weight_cardinal
-        from
-            price_channel_category where id = #{id}
-    </select>
 </mapper>

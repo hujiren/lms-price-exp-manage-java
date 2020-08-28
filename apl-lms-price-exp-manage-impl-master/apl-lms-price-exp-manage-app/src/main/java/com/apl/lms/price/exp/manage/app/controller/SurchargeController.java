@@ -48,16 +48,16 @@ public class SurchargeController {
         return surchargeService.delSurcharge(id);
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新附加费")
-    public ResultUtil<Boolean> update( @Validated SurchargeDto surchargeDto){
+    public ResultUtil<Boolean> upd( @Validated SurchargeDto surchargeDto){
 
         return surchargeService.updSurcharge(surchargeDto);
     }
 
-    @PostMapping(value = "/insert-batch")
+    @PostMapping(value = "/add-batch")
     @ApiOperation(value =  "批量新增" , notes = "批量新增附加费")
-    public ResultUtil<Integer> insertBatch(@RequestBody List<SurchargeInsertDto> surchargeInsertDtoList){
+    public ResultUtil<Integer> addBatch(@RequestBody List<SurchargeInsertDto> surchargeInsertDtoList){
 
         return surchargeService.addSurcharge(surchargeInsertDtoList);
     }
