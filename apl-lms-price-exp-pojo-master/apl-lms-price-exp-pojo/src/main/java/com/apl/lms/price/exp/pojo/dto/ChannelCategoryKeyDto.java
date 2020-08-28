@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value="渠道类型  查询对象", description="渠道类型 查询对象")
-public class ChannelCateGoryKeyDto extends Model<ChannelCateGoryKeyDto> {
+public class ChannelCategoryKeyDto extends Model<ChannelCategoryKeyDto> {
 
 
     @ApiModelProperty(name = "keyword" , value = "关键字")

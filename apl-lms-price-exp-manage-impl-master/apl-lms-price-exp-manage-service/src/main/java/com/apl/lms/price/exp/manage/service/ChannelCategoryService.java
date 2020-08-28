@@ -2,9 +2,9 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryInsertDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryInsertDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
 import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,7 +22,7 @@ public interface ChannelCategoryService extends IService<ChannelCategoryPo> {
      * @param
      * @return
      */
-    ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto, ChannelCateGoryKeyDto channelCateGoryKeyDto);
+    ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto, ChannelCategoryKeyDto channelCateGoryKeyDto);
 
     /**
      * 删除
@@ -36,14 +36,14 @@ public interface ChannelCategoryService extends IService<ChannelCategoryPo> {
      * @param channelCateGoryDto
      * @return
      */
-    ResultUtil<Boolean> updChannelCategory(ChannelCateGoryDto channelCateGoryDto);
+    ResultUtil<Boolean> updChannelCategory(ChannelCategoryDto channelCateGoryDto);
 
     /**
      * 新增渠道类型对象
      * @param channelCateGoryInsertDto
      * @return
      */
-    ResultUtil<String> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto);
+    ResultUtil<String> addChannelCategory(ChannelCategoryInsertDto channelCateGoryInsertDto);
 
     /**
      * 获取渠道类型详细

@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.app;
 
+import org.apache.shardingsphere.shardingjdbc.jdbc.adapter.AbstractDataSourceAdapter;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +31,7 @@ public class LmsPriceExpManageApplication {
 
         //com.apl.db.abatis
         //mybatis-plus.pagination.tenantTableFilter
+        //AbstractDataSourceAdapter
 
         SpringApplication.run(LmsPriceExpManageApplication.class , args);
     }

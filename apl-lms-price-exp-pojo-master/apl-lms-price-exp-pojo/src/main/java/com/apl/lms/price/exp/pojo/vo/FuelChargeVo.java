@@ -22,6 +22,9 @@ public class FuelChargeVo extends Model<FuelChargeVo> {
     @ApiModelProperty(name = "id" , value = "燃油费id" , required = true)
     private Long id;
 
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)
+    private String channelCategory;
+
     @ApiModelProperty(name = "startDate" , value = "起始时间" , required = true)
     private Timestamp startDate;
 
