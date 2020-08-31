@@ -5,7 +5,7 @@
     <!--分页查询燃油费列表-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo">
         select
-            id, price_id, formula, zone_num, country, starting_weight, ending_weight, package_type
+            id, price_id, formula, zone_num, country, start_weight, end_weight, package_type
         from
         price_computational_formula
         where
@@ -17,10 +17,10 @@
                 and country = #{key.country}
             </if>
             <if test="key.startingWeight != null">
-                and starting_weight &lt;= #{key.startingWeight}
+                and start_weight &lt;= #{key.startWeight}
             </if>
             <if test="key.endingWeight != null">
-                and ending_weight >= #{key.endingWeight}
+                and end_weight >= #{key.endWeight}
             </if>
             <if test="key.packageType != null">
                 and package_type = #{key.packageType}
@@ -43,7 +43,7 @@
             price_computational_formula
         set
             price_id = #{po.priceId}, formula = #{po.formula}, zone_num = #{po.zoneNum}, country = #{po.country},
-            starting_weight = #{po.startingWeight}, ending_weight = #{po.endingWeight}, package_type = #{po.packageType}
+            start_weight = #{po.startWeight}, end_weight = #{po.endWeight}, package_type = #{po.packageType}
         where
             id = #{po.id}
     </update>
@@ -51,7 +51,7 @@
     <!--获取计算公式详细-->
     <select id="getComputationalFormula" resultType="com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo">
         select
-            id, price_id, formula, zone_num, country, starting_weight, ending_weight, package_type
+            id, price_id, formula, zone_num, country, start_weight, end_weight, package_type
         from
             price_computational_formula where id = #{id}
     </select>

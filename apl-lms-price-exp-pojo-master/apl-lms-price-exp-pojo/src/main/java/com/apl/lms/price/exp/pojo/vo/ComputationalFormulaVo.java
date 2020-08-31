@@ -36,10 +36,10 @@ public class ComputationalFormulaVo extends Model<ComputationalFormulaVo> {
     private String country;
 
     @ApiModelProperty(name = "startingWeight" , value = "起始重量", required = true)
-    private Double startingWeight;
+    private Double startWeight;
 
     @ApiModelProperty(name = "endingWeight" , value = "截止重量", required = true)
-    private Double endingWeight;
+    private Double endWeight;
 
     @ApiModelProperty(name = "packageType" , value = "包裹类型", required = true)
     private String packageType;

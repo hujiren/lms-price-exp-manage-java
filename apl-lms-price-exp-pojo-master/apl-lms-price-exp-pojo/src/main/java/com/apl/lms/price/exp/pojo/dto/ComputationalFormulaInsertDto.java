@@ -31,10 +31,10 @@ public class ComputationalFormulaInsertDto extends Model<ComputationalFormulaIns
     private String country;
 
     @ApiModelProperty(name = "startingWeight" , value = "起始重量")
-    private Double startingWeight;
+    private Double startWeight;
 
     @ApiModelProperty(name = "endingWeight" , value = "截止重量")
-    private Double endingWeight;
+    private Double endWeight;
 
     @ApiModelProperty(name = "packageType" , value = "包裹类型")
     private String packageType;
