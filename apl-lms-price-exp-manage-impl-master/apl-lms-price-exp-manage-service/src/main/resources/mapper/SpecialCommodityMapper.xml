@@ -6,7 +6,8 @@
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo">
         SELECT
             id,
-            special_commodity_name
+            special_commodity_name,
+            code
         FROM
             special_commodity
         where
@@ -23,20 +24,23 @@
 
     <!--更新特殊物品-->
     <update id="updSpecialCommodity">
-        update special_commodity set special_commodity_name = #{po.specialCommodityName} where id = #{po.id}
+        update special_commodity set special_commodity_name = #{po.specialCommodityName},code = #{po.code} where id = #{po.id}
     </update>
 
     <!--批量插入特殊物品-->
     <insert id="addSpecialCommodity">
 
-        <foreach collection="po" close="" open="" item="row" separator=";" index="">
-            insert into special_commodity(id, special_commodity_name) values (${row.id}, #{row.specialCommodityName})
-        </foreach>
+            insert into
+                special_commodity(id, special_commodity_name, code)
+            values
+            <foreach collection="po" close="" open="" item="row" separator="," index="">
+                (#{row.id}, #{row.specialCommodityName}, #{row.code})
+            </foreach>
 
     </insert>
 
     <!--获取特殊物品详细-->
     <select id="getSpecialCommodity" resultType="com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo">
-        select id,special_commodity_name from special_commodity where id = #{id}
+        select id,special_commodity_name,code from special_commodity where id = #{id}
     </select>
 </mapper>

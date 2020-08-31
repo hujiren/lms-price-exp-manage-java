@@ -9,6 +9,8 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author hjr start
  * @Classname PriceExpDataServiceImpl
@@ -30,22 +32,22 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
 
     /**
      * 根据id获取主表id
-     * @param priceExpMainId
+     * @param ids
      * @return
      */
     @Override
-    public Long getPriceDataId(Long priceExpMainId) {
-        return baseMapper.getPriceDataId(priceExpMainId);
+    public List<Long> getPriceDataIds(List<Long> ids) {
+        return baseMapper.getPriceDataIds(ids);
     }
 
     /**
      * 通过主表id获取统计条数
-     * @param priceMainId
+     * @param priceMainIds
      * @return
      */
     @Override
-    public Integer getPriceDataIdCount(Long priceMainId) {
-        return baseMapper.getPriceDataIdCount(priceMainId);
+    public Integer getPriceDataIdCount(List<Long> priceMainIds) {
+        return baseMapper.getPriceDataIdCount(priceMainIds);
     }
 
 
@@ -73,11 +75,11 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
 
     /**
      * 根据id删除
-     * @param id
+     * @param ids
      * @return
      */
     @Override
-    public Integer deleteById(Long id) {
-        return baseMapper.deleteById(id);
+    public Integer deleteById(List<Long> ids) {
+        return baseMapper.deleteBatchIds(ids);
     }
 }

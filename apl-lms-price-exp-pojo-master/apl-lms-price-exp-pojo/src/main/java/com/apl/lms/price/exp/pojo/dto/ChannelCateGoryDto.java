@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value="渠道类型  更新对象", description="渠道类型 更新对象")
-public class ChannelCateGoryDto extends Model<ChannelCateGoryDto> {
+public class ChannelCategoryDto extends Model<ChannelCategoryDto> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)

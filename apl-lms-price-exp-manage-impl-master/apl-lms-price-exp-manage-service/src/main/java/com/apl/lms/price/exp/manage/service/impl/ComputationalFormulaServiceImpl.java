@@ -7,7 +7,7 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.ComputationalFormulaMapper;
 import com.apl.lms.price.exp.manage.service.ComputationalFormulaService;
 import com.apl.lms.price.exp.pojo.dto.*;
-import com.apl.lms.price.exp.pojo.po.ComputationalFormulaPo;
+import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFormulaMapper, ComputationalFormulaPo> implements ComputationalFormulaService {
+public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFormulaMapper, PriceExpComputationalFormulaPo> implements ComputationalFormulaService {
 
     enum ExpListServiceCode {
         ;
@@ -78,15 +78,15 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     @Override
     public ResultUtil<Boolean> updComputationalFormula(ComputationalFormulaDto computationalFormulaDto) {
 
-        ComputationalFormulaPo computationalFormulaPo = new ComputationalFormulaPo();
-        BeanUtils.copyProperties(computationalFormulaDto, computationalFormulaPo);
+        PriceExpComputationalFormulaPo priceExpComputationalFormulaPo = new PriceExpComputationalFormulaPo();
+        BeanUtils.copyProperties(computationalFormulaDto, priceExpComputationalFormulaPo);
 
         ComputationalFormulaVo computationalFormulaVo = baseMapper.getComputationalFormula(computationalFormulaDto.getId());
         if(computationalFormulaVo == null){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
         }
 
-        Integer integer = baseMapper.updComputationalFormula(computationalFormulaPo);
+        Integer integer = baseMapper.updComputationalFormula(priceExpComputationalFormulaPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -101,14 +101,14 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     @Override
     public ResultUtil<Long> addComputationalFormula(ComputationalFormulaInsertDto computationalFormulaInsertDto) {
 
-        ComputationalFormulaPo computationalFormulaPo = new ComputationalFormulaPo();
-        BeanUtils.copyProperties(computationalFormulaInsertDto, computationalFormulaPo);
-        computationalFormulaPo.setId(SnowflakeIdWorker.generateId());
-        Integer integer = baseMapper.addComputationalFormula(computationalFormulaPo);
+        PriceExpComputationalFormulaPo priceExpComputationalFormulaPo = new PriceExpComputationalFormulaPo();
+        BeanUtils.copyProperties(computationalFormulaInsertDto, priceExpComputationalFormulaPo);
+        priceExpComputationalFormulaPo.setId(SnowflakeIdWorker.generateId());
+        Integer integer = baseMapper.insert(priceExpComputationalFormulaPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, computationalFormulaPo.getId());
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceExpComputationalFormulaPo.getId());
     }
 
     /**

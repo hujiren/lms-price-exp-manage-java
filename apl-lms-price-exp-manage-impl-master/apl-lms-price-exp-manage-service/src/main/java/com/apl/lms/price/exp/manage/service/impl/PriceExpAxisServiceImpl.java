@@ -7,6 +7,8 @@ import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author hjr start
  * @Classname PriceExpDataServiceImpl
@@ -17,12 +19,12 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
 
     /**
      * 根据主表id删除数据
-     * @param priceExpMainId
+     * @param priceExpMainIds
      * @return
      */
     @Override
-    public Integer deleteByPriceExpMainId(Long priceExpMainId) {
-        return baseMapper.deleteByPriceExpMainId(priceExpMainId);
+    public Integer deleteByPriceExpMainId(List<Long> priceExpMainIds) {
+        return baseMapper.deleteByMainIds(priceExpMainIds);
     }
 
     /**
@@ -50,5 +52,26 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
         priceExpAxisPo.setPriceMainId(priceMainId);
         Integer saveSuccess = baseMapper.insertAxis(priceExpAxisPo);
         return saveSuccess > 0 ? true : false;
+    }
+
+    /**
+     * 更新
+     * @param priceExpAxisPo
+     * @return
+     */
+    @Override
+    public Boolean updateByMainId(PriceExpAxisPo priceExpAxisPo) {
+        Integer integer = baseMapper.updateByMainId(priceExpAxisPo);
+        return integer > 0 ? true : false;
+    }
+
+    /**
+     * 获取详细
+     * @param id
+     * @return
+     */
+    @Override
+    public PriceExpAxisPo getAxisInfoById(Long id) {
+        return baseMapper.getAxisInfoById(id);
     }
 }

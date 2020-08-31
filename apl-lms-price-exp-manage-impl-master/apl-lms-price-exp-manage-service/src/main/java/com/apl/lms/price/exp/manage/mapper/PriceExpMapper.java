@@ -63,9 +63,23 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
 
     /**
      * 根据主表id查询多租户id
+     * @param priceMainIds
+     * @return
+     */
+    List<Long> getInnerOrgId(@Param("ids") List<Long> priceMainIds);
+
+    /**
+     * 更新
+     * @param priceExpMainPo
+     * @return
+     */
+    Integer updateMainById(@Param("po") PriceExpMainPo priceExpMainPo);
+
+    /**
+     * 获取多租户id
      * @param priceMainId
      * @return
      */
-    Long getInnerOrgId(@Param("id") Long priceMainId);
+    Long getInnerOrgById(@Param("id") Long priceMainId);
 
 }

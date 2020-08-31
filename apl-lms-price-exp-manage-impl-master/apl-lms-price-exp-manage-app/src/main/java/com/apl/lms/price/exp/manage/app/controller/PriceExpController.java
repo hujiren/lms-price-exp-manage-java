@@ -1,27 +1,28 @@
 package com.apl.lms.price.exp.manage.app.controller;
+import cn.hutool.core.bean.BeanUtil;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
+import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpCostInfoVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
+import com.apl.lms.price.exp.pojo.vo.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author hjr start
@@ -73,15 +74,35 @@ public class PriceExpController {
         return priceExpService.getPriceExpCostInfo(id);
     }
 
+    @PostMapping(value = "/get-price-axis")
+    @ApiOperation(value = "获取主表轴数据", notes = "获取主表轴数据")
+    @ApiImplicitParam(name = "id", value = "主表Id", required = true, paramType = "query")
+    public ResultUtil<PriceExpAxisPo> getPriceExpAxis(@NotNull(message = "主表Id不能为J空") @Min(value = 1, message = "id不能小于1") Long id) {
 
+        return priceExpService.getPriceExpAxis(id);
+    }
+
+    @PostMapping(value = "/get-price-data")
+    @ApiOperation(value = "获取主表数据", notes = "获取主表数据")
+    @ApiImplicitParam(name = "id", value = "主表Id", required = true, paramType = "query")
+    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "主表Id不能为J空") @Min(value = 1, message = "id不能小于1") Long id) {
+        return priceExpService.getPriceExpData(id);
+    }
+
+    @PostMapping(value = "/get-price-remark")
+    @ApiOperation(value = "获取备注信息", notes = "获取备注信息")
+    @ApiImplicitParam(name = "id", value = "主表Id", required = true, paramType = "query")
+    public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(@NotNull(message = "主表Id不能为J空") @Min(value = 1, message = "id不能小于1") Long id) {
+        return priceExpService.getPriceExpRemark(id);
+    }
 
     @PostMapping(value = "/add-price")
     @ApiOperation(value = "新增快递价格", notes = "新增快递价格")
-    public ResultUtil<Long> addPrice(@Validated @RequestBody PriceExpMainAddDto priceExpMainAddDto,
-                                     @Validated PriceExpCostAddDto priceExpCostAddDto,
-                                     @Validated @RequestBody PriceExpSaleAddDto priceExpSaleAddDto,
-                                     @Validated PriceExpAxisAddDto priceExpAxisAddDto,
-                                     @Validated @RequestBody PriceExpDataAddDto priceExpDataAddDto) {
+    public ResultUtil<Long> addPrice(@Validated  PriceExpMainAddDto priceExpMainAddDto,
+                                     @Validated  PriceExpCostAddDto priceExpCostAddDto,
+                                     @Validated  PriceExpSaleAddDto priceExpSaleAddDto,
+                                     @Validated  PriceExpAxisAddDto priceExpAxisAddDto,
+                                     @Validated  PriceExpDataAddDto priceExpDataAddDto) {
 
         return priceExpService.addExpPrice(priceExpMainAddDto,priceExpCostAddDto, priceExpSaleAddDto, priceExpAxisAddDto, priceExpDataAddDto);
     }
@@ -132,23 +153,19 @@ public class PriceExpController {
         return priceExpService.updatePriceData(priceExpDataAddDto, priceExpAxisPo);
     }
 
-    @PostMapping(value = "/delete-cost-price")
-    @ApiOperation(value = "删除成本价格表", notes = "根据Id删除成本价格表")
-    @ApiImplicitParam(name = "id", value = "成本价格表id", required = true, paramType = "query")
-    public ResultUtil<Boolean> deleteCostPrice(
-            @NotNull(message = "成本价格表id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    @PostMapping(value = "/delete-cost-batch")
+    @ApiOperation(value = "批量删除成本价格表", notes = "根据Id批量删除成本价格表")
+    public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "id不能为空") @RequestParam("ids") ArrayList<Long> ids){
 
-        return priceExpService.deleteCostPrice(id);
+        return priceExpService.deleteCostBatch(ids);
     }
 
 
-    @PostMapping(value = "/delete-sale-price")
-    @ApiOperation(value = "删除销售价格表", notes = "根据Id删除销售价格表")
-    @ApiImplicitParam(name = "id", value = "销售价格表id", required = true, paramType = "query")
-    public ResultUtil<Boolean> deleteSalePrice(
-            @NotNull(message = "销售价格表id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    @PostMapping(value = "/delete-sale-batch")
+    @ApiOperation(value = "批量删除销售价格表", notes = "根据Id批量删除销售价格表")
+    public ResultUtil<Boolean> deleteSalePrice(@NotEmpty(message = "销售价格表id不能为空") @RequestParam("ids") List<Long> ids){
 
-        return priceExpService.deleteSalePrice(id);
+        return priceExpService.deleteSaleBatch(ids);
     }
 }
 

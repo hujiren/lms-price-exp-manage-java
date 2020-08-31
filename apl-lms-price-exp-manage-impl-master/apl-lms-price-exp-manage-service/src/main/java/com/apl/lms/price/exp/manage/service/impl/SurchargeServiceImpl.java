@@ -51,7 +51,7 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
      */
     @Override
     public ResultUtil<Boolean> delSurcharge(Long id) {
-        Integer integer = baseMapper.delById(id);
+        Integer integer = baseMapper.deleteById(id);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
         }
@@ -66,12 +66,7 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
     @Override
     public ResultUtil<Boolean> updSurcharge(SurchargeDto surchargeDto) {
 
-        SurchargeDto surchargeDto2 = baseMapper.getSurcharge(surchargeDto.getId());
-        if(surchargeDto == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
-        }
-
-        Integer integer = baseMapper.updSurcharge(surchargeDto);
+        Integer integer = baseMapper.updateById(surchargeDto);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -106,7 +101,7 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
     @Override
     public ResultUtil<SurchargeDto> getSurcharge(Long id) {
 
-        SurchargeDto surchargeDto = baseMapper.getSurcharge(id);
+        SurchargeDto surchargeDto = baseMapper.selectById(id);
         if(surchargeDto == null){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
         }

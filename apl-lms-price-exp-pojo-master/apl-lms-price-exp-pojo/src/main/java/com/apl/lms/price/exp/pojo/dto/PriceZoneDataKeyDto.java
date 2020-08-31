@@ -7,15 +7,19 @@ import lombok.Data;
 
 /**
  * @author hjr start
- * @date 2020/8/5 - 18:00
+ * @Classname PriceZoneDataKeyDto
+ * @Date 2020/8/31 15:13
  */
 @Data
-@ApiModel(value="渠道类型  查询对象", description="渠道类型 查询对象")
-public class ChannelCategoryKeyDto extends Model<ChannelCategoryKeyDto> {
-
+@ApiModel(value="销售价格表  返回对象", description="销售价格表 返回对象")
+public class PriceZoneDataKeyDto extends Model<PriceZoneDataKeyDto> {
 
     @ApiModelProperty(name = "keyword" , value = "关键字")
     private String keyword;
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public String getKeyword() {
         if (keyword != null && keyword.trim().equals(""))

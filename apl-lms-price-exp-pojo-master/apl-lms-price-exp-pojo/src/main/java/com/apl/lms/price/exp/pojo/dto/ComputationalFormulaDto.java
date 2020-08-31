@@ -36,24 +36,19 @@ public class ComputationalFormulaDto extends Model<ComputationalFormulaDto> {
     @NotBlank(message = "公式不能为空")
     private String formula;
 
-    @ApiModelProperty(name = "priceZone" , value = "分区", required = true)
-    @NotBlank(message = "分区不能为空")
-    private String priceZone;
+    @ApiModelProperty(name = "zoneNum" , value = "分区号")
+    private String zoneNum;
 
-    @ApiModelProperty(name = "country" , value = "国家", required = true)
-    @NotBlank(message = "国家不能为空")
+    @ApiModelProperty(name = "country" , value = "国家")
     private String country;
 
-    @ApiModelProperty(name = "startingWeight" , value = "起始重量", required = true)
-    @NotNull(message = "起始重量不能为空")
+    @ApiModelProperty(name = "startingWeight" , value = "起始重量")
     private Double startingWeight;
 
-    @ApiModelProperty(name = "endingWeight" , value = "截止重量", required = true)
-    @NotNull(message = "截止重量不能为空")
+    @ApiModelProperty(name = "endingWeight" , value = "截止重量")
     private Double endingWeight;
 
-    @ApiModelProperty(name = "packingType" , value = "包裹类型", required = true)
-    @NotBlank(message = "包裹类型不能为空")
-    private String packingType;
+    @ApiModelProperty(name = "packageType" , value = "包裹类型")
+    private String packageType;
 
 }

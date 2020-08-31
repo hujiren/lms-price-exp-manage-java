@@ -34,5 +34,8 @@ public class FuelChargePo extends Model<FuelChargePo> {
     @ApiModelProperty(name = "fuelCharge" , value = "燃油费" , required = true)
     private Double fuelCharge;
 
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)
+    private String channelCategory;
+
 
 }

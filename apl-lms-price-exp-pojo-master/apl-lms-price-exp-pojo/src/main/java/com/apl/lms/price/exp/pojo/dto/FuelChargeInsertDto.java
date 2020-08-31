@@ -26,5 +26,7 @@ public class FuelChargeInsertDto extends Model<FuelChargeInsertDto> {
     @NotNull(message = "燃油费不能为空")
     private Double fuelCharge;
 
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)
+    private String channelCategory;
 
 }

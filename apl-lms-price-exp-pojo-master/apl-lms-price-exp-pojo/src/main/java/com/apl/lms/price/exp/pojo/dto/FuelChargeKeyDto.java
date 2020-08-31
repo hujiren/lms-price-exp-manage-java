@@ -21,9 +21,6 @@ public class FuelChargeKeyDto extends Model<FuelChargeKeyDto> {
     @ApiModelProperty(name = "endDate" , value = "截止时间")
     private Long endDate;
 
-    @ApiModelProperty(name = "fuelCharge" , value = "燃油费")
-    @Range(min = 0, message = "燃油费不能小于0")
-    private Double fuelCharge;
-
-
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
+    private String channelCategory;
 }

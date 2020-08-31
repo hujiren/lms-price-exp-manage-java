@@ -6,12 +6,11 @@ import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpCostInfoVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
+import com.apl.lms.price.exp.pojo.vo.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * @author hjr start
@@ -49,7 +48,26 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(Long id);
 
+    /**
+     * 获取轴数据
+     * @param id
+     * @return
+     */
+    ResultUtil<PriceExpAxisPo> getPriceExpAxis(Long id);
 
+    /**
+     * 获取主表数据
+     * @param id
+     * @return
+     */
+    ResultUtil<PriceExpDataVo> getPriceExpData(Long id);
+
+    /**
+     * 获取备注信息
+     * @param id
+     * @return
+     */
+    ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id);
 
     /**
      * 更新销售价格
@@ -85,18 +103,18 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
     ResultUtil<Boolean> updRemark(PriceExpRemarkPo priceExpRemarkPo);
 
     /**
-     * 根据id删除成本价格数据
-     * @param id
+     * 根据id批量删除成本价格数据
+     * @param ids
      * @return
      */
-    ResultUtil<Boolean> deleteCostPrice(Long id);
+    ResultUtil<Boolean> deleteCostBatch(List<Long> ids);
 
     /**
-     * 根据id删除销售价格数据
-     * @param id
+     * 根据id批量删除销售价格数据
+     * @param ids
      * @return
      */
-    ResultUtil<Boolean> deleteSalePrice(Long id);
+    ResultUtil<Boolean> deleteSaleBatch(List<Long> ids);
 
 
     /**

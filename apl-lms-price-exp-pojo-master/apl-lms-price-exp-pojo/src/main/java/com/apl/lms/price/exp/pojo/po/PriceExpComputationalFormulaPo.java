@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @TableName("price_computational_formula")
 @ApiModel(value="计算公式  持久化对象", description="计算公式 持久化对象")
-public class ComputationalFormulaPo extends Model<ComputationalFormulaPo> {
+public class PriceExpComputationalFormulaPo extends Model<PriceExpComputationalFormulaPo> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -32,8 +32,8 @@ public class ComputationalFormulaPo extends Model<ComputationalFormulaPo> {
     @ApiModelProperty(name = "formula" , value = "公式")
     private String formula;
 
-    @ApiModelProperty(name = "priceZone" , value = "分区", required = true)
-    private String priceZone;
+    @ApiModelProperty(name = "zoneNum" , value = "分区号", required = true)
+    private String zoneNum;
 
     @ApiModelProperty(name = "country" , value = "国家", required = true)
     private String country;
@@ -44,7 +44,7 @@ public class ComputationalFormulaPo extends Model<ComputationalFormulaPo> {
     @ApiModelProperty(name = "endingWeight" , value = "截止重量")
     private Double endingWeight;
 
-    @ApiModelProperty(name = "packingType" , value = "包裹类型", required = true)
-    private String packingType;
+    @ApiModelProperty(name = "packageType" , value = "包裹类型")
+    private String packageType;
 
 }

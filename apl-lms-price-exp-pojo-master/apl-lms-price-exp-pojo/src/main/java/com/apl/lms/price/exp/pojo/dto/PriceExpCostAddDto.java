@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author hjr start
@@ -17,7 +18,7 @@ public class PriceExpCostAddDto extends Model<PriceExpCostAddDto> {
 
 
     @ApiModelProperty(name = "partnerId" , value = "服务商id", required = true)
-    @NotBlank(message = "服务商id不能为空")
+    @NotNull(message = "服务商id不能为空")
     private Long partnerId;
 
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")

@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpSaleMapper">
 
-
     <!--根据主表id获取销售价格表Id-->
     <select id="getPriceExpSaleInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo">
         select
@@ -24,11 +23,43 @@
 
     <!--根据主表id获取数据统计数量-->
     <select id="getPriceDataIdCount" resultType="java.lang.Integer">
-        select count(id) from price_exp_sale where price_main_id = #{id}
+        select count(id) from price_exp_sale where price_main_id in
+        <foreach collection="ids" index="" item="row" open="(" close=")" separator=",">
+            #{row}
+        </foreach>
     </select>
 
     <!--根据id得到主表id-->
-    <select id="getPriceDataId" resultType="java.lang.Long">
-        select price_main_id from price_exp_sale where id = #{id}
+    <select id="getPriceDataIds" resultType="java.lang.Long">
+        select price_main_id from price_exp_sale where id in
+        <foreach collection="ids" item="row" open="(" close=")" separator=",">
+            #{row}
+        </foreach>
     </select>
+
+    <!--更新-->
+    <update id="updateSaleById">
+        update price_exp_sale set
+        <if test="po.priceCode != null">
+            price_code = #{po.priceCode},
+        </if>
+        <if test="po.customerGroupsId != null">
+            customer_groups_id = #{po.customerGroupsId, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+        </if>
+        <if test="po.customerGroupsName != null">
+            customer_groups_name = #{po.customerGroupsName},
+        </if>
+        <if test="po.customerIds">
+            customer_ids = #{po.customerIds, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+        </if>
+        <if test="po.customerName != null">
+            customer_name = #{po.customerName},
+        </if>
+        <if test="po.priceStatus != null">
+            price_status = #{po.priceStatus},
+        </if>
+            price_name = #{po.priceName},
+            channel_category = #{po.channelCategory}
+        where id = #{po.id}
+    </update>
 </mapper>

@@ -7,7 +7,8 @@
         SELECT
             id,
             weight_way_name,
-            computing_formula
+            computing_formula,
+            code
         FROM
             weight_way
         where
@@ -17,26 +18,23 @@
         </if>
     </select>
 
-    <!--根据Id删除附加费-->
+    <!--根据Id删除计泡方式-->
     <delete id="delById">
         delete from weight_way where id = #{id}
     </delete>
 
-    <!--更新附加费-->
-    <update id="updWeightWay">
-        update weight_way set weight_way_name = #{po.weightWayName}, computing_formula = #{po.computingFormula} where id = #{po.id}
-    </update>
 
     <!--批量插入附加费-->
     <insert id="addWeightWay">
-        <foreach collection="po" close="" open="" item="row" separator=";" index="">
-            insert into weight_way (id, weight_way_name, computing_formula) values (#{row.id}, #{row.weightWayName}, #{row.computingFormula})
+            insert into weight_way (id, weight_way_name, computing_formula, code) values
+        <foreach collection="po" close="" open="" item="row" separator="," index="">
+            (#{row.id}, #{row.weightWayName}, #{row.computingFormula}, #{row.code})
         </foreach>
 
     </insert>
 
     <!--获取计泡方式详情-->
     <select id="getWeightWay" resultType="com.apl.lms.price.exp.pojo.dto.WeightWayDto">
-        select id,weight_way_name,computing_formula from weight_way where id = #{id}
+        select id,weight_way_name,computing_formula,code from weight_way where id = #{id}
     </select>
 </mapper>

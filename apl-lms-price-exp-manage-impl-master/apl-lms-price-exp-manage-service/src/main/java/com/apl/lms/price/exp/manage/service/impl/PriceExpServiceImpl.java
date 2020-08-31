@@ -23,6 +23,7 @@ import org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.ShardingDataS
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         THERE_IS_NO_CORRESPONDING_DATA_FOR_THE_MAIN_TABLE("THERE_IS_NO_CORRESPONDING_DATA_FOR_THE_MAIN_TABLE", "主表没有对应数据"),
         THE_SERVICE_ID_OF_THE_PUBLISHED_PRICE_MUST_BE_ZERO("THE_SERVICE_ID_OF_THE_PUBLISHED_PRICE_MUST_BE_ZERO",
                 "是公布价, 服务商id必须为0"),
+        THERE_IS_STILL_DATA_BOUND_TO_THE_PRIMARY_TABLE("THERE_IS_STILL_DATA_BOUND_TO_THE_PRIMARY_TABLE", "仍有其他数据绑定主表"),
         SERVICE_PROVIDER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP(
                 "SERVICE_PROVIDER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP",
                 "服务商, 客户组, 客户, 请至少填写一组");
@@ -79,6 +81,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Autowired
     DataSource dataSource;
 
+    @Autowired
+    ComputationalFormulaService computationalFormulaService;
     /**
      * 分页查询销售价格列表
      * @param pageDto
@@ -240,6 +244,47 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpCostInfoVo);
     }
 
+    /**
+     * 获取轴数据详情
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<PriceExpAxisPo> getPriceExpAxis(Long id) {
+        PriceExpAxisPo priceExpAxisPo = priceExpAxisService.getAxisInfoById(id);
+        if(priceExpAxisPo == null){
+            return ResultUtil.APPRESULT(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpAxisPo);
+    }
+
+    /**
+     * 获取主表数据
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<PriceExpDataVo> getPriceExpData(Long id) {
+        PriceExpDataVo priceExpDataVo = priceExpDataService.getPriceExpDataInfoByMainId(id);
+        if(priceExpDataVo == null){
+            return ResultUtil.APPRESULT(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataVo);
+    }
+
+    /**
+     * 获取备注信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id) {
+        PriceExpRemarkPo priceExpRemarkPo = priceExpRemarkService.getPriceExpRemark(id);
+        if(priceExpRemarkPo == null){
+            return ResultUtil.APPRESULT(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpRemarkPo);
+    }
 
     /**
      * 更新销售价格
@@ -260,13 +305,15 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
 
         if(priceExpMainUpdateDto != null){
-            innerOrgId = baseMapper.getInnerOrgId(priceExpSaleUpdateDto.getPriceMainId());
+            innerOrgId = baseMapper.getInnerOrgById(priceExpSaleUpdateDto.getPriceMainId());
             if(innerOrgId == securityUser.getInnerOrgId()){
                 //更新主表
                 PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
                 BeanUtil.copyProperties(priceExpMainUpdateDto, priceExpMainPo);
-                saveSuccess = priceExpMainPo.updateById();
-                if (!saveSuccess) {
+                priceExpMainPo.setId(priceExpSaleUpdateDto.getPriceMainId());
+                priceExpMainPo.setIsPublishedPrice(null);
+                Integer integer = baseMapper.updateMainById(priceExpMainPo);
+                if (integer < 1) {
                     throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,
                             ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.msg, null);
                 }
@@ -276,10 +323,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         //更新销售价格表
         PriceExpSalePo priceExpSalePo = new PriceExpSalePo();
         BeanUtil.copyProperties(priceExpSaleUpdateDto, priceExpSalePo);
-        if(innerOrgId != securityUser.getInnerOrgId()){
-            priceExpSalePo.setPriceMainId(null);
-        }
-        saveSuccess = priceExpSalePo.updateById();
+        saveSuccess = priceExpSaleService.updateSaleById(priceExpSalePo);
         if (!saveSuccess) {
             throw new AplException(ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.code,
                     ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.msg, null);
@@ -310,13 +354,14 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         if(null != priceExpMainUpdateDto){
 
-            innerOrgId = baseMapper.getInnerOrgId(priceExpCostUpdateDto.getPriceMainId());
+            innerOrgId = baseMapper.getInnerOrgById(priceExpCostUpdateDto.getPriceMainId());
             if(innerOrgId == securityUser.getInnerOrgId()){
                 //更新主表
                 PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
                 BeanUtil.copyProperties(priceExpMainUpdateDto, priceExpMainPo);
-                saveSuccess = priceExpMainPo.updateById();
-                if (!saveSuccess) {
+                priceExpMainPo.setId(priceExpCostUpdateDto.getPriceMainId());
+                Integer integer = baseMapper.updateMainById(priceExpMainPo);
+                if (integer < 1) {
                     throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,
                             ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.msg, null);
                 }
@@ -346,6 +391,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
+    @Transactional
     public ResultUtil<Boolean> updatePriceData(PriceExpDataAddDto priceExpDataAddDto, PriceExpAxisPo priceExpAxisPo) {
 
         Long innerOrgId = priceExpDataService.getInnerOrgId(priceExpAxisPo.getPriceMainId());
@@ -361,13 +407,13 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
             priceExpDataPo.setPriceData(priceExpDataAddDto.getPriceData());
             priceExpDataPo.setPriceMainId(priceExpAxisPo.getPriceMainId());
-            Boolean result = priceExpDataPo.updateById();
+            Boolean result = priceExpDataService.updateByMainId(priceExpDataPo);
             if(!result) {
-                return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
+                throw new AplException(CommonStatusCode.SYSTEM_FAIL, null);
             }
-            Boolean res = priceExpAxisPo.updateById();
+            Boolean res = priceExpAxisService.updateByMainId(priceExpAxisPo);
             if(!res) {
-                return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
+                throw new AplException(CommonStatusCode.SYSTEM_FAIL, null);
             }
         }
 
@@ -391,99 +437,111 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
     /**
      * 根据id删除成本价格数据
-     * @param id
+     * @param ids
      * @return
      */
     @Override
     @Transactional
-    public ResultUtil<Boolean> deleteCostPrice(Long id) {
+    public ResultUtil<Boolean> deleteCostBatch(List<Long> ids) {
 
         //先得到主表id
-        Long priceMainId = priceExpCostService.getPriceDataId(id);
-        if(priceMainId == 0){
+        List<Long> priceMainIds = priceExpCostService.getPriceDataIds(ids);
+        if(priceMainIds.size() == 0){
             throw new AplException(CommonStatusCode.SYSTEM_FAIL.code, "成本价格表Id无效", null);
         }
-        //根据id删除成本价格表信息
-        priceExpCostService.deleteById(id);
+        //根据id批量删除成本价格表信息
+        Integer resInteger = priceExpCostService.deleteById(ids);
 
-        //根据id删除备注表信息
-        priceExpRemarkService.deleteById(id);
+        //根据id批量删除备注表信息
+        Integer resInteger2 = priceExpRemarkService.deleteById(ids);
 
-        //通过主表id得到成本价格表中关联数据的累计条数
-        Integer priceDataIdCount = priceExpCostService.getPriceDataIdCount(priceMainId);
+        //通过主表ids得到成本价格表中关联数据的累计条数
+        Integer priceDataIdCount = priceExpCostService.getPriceDataIdCount(priceMainIds);
 
-        //如果成本表中没有该主表id对应的数据
+        //如果成本表中没有该主表ids对应的数据
         if(priceDataIdCount == 0){
 
-            //通过主表id查询销售表中的数据统计
-            Integer priceDataIdCount2 = priceExpSaleService.getPriceDataIdCount(priceMainId);
+            //通过主表ids查询销售表中的数据统计
+            Integer priceDataIdCount2 = priceExpSaleService.getPriceDataIdCount(priceMainIds);
 
-            //如果销售价格表中也没有该主表id对应的关联数据
+            //如果销售价格表中也没有该主表ids对应的关联数据
             if(priceDataIdCount2 == 0){
 
-                //根据主表id查询租户id
-                Long innerOrgId = baseMapper.getInnerOrgId(priceMainId);
+                //根据主表ids查询租户ids
+                List<Long> innerOrgIds = baseMapper.getInnerOrgId(priceMainIds);
                 SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+                Long innerOrgId = securityUser.getInnerOrgId();
+                if(innerOrgIds.size() != 0) {
+                    for (Long aLong : innerOrgIds) {
+                        if (innerOrgId == aLong) {
 
-                if( securityUser.getInnerOrgId() == innerOrgId){
+                            //如果是庄家, 则批量删除主表数据
+                            baseMapper.deleteBatchIds(priceMainIds);
+                            //批量删除轴数据
+                            priceExpAxisService.deleteByPriceExpMainId(priceMainIds);
+                            //批量删除主数据
+                            priceExpDataService.deleteByPriceExpMainId(priceMainIds);
 
-                    //如果是庄家, 则删除主表数据
-                    baseMapper.deleteById(priceMainId);
-                    //删除轴数据
-                    priceExpAxisService.deleteByPriceExpMainId(priceMainId);
-                    //删除主数据
-                    priceExpDataService.deleteByPriceExpMainId(priceMainId);
-
+                        }
+                    }
                 }
+            }else{
+                throw new AplException(ExpListServiceCode.THERE_IS_STILL_DATA_BOUND_TO_THE_PRIMARY_TABLE.code,
+                        ExpListServiceCode.THERE_IS_STILL_DATA_BOUND_TO_THE_PRIMARY_TABLE.msg, null);
             }
+        }else {
+            throw new AplException(ExpListServiceCode.THERE_IS_STILL_DATA_BOUND_TO_THE_PRIMARY_TABLE.code,
+                    ExpListServiceCode.THERE_IS_STILL_DATA_BOUND_TO_THE_PRIMARY_TABLE.msg, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
     }
 
     /**
-     * 根据id删除销售价格表数据
-     * @param id
+     * 根据id批量删除销售价格表数据
+     * @param ids
      * @return
      */
     @Override
     @Transactional
-    public ResultUtil<Boolean> deleteSalePrice(Long id) {
+    public ResultUtil<Boolean> deleteSaleBatch(List<Long> ids) {
 
         //先得到主表id
-        Long priceMainId = priceExpSaleService.getPriceDataId(id);
-        if(priceMainId == 0){
+        List<Long> priceMainIds = priceExpSaleService.getPriceDataIds(ids);
+        if(priceMainIds.size() == 0){
             throw new AplException(CommonStatusCode.SYSTEM_FAIL.code, "成本价格表Id无效", null);
         }
         //根据id删除销售价格表信息
-        priceExpSaleService.deleteById(id);
+        priceExpSaleService.deleteById(ids);
         //根据id删除备注表信息
-        priceExpRemarkService.deleteById(id);
+        priceExpRemarkService.deleteById(ids);
 
         //通过主表id得到销售价格表中关联数据的累计条数
-        Integer priceDataIdCount = priceExpSaleService.getPriceDataIdCount(priceMainId);
+        Integer priceDataIdCount = priceExpSaleService.getPriceDataIdCount(priceMainIds);
 
         //如果销售表中没有该主表id对应的数据
         if(priceDataIdCount == 0){
 
             //通过主表id查询成本表中的数据统计
-            Integer priceDataIdCount2 = priceExpCostService.getPriceDataIdCount(priceMainId);
+            Integer priceDataIdCount2 = priceExpCostService.getPriceDataIdCount(priceMainIds);
 
-            //如果成本价格表中也没有该主表id对应的关联数据
+            //如果成本价格表中也没有该主表ids对应的关联数据
             if(priceDataIdCount2 == 0){
 
-                //根据主表id查询租户id
-                Long innerOrgId = baseMapper.getInnerOrgId(priceMainId);
+                //根据主表ids查询租户ids
+                List<Long> innerOrgIds = baseMapper.getInnerOrgId(priceMainIds);
                 SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+                Long innerOrgId = securityUser.getInnerOrgId();
+                for (Long aLong : innerOrgIds) {
+                    if( innerOrgId == aLong){
 
-                if( securityUser.getInnerOrgId() == innerOrgId){
+                        //如果是庄家, 则批量删除主表数据
+                        baseMapper.deleteBatchIds(priceMainIds);
+                        //批量删除轴数据
+                        priceExpAxisService.deleteByPriceExpMainId(priceMainIds);
+                        //批量删除主数据
+                        priceExpDataService.deleteByPriceExpMainId(priceMainIds);
 
-                    //如果是庄家, 则删除主表数据
-                    baseMapper.deleteById(priceMainId);
-                    //删除轴数据
-                    priceExpAxisService.deleteByPriceExpMainId(priceMainId);
-                    //删除主数据
-                    priceExpDataService.deleteByPriceExpMainId(priceMainId);
-
+                    }
                 }
             }
         }
@@ -506,27 +564,34 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                                         PriceExpAxisAddDto priceExpAxisAddDto,
                                         PriceExpDataAddDto priceExpDataAddDto) {
 
-        if(priceExpSaleAddDto != null) {
+            String[] customerName = null;
+            String[] customerGroup = null;
 
             //校验客户id与客户是否匹配
-            String[] customerName = priceExpSaleAddDto.getCustomerName().split(",");
-            if (priceExpSaleAddDto.getCustomerIds().size() != customerName.length) {
 
-                return ResultUtil.APPRESULT(ExpListServiceCode.CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH.code,
-                        ExpListServiceCode.CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH.msg, null);
 
+            if(priceExpSaleAddDto.getCustomerIds().size() > 0 && priceExpSaleAddDto.getCustomerName() != null) {
+
+                customerName = priceExpSaleAddDto.getCustomerName().split(",");
+
+                if (priceExpSaleAddDto.getCustomerIds().size() != customerName.length) {
+
+                    return ResultUtil.APPRESULT(ExpListServiceCode.CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH.code,
+                            ExpListServiceCode.CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH.msg, null);
+
+                }
             }
+            if(priceExpSaleAddDto.getCustomerGroupsId().size() > 0 && priceExpSaleAddDto.getCustomerGroupsName() != null) {
 
-            //校验客户组id与客户组是否匹配
-            String[] customerGroup = priceExpSaleAddDto.getCustomerGroupsName().split(",");
-            if (priceExpSaleAddDto.getCustomerGroupsId().size() != customerGroup.length) {
+                //校验客户组id与客户组是否匹配
+                customerGroup = priceExpSaleAddDto.getCustomerGroupsName().split(",");
+                if (priceExpSaleAddDto.getCustomerGroupsId().size() != customerGroup.length) {
 
-                return ResultUtil.APPRESULT(ExpListServiceCode.CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH.code,
-                        ExpListServiceCode.CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH.msg, null);
+                    return ResultUtil.APPRESULT(ExpListServiceCode.CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH.code,
+                            ExpListServiceCode.CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH.msg, null);
 
+                }
             }
-        }
-
         //不是公布价且不是成本价且不是销售价
         if(priceExpMainAddDto.getIsPublishedPrice() == 2 && priceExpCostAddDto.getPartnerId()<1
                 && (null==priceExpSaleAddDto.getCustomerGroupsId() || priceExpSaleAddDto.getCustomerGroupsId().size()==0 )
@@ -534,7 +599,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
             return ResultUtil.APPRESULT(ExpListServiceCode.SERVICE_PROVIDER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP.code,
                     ExpListServiceCode.SERVICE_PROVIDER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP.msg, null);
-
         }
 
         Boolean saveSuccess = false;
@@ -572,7 +636,11 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 throw new AplException(ExpListServiceCode.PRICE_EXP_COST_SAVE_DATA_FAILED.code,
                         ExpListServiceCode.PRICE_EXP_COST_SAVE_DATA_FAILED.msg, null);
             }
-
+            //保存计算公式
+            ComputationalFormulaInsertDto computationalFormulaInsertDto = new ComputationalFormulaInsertDto();
+            computationalFormulaInsertDto.setPriceId(priceId);
+            computationalFormulaInsertDto.setFormula("price()*fuel");
+            computationalFormulaService.addComputationalFormula(computationalFormulaInsertDto);
             //保存备注
             PriceExpRemarkPo priceExpRemarkPo = new PriceExpRemarkPo();
             priceExpRemarkPo.setId(priceId);
@@ -595,6 +663,11 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 throw new AplException(ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.code,
                         ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.msg, null);
             }
+            //保存计算公式
+            ComputationalFormulaInsertDto computationalFormulaInsertDto = new ComputationalFormulaInsertDto();
+            computationalFormulaInsertDto.setPriceId(priceId);
+            computationalFormulaInsertDto.setFormula("price()*fuel");
+            computationalFormulaService.addComputationalFormula(computationalFormulaInsertDto);
 
             //保存备注
             PriceExpRemarkPo priceExpRemarkPo = new PriceExpRemarkPo();

@@ -26,4 +26,7 @@ public class SpecialCommodityVo {
 
     @ApiModelProperty(name = "specialCommodityName", value = "特殊物品名称")
     private String specialCommodityName;
+
+    @ApiModelProperty(name = "code", value = "代码")
+    private Integer code;
 }

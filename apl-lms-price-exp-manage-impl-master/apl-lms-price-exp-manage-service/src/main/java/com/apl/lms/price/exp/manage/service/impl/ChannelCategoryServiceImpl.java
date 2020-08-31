@@ -6,9 +6,9 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryInsertDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryInsertDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
 import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -48,7 +48,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      * @return
      */
     @Override
-    public ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto, ChannelCateGoryKeyDto channelCateGoryKeyDto) {
+    public ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto, ChannelCategoryKeyDto channelCateGoryKeyDto) {
 
         Page<ChannelCategoryVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
@@ -82,7 +82,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updChannelCategory(ChannelCateGoryDto channelCateGoryDto) {
+    public ResultUtil<Boolean> updChannelCategory(ChannelCategoryDto channelCateGoryDto) {
 
         ChannelCategoryPo channelCateGoryPo = new ChannelCategoryPo();
         BeanUtils.copyProperties(channelCateGoryDto, channelCateGoryPo);
@@ -105,7 +105,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      * @return
      */
     @Override
-    public ResultUtil<String> addChannelCategory(ChannelCateGoryInsertDto channelCateGoryInsertDto) {
+    public ResultUtil<String> addChannelCategory(ChannelCategoryInsertDto channelCateGoryInsertDto) {
 
         ChannelCategoryPo channelCateGoryPo = new ChannelCategoryPo();
         BeanUtils.copyProperties(channelCateGoryInsertDto, channelCateGoryPo);

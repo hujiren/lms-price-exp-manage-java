@@ -37,6 +37,9 @@ public class PriceExpSaleListKeyDto {
     @ApiModelProperty(name = "customerGroupsId", value = "客户组id")
     private Long customerGroupsId;
 
+    @ApiModelProperty(name = "specialCommodity", value = "特殊物品code")
+    private Integer specialCommodity;
+
     @ApiModelProperty(name = "customerId", value = "客户id")
     private Long customerId;
 

@@ -3,6 +3,8 @@ import com.apl.lms.price.exp.pojo.dto.PriceExpAxisAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author hjr start
  * @Classname PriceExpDataService
@@ -10,12 +12,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PriceExpAxisService extends IService<PriceExpAxisPo> {
 
+
     /**
      * 根据主表id删除数据
-     * @param priceExpMainId
+     * @param priceExpMainIds
      * @return
      */
-    Integer deleteByPriceExpMainId(Long priceExpMainId);
+    Integer deleteByPriceExpMainId(List<Long> priceExpMainIds);
 
     /**
      * 根据主表id获取详细数据
@@ -32,4 +35,18 @@ public interface PriceExpAxisService extends IService<PriceExpAxisPo> {
      * @return
      */
     Boolean addPriceExpAxis(Long priceMainId, PriceExpAxisAddDto priceExpAxisAddDto);
+
+    /**
+     * 更新
+     * @param priceExpAxisPo
+     * @return
+     */
+    Boolean updateByMainId(PriceExpAxisPo priceExpAxisPo);
+
+    /**
+     * 获取详细
+     * @param id
+     * @return
+     */
+    PriceExpAxisPo getAxisInfoById(Long id);
 }

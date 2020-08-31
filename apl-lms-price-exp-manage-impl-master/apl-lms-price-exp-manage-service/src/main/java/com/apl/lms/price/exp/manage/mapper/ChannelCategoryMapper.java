@@ -1,5 +1,5 @@
 package com.apl.lms.price.exp.manage.mapper;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
 import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -25,7 +25,7 @@ public interface ChannelCategoryMapper extends BaseMapper<ChannelCategoryPo> {
      * @return
      */
 
-    List<ChannelCategoryVo> getList(Page<ChannelCategoryVo> page, @Param("key") ChannelCateGoryKeyDto channelCateGoryKeyDto);
+    List<ChannelCategoryVo> getList(Page<ChannelCategoryVo> page, @Param("key") ChannelCategoryKeyDto channelCateGoryKeyDto);
 
     /**
      * 根据Id删除渠道类型数据

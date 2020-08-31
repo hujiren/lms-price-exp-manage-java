@@ -2,9 +2,9 @@ package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryInsertDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCateGoryKeyDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryInsertDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -34,7 +34,7 @@ public class  ChannelCategoryController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取渠道类型列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto , ChannelCateGoryKeyDto channelCateGoryKeyDto){
+    public ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto , ChannelCategoryKeyDto channelCateGoryKeyDto){
 
         return channelCategoryService.getList(pageDto, channelCateGoryKeyDto);
     }
@@ -49,14 +49,14 @@ public class  ChannelCategoryController {
 
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新渠道类型")
-    public ResultUtil<Boolean> upd(@Validated ChannelCateGoryDto channelCateGoryDto){
+    public ResultUtil<Boolean> upd(@Validated ChannelCategoryDto channelCateGoryDto){
 
         return channelCategoryService.updChannelCategory(channelCateGoryDto);
     }
 
     @PostMapping(value = "/add")
     @ApiOperation(value =  "新增渠道类型" , notes = "新增渠道类型")
-    public ResultUtil<String> add( @Validated ChannelCateGoryInsertDto channelCateGoryInsertDto){
+    public ResultUtil<String> add( @Validated ChannelCategoryInsertDto channelCateGoryInsertDto){
 
         return channelCategoryService.addChannelCategory(channelCateGoryInsertDto);
     }

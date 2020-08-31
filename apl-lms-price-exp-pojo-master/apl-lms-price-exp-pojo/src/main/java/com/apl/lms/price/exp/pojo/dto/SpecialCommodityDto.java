@@ -29,4 +29,8 @@ public class SpecialCommodityDto {
     @ApiModelProperty(name = "specialCommodityName", value = "特殊物品名称", required = true)
     @NotBlank(message = "特殊物品名称不能为空")
     private String specialCommodityName;
+
+    @ApiModelProperty(name = "code", value = "代码", required = true)
+    @NotNull(message = "code不能为空")
+    private Integer code;
 }

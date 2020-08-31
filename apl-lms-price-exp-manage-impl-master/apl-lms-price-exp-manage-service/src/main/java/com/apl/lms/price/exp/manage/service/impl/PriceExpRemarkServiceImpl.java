@@ -5,6 +5,8 @@ import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author hjr start
  * @Classname PriceExpDataServiceImpl
@@ -16,12 +18,12 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
 
     /**
      * 根据扩展表Id删除数据
-     * @param id
+     * @param ids
      * @return
      */
     @Override
-    public Integer deleteById(Long id) {
-        return baseMapper.deleteById(id);
+    public Integer deleteById(List<Long> ids) {
+        return baseMapper.deleteBatchIds(ids);
     }
 
     /**
@@ -31,6 +33,16 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
      */
     @Override
     public PriceExpRemarkPo getDevelopInfoById(Long id) {
+        return baseMapper.selectById(id);
+    }
+
+    /**
+     * 根据id获取详情
+     * @param id
+     * @return
+     */
+    @Override
+    public PriceExpRemarkPo getPriceExpRemark(Long id) {
         return baseMapper.selectById(id);
     }
 

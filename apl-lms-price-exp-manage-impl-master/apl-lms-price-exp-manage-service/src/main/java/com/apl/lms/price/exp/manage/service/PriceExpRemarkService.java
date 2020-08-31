@@ -3,6 +3,8 @@ package com.apl.lms.price.exp.manage.service;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author hjr start
  * @Classname PriceExpRemarkService
@@ -13,10 +15,10 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
 
     /**
      * 根据关联表id删除数据
-     * @param id
+     * @param ids
      * @return
      */
-    Integer deleteById(Long id);
+    Integer deleteById(List<Long> ids);
 
     /**
      * 根据Id获取详情
@@ -31,4 +33,11 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
      * @return
      */
     Integer updateRemark(PriceExpRemarkPo priceExpRemarkPo);
+
+    /**
+     * 获取详情
+     * @param id
+     * @return
+     */
+    PriceExpRemarkPo getPriceExpRemark(Long id);
 }

@@ -13,8 +13,8 @@ import lombok.Data;
 @ApiModel(value="计算公式  查询对象", description="计算公式 查询对象")
 public class ComputationalFormulaKeyDto extends Model<ComputationalFormulaKeyDto> {
 
-    @ApiModelProperty(name = "priceZone" , value = "分区")
-    private String priceZone;
+    @ApiModelProperty(name = "zoneNum" , value = "分区号")
+    private String zoneNum;
 
     @ApiModelProperty(name = "country" , value = "国家")
     private String country;
@@ -25,8 +25,8 @@ public class ComputationalFormulaKeyDto extends Model<ComputationalFormulaKeyDto
     @ApiModelProperty(name = "endingWeight" , value = "截止重量")
     private Double endingWeight;
 
-    @ApiModelProperty(name = "packingType" , value = "包裹类型")
-    private String packingType;
+    @ApiModelProperty(name = "packageType" , value = "包裹类型")
+    private String packageType;
 
     @ApiModelProperty(name = "keyword" , value = "关键字")
     private String keyword;
@@ -39,11 +39,11 @@ public class ComputationalFormulaKeyDto extends Model<ComputationalFormulaKeyDto
     }
 
 
-    public String getPriceZone() {
-        if (priceZone != null && priceZone.trim().equals(""))
-            priceZone = null;
+    public String getZoneNum() {
+        if (zoneNum != null && zoneNum.trim().equals(""))
+            zoneNum = null;
 
-        return priceZone;
+        return zoneNum;
     }
 
     public String getCountry() {
@@ -53,11 +53,11 @@ public class ComputationalFormulaKeyDto extends Model<ComputationalFormulaKeyDto
         return country;
     }
 
-    public String getPackingType() {
-        if (packingType != null && packingType.trim().equals(""))
-            packingType = null;
+    public String getPackageType() {
+        if (packageType != null && packageType.trim().equals(""))
+            packageType = null;
 
-        return packingType;
+        return packageType;
     }
 
 }

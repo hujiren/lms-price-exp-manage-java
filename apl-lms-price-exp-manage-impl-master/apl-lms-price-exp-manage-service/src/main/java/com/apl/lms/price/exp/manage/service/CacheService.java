@@ -8,11 +8,6 @@ import com.apl.lib.utils.ResultUtil;
  */
 public interface CacheService {
 
-    ResultUtil<Boolean> addSpecialCommodityCache(String keys, Long minKey, Long maxKey);
-
-    ResultUtil<Boolean> addSurchargeCache(String keys, Long minKey, Long maxKey);
-
-    ResultUtil<Boolean> addWeightWayCache(String keys, Long minKey, Long maxKey);
 
     ResultUtil<Boolean> addPartnerCache(String keys, Long minKey, Long maxKey);
 }

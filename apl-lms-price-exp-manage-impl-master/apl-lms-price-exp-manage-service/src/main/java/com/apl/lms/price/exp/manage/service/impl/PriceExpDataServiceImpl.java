@@ -7,6 +7,8 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author hjr start
  * @Classname PriceExpDataServiceImpl
@@ -16,10 +18,15 @@ import org.springframework.stereotype.Service;
 public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, PriceExpDataPo> implements PriceExpDataService {
 
     @Override
-    public Integer deleteByPriceExpMainId(Long priceExpMainId) {
-        return baseMapper.deleteByPriceExpMainId(priceExpMainId);
+    public Integer deleteByPriceExpMainId(List<Long> priceExpMainIds) {
+        return baseMapper.deleteByMainIds(priceExpMainIds);
     }
 
+    /**
+     * 获取详细
+     * @param id
+     * @return
+     */
     @Override
     public PriceExpDataVo getPriceExpDataInfoByMainId(Long id) {
         return baseMapper.getPriceExpDataInfoByMainId(id);
@@ -46,5 +53,16 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         Integer saveSuccess = baseMapper.insertData(priceExpDataPo);
 
         return saveSuccess > 0 ? true :false;
+    }
+
+    /**
+     * 更新
+     * @param priceExpDataPo
+     * @return
+     */
+    @Override
+    public Boolean updateByMainId(PriceExpDataPo priceExpDataPo) {
+        Integer integer = baseMapper.updateByMainId(priceExpDataPo);
+        return integer > 0 ? true : false;
     }
 }

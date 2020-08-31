@@ -58,7 +58,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
             startTimes = new Timestamp(fuelChargeKeyDto.getStartDate());
             endTimes = new Timestamp(fuelChargeKeyDto.getEndDate());
         }
-
+        fuelChargeKeyDto.setChannelCategory(fuelChargeKeyDto.getChannelCategory().toUpperCase());
         List<FuelChargeVo> fuelChargeVoList = baseMapper.getList(page, fuelChargeKeyDto, startTimes, endTimes);
 
         page.setRecords(fuelChargeVoList);
@@ -92,6 +92,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         fuelChargePo.setStartDate(new Timestamp(fuelChargeDto.getStartDate()));
         fuelChargePo.setEndDate(new Timestamp(fuelChargeDto.getEndDate()));
         fuelChargePo.setFuelCharge(fuelChargeDto.getFuelCharge());
+        fuelChargePo.setChannelCategory(fuelChargeDto.getChannelCategory());
         fuelChargePo.setId(fuelChargeDto.getId());
 
         FuelChargeVo fuelChargeVo = baseMapper.getFuelCharge(fuelChargePo.getId());
@@ -118,6 +119,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         fuelChargePo.setEndDate(new Timestamp(fuelChargeInsertDto.getEndDate()));
         fuelChargePo.setStartDate(new Timestamp(fuelChargeInsertDto.getStartDate()));
         fuelChargePo.setFuelCharge(fuelChargeInsertDto.getFuelCharge());
+        fuelChargePo.setChannelCategory(fuelChargeInsertDto.getChannelCategory());
         fuelChargePo.setId(SnowflakeIdWorker.generateId());
 
         Integer integer = baseMapper.insertFuelCharge(fuelChargePo);

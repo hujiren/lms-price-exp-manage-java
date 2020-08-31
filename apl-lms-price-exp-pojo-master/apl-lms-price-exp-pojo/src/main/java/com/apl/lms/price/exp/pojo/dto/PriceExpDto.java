@@ -3,24 +3,26 @@ package com.apl.lms.price.exp.pojo.dto;
 import com.apl.lib.validate.TypeValidator;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.ser.impl.MapEntrySerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author hjr start
- * @Classname PriceExpMainPo
- * @Date 2020/8/20 14:36
+ * @Classname PriceExpDto
+ * @Date 2020/8/31 14:53
  */
 @Data
-@ApiModel(value="快递价格主表  插入对象", description="快递价格主表 插入对象")
-public class PriceExpMainAddDto extends Model<PriceExpMainAddDto> {
+@ApiModel(value="快递价格  插入对象", description="快递价格 插入对象")
+public class PriceExpDto extends Model<PriceExpDto> implements Serializable {
 
+    private static final long serialVersionUID = -4184931173102027207L;
     @ApiModelProperty(name = "startDate" , value = "起始日期", required = true)
     @NotNull(message = "起始日期不能为空")
     private Long startDate;
@@ -74,4 +76,50 @@ public class PriceExpMainAddDto extends Model<PriceExpMainAddDto> {
 
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
+
+    @ApiModelProperty(name = "partnerId" , value = "服务商id", required = true)
+    @NotNull(message = "服务商id不能为空")
+    private Long partnerId;
+
+    @ApiModelProperty(name = "priceCode" , value = "价格表代码")
+    private String priceCode;
+
+    @ApiModelProperty(name = "priceName" , value = "价格表名称", required = true)
+    @NotBlank(message = "价格表名称不能为空")
+    private String priceName;
+
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)
+    @NotBlank(message = "渠道类型不能为空")
+    private String channelCategory;
+
+    @ApiModelProperty(name = "partnerRemark", value = "服务商备注")
+    private String partnerRemark;
+
+    @ApiModelProperty(name = "customerGroupsId" , value = "客户组id")
+    private List<Long> customerGroupsId;
+
+    @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称")
+    private String customerGroupsName;
+
+    @ApiModelProperty(name = "customerIds" , value = "客户ids")
+    private List<Long> customerIds;
+
+    @ApiModelProperty(name = "customerName" , value = "客户名称")
+    private String customerName;
+
+    @ApiModelProperty(name = "saleRemark" , value = "销售备注")
+    private String saleRemark;
+
+    @ApiModelProperty(name = "axisTransverse" , value = "x轴数据", required = true)
+    @NotBlank(message = "x轴数据不能为空")
+    private String axisTransverse;
+
+    @ApiModelProperty(name = "axisPortrait" , value = "y轴数据", required = true)
+    @NotBlank(message = "y轴数据不能为空")
+    private String axisPortrait;
+
+    @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
+    @NotEmpty(message = "价格表数据不能为空")
+    private List priceData;
+
 }

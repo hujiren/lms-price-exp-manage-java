@@ -5,13 +5,13 @@
     <!--分页查询燃油费列表-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo">
         select
-            id, price_id, formula, price_zone, country, starting_weight, ending_weight, packing_type
+            id, price_id, formula, zone_num, country, starting_weight, ending_weight, package_type
         from
         price_computational_formula
         where
             1=1
-            <if test="key.priceZone != null">
-                and priceZone = #{key.priceZone}
+            <if test="key.zoneNum != null">
+                and zone_num = #{key.zoneNum}
             </if>
             <if test="key.country != null">
                 and country = #{key.country}
@@ -22,13 +22,13 @@
             <if test="key.endingWeight != null">
                 and ending_weight >= #{key.endingWeight}
             </if>
-            <if test="key.packingType != null">
-                and packing_type = #{key.packingType}
+            <if test="key.packageType != null">
+                and package_type = #{key.packageType}
             </if>
             <if test="key.keyword != null">
-                and price_zone LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                and zone_num LIKE CONCAT( '%' , #{key.keyword} , '%' )
                 or country LIKE CONCAT( '%' , #{key.keyword} , '%' )
-                or packing_type LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or package_type LIKE CONCAT( '%' , #{key.keyword} , '%' )
             </if>
     </select>
 
@@ -42,24 +42,16 @@
         update
             price_computational_formula
         set
-            price_id = #{po.priceId}, formula = #{po.formula}, price_zone = #{po.priceZone}, country = #{po.country},
-            starting_weight = #{po.startingWeight}, ending_weight = #{po.endingWeight}, packing_type = #{po.packingType}
+            price_id = #{po.priceId}, formula = #{po.formula}, zone_num = #{po.zoneNum}, country = #{po.country},
+            starting_weight = #{po.startingWeight}, ending_weight = #{po.endingWeight}, package_type = #{po.packageType}
         where
             id = #{po.id}
     </update>
 
-    <!--新增计算公式-->
-    <insert id="addComputationalFormula">
-        insert into
-            price_computational_formula(id, price_id, formula, price_zone, country, starting_weight, ending_weight, packing_type)
-        values
-            (#{po.id}, #{po.priceId}, #{po.formula}, #{po.priceZone}, #{po.country}, #{po.startingWeight}, #{po.endingWeight}, #{po.packingType})
-    </insert>
-
     <!--获取计算公式详细-->
     <select id="getComputationalFormula" resultType="com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo">
         select
-            id, price_id, formula, price_zone, country, starting_weight, ending_weight, packing_type
+            id, price_id, formula, zone_num, country, starting_weight, ending_weight, package_type
         from
             price_computational_formula where id = #{id}
     </select>
