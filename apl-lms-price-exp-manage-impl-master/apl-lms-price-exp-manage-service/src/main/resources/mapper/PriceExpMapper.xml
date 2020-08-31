@@ -5,9 +5,9 @@
     <!--分页查询销售价格列表-->
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
-            main.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
+        sale.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
             main.main_status, main.special_commodity,
-            sale.id as priceExpSaleId, sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
+            sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
             sale.channel_category, sale.price_status
         from
             price_exp_sale sale
@@ -16,7 +16,12 @@
         on
             main.id = sale.price_main_id
         where
-            1=1
+        <if test="key.priceType == 1">
+            sale.customer_groups_name is not null
+        </if>
+        <if test="key.priceType == 2">
+            sale.customer_name is not null
+        </if>
         <if test="key.volumeDivisor != null">
             and main.volume_divisor = #{key.volumeDivisor}
         </if>
@@ -56,10 +61,9 @@
 
     <!--分页查询成本价格列表-->
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
-        select
-            main.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
+        select cost.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
             main.main_status, main.special_commodity,
-            cost.id as priceExpCostId, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
+            cost.price_status, cost.price_code, cost.price_name, cost.channel_category
         from
             price_exp_cost cost
         left join
@@ -68,18 +72,20 @@
             main.id = cost.price_main_id
         where
             1=1
-        <if test="key.volumeDivisor != null">
-            and main.volume_divisor = #{key.volumeDivisor}
-        </if>
-        <if test="key.specialCommodity > 0">
-            and main.special_commodity = #{key.specialCommodity}
-        </if>
         <if test="key.isPublishedPrice != null">
             and main.is_published_price = 1
         </if>
         <if test="key.isPublishedPrice == null">
             and main.is_published_price = 2
         </if>
+
+        <if test="key.volumeDivisor != null">
+            and main.volume_divisor = #{key.volumeDivisor}
+        </if>
+        <if test="key.specialCommodity > 0">
+            and main.special_commodity = #{key.specialCommodity}
+        </if>
+
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>

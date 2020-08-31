@@ -20,5 +20,5 @@ public class PriceExpDataAddDto extends Model<PriceExpDataAddDto> implements Ser
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
     @NotEmpty(message = "价格表数据不能为空")
-    private List priceData;
+    private List<List<Object>> priceData;
 }

@@ -1,7 +1,7 @@
 package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.PriceZoneInsertKeyDto;
+import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,10 +16,10 @@ public interface PriceZoneDataService extends IService<PriceZoneDataListVo> {
 
     /**
      * 获取列表
-     * @param priceZoneInsertKeyDto
+     * @param priceZoneNameKeyDto
      * @return
      */
-    ResultUtil<List<PriceZoneDataListVo>> getList(PriceZoneInsertKeyDto priceZoneInsertKeyDto);
+    ResultUtil<List<PriceZoneDataListVo>> getList(PriceZoneNameKeyDto priceZoneNameKeyDto);
 
     /**
      * 批量删除

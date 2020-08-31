@@ -15,33 +15,8 @@ import java.sql.Timestamp;
 public class PriceExpSaleListVo extends Model<PriceExpSaleListVo> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "价格主表id")
+    @ApiModelProperty(name = "id" , value = "价格表id")
     private Long id;
-
-    @ApiModelProperty(name = "startDate" , value = "起始日期")
-    private Timestamp startDate;
-
-    @ApiModelProperty(name = "endDate" , value = "截止日期")
-    private Timestamp endDate;
-
-    @ApiModelProperty(name = "currency" , value = "币制")
-    private String currency;
-
-    @ApiModelProperty(name = "volumeDivisor" , value = "体积除数")
-    private Integer volumeDivisor;
-
-    @ApiModelProperty(name = "accountType" , value = "账号类型")
-    private Integer accountType;
-
-    @ApiModelProperty(name = "mainStatus" , value = "主表状态")
-    private Integer mainStatus;
-
-    @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private String specialCommodity;
-
-    @ApiModelProperty(name = "priceExpSaleId" , value = "销售价格表Id")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long priceExpSaleId;
 
     @ApiModelProperty(name = "priceCode" , value = "销售价格表代码")
     private String priceCode;
@@ -57,6 +32,31 @@ public class PriceExpSaleListVo extends Model<PriceExpSaleListVo> {
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;
+
+    @ApiModelProperty(name = "startDate" , value = "起始日期")
+    private Timestamp startDate;
+
+    @ApiModelProperty(name = "endDate" , value = "截止日期")
+    private Timestamp endDate;
+
+    @ApiModelProperty(name = "currency" , value = "币制")
+    private String currency;
+
+    @ApiModelProperty(name = "volumeDivisor" , value = "体积除数")
+    private Integer volumeDivisor;
+
+    @ApiModelProperty(name = "accountType" , value = "帐号类型")
+    private Integer accountType;
+
+    @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
+    private String specialCommodity;
+
+    @ApiModelProperty(name = "priceExpSaleId" , value = "销售价格表Id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long priceExpSaleId;
+
+    @ApiModelProperty(name = "mainStatus" , value = "主表状态")
+    private Integer mainStatus;
 
     @ApiModelProperty(name = "priceStatus" , value = "价格表状态")
     private Integer priceStatus;

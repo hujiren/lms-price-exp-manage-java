@@ -3,7 +3,7 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceZoneDataMapper;
 import com.apl.lms.price.exp.manage.service.PriceZoneDataService;
-import com.apl.lms.price.exp.pojo.dto.PriceZoneInsertKeyDto;
+import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +22,12 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
 
     /**
      * 获取列表
-     * @param priceZoneInsertKeyDto
+     * @param priceZoneNameKeyDto
      * @return
      */
     @Override
-    public ResultUtil<List<PriceZoneDataListVo>> getList(PriceZoneInsertKeyDto priceZoneInsertKeyDto) {
-        List<PriceZoneDataListVo> priceZoneDataListVo = baseMapper.getList(priceZoneInsertKeyDto);
+    public ResultUtil<List<PriceZoneDataListVo>> getList(PriceZoneNameKeyDto priceZoneNameKeyDto) {
+        List<PriceZoneDataListVo> priceZoneDataListVo = baseMapper.getList(priceZoneNameKeyDto);
         if(priceZoneDataListVo.size() == 0){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
         }

@@ -1,5 +1,5 @@
 package com.apl.lms.price.exp.manage.mapper;
-import com.apl.lms.price.exp.pojo.dto.PriceZoneInsertKeyDto;
+import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,8 +17,8 @@ public interface PriceZoneDataMapper extends BaseMapper<PriceZoneDataListVo> {
 
     /**
      * 获取详细
-     * @param priceZoneInsertKeyDto
+     * @param priceZoneNameKeyDto
      * @return
      */
-    List<PriceZoneDataListVo> getList(@Param("key") PriceZoneInsertKeyDto priceZoneInsertKeyDto);
+    List<PriceZoneDataListVo> getList(@Param("key") PriceZoneNameKeyDto priceZoneNameKeyDto);
 }

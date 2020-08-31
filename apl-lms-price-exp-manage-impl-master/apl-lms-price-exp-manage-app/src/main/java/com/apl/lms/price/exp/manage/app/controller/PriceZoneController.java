@@ -4,6 +4,7 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.PriceZoneService;
 import com.apl.lms.price.exp.pojo.dto.*;
+import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -34,42 +34,27 @@ public class PriceZoneController {
     @Autowired
     PriceZoneService priceZoneService;
 
+    @PostMapping(value = "/get-zone-name-list")
+    @ApiOperation(value =  "分页获取快递分区名称列表" , notes = "根据关键字来查询")
+    public ResultUtil<Page<PriceZoneVo>> getPriceZoneNameList(PageDto pageDto ,
+                                                 @Validated PriceZoneNameKeyDto priceZoneNameKeyDto){
 
-
-    @PostMapping(value = "/get-list")
-    @ApiOperation(value =  "分页获取快递分区列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<PriceZoneVo>> getList(PageDto pageDto ,
-                                                 @Validated PriceZoneInsertKeyDto priceZoneInsertKeyDto){
-
-        return priceZoneService.getList(pageDto, priceZoneInsertKeyDto);
+        return priceZoneService.getPriceZoneNameList(pageDto, priceZoneNameKeyDto);
     }
 
-    @PostMapping(value = "/get")
-    @ApiOperation(value =  "获取快递分区详细" , notes = "查询")
-    @ApiImplicitParam(name = "id",value = "id",required = true  , paramType = "query")
-    public ResultUtil<Page<PriceZoneVo>> getList(@NotNull @Min(value = 0, message = "id不可小于0") Long id){
 
-        return priceZoneService.get(id);
-    }
-
-    @PostMapping(value = "/delete")
+    @PostMapping(value = "/del-batch-zone-name")
     @ApiOperation(value =  "批量删除" , notes = "根据ids批量删除")
-    public ResultUtil<Boolean> deleteBatch( @RequestBody List<Long> ids){
+    public ResultUtil<Boolean> delBatchPriceZoneName( @RequestBody List<Long> ids){
 
-        return priceZoneService.delBatchPriceZone(ids);
+        return priceZoneService.delBatchPriceZoneName(ids);
     }
 
-    @PostMapping(value = "/upd")
+    @PostMapping(value = "/upd-zone-name")
     @ApiOperation(value =  "更新" , notes = "根据id更新快递分区")
-    public ResultUtil<Boolean> upd( @Validated PriceZoneDto priceZoneDto){
+    public ResultUtil<Boolean> updPriceZoneName( @Validated PriceZoneDto priceZoneDto){
 
-        return priceZoneService.updPriceZone(priceZoneDto);
+        return priceZoneService.updPriceZoneName(priceZoneDto);
     }
 
-    @PostMapping(value = "/add")
-    @ApiOperation(value =  "新增快递分区" , notes = "新增快递分区")
-    public ResultUtil<Long> add( @Validated PriceZoneInsertDto priceZoneInsertDto){
-
-        return priceZoneService.addPriceZone(priceZoneInsertDto);
-    }
 }

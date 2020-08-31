@@ -13,10 +13,6 @@ public class PriceZoneDataListVo {
     @ApiModelProperty(name = "id" , value = "价格主表id")
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "zoneId" , value = "分区表id")
-    private Long zoneId;
-
     @ApiModelProperty(name = "zoneNum" , value = "分区号")
     private String zoneNum;
 

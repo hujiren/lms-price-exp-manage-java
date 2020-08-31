@@ -37,9 +37,21 @@ public class PriceExpController {
     @Autowired
     PriceExpService priceExpService;
 
+
     @PostMapping(value = "/get-sale-list")
     @ApiOperation(value = "分页获取销售价格列表", notes = "分页获取销售价格列表")
     public ResultUtil<Page<PriceExpSaleListVo>> getSaleList(PageDto pageDto, @Validated PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
+
+        priceExpSaleListKeyDto.setPriceType(1);
+
+        return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleListKeyDto);
+    }
+
+    @PostMapping(value = "/get-customer-list")
+    @ApiOperation(value = "分页获取客户价格列表", notes = "分页获取客户价格列表")
+    public ResultUtil<Page<PriceExpSaleListVo>> getCustomerList(PageDto pageDto, @Validated PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
+
+        priceExpSaleListKeyDto.setPriceType(2);
 
         return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleListKeyDto);
     }
@@ -75,23 +87,23 @@ public class PriceExpController {
     }
 
     @PostMapping(value = "/get-price-axis")
-    @ApiOperation(value = "获取主表轴数据", notes = "获取主表轴数据")
+    @ApiOperation(value = "获取数据轴", notes = "获取数据轴")
     @ApiImplicitParam(name = "id", value = "主表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpAxisPo> getPriceExpAxis(@NotNull(message = "主表Id不能为J空") @Min(value = 1, message = "id不能小于1") Long id) {
+    public ResultUtil<PriceExpAxisPo> getPriceExpAxis(@NotNull(message = "主表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
 
         return priceExpService.getPriceExpAxis(id);
     }
 
     @PostMapping(value = "/get-price-data")
-    @ApiOperation(value = "获取主表数据", notes = "获取主表数据")
-    @ApiImplicitParam(name = "id", value = "主表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "主表Id不能为J空") @Min(value = 1, message = "id不能小于1") Long id) {
+    @ApiOperation(value = "获取价格表数据", notes = "获取价格表数据")
+    @ApiImplicitParam(name = "id", value = "价格Id", required = true, paramType = "query")
+    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为J空") @Min(value = 1, message = "id不能小于1") Long id) {
         return priceExpService.getPriceExpData(id);
     }
 
     @PostMapping(value = "/get-price-remark")
     @ApiOperation(value = "获取备注信息", notes = "获取备注信息")
-    @ApiImplicitParam(name = "id", value = "主表Id", required = true, paramType = "query")
+    @ApiImplicitParam(name = "id", value = "价格Id", required = true, paramType = "query")
     public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(@NotNull(message = "主表Id不能为J空") @Min(value = 1, message = "id不能小于1") Long id) {
         return priceExpService.getPriceExpRemark(id);
     }
@@ -102,7 +114,7 @@ public class PriceExpController {
                                      @Validated  PriceExpCostAddDto priceExpCostAddDto,
                                      @Validated  PriceExpSaleAddDto priceExpSaleAddDto,
                                      @Validated  PriceExpAxisAddDto priceExpAxisAddDto,
-                                     @Validated  PriceExpDataAddDto priceExpDataAddDto) {
+                                     @Validated  PriceExpDataAddDto priceExpDataAddDto) throws IllegalAccessException {
 
         return priceExpService.addExpPrice(priceExpMainAddDto,priceExpCostAddDto, priceExpSaleAddDto, priceExpAxisAddDto, priceExpDataAddDto);
     }

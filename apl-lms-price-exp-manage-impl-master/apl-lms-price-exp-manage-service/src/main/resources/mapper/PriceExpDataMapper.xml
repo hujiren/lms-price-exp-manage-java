@@ -21,10 +21,6 @@
             price_main_id = #{id}
     </select>
 
-    <!--根据id获取租户id-->
-    <select id="getInnerOrgId" resultType="java.lang.Long">
-        select inner_org_id from price_exp_data where price_main_id = #{id}
-    </select>
 
     <!--新增-->
     <insert id="insertData">

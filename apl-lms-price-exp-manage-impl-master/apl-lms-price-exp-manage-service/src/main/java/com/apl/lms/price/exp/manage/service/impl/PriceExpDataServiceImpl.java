@@ -33,10 +33,7 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     }
 
 
-    @Override
-    public Long getInnerOrgId(Long id) {
-        return baseMapper.getInnerOrgId(id);
-    }
+
 
     /**
      * 保存价格表数据

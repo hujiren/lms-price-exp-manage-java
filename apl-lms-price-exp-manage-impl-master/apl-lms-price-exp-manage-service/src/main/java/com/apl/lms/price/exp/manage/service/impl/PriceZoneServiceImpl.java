@@ -8,6 +8,7 @@ import com.apl.lms.price.exp.manage.mapper.PriceZoneMapper;
 import com.apl.lms.price.exp.manage.service.PriceZoneService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZonePo;
+import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -44,44 +45,28 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
      * @return
      */
     @Override
-    public ResultUtil<Page<PriceZoneVo>> getList(PageDto pageDto, PriceZoneInsertKeyDto priceZoneInsertKeyDto) {
+    public ResultUtil<Page<PriceZoneVo>> getPriceZoneNameList(PageDto pageDto, PriceZoneNameKeyDto priceZoneNameKeyDto) {
 
         Page<PriceZoneVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
-        if(priceZoneInsertKeyDto.getChannelCategory() != null)
-        priceZoneInsertKeyDto.setChannelCategory(priceZoneInsertKeyDto.getChannelCategory().toUpperCase());
-        List<PriceZoneVo> priceZoneVoList = baseMapper.getList(page, priceZoneInsertKeyDto);
+        if(priceZoneNameKeyDto.getChannelCategory() != null)
+        priceZoneNameKeyDto.setChannelCategory(priceZoneNameKeyDto.getChannelCategory().toUpperCase());
+        List<PriceZoneVo> priceZoneVoList = baseMapper.getPriceZoneNameList(page, priceZoneNameKeyDto);
         page.setRecords(priceZoneVoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
-    /**
-     * 获取详细
-     * @param id
-     * @return
-     */
-    @Override
-    public ResultUtil<Page<PriceZoneVo>> get(Long id) {
-
-        PriceZoneVo priceZoneVo =  baseMapper.getById(id);
-        if(priceZoneVo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
-        }
-
-
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneVo);
-    }
 
     /**
-     * 根据id删除燃油费
+     * 批量从删除快递分区名称
      * @param ids
      * @return
      */
     @Override
-    public ResultUtil<Boolean> delBatchPriceZone(List<Long> ids){
+    public ResultUtil<Boolean> delBatchPriceZoneName(List<Long> ids){
 
-        Integer integer = baseMapper.delById(ids);
+        Integer integer = baseMapper.delPriceZoneName(ids);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
         }
@@ -89,22 +74,17 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
     }
 
     /**
-     * 更新快递分区
+     * 更新快递分区名称
      * @param priceZoneDto
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updPriceZone(PriceZoneDto priceZoneDto) {
+    public ResultUtil<Boolean> updPriceZoneName(PriceZoneDto priceZoneDto) {
 
         PriceZonePo priceZonePo = new PriceZonePo();
         BeanUtils.copyProperties(priceZoneDto, priceZonePo);
 
-        PriceZoneVo priceZoneVo =  baseMapper.getById(priceZonePo.getId());
-        if(priceZoneVo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
-        }
-
-        Integer integer = baseMapper.updPriceZone(priceZonePo);
+        Integer integer = baseMapper.updPriceZoneName(priceZonePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -112,20 +92,36 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
     }
 
     /**
-     * 新增快递分区
+     * 新增快递分区名称
      * @param priceZoneInsertDto
      * @return
      */
     @Override
-    public ResultUtil<Long> addPriceZone(PriceZoneInsertDto priceZoneInsertDto) {
+    public ResultUtil<Long> addPriceZoneName(PriceZoneInsertDto priceZoneInsertDto) {
 
         PriceZonePo priceZonePo = new PriceZonePo();
         BeanUtils.copyProperties(priceZoneInsertDto, priceZonePo);
         priceZonePo.setId(SnowflakeIdWorker.generateId());
-        Integer integer = baseMapper.addPriceZone(priceZonePo);
+        Integer integer = baseMapper.addPriceZoneName(priceZonePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceZonePo.getId());
     }
+
+
+    /**
+     * 获取快递分区数据
+     * @param id
+     * @return
+     */
+    @Override
+    public ResultUtil<List<PriceZoneDataListVo>> getZoneData(Long id) {
+
+        List<PriceZoneDataListVo> priceZoneDataListVos =  baseMapper.getZoneData(id);
+
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneDataListVos);
+    }
+
+
 }

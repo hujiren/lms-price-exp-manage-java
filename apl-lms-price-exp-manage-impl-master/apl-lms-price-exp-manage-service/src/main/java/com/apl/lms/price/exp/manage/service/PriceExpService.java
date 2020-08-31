@@ -130,7 +130,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
                                  PriceExpCostAddDto priceExpCostAddDto,
                                  PriceExpSaleAddDto priceExpSaleAddDto,
                                  PriceExpAxisAddDto priceExpAxisAddDto,
-                                 PriceExpDataAddDto priceExpDataAddDto);
+                                 PriceExpDataAddDto priceExpDataAddDto) throws IllegalAccessException;
 
 
     /**
