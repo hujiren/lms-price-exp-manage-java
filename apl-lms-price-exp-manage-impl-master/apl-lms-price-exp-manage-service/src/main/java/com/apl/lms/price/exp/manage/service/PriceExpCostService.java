@@ -52,4 +52,11 @@ public interface PriceExpCostService extends IService<PriceExpCostPo> {
      * @return
      */
     Integer deleteById(List<Long> ids);
+
+    /**
+     * 获取主表id
+     * @param id
+     * @return
+     */
+    Long getMainId(Long id);
 }

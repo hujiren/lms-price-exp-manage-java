@@ -1,9 +1,12 @@
 package com.apl.lms.price.exp.manage.service.impl;
 import cn.hutool.core.bean.BeanUtil;
+import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAxisAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -27,17 +30,6 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
         return baseMapper.deleteByMainIds(priceExpMainIds);
     }
 
-    /**
-     * 根据主表id获取详细数据
-     * @param id
-     * @return
-     */
-    @Override
-    public PriceExpAxisPo getPriceExpAxisInfoByMainId(Long id) {
-        return baseMapper.getPriceExpAxisInfoByMainId(id);
-
-    }
-
 
     /**
      * 保存价格表轴数据
@@ -48,8 +40,9 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
     @Override
     public Boolean addPriceExpAxis(Long priceMainId, PriceExpAxisAddDto priceExpAxisAddDto) {
         PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
-        BeanUtil.copyProperties(priceExpAxisAddDto, priceExpAxisPo);
         priceExpAxisPo.setPriceMainId(priceMainId);
+        priceExpAxisPo.setAxisPortrait(priceExpAxisAddDto.getAxisPortrait().toString());
+        priceExpAxisPo.setAxisTransverse(priceExpAxisAddDto.getAxisTransverse().toString());
         Integer saveSuccess = baseMapper.insertAxis(priceExpAxisPo);
         return saveSuccess > 0 ? true : false;
     }
@@ -71,7 +64,11 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
      * @return
      */
     @Override
-    public PriceExpAxisPo getAxisInfoById(Long id) {
-        return baseMapper.getAxisInfoById(id);
+    public ResultUtil<PriceExpAxisVo> getAxisInfoById(Long id) {
+        PriceExpAxisVo priceExpAxisVo = baseMapper.getAxisInfoById(id);
+        if(priceExpAxisVo == null){
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpAxisVo);
     }
 }

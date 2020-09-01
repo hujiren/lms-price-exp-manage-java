@@ -18,10 +18,6 @@
         </if>
     </select>
 
-    <!--根据Id获取分区详细-->
-    <select id="getZoneData" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo">
-        select id, zone_num, country_code from price_zone_data where zone_id = #{zoneId}
-    </select>
 
     <!--根据id删除快递分区-->
     <delete id="delPriceZoneName">

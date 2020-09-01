@@ -42,7 +42,6 @@ public class PriceZoneController {
         return priceZoneService.getPriceZoneNameList(pageDto, priceZoneNameKeyDto);
     }
 
-
     @PostMapping(value = "/del-batch-zone-name")
     @ApiOperation(value =  "批量删除" , notes = "根据ids批量删除")
     public ResultUtil<Boolean> delBatchPriceZoneName( @RequestBody List<Long> ids){

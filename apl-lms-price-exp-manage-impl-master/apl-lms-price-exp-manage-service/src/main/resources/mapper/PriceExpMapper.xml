@@ -5,9 +5,9 @@
     <!--分页查询销售价格列表-->
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
-        sale.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
+            main.id as mainId, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
             main.main_status, main.special_commodity,
-            sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
+            sale.id, sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
             sale.channel_category, sale.price_status
         from
             price_exp_sale sale
@@ -61,9 +61,10 @@
 
     <!--分页查询成本价格列表-->
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
-        select cost.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
+        select
+            main.id as mainId, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
             main.main_status, main.special_commodity,
-            cost.price_status, cost.price_code, cost.price_name, cost.channel_category
+            cost.id, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
         from
             price_exp_cost cost
         left join

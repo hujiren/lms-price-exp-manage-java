@@ -93,4 +93,14 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
         Integer integer = baseMapper.updateSaleById(priceExpSalePo);
         return integer > 0 ? true : false;
     }
+
+    /**
+     * 获取主表id
+     * @param id
+     * @return
+     */
+    @Override
+    public Long getMainId(Long id) {
+        return baseMapper.getMainId(id);
+    }
 }

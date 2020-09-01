@@ -19,8 +19,12 @@ import java.util.List;
 public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "价格主表id")
+    @ApiModelProperty(name = "id" , value = "价格表id")
     private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ApiModelProperty(name = "mainId" , value = "主表id")
+    private Long mainId;
 
     @ApiModelProperty(name = "startDate" , value = "起始日期")
     private Timestamp startDate;

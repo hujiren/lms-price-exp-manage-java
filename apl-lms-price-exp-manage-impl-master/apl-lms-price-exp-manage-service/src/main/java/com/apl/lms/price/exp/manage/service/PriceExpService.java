@@ -48,26 +48,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(Long id);
 
-    /**
-     * 获取轴数据
-     * @param id
-     * @return
-     */
-    ResultUtil<PriceExpAxisPo> getPriceExpAxis(Long id);
-
-    /**
-     * 获取主表数据
-     * @param id
-     * @return
-     */
-    ResultUtil<PriceExpDataVo> getPriceExpData(Long id);
-
-    /**
-     * 获取备注信息
-     * @param id
-     * @return
-     */
-    ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id);
 
     /**
      * 更新销售价格
@@ -94,13 +74,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<Boolean> updatePriceData(PriceExpDataAddDto priceExpDataAddDto, PriceExpAxisPo priceExpAxisPo);
-
-    /**
-     * 更新备注
-     * @param priceExpRemarkPo
-     * @return
-     */
-    ResultUtil<Boolean> updRemark(PriceExpRemarkPo priceExpRemarkPo);
 
     /**
      * 根据id批量删除成本价格数据
@@ -130,7 +103,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
                                  PriceExpCostAddDto priceExpCostAddDto,
                                  PriceExpSaleAddDto priceExpSaleAddDto,
                                  PriceExpAxisAddDto priceExpAxisAddDto,
-                                 PriceExpDataAddDto priceExpDataAddDto) throws IllegalAccessException;
+                                 PriceExpDataAddDto priceExpDataAddDto);
 
 
     /**

@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.service;
 
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -32,12 +33,12 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
      * @param priceExpRemarkPo
      * @return
      */
-    Integer updateRemark(PriceExpRemarkPo priceExpRemarkPo);
+    ResultUtil<Boolean> updateRemark(PriceExpRemarkPo priceExpRemarkPo);
 
     /**
      * 获取详情
      * @param id
      * @return
      */
-    PriceExpRemarkPo getPriceExpRemark(Long id);
+    ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id);
 }

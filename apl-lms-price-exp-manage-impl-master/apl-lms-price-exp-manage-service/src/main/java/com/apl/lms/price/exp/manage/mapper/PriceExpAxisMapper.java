@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -13,13 +14,6 @@ import java.util.List;
  */
 @Repository
 public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
-
-    /**
-     * 根据主表id获取详细数据
-     * @param id
-     * @return
-     */
-    PriceExpAxisPo getPriceExpAxisInfoByMainId(@Param("id") Long id);
 
     /**
      * 新增
@@ -47,5 +41,5 @@ public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
      * @param id
      * @return
      */
-    PriceExpAxisPo getAxisInfoById(@Param("id") Long id);
+    PriceExpAxisVo getAxisInfoById(@Param("id") Long id);
 }

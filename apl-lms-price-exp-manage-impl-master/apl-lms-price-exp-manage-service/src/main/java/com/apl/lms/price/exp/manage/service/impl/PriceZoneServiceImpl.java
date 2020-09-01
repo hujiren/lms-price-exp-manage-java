@@ -110,18 +110,4 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
     }
 
 
-    /**
-     * 获取快递分区数据
-     * @param id
-     * @return
-     */
-    @Override
-    public ResultUtil<List<PriceZoneDataListVo>> getZoneData(Long id) {
-
-        List<PriceZoneDataListVo> priceZoneDataListVos =  baseMapper.getZoneData(id);
-
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneDataListVos);
-    }
-
-
 }

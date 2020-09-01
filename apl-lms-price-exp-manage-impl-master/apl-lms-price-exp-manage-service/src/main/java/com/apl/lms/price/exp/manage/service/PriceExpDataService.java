@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.service;
 
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
@@ -22,18 +23,12 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
     Integer deleteByPriceExpMainId(List<Long> priceExpMainIds);
 
     /**
-     * 根据主表id获取主数据信息
+     * 根据价格表id获取主数据信息
      * @param id
      * @return
      */
-    PriceExpDataVo getPriceExpDataInfoByMainId(Long id);
+    ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id);
 
-    /**
-     * 获取多租户id
-     * @param id
-     * @return
-     */
-    Long getInnerOrgId(Long id);
 
 
     /**

@@ -46,10 +46,4 @@ public interface PriceZoneMapper extends BaseMapper<PriceZonePo> {
      */
     Integer addPriceZoneName(@Param("po") PriceZonePo priceZonePo);
 
-    /**
-     * 获取快递分区数据
-     * @param zoneId
-     * @return
-     */
-    List<PriceZoneDataListVo> getZoneData(@Param("zoneId") Long zoneId);
 }

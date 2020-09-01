@@ -16,18 +16,11 @@ import java.util.List;
 public interface PriceExpDataMapper extends BaseMapper<PriceExpDataPo> {
 
     /**
-     * 根据主表id获取详细数据
+     * 根据价格表id获取详细数据
      * @param id
      * @return
      */
     PriceExpDataVo getPriceExpDataInfoByMainId(@Param("id") Long id);
-
-    /**
-     * 根据id查询d多租户id
-     * @param id
-     * @return
-     */
-    Long getInnerOrgId(@Param("id") Long id);
 
     /**
      * 新增

@@ -22,12 +22,12 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
 
     /**
      * 获取列表
-     * @param priceZoneNameKeyDto
+     * @param id
      * @return
      */
     @Override
-    public ResultUtil<List<PriceZoneDataListVo>> getList(PriceZoneNameKeyDto priceZoneNameKeyDto) {
-        List<PriceZoneDataListVo> priceZoneDataListVo = baseMapper.getList(priceZoneNameKeyDto);
+    public ResultUtil<List<PriceZoneDataListVo>> getList(Long id) {
+        List<PriceZoneDataListVo> priceZoneDataListVo = baseMapper.getList(id);
         if(priceZoneDataListVo.size() == 0){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
         }
@@ -35,8 +35,8 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
     }
 
     @Override
-    public ResultUtil<Boolean> deleteBatch(List<Long> ids) {
-        Integer resInteger = baseMapper.deleteBatchIds(ids);
+    public ResultUtil<Boolean> deleteBatch(Long id) {
+        Integer resInteger = baseMapper.deleteByZoneId(id);
         if(resInteger < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, null);
         }

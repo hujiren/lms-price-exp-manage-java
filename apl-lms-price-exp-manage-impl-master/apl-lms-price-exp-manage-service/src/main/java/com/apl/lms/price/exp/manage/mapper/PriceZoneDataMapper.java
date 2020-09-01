@@ -17,8 +17,15 @@ public interface PriceZoneDataMapper extends BaseMapper<PriceZoneDataListVo> {
 
     /**
      * 获取详细
-     * @param priceZoneNameKeyDto
+     * @param id
      * @return
      */
-    List<PriceZoneDataListVo> getList(@Param("key") PriceZoneNameKeyDto priceZoneNameKeyDto);
+    List<PriceZoneDataListVo> getList(@Param("id") Long id);
+
+    /**
+     * 根据分区表id批量删除
+     * @param id
+     * @return
+     */
+    Integer deleteByZoneId(@Param("id") Long id);
 }

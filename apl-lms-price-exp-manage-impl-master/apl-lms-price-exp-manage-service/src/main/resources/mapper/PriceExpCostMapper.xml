@@ -36,4 +36,9 @@
             #{row}
         </foreach>
     </select>
+
+    <!--获取主表id-->
+    <select id="getMainId" resultType="java.lang.Long">
+        select price_main_id from price_exp_cost where id = #{id}
+    </select>
 </mapper>

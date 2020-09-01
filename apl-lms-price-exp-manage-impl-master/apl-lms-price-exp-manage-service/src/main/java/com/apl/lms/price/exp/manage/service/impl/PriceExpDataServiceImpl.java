@@ -1,10 +1,15 @@
 package com.apl.lms.price.exp.manage.service.impl;
+import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper;
+import com.apl.lms.price.exp.manage.service.PriceExpCostService;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
+import com.apl.lms.price.exp.manage.service.PriceExpSaleService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,21 +22,36 @@ import java.util.List;
 @Service
 public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, PriceExpDataPo> implements PriceExpDataService {
 
+    @Autowired
+    PriceExpCostService priceExpCostService;
+
+    @Autowired
+    PriceExpSaleService priceExpSaleService;
+
     @Override
     public Integer deleteByPriceExpMainId(List<Long> priceExpMainIds) {
         return baseMapper.deleteByMainIds(priceExpMainIds);
     }
 
     /**
-     * 获取详细
+     * 根据价格表Id获取详细
      * @param id
      * @return
      */
     @Override
-    public PriceExpDataVo getPriceExpDataInfoByMainId(Long id) {
-        return baseMapper.getPriceExpDataInfoByMainId(id);
+    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) {
+        //根据价格表Id获取主表Id
+        Long mainId = 0L;
+        mainId = priceExpCostService.getMainId(id);
+        if(mainId == 0 || mainId == null){
+            mainId = priceExpSaleService.getMainId(id);
+        }
+        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoByMainId(mainId);
+        if (priceExpDataVo == null) {
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataVo);
     }
-
 
 
 

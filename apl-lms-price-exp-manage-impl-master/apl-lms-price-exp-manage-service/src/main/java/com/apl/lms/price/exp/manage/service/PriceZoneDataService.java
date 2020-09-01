@@ -16,15 +16,15 @@ public interface PriceZoneDataService extends IService<PriceZoneDataListVo> {
 
     /**
      * 获取列表
-     * @param priceZoneNameKeyDto
+     * @param id
      * @return
      */
-    ResultUtil<List<PriceZoneDataListVo>> getList(PriceZoneNameKeyDto priceZoneNameKeyDto);
+    ResultUtil<List<PriceZoneDataListVo>> getList(Long id);
 
     /**
      * 批量删除
-     * @param ids
+     * @param id
      * @return
      */
-    ResultUtil<Boolean> deleteBatch(List<Long> ids);
+    ResultUtil<Boolean> deleteBatch(Long id);
 }

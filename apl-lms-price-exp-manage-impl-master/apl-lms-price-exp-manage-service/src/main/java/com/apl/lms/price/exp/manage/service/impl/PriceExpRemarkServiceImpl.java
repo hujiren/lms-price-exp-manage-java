@@ -1,4 +1,6 @@
 package com.apl.lms.price.exp.manage.service.impl;
+import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpRemarkMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpRemarkService;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
@@ -42,8 +44,12 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
      * @return
      */
     @Override
-    public PriceExpRemarkPo getPriceExpRemark(Long id) {
-        return baseMapper.selectById(id);
+    public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id) {
+        PriceExpRemarkPo priceExpRemarkPo = baseMapper.selectById(id);
+        if (priceExpRemarkPo == null) {
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpRemarkPo);
     }
 
     /**
@@ -52,7 +58,13 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
      * @return
      */
     @Override
-    public Integer updateRemark(PriceExpRemarkPo priceExpRemarkPo) {
-        return baseMapper.updateById(priceExpRemarkPo);
+    public ResultUtil<Boolean> updateRemark(PriceExpRemarkPo priceExpRemarkPo) {
+        Integer integer =  baseMapper.updateById(priceExpRemarkPo);
+        if (integer < 1) {
+            return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
+
+
 }

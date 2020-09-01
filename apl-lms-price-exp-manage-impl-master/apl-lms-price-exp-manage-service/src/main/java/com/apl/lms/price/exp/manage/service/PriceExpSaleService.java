@@ -59,4 +59,11 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
      * @return
      */
     Boolean updateSaleById(PriceExpSalePo priceExpSalePo);
+
+    /**
+     * 获取主表Id
+     * @param id
+     * @return
+     */
+    Long getMainId(Long id);
 }

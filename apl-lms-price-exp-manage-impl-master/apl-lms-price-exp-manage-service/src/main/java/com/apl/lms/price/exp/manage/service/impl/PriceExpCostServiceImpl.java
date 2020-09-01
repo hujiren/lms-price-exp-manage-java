@@ -82,4 +82,14 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
     public Integer deleteById(List<Long> ids) {
         return baseMapper.deleteBatchIds(ids);
     }
+
+    /**
+     * 获取主表Id
+     * @param id
+     * @return
+     */
+    @Override
+    public Long getMainId(Long id) {
+        return baseMapper.getMainId(id);
+    }
 }

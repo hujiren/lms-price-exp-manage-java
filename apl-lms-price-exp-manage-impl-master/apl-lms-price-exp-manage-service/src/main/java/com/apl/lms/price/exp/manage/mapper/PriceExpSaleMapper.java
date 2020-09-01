@@ -43,4 +43,11 @@ public interface PriceExpSaleMapper extends BaseMapper<PriceExpSalePo> {
      * @return
      */
     Integer updateSaleById(@Param("po") PriceExpSalePo priceExpSalePo);
+
+    /**
+     * 获取主表id
+     * @param id
+     * @return
+     */
+    Long getMainId(@Param("id") Long id);
 }
