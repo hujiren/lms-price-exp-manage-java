@@ -10,6 +10,8 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author hjr start
  * @Classname PriceExpDataServiceImpl
@@ -30,32 +32,32 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
 
     /**
      * 根据主表id获取统计数量
-     * @param priceExpMainId
+     * @param ids
      * @return
      */
     @Override
-    public Integer getPriceDataIdCount(Long priceExpMainId) {
-        return baseMapper.getPriceDataIdCount(priceExpMainId);
+    public Integer getPriceDataIdCount(List<Long> ids) {
+        return baseMapper.getPriceDataIdCount(ids);
     }
 
     /**
      * 根据id得到主表Id
-     * @param id
+     * @param ids
      * @return
      */
     @Override
-    public Long getPriceDataId(Long id) {
-        return baseMapper.getPriceDataId(id);
+    public List<Long> getPriceDataIds(List<Long> ids) {
+        return baseMapper.getPriceDataIds(ids);
     }
 
     /**
      * 根据id删除数据
-     * @param id
+     * @param ids
      * @return
      */
     @Override
-    public Integer deleteById(Long id) {
-        return baseMapper.deleteById(id);
+    public Integer deleteById(List<Long> ids) {
+        return baseMapper.deleteBatchIds(ids);
     }
 
     /**
@@ -79,5 +81,26 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
         priceExpSalePo.setChannelCategory(priceExpCostAddDto.getChannelCategory());
         Boolean saveSuccess = priceExpSalePo.insert();
         return saveSuccess;
+    }
+
+    /**
+     * 更新
+     * @param priceExpSalePo
+     * @return
+     */
+    @Override
+    public Boolean updateSaleById(PriceExpSalePo priceExpSalePo) {
+        Integer integer = baseMapper.updateSaleById(priceExpSalePo);
+        return integer > 0 ? true : false;
+    }
+
+    /**
+     * 获取主表id
+     * @param id
+     * @return
+     */
+    @Override
+    public Long getMainId(Long id) {
+        return baseMapper.getMainId(id);
     }
 }

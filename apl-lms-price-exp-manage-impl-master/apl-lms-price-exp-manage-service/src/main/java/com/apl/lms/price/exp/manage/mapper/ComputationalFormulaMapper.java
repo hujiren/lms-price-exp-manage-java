@@ -1,7 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.dto.ComputationalFormulaKeyDto;
-import com.apl.lms.price.exp.pojo.po.ComputationalFormulaPo;
+import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Mapper
 @Repository
-public interface ComputationalFormulaMapper extends BaseMapper<ComputationalFormulaPo> {
+public interface ComputationalFormulaMapper extends BaseMapper<PriceExpComputationalFormulaPo> {
 
     /**
      * 获取燃油费分页信息列表
@@ -34,17 +34,10 @@ public interface ComputationalFormulaMapper extends BaseMapper<ComputationalForm
 
     /**
      * 更新计算公式
-     * @param computationalFormulaPo
+     * @param priceExpComputationalFormulaPo
      * @return
      */
-    Integer updComputationalFormula(@Param("po") ComputationalFormulaPo computationalFormulaPo);
-
-    /**
-     * 新增计算公式
-     * @param computationalFormulaPo
-     * @return
-     */
-    Integer addComputationalFormula(@Param("po") ComputationalFormulaPo computationalFormulaPo);
+    Integer updComputationalFormula(@Param("po") PriceExpComputationalFormulaPo priceExpComputationalFormulaPo);
 
     /**
      * 获取计算公式详细

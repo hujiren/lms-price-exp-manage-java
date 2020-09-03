@@ -16,6 +16,9 @@ import javax.validation.constraints.Min;
 @ApiModel(value="销售价格表  按条件查询对象", description="销售价格表  按条件查询对象")
 public class PriceExpSaleListKeyDto {
 
+    @ApiModelProperty(name = "priceType", value = "价格表类型", hidden = true)
+    private Integer priceType;
+
     @ApiModelProperty(name = "volumeDivisor", value = "体积基数")
     @Range(min = 1, message = "体积基数不能小于1")
     private Integer volumeDivisor;
@@ -36,6 +39,9 @@ public class PriceExpSaleListKeyDto {
 
     @ApiModelProperty(name = "customerGroupsId", value = "客户组id")
     private Long customerGroupsId;
+
+    @ApiModelProperty(name = "specialCommodity", value = "特殊物品code")
+    private Integer specialCommodity;
 
     @ApiModelProperty(name = "customerId", value = "客户id")
     private Long customerId;

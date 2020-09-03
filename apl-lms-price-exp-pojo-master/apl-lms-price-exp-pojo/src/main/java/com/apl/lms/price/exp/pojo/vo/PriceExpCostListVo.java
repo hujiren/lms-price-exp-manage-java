@@ -17,8 +17,17 @@ import java.sql.Timestamp;
 public class PriceExpCostListVo extends Model<PriceExpCostListVo> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "价格主表id")
+    @ApiModelProperty(name = "id" , value = "价格表id")
     private Long id;
+
+    @ApiModelProperty(name = "priceCode" , value = "成本价格表代码")
+    private String priceCode;
+
+    @ApiModelProperty(name = "priceName" , value = "成本价格表名称")
+    private String priceName;
+
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
+    private String channelCategory;
 
     @ApiModelProperty(name = "startDate" , value = "起始日期")
     private Timestamp startDate;
@@ -35,26 +44,15 @@ public class PriceExpCostListVo extends Model<PriceExpCostListVo> {
     @ApiModelProperty(name = "accountType" , value = "账号类型")
     private Integer accountType;
 
-    @ApiModelProperty(name = "mainStatus" , value = "主表状态")
-    private Integer mainStatus;
-
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private String specialCommodity;
 
-    @ApiModelProperty(name = "priceExpCostId" , value = "成本价格表Id")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long priceExpCostId;
+    @ApiModelProperty(name = "mainStatus" , value = "主表状态")
+    private Integer mainStatus;
 
     @ApiModelProperty(name = "priceStatus" , value = "成本价格状态")
     private Integer priceStatus;
 
-    @ApiModelProperty(name = "priceCode" , value = "成本价格表代码")
-    private String priceCode;
 
-    @ApiModelProperty(name = "priceName" , value = "成本价格表名称")
-    private String priceName;
-
-    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
-    private String channelCategory;
 
 }

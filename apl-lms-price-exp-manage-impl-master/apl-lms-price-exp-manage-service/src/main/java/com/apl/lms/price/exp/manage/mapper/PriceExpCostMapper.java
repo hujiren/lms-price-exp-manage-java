@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author hjr start
  * @Classname PriceExpCostMapper
@@ -21,17 +23,26 @@ public interface PriceExpCostMapper extends BaseMapper<PriceExpCostPo> {
      */
     PriceExpCostVo getPriceExpCostInfo(@Param("id") Long id);
 
-    /**
-     * 根据id得到主表id
-     * @param priceExpMainId
-     * @return
-     */
-    Long getPriceDataId(@Param("id") Long priceExpMainId);
 
     /**
-     * 通过主表id获取统计条数
-     * @param priceMainId
+     * 通过主表ids获取统计条数
+     * @param priceMainIds
      * @return
      */
-    Integer getPriceDataIdCount(@Param("id") Long priceMainId);
+    Integer getPriceDataIdCount(@Param("ids") List<Long> priceMainIds);
+
+
+    /**
+     * 批量获取主表Id
+     * @param ids
+     * @return
+     */
+    List<Long> getPriceDataIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 获取主表id
+     * @param id
+     * @return
+     */
+    Long getMainId(@Param("id") Long id);
 }

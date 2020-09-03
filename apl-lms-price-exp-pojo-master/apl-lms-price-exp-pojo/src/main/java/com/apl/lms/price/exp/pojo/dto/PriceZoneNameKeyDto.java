@@ -2,14 +2,13 @@ package com.apl.lms.price.exp.pojo.dto;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
  * @author hjr start
  * @date 2020/8/6 - 14:13
  */
-@ApiModel(value="快递分区  查询对象", description="快递分区 查询对象")
-public class PriceZoneInsertKeyDto extends Model<PriceZoneInsertKeyDto> {
+@ApiModel(value="快递分区名称  查询对象", description="快递分区名称 查询对象")
+public class PriceZoneNameKeyDto extends Model<PriceZoneNameKeyDto> {
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;

@@ -1,11 +1,18 @@
 package com.apl.lms.price.exp.manage.service.impl;
+import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper;
+import com.apl.lms.price.exp.manage.service.PriceExpCostService;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
+import com.apl.lms.price.exp.manage.service.PriceExpSaleService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author hjr start
@@ -15,21 +22,38 @@ import org.springframework.stereotype.Service;
 @Service
 public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, PriceExpDataPo> implements PriceExpDataService {
 
-    @Override
-    public Integer deleteByPriceExpMainId(Long priceExpMainId) {
-        return baseMapper.deleteByPriceExpMainId(priceExpMainId);
-    }
+    @Autowired
+    PriceExpCostService priceExpCostService;
+
+    @Autowired
+    PriceExpSaleService priceExpSaleService;
 
     @Override
-    public PriceExpDataVo getPriceExpDataInfoByMainId(Long id) {
-        return baseMapper.getPriceExpDataInfoByMainId(id);
+    public Integer deleteByPriceExpMainId(List<Long> priceExpMainIds) {
+        return baseMapper.deleteByMainIds(priceExpMainIds);
     }
 
-
+    /**
+     * 根据价格表Id获取详细
+     * @param id
+     * @return
+     */
     @Override
-    public Long getInnerOrgId(Long id) {
-        return baseMapper.getInnerOrgId(id);
+    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) {
+        //根据价格表Id获取主表Id
+        Long mainId = 0L;
+        mainId = priceExpCostService.getMainId(id);
+        if(mainId == 0 || mainId == null){
+            mainId = priceExpSaleService.getMainId(id);
+        }
+        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoByMainId(mainId);
+        if (priceExpDataVo == null) {
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+        }
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataVo);
     }
+
+
 
     /**
      * 保存价格表数据
@@ -46,5 +70,16 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         Integer saveSuccess = baseMapper.insertData(priceExpDataPo);
 
         return saveSuccess > 0 ? true :false;
+    }
+
+    /**
+     * 更新
+     * @param priceExpDataPo
+     * @return
+     */
+    @Override
+    public Boolean updateByMainId(PriceExpDataPo priceExpDataPo) {
+        Integer integer = baseMapper.updateByMainId(priceExpDataPo);
+        return integer > 0 ? true : false;
     }
 }

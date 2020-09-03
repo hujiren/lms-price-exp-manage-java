@@ -23,31 +23,10 @@ public class CacheController {
     @Autowired
     private CacheService cacheService;
 
-    @PostMapping("/add-special-commodity-cache")
-    @ApiOperation(value = "添加特殊物品缓存")
-    public ResultUtil<Boolean> addSpecialCommodityCache(@RequestParam("keys") String keys, Long minKey, Long maxKey){
-
-        return cacheService.addSpecialCommodityCache(keys, minKey, maxKey);
-    }
-
     @PostMapping("/add-partner-cache")
     @ApiOperation(value = "添加服务商缓存")
     public ResultUtil<Boolean> addPartnerCache(@RequestParam("keys") String keys, Long minKey, Long maxKey){
 
         return cacheService.addPartnerCache(keys, minKey, maxKey);
-    }
-
-    @PostMapping("/add-surcharge-cache")
-    @ApiOperation(value = "添加附加费缓存")
-    public ResultUtil<Boolean> addSurchargeCache(@RequestParam("keys") String keys, Long minKey, Long maxKey){
-
-        return cacheService.addSurchargeCache(keys, minKey, maxKey);
-    }
-
-    @PostMapping("/add-weight-way-cache")
-    @ApiOperation(value = "添加计泡方式缓存")
-    public ResultUtil<Boolean> addWeightWayCache(@RequestParam("keys") String keys, Long minKey, Long maxKey){
-
-        return cacheService.addWeightWayCache(keys, minKey, maxKey);
     }
 }

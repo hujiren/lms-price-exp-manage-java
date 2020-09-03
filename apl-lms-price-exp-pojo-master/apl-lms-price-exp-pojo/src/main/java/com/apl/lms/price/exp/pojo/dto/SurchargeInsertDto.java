@@ -21,7 +21,6 @@ public class SurchargeInsertDto {
     @ApiModelProperty(name = "id", value = "附加费Id", hidden = true)
     private Long id;
 
-
     @ApiModelProperty(name = "chargeName", value = "附加费名称", required = true)
     @NotBlank(message = "附加费名称名称不能为空")
     private String chargeName;
@@ -33,4 +32,8 @@ public class SurchargeInsertDto {
     @ApiModelProperty(name = "currency", value = "币制", required = true)
     @NotBlank(message = "币制不能为空")
     private String currency;
+
+    @ApiModelProperty(name = "code", value = "代码", required = true)
+    @NotNull(message = "code不能为空")
+    private Integer code;
 }

@@ -30,6 +30,9 @@ public class  PriceExpCostListKeyDto {
     @Min(value = 0, message = "价格主表状态不能小于0")
     private Integer mainStatus;
 
+    @ApiModelProperty(name = "specialCommodity", value = "特殊物品code")
+    private Integer specialCommodity;
+
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是", hidden = true)
     private Integer isPublishedPrice;
 

@@ -31,30 +31,9 @@ public interface SurchargeMapper extends BaseMapper<SurchargeDto> {
     List<SurchargeDto> getList(Page page, @Param("key") SurchargeKeyDto surchargeKeyDto);
 
     /**
-     * 根据Id删除附加费
-     * @param id
-     * @return
-     */
-    Integer delById(@Param("id") Long id);
-
-    /**
-     * 更新附加费
-     * @param surchargeDto
-     * @return
-     */
-    Integer updSurcharge(@Param("po") SurchargeDto surchargeDto);
-
-    /**
      * 批量新增附加费
      * @param surchargeInsertDtoList
      * @return
      */
     Integer addSurcharge(@Param("po") List<SurchargeInsertDto> surchargeInsertDtoList);
-
-    /**
-     * 获取附加费详细
-     * @param id
-     * @return
-     */
-    SurchargeDto getSurcharge(@Param("id") Long id);
 }

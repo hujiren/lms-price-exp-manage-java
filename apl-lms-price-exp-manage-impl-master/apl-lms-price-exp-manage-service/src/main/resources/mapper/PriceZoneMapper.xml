@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceZoneMapper">
 
     <!--分页查询快递分区列表-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneVo" parameterType="com.apl.lms.price.exp.pojo.dto.PriceZoneInsertKeyDto">
+    <select id="getPriceZoneNameList" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneVo" parameterType="com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto">
         select
             id, channel_category, zone_name
         from
@@ -18,13 +18,9 @@
         </if>
     </select>
 
-    <!--根据Id获取分区详细-->
-    <select id="getById" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneVo">
-        select id, channel_category, zone_name from price_zone where id = #{id}
-    </select>
 
     <!--根据id删除快递分区-->
-    <delete id="delById">
+    <delete id="delPriceZoneName">
         delete from price_zone where id in
             <foreach collection="ids" index="" separator="," item="row" open="(" close=")">
                 #{row}
@@ -32,12 +28,12 @@
     </delete>
 
     <!--更新快递分区-->
-    <update id="updPriceZone">
+    <update id="updPriceZoneName">
         update price_zone set channel_category = #{po.channelCategory}, zone_name = #{po.zoneName} where id = #{po.id}
     </update>
 
     <!--新增快递分区-->
-    <insert id="addPriceZone">
+    <insert id="addPriceZoneName">
         insert into price_zone(id, channel_category, zone_name) values (#{po.id}, #{po.channelCategory}, #{po.zoneName})
     </insert>
 

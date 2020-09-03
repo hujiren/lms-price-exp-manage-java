@@ -15,10 +15,14 @@ import javax.sql.DataSource;
  * @date 2020/8/6 - 11:15
  */
 @SpringBootApplication(
-        scanBasePackages = {"com.apl.lms.price.exp.manage",
-                "com.apl.db.abatis",
-                "com.apl.lib",
-                "com.apl.cache",
+        scanBasePackages = {
+                "com.apl.lib", //APL基本工具类
+                "com.apl.tenant", //多租户
+                //"com.apl.abatis", // sqlSession封装
+                "com.apl.db.adb", // adb数据库操作助手
+                //"com.apl.db.dynamicdb", //动态数据源
+                "com.apl.cache", // redis代理
+                "com.apl.lms.price.exp.manage",
                 "com.apl.lms.price.exp.lib"},
         exclude = {
             JtaAutoConfiguration.class

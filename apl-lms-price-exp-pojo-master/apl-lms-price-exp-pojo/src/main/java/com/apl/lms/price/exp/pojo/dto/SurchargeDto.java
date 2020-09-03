@@ -28,9 +28,9 @@ public class SurchargeDto {
     @NotNull(message = "附加费Id不能为空")
     private Long id;
 
-    @ApiModelProperty(name = "chargeName", value = "附加费名称", required = true)
-    @NotBlank(message = "附加费名称不能为空")
-    private String chargeName;
+//    @ApiModelProperty(name = "chargeName", value = "附加费名称", required = true)
+//    @NotBlank(message = "附加费名称不能为空")
+//    private String chargeName;
 
     @ApiModelProperty(name = "computingFormula", value = "计算公式", required = true)
     @NotBlank(message = "计算公式不能为空")
@@ -39,4 +39,8 @@ public class SurchargeDto {
     @ApiModelProperty(name = "currency", value = "币制", required = true)
     @NotBlank(message = "币制不能为空")
     private String currency;
+
+//    @ApiModelProperty(name = "code", value = "代码", required = true)
+//    @NotNull(message = "code不能为空")
+//    private Integer code;
 }

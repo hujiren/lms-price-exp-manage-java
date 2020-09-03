@@ -2,13 +2,13 @@ package com.apl.lms.price.exp.pojo.dto;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author hjr start
@@ -22,9 +22,9 @@ public class PriceExpAxisAddDto extends Model<PriceExpAxisAddDto> implements Ser
 
     @ApiModelProperty(name = "axisTransverse" , value = "x轴数据", required = true)
     @NotBlank(message = "x轴数据不能为空")
-    private String axisTransverse;
+    private List<Object> axisTransverse;
 
     @ApiModelProperty(name = "axisPortrait" , value = "y轴数据", required = true)
     @NotBlank(message = "y轴数据不能为空")
-    private String axisPortrait;
+    private List<Object> axisPortrait;
 }

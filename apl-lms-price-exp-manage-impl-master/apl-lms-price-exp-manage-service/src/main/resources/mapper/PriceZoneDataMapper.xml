@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceZoneDataMapper">
+
+    <!--批量删除-->
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo">
+        select
+            id, zone_num, country_code
+        from
+            price_zone_data
+        where
+            zone_id = #{id}
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteByZoneId">
+        delete from price_zone_data where zone_id = #{id}
+    </delete>
+</mapper>

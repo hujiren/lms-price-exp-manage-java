@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
-import com.apl.lms.price.exp.pojo.dto.PriceZoneInsertKeyDto;
+import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceZonePo;
+import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,33 +23,27 @@ public interface PriceZoneMapper extends BaseMapper<PriceZonePo> {
      * @param page
      * @return
      */
-    List<PriceZoneVo> getList(Page<PriceZoneVo> page, @Param("dto") PriceZoneInsertKeyDto priceZoneInsertKeyDto);
+    List<PriceZoneVo> getPriceZoneNameList(Page<PriceZoneVo> page, @Param("dto") PriceZoneNameKeyDto priceZoneNameKeyDto);
 
     /**
      * 根据Id删除快递分区
      * @param ids
      * @return
      */
-    Integer delById(@Param("ids") List<Long> ids);
+    Integer delPriceZoneName(@Param("ids") List<Long> ids);
 
     /**
      * 更新快递分区
      * @param priceZonePo
      * @return
      */
-    Integer updPriceZone(@Param("po") PriceZonePo priceZonePo);
+    Integer updPriceZoneName(@Param("po") PriceZonePo priceZonePo);
 
     /**
      * 新增快递分区
      * @param priceZonePo
      * @return
      */
-    Integer addPriceZone(@Param("po") PriceZonePo priceZonePo);
+    Integer addPriceZoneName(@Param("po") PriceZonePo priceZonePo);
 
-    /**
-     * 根据id获取分区详细
-     * @param id
-     * @return
-     */
-    PriceZoneVo getById(@Param("id") Long id);
 }

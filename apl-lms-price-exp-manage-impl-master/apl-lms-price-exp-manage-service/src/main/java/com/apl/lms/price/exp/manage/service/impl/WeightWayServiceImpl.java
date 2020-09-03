@@ -66,7 +66,7 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
     @Override
     public ResultUtil<Boolean>  updWeightWay(WeightWayDto weightWayDto) {
 
-        Integer integer = baseMapper.updWeightWay(weightWayDto);
+        Integer integer = baseMapper.updateById(weightWayDto);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }

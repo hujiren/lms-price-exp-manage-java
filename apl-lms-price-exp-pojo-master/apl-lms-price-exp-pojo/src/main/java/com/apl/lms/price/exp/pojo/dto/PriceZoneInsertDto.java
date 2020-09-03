@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2020/8/6 - 14:13
  */
 @Data
-@ApiModel(value="快递分区  插入对象", description="快递分区 插入对象")
+@ApiModel(value="快递分区名称  插入对象", description="快递分区名称 插入对象")
 public class PriceZoneInsertDto extends Model<PriceZoneInsertDto> {
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)

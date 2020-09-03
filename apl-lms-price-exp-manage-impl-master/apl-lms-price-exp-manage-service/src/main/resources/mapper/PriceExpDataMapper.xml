@@ -2,28 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper">
 
-    <!--根据主表Id删除数据-->
-    <delete id="deleteByPriceExpMainId">
-        delete from price_exp_data where price_main_id = #{id}
+    <!--根据主表id批量删除-->
+    <delete id="deleteByMainIds">
+        delete from price_exp_data where price_main_id in
+        <foreach collection="ids" separator="," open="(" close=")" item="row" index="">
+            #{row}
+        </foreach>
     </delete>
 
     <!--根据主表id获取详细数据-->
     <select id="getPriceExpDataInfoByMainId" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpDataVo">
         select
+            price_main_id,
             price_data
         from
             price_exp_data
         where
-            price_id = #{id}
+            price_main_id = #{id}
     </select>
 
-    <!--根据id获取租户id-->
-    <select id="getInnerOrgId" resultType="java.lang.Long">
-        select inner_org_id from price_exp_data where price_main_id = #{id}
-    </select>
 
     <!--新增-->
     <insert id="insertData">
         insert into price_exp_data(price_main_id, price_data) values (#{po.priceMainId}, #{po.priceData,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler})
     </insert>
+
+    <!--更新-->
+    <update id="updateByMainId">
+        update price_exp_data set price_data = #{po.priceData,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler} where price_main_id = #{po.priceMainId}
+    </update>
 </mapper>

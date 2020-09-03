@@ -8,7 +8,8 @@
             id,
             charge_name,
             computing_formula,
-            currency
+            currency,
+            code
         FROM
             price_surcharge
         where
@@ -18,27 +19,17 @@
         </if>
     </select>
 
-    <!--根据Id删除附加费-->
-    <delete id="delById">
-        delete from price_surcharge where id = #{id}
-    </delete>
-
-    <!--更新附加费-->
-    <update id="updSurcharge">
-        update price_surcharge set charge_name = #{po.chargeName}, computing_formula = #{po.computingFormula}, currency = #{po.currency} where id = #{po.id}
-    </update>
-
     <!--批量插入附加费-->
     <insert id="addSurcharge">
 
-        <foreach collection="po" index="" separator=";" item="row" open="" close="">
-            insert into price_surcharge(id, charge_name, computing_formula, currency) values (#{row.id}, #{row.chargeName}, #{row.computingFormula}, #{row.currency})
+            insert into
+                price_surcharge(id, charge_name, computing_formula, currency, code)
+            values
+
+        <foreach collection="po" index="" separator="," item="row" open="" close="">
+            (#{row.id}, #{row.chargeName}, #{row.computingFormula}, #{row.currency}, #{row.code})
         </foreach>
 
     </insert>
 
-    <!--获取附加费详细-->
-    <select id="getSurcharge" resultType="com.apl.lms.price.exp.pojo.dto.SurchargeDto">
-        select id,charge_name,computing_formula,currency from price_surcharge where id = #{id}
-    </select>
 </mapper>

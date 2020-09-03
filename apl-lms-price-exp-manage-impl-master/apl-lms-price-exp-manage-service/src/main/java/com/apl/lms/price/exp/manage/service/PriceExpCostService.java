@@ -7,6 +7,8 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author hjr start
  * @Classname PriceExpDataService
@@ -23,18 +25,18 @@ public interface PriceExpCostService extends IService<PriceExpCostPo> {
     PriceExpCostVo getPriceExpCostInfo(Long id);
 
     /**
-     * 根据id得到主表id
-     * @param priceExpMainId
+     * 根据ids得到主表ids
+     * @param ids
      * @return
      */
-    Long getPriceDataId(@Param("id") Long priceExpMainId);
+    List<Long> getPriceDataIds(List<Long> ids);
 
     /**
      * 通过主表id获取统计条数
-     * @param priceMainId
+     * @param priceMainIds
      * @return
      */
-    Integer getPriceDataIdCount(Long priceMainId);
+    Integer getPriceDataIdCount(List<Long> priceMainIds);
 
     /**
      * 保存成本价格表数据
@@ -46,8 +48,15 @@ public interface PriceExpCostService extends IService<PriceExpCostPo> {
 
     /**
      * 根据id删除
+     * @param ids
+     * @return
+     */
+    Integer deleteById(List<Long> ids);
+
+    /**
+     * 获取主表id
      * @param id
      * @return
      */
-    Integer deleteById(Long id);
+    Long getMainId(Long id);
 }

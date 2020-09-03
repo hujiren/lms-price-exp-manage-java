@@ -3,7 +3,7 @@ package com.apl.lms.price.exp.manage.service;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.*;
-import com.apl.lms.price.exp.pojo.po.ComputationalFormulaPo;
+import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author hjr start
  * @date 2020/8/5 - 10:28
  */
-public interface ComputationalFormulaService extends IService<ComputationalFormulaPo> {
+public interface ComputationalFormulaService extends IService<PriceExpComputationalFormulaPo> {
 
     /**
      * 分页查询计算公式列表

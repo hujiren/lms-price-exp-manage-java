@@ -5,13 +5,13 @@
     <!--分页查询燃油费列表-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.FuelChargeVo">
         select
-            id, start_date, end_date, fuel_charge
+            id, start_date, end_date, fuel_charge, channel_category
         from
             fuel_charge
         where
             1=1
-            <if test="key.fuelCharge != null">
-                and fuel_charge = #{key.fuelCharge}
+            <if test="key.channelCategory != null">
+                and channel_category like CONCAT('%',#{key.channelCategory},'%')
             </if>
             <if test="startTimes != null and endTimes != null">
                 and start_date >= #{startTimes}
@@ -27,16 +27,24 @@
 
     <!--更新燃油费-->
     <update id="updFuelCharge">
-        update fuel_charge set start_date = #{po.startDate}, end_date = #{po.endDate}, fuel_charge = #{po.fuelCharge} where id = #{po.id}
+        update
+            fuel_charge
+        set
+            start_date = #{po.startDate}, end_date = #{po.endDate}, fuel_charge = #{po.fuelCharge},channel_category = #{po.channelCategory}
+        where
+            id = #{po.id}
     </update>
 
     <!--新增燃油费-->
     <insert id="insertFuelCharge">
-        insert into fuel_charge(id, start_date, end_date, fuel_charge) values (#{po.id}, #{po.startDate}, #{po.endDate}, #{po.fuelCharge})
+        insert into
+            fuel_charge(id, start_date, end_date, fuel_charge, channel_category)
+        values
+            (#{po.id}, #{po.startDate}, #{po.endDate}, #{po.fuelCharge}, #{po.channelCategory})
     </insert>
 
     <!--获取燃油费详细-->
     <select id="getFuelCharge" resultType="com.apl.lms.price.exp.pojo.vo.FuelChargeVo">
-        select id, start_date, end_date, fuel_charge from fuel_charge where id = #{id}
+        select id, start_date, end_date, fuel_charge, channel_category from fuel_charge where id = #{id}
     </select>
 </mapper>

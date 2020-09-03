@@ -5,9 +5,9 @@
     <!--分页查询销售价格列表-->
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
-            main.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
+            main.id as mainId, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
             main.main_status, main.special_commodity,
-            sale.id as priceExpSaleId, sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
+            sale.id, sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
             sale.channel_category, sale.price_status
         from
             price_exp_sale sale
@@ -16,7 +16,12 @@
         on
             main.id = sale.price_main_id
         where
-            1=1
+        <if test="key.priceType == 1">
+            sale.customer_groups_name is not null
+        </if>
+        <if test="key.priceType == 2">
+            sale.customer_name is not null
+        </if>
         <if test="key.volumeDivisor != null">
             and main.volume_divisor = #{key.volumeDivisor}
         </if>
@@ -32,12 +37,14 @@
         <if test="key.mainStatus == 5">
             and now() - main.end_date > '0 day'
         </if>
-
+        <if test="key.specialCommodity > 0">
+            and main.special_commodity = #{key.specialCommodity}
+        </if>
         <if test="key.customerGroupsId != null">
-            and sale.customer_groups_id @> ${key.customerGroupsId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.QuerySaleListJsonbHandler}
+            and sale.customer_groups_id @> #{key.customerGroupsId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
         </if>
         <if test="key.customerId != null">
-            and sale.customer_ids @> ${key.customerId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.QuerySaleListJsonbHandler}
+            and sale.customer_ids @> #{key.customerId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
         </if>
         <if test="key.priceStatus != null and key.priceStatus > 0">
             and sale.price_status = #{key.priceStatus}
@@ -55,9 +62,9 @@
     <!--分页查询成本价格列表-->
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
-            main.id, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
+            main.id as mainId, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
             main.main_status, main.special_commodity,
-            cost.id as priceExpCostId, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
+            cost.id, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
         from
             price_exp_cost cost
         left join
@@ -66,15 +73,20 @@
             main.id = cost.price_main_id
         where
             1=1
-        <if test="key.volumeDivisor != null">
-            and main.volume_divisor = #{key.volumeDivisor}
-        </if>
         <if test="key.isPublishedPrice != null">
             and main.is_published_price = 1
         </if>
         <if test="key.isPublishedPrice == null">
             and main.is_published_price = 2
         </if>
+
+        <if test="key.volumeDivisor != null">
+            and main.volume_divisor = #{key.volumeDivisor}
+        </if>
+        <if test="key.specialCommodity > 0">
+            and main.special_commodity = #{key.specialCommodity}
+        </if>
+
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>
@@ -159,8 +171,43 @@
 
     <!--根据主表id查询多租户id-->
     <select id="getInnerOrgId" resultType="java.lang.Long">
+        select inner_org_id from price_exp_main where id in
+        <foreach collection="ids" separator="," open="(" close=")" item="row">
+            #{row}
+        </foreach>
+    </select>
+    <select id="getInnerOrgById" resultType="java.lang.Long">
         select inner_org_id from price_exp_main where id = #{id}
     </select>
 
-
+    <!--更新-->
+    <update id="updateMainById">
+        update price_exp_main set
+        <if test="po.zoneId != null">
+            zone_id = #{po.zoneId},
+        </if>
+        <if test="po.accountNo != null">
+            account_no = #{po.accountNo},
+        </if>
+        <if test="po.specialCommodity != null">
+            special_commodity = #{po.specialCommodity, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+        </if>
+        <if test="po.priceForm != null">
+            price_form = #{po.priceForm},
+        </if>
+        <if test="po.aging != null">
+            aging = #{po.aging},
+        </if>
+        <if test="po.isPublishedPrice != null">
+            is_published_price = #{po.isPublishedPrice},
+        </if>
+        <if test="po.mainStatus != null">
+            main_status = #{po.mainStatus},
+        </if>
+            start_date = #{po.startDate}, end_date = #{po.endDate}, currency = #{po.currency}, account_type = #{po.accountType},
+            volume_divisor = #{po.volumeDivisor}, start_weight = #{po.startWeight}, end_weight = #{po.endWeight},
+            price_published_id = #{po.pricePublishedId}
+        where
+            id = #{po.id}
+    </update>
 </mapper>

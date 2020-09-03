@@ -4,10 +4,10 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZonePo;
+import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,38 +18,33 @@ import java.util.List;
 public interface PriceZoneService extends IService<PriceZonePo> {
 
     /**
-     * 分页查询快递分区列表
+     * 分页查询快递分区名称列表
      * @param pageDto
-     * @param priceZoneInsertKeyDto
+     * @param priceZoneNameKeyDto
      * @return
      */
-    ResultUtil<Page<PriceZoneVo>> getList(PageDto pageDto, PriceZoneInsertKeyDto priceZoneInsertKeyDto);
+    ResultUtil<Page<PriceZoneVo>> getPriceZoneNameList(PageDto pageDto, PriceZoneNameKeyDto priceZoneNameKeyDto);
 
     /**
-     * 批量从删除快递分区
+     * 批量从删除快递分区名称
      * @param ids
      * @return
      */
-    ResultUtil<Boolean> delBatchPriceZone(List<Long> ids);
+    ResultUtil<Boolean> delBatchPriceZoneName(List<Long> ids);
 
     /**
      * 更新快递分区
      * @param priceZoneDto
      * @return
      */
-    ResultUtil<Boolean> updPriceZone(PriceZoneDto priceZoneDto);
+    ResultUtil<Boolean> updPriceZoneName(PriceZoneDto priceZoneDto);
 
     /**
      * 新增快递分区
      * @param priceZoneInsertDto
      * @return
      */
-    ResultUtil<Long> addPriceZone(PriceZoneInsertDto priceZoneInsertDto);
+    ResultUtil<Long> addPriceZoneName(PriceZoneInsertDto priceZoneInsertDto);
 
-    /**
-     * 获取快递分区详细
-     * @param id
-     * @return
-     */
-    ResultUtil<Page<PriceZoneVo>> get(Long id);
+
 }

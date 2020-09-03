@@ -29,19 +29,19 @@ public class ComputationalFormulaVo extends Model<ComputationalFormulaVo> {
     @ApiModelProperty(name = "formula" , value = "公式", required = true)
     private String formula;
     
-    @ApiModelProperty(name = "priceZone" , value = "分区", required = true)
-    private String priceZone;
+    @ApiModelProperty(name = "zoneNum" , value = "分区号", required = true)
+    private String zoneNum;
 
     @ApiModelProperty(name = "country" , value = "国家", required = true)
     private String country;
 
     @ApiModelProperty(name = "startingWeight" , value = "起始重量", required = true)
-    private Double startingWeight;
+    private Double startWeight;
 
     @ApiModelProperty(name = "endingWeight" , value = "截止重量", required = true)
-    private Double endingWeight;
+    private Double endWeight;
 
-    @ApiModelProperty(name = "packingType" , value = "包裹类型", required = true)
-    private String packingType;
+    @ApiModelProperty(name = "packageType" , value = "包裹类型", required = true)
+    private String packageType;
 
 }
