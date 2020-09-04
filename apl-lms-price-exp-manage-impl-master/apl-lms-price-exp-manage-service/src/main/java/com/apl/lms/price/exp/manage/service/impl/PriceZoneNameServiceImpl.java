@@ -5,7 +5,7 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceZoneMapper;
-import com.apl.lms.price.exp.manage.service.PriceZoneService;
+import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZonePo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZonePo> implements PriceZoneService {
+public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZonePo> implements PriceZoneNameService {
 
     enum ExpListServiceCode {
         ;

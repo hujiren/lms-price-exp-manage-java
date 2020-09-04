@@ -2,7 +2,7 @@ package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.manage.service.PriceZoneService;
+import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,11 +24,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/zone")
 @Validated
-@Api(value = "快递分区",tags = "快递分区")
-public class PriceZoneController {
+@Api(value = "快递分区表",tags = "快递分区表")
+public class PriceZoneNameController {
 
     @Autowired
-    PriceZoneService priceZoneService;
+    PriceZoneNameService priceZoneService;
 
     @PostMapping(value = "/get-zone-name-list")
     @ApiOperation(value =  "分页获取快递分区名称列表" , notes = "根据关键字来查询")

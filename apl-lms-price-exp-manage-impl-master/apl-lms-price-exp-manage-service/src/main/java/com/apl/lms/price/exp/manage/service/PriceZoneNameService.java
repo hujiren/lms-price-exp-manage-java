@@ -14,7 +14,7 @@ import java.util.List;
  * @author hjr start
  * @date 2020/8/5 - 10:28
  */
-public interface PriceZoneService extends IService<PriceZonePo> {
+public interface PriceZoneNameService extends IService<PriceZonePo> {
 
     /**
      * 分页查询快递分区名称列表
