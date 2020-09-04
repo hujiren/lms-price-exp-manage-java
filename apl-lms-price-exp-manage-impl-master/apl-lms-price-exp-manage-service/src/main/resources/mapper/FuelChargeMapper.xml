@@ -13,11 +13,6 @@
             <if test="key.channelCategory != null">
                 and channel_category like CONCAT('%',#{key.channelCategory},'%')
             </if>
-            <if test="startTimes != null and endTimes != null">
-                and start_date >= #{startTimes}
-                and end_date &lt;= #{endTimes}
-            </if>
-
     </select>
 
     <!--根据id删除燃油费-->

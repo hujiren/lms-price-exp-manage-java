@@ -17,9 +17,8 @@ import java.sql.Timestamp;
 @ApiModel(value="燃油费  返回对象", description="燃油费 返回对象")
 public class FuelChargeVo extends Model<FuelChargeVo> {
 
-    @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "燃油费id" , required = true)
+    @ApiModelProperty(name = "id" , value = "id" , required = true)
     private Long id;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)

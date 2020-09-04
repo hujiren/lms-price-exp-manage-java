@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "特殊物品返回对象", description = "特殊物品返回对象")
 public class SpecialCommodityVo {
 
-    @ApiModelProperty(name = "id", value = "特殊物品id")
+    @ApiModelProperty(name = "id", value = "id")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 

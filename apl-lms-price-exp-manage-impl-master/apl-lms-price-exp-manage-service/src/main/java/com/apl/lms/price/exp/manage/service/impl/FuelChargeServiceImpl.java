@@ -51,14 +51,9 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
 
-        Timestamp startTimes = null;
-        Timestamp endTimes = null;
-        if(fuelChargeKeyDto.getEndDate() != null && fuelChargeKeyDto.getStartDate() != null) {
-            startTimes = new Timestamp(fuelChargeKeyDto.getStartDate());
-            endTimes = new Timestamp(fuelChargeKeyDto.getEndDate());
-        }
+
         fuelChargeKeyDto.setChannelCategory(fuelChargeKeyDto.getChannelCategory().toUpperCase());
-        List<FuelChargeVo> fuelChargeVoList = baseMapper.getList(page, fuelChargeKeyDto, startTimes, endTimes);
+        List<FuelChargeVo> fuelChargeVoList = baseMapper.getList(page, fuelChargeKeyDto);
 
         page.setRecords(fuelChargeVoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);

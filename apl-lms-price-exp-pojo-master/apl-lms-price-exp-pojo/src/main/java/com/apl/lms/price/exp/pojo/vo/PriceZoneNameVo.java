@@ -14,7 +14,7 @@ import lombok.Data;
 public class PriceZoneNameVo extends Model<PriceZoneNameVo> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "快递分区id", required = true)
+    @ApiModelProperty(name = "id" , value = "id", required = true)
     private Long id;
     
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)
