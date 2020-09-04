@@ -2,8 +2,8 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.SpecialCommodityDto;
-import com.apl.lms.price.exp.pojo.dto.SpecialCommodityInsertDto;
+import com.apl.lms.price.exp.pojo.dto.SpecialCommodityUpdDto;
+import com.apl.lms.price.exp.pojo.dto.SpecialCommodityAddDto;
 import com.apl.lms.price.exp.pojo.dto.SpecialCommodityKeyDto;
 import com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author hjr
  * @since 2020-08-08
  */
-public interface SpecialCommodityService extends IService<SpecialCommodityDto> {
+public interface SpecialCommodityService extends IService<SpecialCommodityUpdDto> {
 
 
     /**
@@ -42,7 +42,7 @@ public interface SpecialCommodityService extends IService<SpecialCommodityDto> {
      * @author hjr
      * @since 2020-08-08
      */
-    ResultUtil<Boolean> updSpecialCommodity(SpecialCommodityDto specialCommodityDto);
+    ResultUtil<Boolean> updSpecialCommodity(SpecialCommodityUpdDto specialCommodityUpdDto);
 
 
     /**
@@ -50,7 +50,7 @@ public interface SpecialCommodityService extends IService<SpecialCommodityDto> {
      * @author hjr
      * @since 2020-08-08
      */
-    ResultUtil<Integer> addSpecialCommodity(List<SpecialCommodityInsertDto> specialCommodityInsertDtoList);
+    ResultUtil<Integer> addSpecialCommodity(List<SpecialCommodityAddDto> specialCommodityAddDtoList);
 
     /**获取特殊物品详情
      * @param id

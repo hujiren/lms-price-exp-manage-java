@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value="渠道类型  新增对象", description="渠道类型 新增对象")
-public class ChannelCategoryInsertDto extends Model<ChannelCategoryInsertDto> {
+public class ChannelCategoryAddDto extends Model<ChannelCategoryAddDto> {
 
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)

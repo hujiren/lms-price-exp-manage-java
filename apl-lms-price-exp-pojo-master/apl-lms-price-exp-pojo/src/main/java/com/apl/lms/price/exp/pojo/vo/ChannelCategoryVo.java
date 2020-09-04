@@ -28,7 +28,7 @@ public class ChannelCategoryVo extends Model<ChannelCategoryVo> {
     private String weightWay;
 
     @ApiModelProperty(name = "volumeWeightWay" , value = "材积计重方式" , required = true)
-    private Integer volumeWeight;
+    private Integer volumeWeightWay;
 
     @ApiModelProperty(name = "carrier" , value = "承运商" , required = true)
     private String carrier;

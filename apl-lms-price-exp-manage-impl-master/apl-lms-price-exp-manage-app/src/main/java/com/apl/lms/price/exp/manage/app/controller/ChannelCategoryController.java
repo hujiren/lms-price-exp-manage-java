@@ -2,8 +2,8 @@ package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryInsertDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryUpdDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryAddDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
@@ -49,16 +49,16 @@ public class  ChannelCategoryController {
 
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新渠道类型")
-    public ResultUtil<Boolean> upd(@Validated ChannelCategoryDto channelCateGoryDto){
+    public ResultUtil<Boolean> upd(@Validated ChannelCategoryUpdDto channelCateGoryUpdDto){
 
-        return channelCategoryService.updChannelCategory(channelCateGoryDto);
+        return channelCategoryService.updChannelCategory(channelCateGoryUpdDto);
     }
 
     @PostMapping(value = "/add")
     @ApiOperation(value =  "新增渠道类型" , notes = "新增渠道类型")
-    public ResultUtil<String> add( @Validated ChannelCategoryInsertDto channelCateGoryInsertDto){
+    public ResultUtil<String> add( @Validated ChannelCategoryAddDto channelCateGoryAddDto){
 
-        return channelCategoryService.addChannelCategory(channelCateGoryInsertDto);
+        return channelCategoryService.addChannelCategory(channelCateGoryAddDto);
     }
 
     @PostMapping(value = "/get")

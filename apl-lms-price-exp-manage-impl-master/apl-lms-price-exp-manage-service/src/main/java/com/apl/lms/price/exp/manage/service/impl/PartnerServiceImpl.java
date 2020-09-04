@@ -8,7 +8,7 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PartnerMapper;
 import com.apl.lms.price.exp.manage.service.PartnerService;
 import com.apl.lms.price.exp.pojo.dto.PartnerKeyDto;
-import com.apl.lms.price.exp.pojo.dto.PartnerDto;
+import com.apl.lms.price.exp.pojo.dto.PartnerAddDto;
 import com.apl.lms.price.exp.pojo.po.PartnerPo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -61,10 +61,10 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
     }
 
     @Override
-    public ResultUtil<Integer> addPartner(PartnerDto partnerDto) {
+    public ResultUtil<Integer> addPartner(PartnerAddDto partnerAddDto) {
 
         PartnerPo partnerPo = new PartnerPo();
-        BeanUtil.copyProperties(partnerDto, partnerPo);
+        BeanUtil.copyProperties(partnerAddDto, partnerPo);
         partnerPo.setId(SnowflakeIdWorker.generateId());
         Integer integer = baseMapper.insert(partnerPo);
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);

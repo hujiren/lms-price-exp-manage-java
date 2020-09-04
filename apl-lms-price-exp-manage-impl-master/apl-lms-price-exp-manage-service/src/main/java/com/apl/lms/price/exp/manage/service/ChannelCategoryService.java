@@ -2,8 +2,8 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryInsertDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryUpdDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryAddDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
 import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
@@ -33,17 +33,17 @@ public interface ChannelCategoryService extends IService<ChannelCategoryPo> {
 
     /**
      * 更新渠道类型
-     * @param channelCateGoryDto
+     * @param channelCateGoryUpdDto
      * @return
      */
-    ResultUtil<Boolean> updChannelCategory(ChannelCategoryDto channelCateGoryDto);
+    ResultUtil<Boolean> updChannelCategory(ChannelCategoryUpdDto channelCateGoryUpdDto);
 
     /**
      * 新增渠道类型对象
-     * @param channelCateGoryInsertDto
+     * @param channelCateGoryAddDto
      * @return
      */
-    ResultUtil<String> addChannelCategory(ChannelCategoryInsertDto channelCateGoryInsertDto);
+    ResultUtil<String> addChannelCategory(ChannelCategoryAddDto channelCateGoryAddDto);
 
     /**
      * 获取渠道类型详细

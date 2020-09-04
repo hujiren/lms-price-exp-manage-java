@@ -1,7 +1,4 @@
 package com.apl.lms.price.exp.pojo.po;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,5 +25,5 @@ public class PriceExpDataPo extends Model<PriceExpDataPo> implements Serializabl
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
     @NotBlank(message = "价格表数据不能为空")
-    private List priceData;
+    private List<Object> priceData;
 }

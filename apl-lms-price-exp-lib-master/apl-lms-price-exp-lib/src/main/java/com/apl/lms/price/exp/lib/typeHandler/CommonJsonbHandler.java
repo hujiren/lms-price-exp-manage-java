@@ -1,5 +1,7 @@
 package com.apl.lms.price.exp.lib.typeHandler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.postgresql.util.PGobject;
@@ -9,15 +11,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CommonJsonbHandler  extends BaseTypeHandler<List> {
+public class CommonJsonbHandler  extends BaseTypeHandler<Object> {
 
-    //private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    @SneakyThrows
     @Override
-    public void setNonNullParameter(PreparedStatement preparedStatement, int i, List list, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement preparedStatement, int i, Object obj, JdbcType jdbcType) throws SQLException {
         PGobject jsonObject = new PGobject();
         jsonObject.setType("json");
-        jsonObject.setValue(list.toString());
+        jsonObject.setValue(objectMapper.writeValueAsString(obj));
         preparedStatement.setObject(i, jsonObject);
     }
 

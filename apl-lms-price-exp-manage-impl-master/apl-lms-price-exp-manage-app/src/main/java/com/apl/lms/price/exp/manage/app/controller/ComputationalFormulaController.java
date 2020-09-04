@@ -49,16 +49,16 @@ public class ComputationalFormulaController {
 
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新计算公式")
-    public ResultUtil<Boolean> upd(@Validated ComputationalFormulaDto computationalFormulaDto){
+    public ResultUtil<Boolean> upd(@Validated ComputationalFormulaUpdDto computationalFormulaUpdDto){
 
-        return computationalFormulaService.updComputationalFormula(computationalFormulaDto);
+        return computationalFormulaService.updComputationalFormula(computationalFormulaUpdDto);
     }
-
+    
     @PostMapping(value = "/add")
     @ApiOperation(value =  "新增计算公式" , notes = "新增计算公式")
-    public ResultUtil<Long> add(@Validated ComputationalFormulaInsertDto computationalFormulaInsertDto){
+    public ResultUtil<Long> add(@Validated ComputationalFormulaAddDto computationalFormulaAddDto){
 
-        return computationalFormulaService.addComputationalFormula(computationalFormulaInsertDto);
+        return computationalFormulaService.addComputationalFormula(computationalFormulaAddDto);
     }
 
     @PostMapping(value = "/get")

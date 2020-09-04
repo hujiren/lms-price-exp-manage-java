@@ -1,8 +1,5 @@
 package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.lib.cache.bo.PartnerCacheBo;
-import com.apl.lms.price.exp.lib.cache.bo.SpecialCommodityCacheBo;
-import com.apl.lms.price.exp.lib.cache.bo.SurchargeCacheBo;
-import com.apl.lms.price.exp.lib.cache.bo.WeightWayCacheBo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;

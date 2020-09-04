@@ -7,40 +7,35 @@
         SELECT
             id,
             special_commodity_name,
+            special_commodity_name_en,
             code
         FROM
             special_commodity
         where
             1=1
+        <if test="key.code > 0">
+            and code = #{key.code}
+        </if>
         <if test="key.keyword != null">
             and special_commodity_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            or special_commodity_name_en LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
-
-    <!--根据Id删除特殊物品-->
-    <delete id="delById">
-        delete from special_commodity where id = #{id}
-    </delete>
-
-    <!--更新特殊物品-->
-    <update id="updSpecialCommodity">
-        update special_commodity set special_commodity_name = #{po.specialCommodityName},code = #{po.code} where id = #{po.id}
-    </update>
 
     <!--批量插入特殊物品-->
     <insert id="addSpecialCommodity">
 
             insert into
-                special_commodity(id, special_commodity_name, code)
+                special_commodity(id, special_commodity_name, special_commodity_name_en, code)
             values
             <foreach collection="po" close="" open="" item="row" separator="," index="">
-                (#{row.id}, #{row.specialCommodityName}, #{row.code})
+                (#{row.id}, #{row.specialCommodityName}, #{row.specialCommodityNameEn}, #{row.code})
             </foreach>
 
     </insert>
 
     <!--获取特殊物品详细-->
     <select id="getSpecialCommodity" resultType="com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo">
-        select id,special_commodity_name,code from special_commodity where id = #{id}
+        select id,special_commodity_name, special_commodity_name_en, code from special_commodity where id = #{id}
     </select>
 </mapper>

@@ -53,7 +53,7 @@ public class PriceExpAddDto extends Model<PriceExpAddDto> implements Serializabl
     private Integer volumeDivisor;
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private List<Long> specialCommodity;
+    private List<Integer> specialCommodity;
 
     @ApiModelProperty(name = "priceForm" , value = "价格表格式 1横向 2纵向")
     @Range(min = 1, max = 2, message = "价格表格式值只能为1或2")
@@ -69,9 +69,8 @@ public class PriceExpAddDto extends Model<PriceExpAddDto> implements Serializabl
     @NotNull(message = "截止重量不能为空")
     private Double endWeight;
 
-    @ApiModelProperty(name = "pricePublishedId" , value = "公布价id", required = true)
+    @ApiModelProperty(name = "pricePublishedId" , value = "公布价id")
     @Min(value = 0, message = "公布价最小值为0")
-    @NotNull(message = "公布价id不能为空")
     private Long pricePublishedId;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是", required = true)

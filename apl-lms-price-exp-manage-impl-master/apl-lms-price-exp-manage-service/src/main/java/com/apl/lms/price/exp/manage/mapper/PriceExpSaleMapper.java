@@ -50,4 +50,5 @@ public interface PriceExpSaleMapper extends BaseMapper<PriceExpSalePo> {
      * @return
      */
     Long getMainId(@Param("id") Long id);
+
 }

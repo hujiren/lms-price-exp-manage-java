@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,9 +45,10 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         //根据价格表Id获取主表Id
         Long mainId = 0L;
         mainId = priceExpCostService.getMainId(id);
-        if(mainId == 0 || mainId == null){
+        if(null == mainId || mainId == 0){
             mainId = priceExpSaleService.getMainId(id);
         }
+
         PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoByMainId(mainId);
         if (priceExpDataVo == null) {
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
@@ -68,7 +71,6 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         priceExpDataPo.setPriceData(priceExpDataAddDto.getPriceData());
         priceExpDataPo.setPriceMainId(priceMainId);
         Integer saveSuccess = baseMapper.insertData(priceExpDataPo);
-
         return saveSuccess > 0 ? true :false;
     }
 

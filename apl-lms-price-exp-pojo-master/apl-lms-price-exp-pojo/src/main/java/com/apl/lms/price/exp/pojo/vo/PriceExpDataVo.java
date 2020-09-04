@@ -25,10 +25,7 @@ public class PriceExpDataVo extends Model<PriceExpDataVo> implements Serializabl
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "id" , value = "价格表数据id")
-    private Long id;
-
-    @ApiModelProperty(name = "priceId" , value = "价格表主表id")
-    private Long priceId;
+    private Long priceMainId;
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据")
     private String priceData;

@@ -3,38 +3,37 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.WeightWayMapper">
 
     <!-- 查找计泡方式列表-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.WeightWayDto">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto">
         SELECT
             id,
             weight_way_name,
+            weight_way_name_en,
             computing_formula,
             code
         FROM
             weight_way
         where
             1=1
+        <if test="key.code > 0">
+            and code = #{key.code}
+        </if>
         <if test="key.keyword != null">
             and weight_way_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            and weight_way_name_en LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
 
-    <!--根据Id删除计泡方式-->
-    <delete id="delById">
-        delete from weight_way where id = #{id}
-    </delete>
-
-
     <!--批量插入附加费-->
     <insert id="addWeightWay">
-            insert into weight_way (id, weight_way_name, computing_formula, code) values
+            insert into weight_way (id, weight_way_name, weight_way_name_en, computing_formula, code) values
         <foreach collection="po" close="" open="" item="row" separator="," index="">
-            (#{row.id}, #{row.weightWayName}, #{row.computingFormula}, #{row.code})
+            (#{row.id}, #{row.weightWayName}, #{row.weightWayNameEn}, #{row.computingFormula}, #{row.code})
         </foreach>
 
     </insert>
 
     <!--获取计泡方式详情-->
-    <select id="getWeightWay" resultType="com.apl.lms.price.exp.pojo.dto.WeightWayDto">
-        select id,weight_way_name,computing_formula,code from weight_way where id = #{id}
+    <select id="getWeightWay" resultType="com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto">
+        select id, weight_way_name, weight_way_name_en, computing_formula, code from weight_way where id = #{id}
     </select>
 </mapper>

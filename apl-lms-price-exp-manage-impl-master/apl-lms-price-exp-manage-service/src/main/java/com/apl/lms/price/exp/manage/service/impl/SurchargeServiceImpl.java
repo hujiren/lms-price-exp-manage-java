@@ -6,13 +6,12 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.SurchargeMapper;
 import com.apl.lms.price.exp.manage.service.SurchargeService;
-import com.apl.lms.price.exp.pojo.dto.SurchargeDto;
-import com.apl.lms.price.exp.pojo.dto.SurchargeInsertDto;
+import com.apl.lms.price.exp.pojo.dto.SurchargeUpdDto;
+import com.apl.lms.price.exp.pojo.dto.SurchargeAddDto;
 import com.apl.lms.price.exp.pojo.dto.SurchargeKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, SurchargeDto> implements SurchargeService {
+public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, SurchargeUpdDto> implements SurchargeService {
 
     /**
      * 分页查找附加费
@@ -32,15 +31,17 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
      * @return
      */
     @Override
-    public ResultUtil<Page<SurchargeDto>> getList(PageDto pageDto, SurchargeKeyDto surchargeKeyDto) {
+    public ResultUtil<Page<SurchargeUpdDto>> getList(PageDto pageDto, SurchargeKeyDto surchargeKeyDto) {
 
-        Page<SurchargeDto> page = new Page();
+        Page<SurchargeUpdDto> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
+        if(null == surchargeKeyDto.getCode() || surchargeKeyDto.getCode() < 0){
+            surchargeKeyDto.setCode(0);
+        }
+        List<SurchargeUpdDto> surchargeUpdDtoList = baseMapper.getList(page, surchargeKeyDto);
 
-        List<SurchargeDto> surchargeDtoList = baseMapper.getList(page, surchargeKeyDto);
-
-        page.setRecords(surchargeDtoList);
+        page.setRecords(surchargeUpdDtoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
@@ -60,13 +61,13 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
 
     /**
      * 更新附加费
-     * @param surchargeDto
+     * @param surchargeUpdDto
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updSurcharge(SurchargeDto surchargeDto) {
+    public ResultUtil<Boolean> updSurcharge(SurchargeUpdDto surchargeUpdDto) {
 
-        Integer integer = baseMapper.updateById(surchargeDto);
+        Integer integer = baseMapper.updateById(surchargeUpdDto);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -75,18 +76,18 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
 
     /**
      * 添加附加费
-     * @param surchargeInsertDtoList
+     * @param surchargeAddDtoList
      * @return
      */
     @Override
-    public ResultUtil<Integer> addSurcharge(List<SurchargeInsertDto> surchargeInsertDtoList) {
+    public ResultUtil<Integer> addSurcharge(List<SurchargeAddDto> surchargeAddDtoList) {
 
-        for (SurchargeInsertDto surchargeDtoList : surchargeInsertDtoList) {
+        for (SurchargeAddDto surchargeDtoList : surchargeAddDtoList) {
 
             surchargeDtoList.setId(SnowflakeIdWorker.generateId());
         }
 
-        Integer integer = baseMapper.addSurcharge(surchargeInsertDtoList);
+        Integer integer = baseMapper.addSurcharge(surchargeAddDtoList);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
@@ -99,13 +100,13 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
      * @return
      */
     @Override
-    public ResultUtil<SurchargeDto> getSurcharge(Long id) {
+    public ResultUtil<SurchargeUpdDto> getSurcharge(Long id) {
 
-        SurchargeDto surchargeDto = baseMapper.selectById(id);
-        if(surchargeDto == null){
+        SurchargeUpdDto surchargeUpdDto = baseMapper.selectById(id);
+        if(surchargeUpdDto == null){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
         }
 
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, surchargeDto);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, surchargeUpdDto);
     }
 }

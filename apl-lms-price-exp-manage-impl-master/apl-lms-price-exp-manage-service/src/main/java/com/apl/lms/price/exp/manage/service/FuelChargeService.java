@@ -2,8 +2,8 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.FuelChargeDto;
-import com.apl.lms.price.exp.pojo.dto.FuelChargeInsertDto;
+import com.apl.lms.price.exp.pojo.dto.FuelChargeUpdDto;
+import com.apl.lms.price.exp.pojo.dto.FuelChargeAddDto;
 import com.apl.lms.price.exp.pojo.dto.FuelChargeKeyDto;
 import com.apl.lms.price.exp.pojo.po.FuelChargePo;
 import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
@@ -33,17 +33,17 @@ public interface FuelChargeService extends IService<FuelChargePo> {
 
     /**
      * 更新燃油费
-     * @param fuelChargeDto
+     * @param fuelChargeUpdDto
      * @return
      */
-    ResultUtil<Boolean> updFuelCharge(FuelChargeDto fuelChargeDto);
+    ResultUtil<Boolean> updFuelCharge(FuelChargeUpdDto fuelChargeUpdDto);
 
     /**
      * 新增燃油费
-     * @param fuelChargeInsertDto
+     * @param fuelChargeAddDto
      * @return
      */
-    ResultUtil<String> addFulCharge(FuelChargeInsertDto fuelChargeInsertDto);
+    ResultUtil<String> addFulCharge(FuelChargeAddDto fuelChargeAddDto);
 
     /**
      * 获取燃油费详情

@@ -19,18 +19,22 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel(value = "特殊物品持久化对象", description = "特殊物品持久化对象")
 @TableName("special_commodity")
-public class SpecialCommodityDto {
+public class SpecialCommodityUpdDto {
 
     @ApiModelProperty(name = "id", value = "特殊物品id", required = true)
     @TableId(value = "id", type = IdType.INPUT)
     @NotNull(message = "特殊物品Id不能为空")
     private Long id;
 
-    @ApiModelProperty(name = "specialCommodityName", value = "特殊物品名称", required = true)
-    @NotBlank(message = "特殊物品名称不能为空")
-    private String specialCommodityName;
-
-    @ApiModelProperty(name = "code", value = "代码", required = true)
-    @NotNull(message = "code不能为空")
-    private Integer code;
+//    @ApiModelProperty(name = "specialCommodityName", value = "特殊物品名称", required = true)
+//    @NotBlank(message = "特殊物品名称不能为空")
+//    private String specialCommodityName;
+//
+//    @ApiModelProperty(name = "specialCommodityNameEn", value = "特殊物品英文名称", required = true)
+//    @NotBlank(message = "特殊物品英文名称不能为空")
+//    private String specialCommodityNameEn;
+//
+//    @ApiModelProperty(name = "code", value = "代码", required = true)
+//    @NotNull(message = "code不能为空")
+//    private Integer code;
 }

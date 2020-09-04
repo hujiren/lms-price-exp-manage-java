@@ -6,8 +6,8 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryInsertDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryUpdDto;
+import com.apl.lms.price.exp.pojo.dto.ChannelCategoryAddDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
 import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
@@ -78,16 +78,16 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
 
     /**
      * 修改
-     * @param channelCateGoryDto
+     * @param channelCateGoryUpdDto
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updChannelCategory(ChannelCategoryDto channelCateGoryDto) {
+    public ResultUtil<Boolean> updChannelCategory(ChannelCategoryUpdDto channelCateGoryUpdDto) {
 
         ChannelCategoryPo channelCateGoryPo = new ChannelCategoryPo();
-        BeanUtils.copyProperties(channelCateGoryDto, channelCateGoryPo);
+        BeanUtils.copyProperties(channelCateGoryUpdDto, channelCateGoryPo);
 
-        ChannelCategoryVo channelCateGoryVo = baseMapper.getChannelCateGory(channelCateGoryDto.getId());
+        ChannelCategoryVo channelCateGoryVo = baseMapper.getChannelCateGory(channelCateGoryUpdDto.getId());
 
         if(channelCateGoryVo == null){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL.getCode(), "id不存在", null);
@@ -101,14 +101,14 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
 
     /**
      * 添加
-     * @param channelCateGoryInsertDto
+     * @param channelCateGoryAddDto
      * @return
      */
     @Override
-    public ResultUtil<String> addChannelCategory(ChannelCategoryInsertDto channelCateGoryInsertDto) {
+    public ResultUtil<String> addChannelCategory(ChannelCategoryAddDto channelCateGoryAddDto) {
 
         ChannelCategoryPo channelCateGoryPo = new ChannelCategoryPo();
-        BeanUtils.copyProperties(channelCateGoryInsertDto, channelCateGoryPo);
+        BeanUtils.copyProperties(channelCateGoryAddDto, channelCateGoryPo);
         channelCateGoryPo.setId(SnowflakeIdWorker.generateId());
         Integer integer = baseMapper.addChannelCategory(channelCateGoryPo);
         if(integer < 1){
