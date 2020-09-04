@@ -46,7 +46,6 @@ public class PriceExpSaleUpdateDto extends Model<PriceExpSaleUpdateDto> {
 
     @ApiModelProperty(name = "priceStatus" , value = "销售价格表状态 1正常 2计账 3无效")
     @TypeValidator(value = {"0","1","2","3"} , message = "销售价格表状态错误")
-    @NotNull(message = "销售价格表状态不能为空")
     private Integer priceStatus;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)

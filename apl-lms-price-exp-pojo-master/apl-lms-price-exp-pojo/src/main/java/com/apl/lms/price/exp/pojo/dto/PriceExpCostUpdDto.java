@@ -18,10 +18,10 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value="成本价格表  持久化对象", description="成本价格表 持久化对象")
-public class PriceExpCostUpdateDto extends Model<PriceExpCostUpdateDto> {
+public class PriceExpCostUpdDto extends Model<PriceExpCostUpdDto> {
 
     @TableId(value = "id", type = IdType.INPUT)
-    @ApiModelProperty(name = "id" , value = "成本价格主表Id", required = true)
+    @ApiModelProperty(name = "id" , value = "成本价格Id", required = true)
     @NotNull(message = "成本价格表Id不能为空")
     private Long id;
 

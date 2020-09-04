@@ -5,7 +5,6 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
-import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.apl.lms.price.exp.pojo.vo.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -51,21 +50,21 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
 
     /**
      * 更新销售价格
-     * @param priceExpMainUpdateDto
+     * @param priceExpMainUpdDto
      * @param priceExpSaleUpdateDto
      * @return
      */
-    ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
+    ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdDto priceExpMainUpdDto,
                                         PriceExpSaleUpdateDto priceExpSaleUpdateDto);
 
     /**
      * 更新成本价格表
-     * @param priceExpMainUpdateDto
-     * @param priceExpCostUpdateDto
+     * @param priceExpMainUpdDto
+     * @param priceExpCostUpdDto
      * @return
      */
-    ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
-                                        PriceExpCostUpdateDto priceExpCostUpdateDto);
+    ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdDto priceExpMainUpdDto,
+                                        PriceExpCostUpdDto priceExpCostUpdDto);
 
     /**
      * 更新价格表数据
@@ -74,20 +73,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<Boolean> updatePriceData(PriceExpDataAddDto priceExpDataAddDto, PriceExpAxisPo priceExpAxisPo);
-
-    /**
-     * 根据id批量删除成本价格数据
-     * @param ids
-     * @return
-     */
-    ResultUtil<Boolean> deleteCostBatch(List<Long> ids);
-
-    /**
-     * 根据id批量删除销售价格数据
-     * @param ids
-     * @return
-     */
-    ResultUtil<Boolean> deleteSaleBatch(List<Long> ids);
 
 
     /**
@@ -120,4 +105,18 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     ResultUtil<Long> addCostPrice(PriceExpCostAddDto priceExpCostAddDto);
 
+
+    /**
+     * 根据id批量删除成本价格数据
+     * @param ids
+     * @return
+     */
+    ResultUtil<Boolean> deleteCostBatch(List<Long> ids);
+
+    /**
+     * 根据id批量删除销售价格数据
+     * @param ids
+     * @return
+     */
+    ResultUtil<Boolean> deleteSaleBatch(List<Long> ids);
 }

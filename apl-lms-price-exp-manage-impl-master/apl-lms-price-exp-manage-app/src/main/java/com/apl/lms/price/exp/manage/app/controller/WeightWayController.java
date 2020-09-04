@@ -2,8 +2,8 @@ package com.apl.lms.price.exp.manage.app.controller;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.WeightWayService;
-import com.apl.lms.price.exp.pojo.dto.WeightWayDto;
-import com.apl.lms.price.exp.pojo.dto.WeightWayInsertDto;
+import com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto;
+import com.apl.lms.price.exp.pojo.dto.WeightWayAddDto;
 import com.apl.lms.price.exp.pojo.dto.WeightWayKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -35,8 +35,8 @@ public class WeightWayController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取特殊物品列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<WeightWayDto>> getList(PageDto pageDto ,
-                                                  @Validated WeightWayKeyDto weightWayKeyDto){
+    public ResultUtil<Page<WeightWayUpdDto>> getList(PageDto pageDto ,
+                                                     @Validated WeightWayKeyDto weightWayKeyDto){
         return weightWayService.getList(pageDto, weightWayKeyDto);
     }
 
@@ -50,22 +50,22 @@ public class WeightWayController {
 
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新计泡方式")
-    public ResultUtil<Boolean> upd( @Validated WeightWayDto weightWayDto){
+    public ResultUtil<Boolean> upd( @Validated WeightWayUpdDto weightWayUpdDto){
 
-        return weightWayService.updWeightWay(weightWayDto);
+        return weightWayService.updWeightWay(weightWayUpdDto);
     }
 
     @PostMapping(value = "/add")
     @ApiOperation(value =  "批量新增" , notes = "批量新增新增计泡方式")
-    public ResultUtil<Integer> insertBatch( @RequestBody List<WeightWayInsertDto> weightWayInsertDtoList){
+    public ResultUtil<Integer> insertBatch( @RequestBody List<WeightWayAddDto> weightWayAddDtoList){
 
-        return weightWayService.addWeightWay(weightWayInsertDtoList);
+        return weightWayService.addWeightWay(weightWayAddDtoList);
     }
 
     @PostMapping(value = "/get")
     @ApiOperation(value =  "获取计泡方式详细" , notes = "获取计泡方式详细")
     @ApiImplicitParam(name = "id", value = "计泡方式id", required = true, paramType = "query")
-    public ResultUtil<WeightWayDto> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    public ResultUtil<WeightWayUpdDto> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 
         return weightWayService.getWeightWay(id);
     }

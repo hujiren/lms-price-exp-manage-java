@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @TableName("price_partner")
 @ApiModel(value="服务商  持久化对象", description="服务商 持久化对象")
-public class PartnerDto extends Model<PartnerDto> {
+public class PartnerAddDto extends Model<PartnerAddDto> {
 
     @ApiModelProperty(name = "partnerCode" , value = "服务商简码", required = true)
     @NotBlank(message = "服务商简码不能为空")

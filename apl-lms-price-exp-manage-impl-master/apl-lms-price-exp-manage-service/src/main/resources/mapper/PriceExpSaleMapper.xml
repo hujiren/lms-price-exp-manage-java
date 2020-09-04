@@ -67,4 +67,5 @@
     <select id="getMainId" resultType="java.lang.Long">
         select price_main_id from price_exp_sale where id = #{id}
     </select>
+
 </mapper>

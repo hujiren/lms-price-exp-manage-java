@@ -4,7 +4,6 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZonePo;
-import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -34,10 +33,10 @@ public interface PriceZoneService extends IService<PriceZonePo> {
 
     /**
      * 更新快递分区
-     * @param priceZoneDto
+     * @param priceZoneUpdDto
      * @return
      */
-    ResultUtil<Boolean> updPriceZoneName(PriceZoneDto priceZoneDto);
+    ResultUtil<Boolean> updPriceZoneName(PriceZoneUpdDto priceZoneUpdDto);
 
     /**
      * 新增快递分区

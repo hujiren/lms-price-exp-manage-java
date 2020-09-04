@@ -31,17 +31,17 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
 
     /**
      * 更新计算公式
-     * @param computationalFormulaDto
+     * @param computationalFormulaUpdDto
      * @return
      */
-    ResultUtil<Boolean> updComputationalFormula(ComputationalFormulaDto computationalFormulaDto);
+    ResultUtil<Boolean> updComputationalFormula(ComputationalFormulaUpdDto computationalFormulaUpdDto);
 
     /**
      * 新增计算公式
-     * @param computationalFormulaInsertDto
+     * @param computationalFormulaAddDto
      * @return
      */
-    ResultUtil<Long> addComputationalFormula(ComputationalFormulaInsertDto computationalFormulaInsertDto);
+    ResultUtil<Long> addComputationalFormula(ComputationalFormulaAddDto computationalFormulaAddDto);
 
     /**
      * 获取计算公式详细

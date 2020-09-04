@@ -14,10 +14,14 @@ public class SurchargeKeyDto {
     @ApiModelProperty(name = "keyword", value = "关键字")
     private String keyword;
 
+    @ApiModelProperty(name = "code", value = "code")
+    private Integer code;
+
     public String getKeyword() {
         if (keyword != null && keyword.trim().equals(""))
             keyword = null;
 
         return keyword;
     }
+
 }

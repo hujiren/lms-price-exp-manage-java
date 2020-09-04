@@ -56,9 +56,9 @@ public class PartnerController {
 
     @PostMapping(value = "/add")
     @ApiOperation(value =  "新增" , notes = "新增服务商")
-    public ResultUtil<Integer> add(@Validated PartnerDto partnerDto){
+    public ResultUtil<Integer> add(@Validated PartnerAddDto partnerAddDto){
 
-        return partnerService.addPartner(partnerDto);
+        return partnerService.addPartner(partnerAddDto);
     }
 
     @PostMapping(value = "/get")

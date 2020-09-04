@@ -6,8 +6,8 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.SpecialCommodityMapper;
 import com.apl.lms.price.exp.manage.service.SpecialCommodityService;
-import com.apl.lms.price.exp.pojo.dto.SpecialCommodityDto;
-import com.apl.lms.price.exp.pojo.dto.SpecialCommodityInsertDto;
+import com.apl.lms.price.exp.pojo.dto.SpecialCommodityUpdDto;
+import com.apl.lms.price.exp.pojo.dto.SpecialCommodityAddDto;
 import com.apl.lms.price.exp.pojo.dto.SpecialCommodityKeyDto;
 import com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMapper, SpecialCommodityDto> implements SpecialCommodityService {
+public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMapper, SpecialCommodityUpdDto> implements SpecialCommodityService {
 
     /**
      * 分页查找
@@ -37,7 +37,9 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
         Page<SpecialCommodityVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
-
+        if(null == specialCommodityKeyDto.getCode() || specialCommodityKeyDto.getCode() < 0){
+            specialCommodityKeyDto.setCode(0);
+        }
         List<SpecialCommodityVo> specialCommodityVoList = baseMapper.getList(page, specialCommodityKeyDto);
 
         page.setRecords(specialCommodityVoList);
@@ -51,7 +53,7 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
      */
     @Override
     public ResultUtil<Boolean> delSpecialCommodity(Long id) {
-        Integer integer = baseMapper.delById(id);
+        Integer integer = baseMapper.deleteById(id);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
         }
@@ -60,15 +62,15 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
 
     /**
      * 更新特殊物品
-     * @param specialCommodityDto
+     * @param specialCommodityUpdDto
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updSpecialCommodity(SpecialCommodityDto specialCommodityDto) {
+    public ResultUtil<Boolean> updSpecialCommodity(SpecialCommodityUpdDto specialCommodityUpdDto) {
 
-        Integer integer = baseMapper.updSpecialCommodity(specialCommodityDto);
+        Integer integer = baseMapper.updateById(specialCommodityUpdDto);
 
-        SpecialCommodityVo specialCommodityVo = baseMapper.getSpecialCommodity(specialCommodityDto.getId());
+        SpecialCommodityVo specialCommodityVo = baseMapper.getSpecialCommodity(specialCommodityUpdDto.getId());
         if(specialCommodityVo == null){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
         }
@@ -81,17 +83,17 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
 
     /**
      * 批量添加特殊物品
-     * @param specialCommodityInsertDtoList
+     * @param specialCommodityAddDtoList
      * @return
      */
     @Override
-    public ResultUtil<Integer> addSpecialCommodity(List<SpecialCommodityInsertDto> specialCommodityInsertDtoList) {
+    public ResultUtil<Integer> addSpecialCommodity(List<SpecialCommodityAddDto> specialCommodityAddDtoList) {
 
-        for (SpecialCommodityInsertDto specialCommodityDtoList : specialCommodityInsertDtoList) {
+        for (SpecialCommodityAddDto specialCommodityDtoList : specialCommodityAddDtoList) {
             specialCommodityDtoList.setId(SnowflakeIdWorker.generateId());
         }
 
-        Integer integer = baseMapper.addSpecialCommodity(specialCommodityInsertDtoList);
+        Integer integer = baseMapper.addSpecialCommodity(specialCommodityAddDtoList);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }

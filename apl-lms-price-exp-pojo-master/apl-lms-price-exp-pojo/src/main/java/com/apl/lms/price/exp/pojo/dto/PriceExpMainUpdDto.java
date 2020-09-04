@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(value="快递价格主表  持久化对象", description="快递价格主表 持久化对象")
-public class PriceExpMainUpdateDto extends Model<PriceExpMainUpdateDto> {
+public class PriceExpMainUpdDto extends Model<PriceExpMainUpdDto> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @ApiModelProperty(name = "id" , value = "快递价格主表Id", hidden = true)
@@ -56,7 +56,7 @@ public class PriceExpMainUpdateDto extends Model<PriceExpMainUpdateDto> {
     private Integer volumeDivisor;
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private List<Long> specialCommodity;
+    private List<Integer> specialCommodity;
 
     @ApiModelProperty(name = "priceForm" , value = "价格表格式 1横向 2纵向")
     @TypeValidator(value = {"1","2"} , message = "价格表格式错误")

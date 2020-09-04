@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value="快递分区  更新对象", description="快递分区 更新对象")
-public class PriceZoneDto extends Model<PriceZoneDto> {
+public class PriceZoneUpdDto extends Model<PriceZoneUpdDto> {
 
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)

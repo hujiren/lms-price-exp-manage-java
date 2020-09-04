@@ -3,10 +3,11 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.SurchargeMapper">
 
     <!-- 查找附加费列表-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.SurchargeDto">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.SurchargeUpdDto">
         SELECT
             id,
             charge_name,
+            charge_name_en,
             computing_formula,
             currency,
             code
@@ -14,8 +15,12 @@
             price_surcharge
         where
             1=1
+        <if test="key.code > 0">
+            and code = #{key.code}
+        </if>
         <if test="key.keyword != null">
             and charge_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            or charge_name_en LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
 
@@ -23,11 +28,11 @@
     <insert id="addSurcharge">
 
             insert into
-                price_surcharge(id, charge_name, computing_formula, currency, code)
+                price_surcharge(id, charge_name, charge_name_en, computing_formula, currency, code)
             values
 
         <foreach collection="po" index="" separator="," item="row" open="" close="">
-            (#{row.id}, #{row.chargeName}, #{row.computingFormula}, #{row.currency}, #{row.code})
+            (#{row.id}, #{row.chargeName}, #{row.chargeNameEn}, #{row.computingFormula}, #{row.currency}, #{row.code})
         </foreach>
 
     </insert>

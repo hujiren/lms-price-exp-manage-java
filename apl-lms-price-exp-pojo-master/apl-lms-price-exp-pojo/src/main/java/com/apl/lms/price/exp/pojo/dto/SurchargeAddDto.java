@@ -16,14 +16,18 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value = "附加费插入对象", description = "附加费插入对象")
-public class SurchargeInsertDto {
+public class SurchargeAddDto {
 
     @ApiModelProperty(name = "id", value = "附加费Id", hidden = true)
     private Long id;
 
     @ApiModelProperty(name = "chargeName", value = "附加费名称", required = true)
-    @NotBlank(message = "附加费名称名称不能为空")
+    @NotBlank(message = "附加费名称不能为空")
     private String chargeName;
+
+    @ApiModelProperty(name = "chargeNameEn", value = "附加费英文名称", required = true)
+    @NotBlank(message = "附加费英文名称不能为空")
+    private String chargeNameEn;
 
     @ApiModelProperty(name = "computingFormula", value = "计算公式", required = true)
     @NotBlank(message = "计算公式不能为空")

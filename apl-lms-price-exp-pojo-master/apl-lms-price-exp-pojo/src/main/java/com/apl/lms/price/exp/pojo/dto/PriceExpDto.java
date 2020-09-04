@@ -51,7 +51,7 @@ public class PriceExpDto extends Model<PriceExpDto> implements Serializable {
     private Integer volumeDivisor;
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private List<Long> specialCommodity;
+    private List<Integer> specialCommodity;
 
     @ApiModelProperty(name = "priceForm" , value = "价格表格式 1横向 2纵向")
     @TypeValidator(value = {"1","2"} , message = "价格表格式错误")

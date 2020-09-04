@@ -18,6 +18,10 @@ public class PriceExpSaleListVo extends Model<PriceExpSaleListVo> {
     @ApiModelProperty(name = "id" , value = "价格表id")
     private Long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ApiModelProperty(name = "priceMainId" , value = "主表ID")
+    private Long priceMainId;
+
     @ApiModelProperty(name = "priceCode" , value = "销售价格表代码")
     private String priceCode;
 
@@ -50,10 +54,6 @@ public class PriceExpSaleListVo extends Model<PriceExpSaleListVo> {
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private String specialCommodity;
-
-    @ApiModelProperty(name = "priceExpSaleId" , value = "销售价格表Id")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long priceExpSaleId;
 
     @ApiModelProperty(name = "mainStatus" , value = "主表状态")
     private Integer mainStatus;

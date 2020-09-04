@@ -8,7 +8,6 @@ import com.apl.lms.price.exp.manage.mapper.PriceZoneMapper;
 import com.apl.lms.price.exp.manage.service.PriceZoneService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZonePo;
-import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -75,14 +74,14 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
 
     /**
      * 更新快递分区名称
-     * @param priceZoneDto
+     * @param priceZoneUpdDto
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updPriceZoneName(PriceZoneDto priceZoneDto) {
+    public ResultUtil<Boolean> updPriceZoneName(PriceZoneUpdDto priceZoneUpdDto) {
 
         PriceZonePo priceZonePo = new PriceZonePo();
-        BeanUtils.copyProperties(priceZoneDto, priceZonePo);
+        BeanUtils.copyProperties(priceZoneUpdDto, priceZonePo);
 
         Integer integer = baseMapper.updPriceZoneName(priceZonePo);
         if(integer < 1){

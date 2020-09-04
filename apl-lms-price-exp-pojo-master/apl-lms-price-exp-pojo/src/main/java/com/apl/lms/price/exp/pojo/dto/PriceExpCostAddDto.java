@@ -19,7 +19,8 @@ public class PriceExpCostAddDto extends Model<PriceExpCostAddDto> {
 
 
     @ApiModelProperty(name = "partnerId" , value = "服务商id", required = true)
-    @Min(value = 0, message = "服务商id不能为空")
+    @Min(value = 0, message = "服务商id不能小于0")
+    @NotNull( message = "服务商id不能为空")
     private Long partnerId;
 
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")

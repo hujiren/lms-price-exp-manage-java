@@ -49,7 +49,7 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     private String accountNo;
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private List<Long> specialCommodity;
+    private List<Integer> specialCommodity;
 
     @ApiModelProperty(name = "priceForm" , value = "价格表格式 1横向 2纵向")
     private Integer priceForm;

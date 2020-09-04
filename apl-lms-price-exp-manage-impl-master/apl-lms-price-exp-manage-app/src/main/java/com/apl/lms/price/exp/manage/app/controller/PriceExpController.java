@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.manage.app.controller;
 import cn.hutool.core.bean.BeanUtil;
-import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.validate.ApiParamValidate;
@@ -16,7 +15,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -118,7 +116,6 @@ public class PriceExpController {
         return priceExpRemarkService.getPriceExpRemark(id);
     }
 
-
     @PostMapping(value = "/add-price")
     @ApiOperation(value = "新增快递价格", notes = "新增快递价格", consumes = "application/json")
     public ResultUtil<Long> addPrice(@Validated @RequestBody PriceExpAddDto priceExpAddDto){
@@ -138,34 +135,34 @@ public class PriceExpController {
 
     @PostMapping(value = "/upd-sale-price")
     @ApiOperation(value = "更新销售价格表", notes = "根据Id修改销售价格表")
-    public ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
+    public ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdDto priceExpMainUpdDto,
                                                @Validated PriceExpSaleUpdateDto priceExpSaleUpdateDto) {
-        if(priceExpMainUpdateDto != null){
-            ApiParamValidate.validate(priceExpMainUpdateDto);
-            ApiParamValidate.notEmpty("startWeight", priceExpMainUpdateDto.getStartWeight().toString());
-            ApiParamValidate.notEmpty("endWeight", priceExpMainUpdateDto.getEndWeight().toString());
-            ApiParamValidate.notEmpty("startDate", priceExpMainUpdateDto.getStartDate().toString());
-            ApiParamValidate.notEmpty("endDate", priceExpMainUpdateDto.getEndDate().toString());
+        if(priceExpMainUpdDto != null){
+            ApiParamValidate.validate(priceExpMainUpdDto);
+            ApiParamValidate.notEmpty("startWeight", priceExpMainUpdDto.getStartWeight().toString());
+            ApiParamValidate.notEmpty("endWeight", priceExpMainUpdDto.getEndWeight().toString());
+            ApiParamValidate.notEmpty("startDate", priceExpMainUpdDto.getStartDate().toString());
+            ApiParamValidate.notEmpty("endDate", priceExpMainUpdDto.getEndDate().toString());
         }
 
-        return priceExpService.updateSalePrice(priceExpMainUpdateDto, priceExpSaleUpdateDto);
+        return priceExpService.updateSalePrice(priceExpMainUpdDto, priceExpSaleUpdateDto);
     }
 
 
     @PostMapping(value = "/upd-cost-price")
     @ApiOperation(value = "更新成本价格表", notes = "根据Id修改成本价格表")
-    public ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdateDto priceExpMainUpdateDto,
-                                               @Validated PriceExpCostUpdateDto priceExpCostUpdateDto) {
+    public ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdDto priceExpMainUpdDto,
+                                               @Validated PriceExpCostUpdDto priceExpCostUpdDto) {
 
-        if(priceExpMainUpdateDto != null){
-            ApiParamValidate.validate(priceExpMainUpdateDto);
-            ApiParamValidate.notEmpty("startWeight", priceExpMainUpdateDto.getStartWeight().toString());
-            ApiParamValidate.notEmpty("endWeight", priceExpMainUpdateDto.getEndWeight().toString());
-            ApiParamValidate.notEmpty("startDate", priceExpMainUpdateDto.getStartDate().toString());
-            ApiParamValidate.notEmpty("endDate", priceExpMainUpdateDto.getEndDate().toString());
+        if(priceExpMainUpdDto != null){
+            ApiParamValidate.validate(priceExpMainUpdDto);
+            ApiParamValidate.notEmpty("startWeight", priceExpMainUpdDto.getStartWeight().toString());
+            ApiParamValidate.notEmpty("endWeight", priceExpMainUpdDto.getEndWeight().toString());
+            ApiParamValidate.notEmpty("startDate", priceExpMainUpdDto.getStartDate().toString());
+            ApiParamValidate.notEmpty("endDate", priceExpMainUpdDto.getEndDate().toString());
         }
 
-        return priceExpService.updateCostPrice(priceExpMainUpdateDto, priceExpCostUpdateDto);
+        return priceExpService.updateCostPrice(priceExpMainUpdDto, priceExpCostUpdDto);
     }
 
     @PostMapping(value = "/upd-remark")

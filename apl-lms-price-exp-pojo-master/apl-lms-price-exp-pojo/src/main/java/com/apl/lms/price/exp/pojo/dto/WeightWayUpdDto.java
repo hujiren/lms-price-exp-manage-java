@@ -18,29 +18,29 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("price_surcharge")
-@ApiModel(value = "附加费持久化对象", description = "附加费持久化对象")
-public class SurchargeDto {
+@TableName("weight_way")
+@ApiModel(value = "计泡方式持久化对象", description = "计泡方式持久化对象")
+public class WeightWayUpdDto {
 
-    @ApiModelProperty(name = "id", value = "附加费Id", required = true)
+    @ApiModelProperty(name = "id", value = "计泡方式Id", required = true)
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @NotNull(message = "附加费Id不能为空")
+    @NotNull(message = "计泡方式Id不能为空")
     private Long id;
 
-//    @ApiModelProperty(name = "chargeName", value = "附加费名称", required = true)
-//    @NotBlank(message = "附加费名称不能为空")
-//    private String chargeName;
+//    @ApiModelProperty(name = "weightWayName", value = "计泡方式名称", required = true)
+//    @NotBlank(message = "计泡方式名称不能为空")
+//    private String weightWayName;
+
+//    @ApiModelProperty(name = "weightWayNameEn", value = "计泡方式英文名称", required = true)
+//    @NotBlank(message = "计泡方式英文名称不能为空")
+//    private String weightWayNameEn;
 
     @ApiModelProperty(name = "computingFormula", value = "计算公式", required = true)
     @NotBlank(message = "计算公式不能为空")
     private String computingFormula;
 
-    @ApiModelProperty(name = "currency", value = "币制", required = true)
-    @NotBlank(message = "币制不能为空")
-    private String currency;
-
 //    @ApiModelProperty(name = "code", value = "代码", required = true)
-//    @NotNull(message = "code不能为空")
+//    @NotNull(message = "代码不能为空")
 //    private Integer code;
 }

@@ -1,7 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.price.exp.pojo.dto.SurchargeDto;
-import com.apl.lms.price.exp.pojo.dto.SurchargeInsertDto;
+import com.apl.lms.price.exp.pojo.dto.SurchargeUpdDto;
+import com.apl.lms.price.exp.pojo.dto.SurchargeAddDto;
 import com.apl.lms.price.exp.pojo.dto.SurchargeKeyDto;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,19 +21,19 @@ import java.util.List;
  */
 @Mapper
 @Repository
-public interface SurchargeMapper extends BaseMapper<SurchargeDto> {
+public interface SurchargeMapper extends BaseMapper<SurchargeUpdDto> {
 
     /**
      * @Desc: 查找附加费列表
      * @Author:
      * @Date: 2020-08-08
      */
-    List<SurchargeDto> getList(Page page, @Param("key") SurchargeKeyDto surchargeKeyDto);
+    List<SurchargeUpdDto> getList(Page page, @Param("key") SurchargeKeyDto surchargeKeyDto);
 
     /**
      * 批量新增附加费
-     * @param surchargeInsertDtoList
+     * @param surchargeAddDtoList
      * @return
      */
-    Integer addSurcharge(@Param("po") List<SurchargeInsertDto> surchargeInsertDtoList);
+    Integer addSurcharge(@Param("po") List<SurchargeAddDto> surchargeAddDtoList);
 }
