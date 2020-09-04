@@ -29,6 +29,4 @@ public class PriceZoneNamePo extends Model<PriceZoneNamePo> {
     @ApiModelProperty(name = "zoneName" , value = "快递分区名称" , required = true)
     private String zoneName;
 
-
-
 }
