@@ -88,15 +88,15 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * 分页查询销售价格列表
      *
      * @param pageDto
-     * @param priceExpSaleListKeyDto
+     * @param keyDto
      * @return
      */
     @Override
-    public ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
+    public ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleListKeyDto keyDto) {
         Page<PriceExpSaleListVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
-        List<PriceExpSaleListVo> priceExpListVoSaleList = baseMapper.getPriceExpSaleList(page, priceExpSaleListKeyDto);
+        List<PriceExpSaleListVo> priceExpListVoSaleList = baseMapper.getPriceExpSaleList(page, keyDto);
 
         page.setRecords(priceExpListVoSaleList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
@@ -107,17 +107,37 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * 分页查询成本价格列表
      *
      * @param pageDto
-     * @param priceExpCostListKeyDto
+     * @param keyDto
      * @return
      */
     @Override
-    public ResultUtil<Page<PriceExpCostListVo>> getPriceExpCostList(PageDto pageDto, PriceExpCostListKeyDto priceExpCostListKeyDto) {
+    public ResultUtil<Page<PriceExpCostListVo>> getPriceExpCostList(PageDto pageDto, PriceExpCostKeyDto keyDto) {
         Page<PriceExpCostListVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
-        List<PriceExpCostListVo> priceExpListVoCostList = baseMapper.getPriceExpCostList(page, priceExpCostListKeyDto);
+        List<PriceExpCostListVo> priceExpListVoCostList = baseMapper.getPriceExpCostList(page, keyDto);
 
         page.setRecords(priceExpListVoCostList);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
+    }
+
+
+    /**
+     * 分页查询成本价格列表
+     *
+     * @param pageDto
+     * @param keyDto
+     * @return
+     */
+    @Override
+    public ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, PriceExpPublishedKeyDto keyDto){
+        Page<PriceExpCostListVo> page = new Page();
+        page.setCurrent(pageDto.getPageIndex());
+        page.setSize(pageDto.getPageSize());
+        List<PriceExpCostListVo> priceExpListVoCostList = baseMapper.getPublishedPriceList(page, keyDto);
+
+        page.setRecords(priceExpListVoCostList);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 

@@ -36,14 +36,14 @@ public interface PriceZoneService extends IService<PriceZonePo> {
      * @param priceZoneUpdDto
      * @return
      */
-    ResultUtil<Boolean> updPriceZoneName(PriceZoneUpdDto priceZoneUpdDto);
+    ResultUtil<Boolean> updPriceZoneName(PriceZoneNameUpdDto priceZoneUpdDto);
 
     /**
      * 新增快递分区
      * @param priceZoneInsertDto
      * @return
      */
-    ResultUtil<Long> addPriceZoneName(PriceZoneInsertDto priceZoneInsertDto);
+    ResultUtil<Long> addPriceZoneName(PriceZoneNameAddDto priceZoneInsertDto);
 
 
 }

@@ -18,20 +18,31 @@ import java.util.List;
 public interface PriceExpService extends IService<PriceExpMainPo> {
 
     /**
-     * 分页获取销售价格列表(分页)
+     * 分页获取销售价列表(分页)
      * @param pageDto
-     * @param priceExpSaleListKeyDto
+     * @param keyDto
      * @return
      */
-    ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleListKeyDto priceExpSaleListKeyDto);
+    ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleListKeyDto keyDto);
 
     /**
-     * 分页获取成本价格列表(分页)
+     * 分页获取成本价列表(分页)
      * @param pageDto
-     * @param priceExpCostListKeyDto
+     * @param keyDto
      * @return
      */
-    ResultUtil<Page<PriceExpCostListVo>> getPriceExpCostList(PageDto pageDto, PriceExpCostListKeyDto priceExpCostListKeyDto);
+    ResultUtil<Page<PriceExpCostListVo>> getPriceExpCostList(PageDto pageDto, PriceExpCostKeyDto keyDto);
+
+
+    /**
+     * 分页公布价列表(分页)
+     * @param pageDto
+     * @param keyDto
+     * @return
+     */
+    ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, PriceExpPublishedKeyDto keyDto);
+
+
 
     /**
      * 获取销售价格详情

@@ -78,7 +78,7 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updPriceZoneName(PriceZoneUpdDto priceZoneUpdDto) {
+    public ResultUtil<Boolean> updPriceZoneName(PriceZoneNameUpdDto priceZoneUpdDto) {
 
         PriceZonePo priceZonePo = new PriceZonePo();
         BeanUtils.copyProperties(priceZoneUpdDto, priceZonePo);
@@ -92,14 +92,14 @@ public class PriceZoneServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZone
 
     /**
      * 新增快递分区名称
-     * @param priceZoneInsertDto
+     * @param priceZoneAddDto
      * @return
      */
     @Override
-    public ResultUtil<Long> addPriceZoneName(PriceZoneInsertDto priceZoneInsertDto) {
+    public ResultUtil<Long> addPriceZoneName(PriceZoneNameAddDto priceZoneAddDto) {
 
         PriceZonePo priceZonePo = new PriceZonePo();
-        BeanUtils.copyProperties(priceZoneInsertDto, priceZonePo);
+        BeanUtils.copyProperties(priceZoneAddDto, priceZonePo);
         priceZonePo.setId(SnowflakeIdWorker.generateId());
         Integer integer = baseMapper.addPriceZoneName(priceZonePo);
         if(integer < 1){

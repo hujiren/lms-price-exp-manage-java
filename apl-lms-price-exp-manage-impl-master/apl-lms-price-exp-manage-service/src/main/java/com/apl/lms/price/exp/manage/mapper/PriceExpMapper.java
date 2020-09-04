@@ -1,9 +1,9 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.price.exp.pojo.dto.PriceExpCostListKeyDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpCostKeyDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpPublishedKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpCostInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
@@ -26,18 +26,27 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
     /**
      * 分页查询销售价格列表
      * @param page
-     * @param priceExpSaleListKeyDto
+     * @param keyDto
      * @return
      */
-    List<PriceExpSaleListVo> getPriceExpSaleList(Page<PriceExpSaleListVo> page, @Param("key") PriceExpSaleListKeyDto priceExpSaleListKeyDto);
+    List<PriceExpSaleListVo> getPriceExpSaleList(Page<PriceExpSaleListVo> page, @Param("key") PriceExpSaleListKeyDto keyDto);
 
     /**
      * 分页查询成本价格列表
      * @param page
-     * @param priceExpCostListKeyDto
+     * @param keyDto
      * @return
      */
-    List<PriceExpCostListVo> getPriceExpCostList(Page<PriceExpCostListVo> page, @Param("key") PriceExpCostListKeyDto priceExpCostListKeyDto);
+    List<PriceExpCostListVo> getPriceExpCostList(Page<PriceExpCostListVo> page, @Param("key") PriceExpCostKeyDto keyDto);
+
+
+    /**
+     * 分页查询公布价列表
+     * @param page
+     * @param keyDto
+     * @return
+     */
+    List<PriceExpCostListVo> getPublishedPriceList(Page<PriceExpCostListVo> page, @Param("key") PriceExpPublishedKeyDto keyDto);
 
 
     /**

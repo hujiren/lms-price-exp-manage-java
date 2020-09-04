@@ -14,7 +14,7 @@ import javax.validation.constraints.Min;
  */
 @Data
 @ApiModel(value="成本价格表  按条件查询对象", description="成本价格表  按条件查询对象")
-public class  PriceExpCostListKeyDto {
+public class PriceExpCostKeyDto {
 
     @ApiModelProperty(name = "volumeDivisor", value = "体积基数")
     @Range(min = 1, message = "体积基数不能小于1")
@@ -25,24 +25,17 @@ public class  PriceExpCostListKeyDto {
     @Min(value = 0, message = "账号类型不能小于0")
     private Integer accountType;
 
-    @ApiModelProperty(name = "mainStatus", value = "价格主表状态 1正常 2计账 3无效 4即将过期 5已过期")
-    @TypeValidator(value = {"0","1","2","3","4","5"} , message = "价格主表状态错误")
-    @Min(value = 0, message = "价格主表状态不能小于0")
-    private Integer mainStatus;
-
     @ApiModelProperty(name = "specialCommodity", value = "特殊物品code")
     private Integer specialCommodity;
 
-    @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是", hidden = true)
-    private Integer isPublishedPrice;
 
     @ApiModelProperty(name = "partnerId", value = "服务商id")
     @Min(value = 0, message = "服务商id不能小于0")
     private Long partnerId;
 
-    @ApiModelProperty(name = "priceStatus", value = "成本价格表状态 1正常 2计账 3无效")
+    @ApiModelProperty(name = "priceStatus", value = "价格表状态 1正常 2计账 3无效")
     @TypeValidator(value = {"0","1","2","3"} , message = "成本价格表状态错误")
-    @Min(value = 0, message = "成本价格表状态不能小于0")
+    @Min(value = 0, message = "价格表状态不能小于0")
     private Integer priceStatus;
 
     @ApiModelProperty(name = "channelCategory", value = "成本价渠道类型")

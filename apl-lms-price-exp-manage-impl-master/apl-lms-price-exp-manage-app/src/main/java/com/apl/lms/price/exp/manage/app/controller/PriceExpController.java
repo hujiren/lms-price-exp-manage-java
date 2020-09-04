@@ -66,16 +66,16 @@ public class PriceExpController {
 
     @PostMapping(value = "/get-cost-list")
     @ApiOperation(value = "分页获取成本价格列表", notes = "分页获取成本价格列表")
-    public ResultUtil<Page<PriceExpCostListVo>> getCostList(PageDto pageDto, @Validated PriceExpCostListKeyDto priceExpCostListKeyDto) {
-        priceExpCostListKeyDto.setIsPublishedPrice(null);
+    public ResultUtil<Page<PriceExpCostListVo>> getCostList(PageDto pageDto, @Validated PriceExpCostKeyDto priceExpCostListKeyDto) {
+
         return priceExpService.getPriceExpCostList(pageDto, priceExpCostListKeyDto);
     }
 
     @PostMapping(value = "/get-published-price-list")
     @ApiOperation(value = "获取公布价列表", notes = "获取公布价")
-    public ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, @Validated PriceExpCostListKeyDto priceExpCostListKeyDto) {
-        priceExpCostListKeyDto.setIsPublishedPrice(1);
-        return priceExpService.getPriceExpCostList(pageDto, priceExpCostListKeyDto);
+    public ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, @Validated PriceExpPublishedKeyDto keyDto) {
+
+        return priceExpService.getPublishedPriceList(pageDto, keyDto);
     }
 
     @PostMapping(value = "/get-sale-info")

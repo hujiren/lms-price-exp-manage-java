@@ -45,9 +45,16 @@ public class PriceZoneController {
         return priceZoneService.delBatchPriceZoneName(ids);
     }
 
+    @PostMapping(value = "/add-zone-name")
+    @ApiOperation(value =  "添加分区表名称" , notes = "添加分区表名称")
+    public ResultUtil<Long> add( @Validated PriceZoneNameAddDto priceZoneAddDto){
+
+        return priceZoneService.addPriceZoneName(priceZoneAddDto);
+    }
+
     @PostMapping(value = "/upd-zone-name")
     @ApiOperation(value =  "更新" , notes = "根据id更新快递分区")
-    public ResultUtil<Boolean> upd( @Validated PriceZoneUpdDto priceZoneUpdDto){
+    public ResultUtil<Boolean> upd( @Validated PriceZoneNameUpdDto priceZoneUpdDto){
 
         return priceZoneService.updPriceZoneName(priceZoneUpdDto);
     }
