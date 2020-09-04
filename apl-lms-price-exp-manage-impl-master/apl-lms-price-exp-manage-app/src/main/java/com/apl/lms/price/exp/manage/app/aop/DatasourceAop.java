@@ -40,9 +40,6 @@ public class DatasourceAop {
 
             CommonContextHolder.securityUserContextHolder.set(securityUser);
 
-            // 多数据源切换信息
-            //DataSourceContextHolder.set(securityUser.getTenantGroup(), securityUser.getInnerOrgCode(), securityUser.getInnerOrgId());
-
             // 多租户ID值
             AplTenantConfig.tenantIdContextHolder.set(securityUser.getInnerOrgId());
 

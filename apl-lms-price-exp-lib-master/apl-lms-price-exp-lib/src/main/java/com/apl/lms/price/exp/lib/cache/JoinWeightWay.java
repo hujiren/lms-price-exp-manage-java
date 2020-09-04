@@ -1,12 +1,12 @@
 package com.apl.lms.price.exp.lib.cache;
 
-import com.apl.db.abatis.MyBatisPlusConfig;
 import com.apl.lib.cachebase.BaseCacheUtil;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.join.JoinBase;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.lib.cache.bo.WeightWayCacheBo;
 import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
+import com.apl.tenant.AplTenantConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -25,7 +25,8 @@ public class JoinWeightWay extends JoinBase<WeightWayCacheBo> {
         this.tabName = "price_weight_way";
         this.joinStyle = joinStyle;
 
-        this.innerOrgId = MyBatisPlusConfig.tenantIdContextHolder.get();
+        this.innerOrgId = AplTenantConfig.tenantIdContextHolder.get();
+
         this.cacheKeyNamePrefix = "JOIN_CACHE:"+this.tabName+"_"+this.innerOrgId.toString()+"_";
     }
 

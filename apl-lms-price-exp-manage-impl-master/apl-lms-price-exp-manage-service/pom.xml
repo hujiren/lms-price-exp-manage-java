@@ -24,18 +24,6 @@
 
         <dependency>
             <groupId>com.apl</groupId>
-            <artifactId>apl-cache</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.apl</groupId>
-            <artifactId>apl-db</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.apl</groupId>
             <artifactId>apl-lms-price-exp-pojo</artifactId>
             <version>1.0.0</version>
         </dependency>
