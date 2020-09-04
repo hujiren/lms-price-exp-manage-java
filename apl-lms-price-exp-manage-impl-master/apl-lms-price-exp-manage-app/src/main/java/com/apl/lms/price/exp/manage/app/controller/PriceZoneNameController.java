@@ -4,6 +4,7 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
 import com.apl.lms.price.exp.pojo.dto.*;
+import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -47,14 +48,14 @@ public class PriceZoneNameController {
 
     @PostMapping(value = "/add-zone-name")
     @ApiOperation(value =  "添加分区表名称" , notes = "添加分区表名称")
-    public ResultUtil<Long> add( @Validated PriceZoneNameAddDto priceZoneAddDto){
+    public ResultUtil<Long> add( @Validated PriceZoneNamePo priceZoneAddDto){
 
         return priceZoneService.addPriceZoneName(priceZoneAddDto);
     }
 
     @PostMapping(value = "/upd-zone-name")
     @ApiOperation(value =  "更新" , notes = "根据id更新快递分区")
-    public ResultUtil<Boolean> upd( @Validated PriceZoneNameUpdDto priceZoneUpdDto){
+    public ResultUtil<Boolean> upd( @Validated PriceZoneNamePo priceZoneUpdDto){
 
         return priceZoneService.updPriceZoneName(priceZoneUpdDto);
     }

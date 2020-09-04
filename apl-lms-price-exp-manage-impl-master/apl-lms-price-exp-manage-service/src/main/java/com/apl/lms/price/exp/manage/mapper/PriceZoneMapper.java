@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
-import com.apl.lms.price.exp.pojo.po.PriceZonePo;
-import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
+import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -16,7 +15,7 @@ import java.util.List;
  */
 @Mapper
 @Repository
-public interface PriceZoneMapper extends BaseMapper<PriceZonePo> {
+public interface PriceZoneMapper extends BaseMapper<PriceZoneNamePo> {
 
     /**
      * 获取燃油费分页信息列表
@@ -37,13 +36,13 @@ public interface PriceZoneMapper extends BaseMapper<PriceZonePo> {
      * @param priceZonePo
      * @return
      */
-    Integer updPriceZoneName(@Param("po") PriceZonePo priceZonePo);
+    Integer updPriceZoneName(@Param("po") PriceZoneNamePo priceZonePo);
 
     /**
      * 新增快递分区
      * @param priceZonePo
      * @return
      */
-    Integer addPriceZoneName(@Param("po") PriceZonePo priceZonePo);
+    Integer addPriceZoneName(@Param("po") PriceZoneNamePo priceZonePo);
 
 }

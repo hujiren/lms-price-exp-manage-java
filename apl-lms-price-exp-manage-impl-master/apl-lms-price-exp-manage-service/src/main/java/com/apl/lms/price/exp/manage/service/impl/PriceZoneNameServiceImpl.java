@@ -7,7 +7,7 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceZoneMapper;
 import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
 import com.apl.lms.price.exp.pojo.dto.*;
-import com.apl.lms.price.exp.pojo.po.PriceZonePo;
+import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZonePo> implements PriceZoneNameService {
+public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZoneNamePo> implements PriceZoneNameService {
 
     enum ExpListServiceCode {
         ;
@@ -74,16 +74,14 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
 
     /**
      * 更新快递分区名称
-     * @param priceZoneUpdDto
+     * @param priceZoneNamePo
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updPriceZoneName(PriceZoneNameUpdDto priceZoneUpdDto) {
+    public ResultUtil<Boolean> updPriceZoneName(PriceZoneNamePo priceZoneNamePo) {
 
-        PriceZonePo priceZonePo = new PriceZonePo();
-        BeanUtils.copyProperties(priceZoneUpdDto, priceZonePo);
 
-        Integer integer = baseMapper.updPriceZoneName(priceZonePo);
+        Integer integer = baseMapper.updPriceZoneName(priceZoneNamePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -92,20 +90,18 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
 
     /**
      * 新增快递分区名称
-     * @param priceZoneAddDto
+     * @param priceZoneNamePo
      * @return
      */
     @Override
-    public ResultUtil<Long> addPriceZoneName(PriceZoneNameAddDto priceZoneAddDto) {
+    public ResultUtil<Long> addPriceZoneName(PriceZoneNamePo priceZoneNamePo) {
 
-        PriceZonePo priceZonePo = new PriceZonePo();
-        BeanUtils.copyProperties(priceZoneAddDto, priceZonePo);
-        priceZonePo.setId(SnowflakeIdWorker.generateId());
-        Integer integer = baseMapper.addPriceZoneName(priceZonePo);
+        priceZoneNamePo.setId(SnowflakeIdWorker.generateId());
+        Integer integer = baseMapper.addPriceZoneName(priceZoneNamePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceZonePo.getId());
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceZoneNamePo.getId());
     }
 
 
