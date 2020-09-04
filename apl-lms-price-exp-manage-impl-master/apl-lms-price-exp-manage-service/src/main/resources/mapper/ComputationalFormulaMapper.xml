@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.ComputationalFormulaMapper">
 
-    <!--分页查询燃油费列表-->
+    <!--获取快递价格计算公式-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo">
         select
             id, price_id, formula, zone_num, country, start_weight, end_weight, package_type

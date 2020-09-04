@@ -37,22 +37,17 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     }
 
     /**
-     * 分页查询快递价格
-     * @param pageDto
+     * 获取快递价格计算公式
+     * @param priceId
      * @param
      * @return
      */
     @Override
-    public ResultUtil<Page<ComputationalFormulaVo>> getList(PageDto pageDto, ComputationalFormulaKeyDto computationalFormulaKeyDto) {
-        
-        Page<ComputationalFormulaVo> page = new Page();
-        page.setCurrent(pageDto.getPageIndex());
-        page.setSize(pageDto.getPageSize());
+    public ResultUtil<List<ComputationalFormulaVo>> getList(Long priceId) {
 
-        List<ComputationalFormulaVo> computationalFormulaVoList = baseMapper.getList(page, computationalFormulaKeyDto);
+        List<ComputationalFormulaVo> computationalFormulaVoList = baseMapper.getList(priceId);
 
-        page.setRecords(computationalFormulaVoList);
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, computationalFormulaVoList);
     }
 
     /**
@@ -72,16 +67,14 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
 
     /**
      * 更新燃油费
-     * @param
+     * @param priceExpComputationalFormulaPo
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updComputationalFormula(ComputationalFormulaUpdDto computationalFormulaUpdDto) {
+    public ResultUtil<Boolean> updComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo) {
 
-        PriceExpComputationalFormulaPo priceExpComputationalFormulaPo = new PriceExpComputationalFormulaPo();
-        BeanUtils.copyProperties(computationalFormulaUpdDto, priceExpComputationalFormulaPo);
 
-        ComputationalFormulaVo computationalFormulaVo = baseMapper.getComputationalFormula(computationalFormulaUpdDto.getId());
+        ComputationalFormulaVo computationalFormulaVo = baseMapper.getComputationalFormula(priceExpComputationalFormulaPo.getId());
         if(computationalFormulaVo == null){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
         }
@@ -95,14 +88,12 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
 
     /**
      * 新增燃油费
-     * @param computationalFormulaAddDto
+     * @param priceExpComputationalFormulaPo
      * @return
      */
     @Override
-    public ResultUtil<Long> addComputationalFormula(ComputationalFormulaAddDto computationalFormulaAddDto) {
+    public ResultUtil<Long> addComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo) {
 
-        PriceExpComputationalFormulaPo priceExpComputationalFormulaPo = new PriceExpComputationalFormulaPo();
-        BeanUtils.copyProperties(computationalFormulaAddDto, priceExpComputationalFormulaPo);
         priceExpComputationalFormulaPo.setId(SnowflakeIdWorker.generateId());
         Integer integer = baseMapper.insert(priceExpComputationalFormulaPo);
         if(integer < 1){

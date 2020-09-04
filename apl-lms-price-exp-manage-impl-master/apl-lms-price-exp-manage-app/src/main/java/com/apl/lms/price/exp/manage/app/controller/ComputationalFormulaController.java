@@ -1,11 +1,9 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.ComputationalFormulaService;
-import com.apl.lms.price.exp.pojo.dto.*;
+import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author hjr start
@@ -32,11 +31,10 @@ public class ComputationalFormulaController {
     ComputationalFormulaService computationalFormulaService;
 
     @PostMapping(value = "/get-list")
-    @ApiOperation(value =  "分页获取计算公式列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<ComputationalFormulaVo>> getList(PageDto pageDto ,
-                                                            @Validated ComputationalFormulaKeyDto computationalFormulaKeyDto){
+    @ApiOperation(value =  "获取报价计算公式列表" , notes = "根据关键字来查询")
+    public ResultUtil<List<ComputationalFormulaVo>> getList(@Validated @NotNull Long priceId){
 
-        return computationalFormulaService.getList(pageDto, computationalFormulaKeyDto);
+        return computationalFormulaService.getList(priceId);
     }
 
     @PostMapping(value = "/del")
@@ -49,14 +47,14 @@ public class ComputationalFormulaController {
 
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新计算公式")
-    public ResultUtil<Boolean> upd(@Validated ComputationalFormulaUpdDto computationalFormulaUpdDto){
+    public ResultUtil<Boolean> upd(@Validated PriceExpComputationalFormulaPo computationalFormulaUpdDto){
 
         return computationalFormulaService.updComputationalFormula(computationalFormulaUpdDto);
     }
     
     @PostMapping(value = "/add")
     @ApiOperation(value =  "新增计算公式" , notes = "新增计算公式")
-    public ResultUtil<Long> add(@Validated ComputationalFormulaAddDto computationalFormulaAddDto){
+    public ResultUtil<Long> add(@Validated PriceExpComputationalFormulaPo computationalFormulaAddDto){
 
         return computationalFormulaService.addComputationalFormula(computationalFormulaAddDto);
     }

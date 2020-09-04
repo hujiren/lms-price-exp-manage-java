@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value="快递分区  返回对象", description="快递分区 返回对象")
-public class PriceZoneVo extends Model<PriceZoneVo> {
+public class PriceZoneNameVo extends Model<PriceZoneNameVo> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "id" , value = "快递分区id", required = true)

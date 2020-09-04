@@ -8,11 +8,10 @@ import com.apl.lms.price.exp.manage.mapper.PriceZoneMapper;
 import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
-import com.apl.lms.price.exp.pojo.vo.PriceZoneVo;
+import com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,14 +43,14 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
      * @return
      */
     @Override
-    public ResultUtil<Page<PriceZoneVo>> getPriceZoneNameList(PageDto pageDto, PriceZoneNameKeyDto priceZoneNameKeyDto) {
+    public ResultUtil<Page<PriceZoneNameVo>> getPriceZoneNameList(PageDto pageDto, PriceZoneNameKeyDto priceZoneNameKeyDto) {
 
-        Page<PriceZoneVo> page = new Page();
+        Page<PriceZoneNameVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
         if(priceZoneNameKeyDto.getChannelCategory() != null)
         priceZoneNameKeyDto.setChannelCategory(priceZoneNameKeyDto.getChannelCategory().toUpperCase());
-        List<PriceZoneVo> priceZoneVoList = baseMapper.getPriceZoneNameList(page, priceZoneNameKeyDto);
+        List<PriceZoneNameVo> priceZoneVoList = baseMapper.getPriceZoneNameList(page, priceZoneNameKeyDto);
         page.setRecords(priceZoneVoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }

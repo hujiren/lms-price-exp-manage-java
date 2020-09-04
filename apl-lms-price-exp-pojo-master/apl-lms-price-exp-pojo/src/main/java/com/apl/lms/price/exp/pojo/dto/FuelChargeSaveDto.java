@@ -1,4 +1,5 @@
 package com.apl.lms.price.exp.pojo.dto;
+
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,8 +12,11 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value="燃油费  插入对象", description="燃油费 插入对象")
-public class FuelChargeAddDto extends Model<FuelChargeAddDto> {
+public class FuelChargeSaveDto extends Model<FuelChargeSaveDto> {
 
+    @ApiModelProperty(name = "id" , value = "燃油费id", required = true)
+    @NotNull(message = "id不能为空")
+    private Long id;
 
     @ApiModelProperty(name = "startDate" , value = "起始时间" , required = true)
     @NotNull(message = "起始时间不能为空")

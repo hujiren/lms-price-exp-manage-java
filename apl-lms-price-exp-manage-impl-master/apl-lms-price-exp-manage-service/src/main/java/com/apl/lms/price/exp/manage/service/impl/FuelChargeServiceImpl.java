@@ -6,9 +6,8 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.FuelChargeMapper;
 import com.apl.lms.price.exp.manage.service.FuelChargeService;
-import com.apl.lms.price.exp.pojo.dto.FuelChargeUpdDto;
-import com.apl.lms.price.exp.pojo.dto.FuelChargeAddDto;
 import com.apl.lms.price.exp.pojo.dto.FuelChargeKeyDto;
+import com.apl.lms.price.exp.pojo.dto.FuelChargeSaveDto;
 import com.apl.lms.price.exp.pojo.po.FuelChargePo;
 import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -82,18 +81,18 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
 
     /**
      * 更新燃油费
-     * @param fuelChargeUpdDto
+     * @param fuelChargeSaveDto
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updFuelCharge(FuelChargeUpdDto fuelChargeUpdDto) {
+    public ResultUtil<Boolean> updFuelCharge(FuelChargeSaveDto fuelChargeSaveDto) {
 
         FuelChargePo fuelChargePo = new FuelChargePo();
-        fuelChargePo.setStartDate(new Timestamp(fuelChargeUpdDto.getStartDate()));
-        fuelChargePo.setEndDate(new Timestamp(fuelChargeUpdDto.getEndDate()));
-        fuelChargePo.setFuelCharge(fuelChargeUpdDto.getFuelCharge());
-        fuelChargePo.setChannelCategory(fuelChargeUpdDto.getChannelCategory());
-        fuelChargePo.setId(fuelChargeUpdDto.getId());
+        fuelChargePo.setStartDate(new Timestamp(fuelChargeSaveDto.getStartDate()));
+        fuelChargePo.setEndDate(new Timestamp(fuelChargeSaveDto.getEndDate()));
+        fuelChargePo.setFuelCharge(fuelChargeSaveDto.getFuelCharge());
+        fuelChargePo.setChannelCategory(fuelChargeSaveDto.getChannelCategory());
+        fuelChargePo.setId(fuelChargeSaveDto.getId());
 
         FuelChargeVo fuelChargeVo = baseMapper.getFuelCharge(fuelChargePo.getId());
         if(fuelChargeVo == null){
@@ -109,17 +108,17 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
 
     /**
      * 新增燃油费
-     * @param fuelChargeAddDto
+     * @param fuelChargeSaveDto
      * @return
      */
     @Override
-    public ResultUtil<String> addFulCharge(FuelChargeAddDto fuelChargeAddDto) {
+    public ResultUtil<String> addFulCharge(FuelChargeSaveDto fuelChargeSaveDto) {
 
         FuelChargePo fuelChargePo = new FuelChargePo();
-        fuelChargePo.setEndDate(new Timestamp(fuelChargeAddDto.getEndDate()));
-        fuelChargePo.setStartDate(new Timestamp(fuelChargeAddDto.getStartDate()));
-        fuelChargePo.setFuelCharge(fuelChargeAddDto.getFuelCharge());
-        fuelChargePo.setChannelCategory(fuelChargeAddDto.getChannelCategory());
+        fuelChargePo.setEndDate(new Timestamp(fuelChargeSaveDto.getEndDate()));
+        fuelChargePo.setStartDate(new Timestamp(fuelChargeSaveDto.getStartDate()));
+        fuelChargePo.setFuelCharge(fuelChargeSaveDto.getFuelCharge());
+        fuelChargePo.setChannelCategory(fuelChargeSaveDto.getChannelCategory());
         fuelChargePo.setId(SnowflakeIdWorker.generateId());
 
         Integer integer = baseMapper.insertFuelCharge(fuelChargePo);

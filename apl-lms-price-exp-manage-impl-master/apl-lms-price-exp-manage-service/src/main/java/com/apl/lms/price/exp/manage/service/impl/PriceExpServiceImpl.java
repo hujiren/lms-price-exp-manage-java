@@ -539,16 +539,20 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 throw new AplException(ExpListServiceCode.PRICE_EXP_COST_SAVE_DATA_FAILED.code,
                         ExpListServiceCode.PRICE_EXP_COST_SAVE_DATA_FAILED.msg, null);
             }
+
+
             //保存计算公式
-            ComputationalFormulaAddDto computationalFormulaAddDto = new ComputationalFormulaAddDto();
-            computationalFormulaAddDto.setPriceId(priceId);
-            computationalFormulaAddDto.setFormula("price()*fuel");
-            computationalFormulaAddDto.setZoneNum("");
-            computationalFormulaAddDto.setCountry("");
-            computationalFormulaAddDto.setStartWeight(0.0);
-            computationalFormulaAddDto.setEndWeight(0.0);
-            computationalFormulaAddDto.setPackageType("");
-            computationalFormulaService.addComputationalFormula(computationalFormulaAddDto);
+            PriceExpComputationalFormulaPo computationalFormulaPo = new PriceExpComputationalFormulaPo();
+            computationalFormulaPo.setPriceId(priceId);
+            computationalFormulaPo.setFormula("price()*fuel");
+            computationalFormulaPo.setZoneNum("");
+            computationalFormulaPo.setCountry("");
+            computationalFormulaPo.setStartWeight(0.0);
+            computationalFormulaPo.setEndWeight(0.0);
+            computationalFormulaPo.setPackageType("");
+            computationalFormulaService.addComputationalFormula(computationalFormulaPo);
+
+
             //保存备注
             PriceExpRemarkPo priceExpRemarkPo = new PriceExpRemarkPo();
             priceExpRemarkPo.setId(priceId);
@@ -572,16 +576,19 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 throw new AplException(ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.code,
                         ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.msg, null);
             }
+
+
             //保存计算公式
-            ComputationalFormulaAddDto computationalFormulaAddDto = new ComputationalFormulaAddDto();
-            computationalFormulaAddDto.setPriceId(priceId);
-            computationalFormulaAddDto.setFormula("price()*fuel");
-            computationalFormulaAddDto.setZoneNum("");
-            computationalFormulaAddDto.setCountry("");
-            computationalFormulaAddDto.setStartWeight(0.0);
-            computationalFormulaAddDto.setEndWeight(0.0);
-            computationalFormulaAddDto.setPackageType("");
-            computationalFormulaService.addComputationalFormula(computationalFormulaAddDto);
+            PriceExpComputationalFormulaPo computationalFormulaPo = new PriceExpComputationalFormulaPo();
+            computationalFormulaPo.setPriceId(priceId);
+            computationalFormulaPo.setFormula("price()*fuel");
+            computationalFormulaPo.setZoneNum("");
+            computationalFormulaPo.setCountry("");
+            computationalFormulaPo.setStartWeight(0.0);
+            computationalFormulaPo.setEndWeight(0.0);
+            computationalFormulaPo.setPackageType("");
+            computationalFormulaService.addComputationalFormula(computationalFormulaPo);
+
 
             //保存备注
             PriceExpRemarkPo priceExpRemarkPo = new PriceExpRemarkPo();

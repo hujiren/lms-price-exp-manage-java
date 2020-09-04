@@ -2,9 +2,8 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.FuelChargeUpdDto;
-import com.apl.lms.price.exp.pojo.dto.FuelChargeAddDto;
 import com.apl.lms.price.exp.pojo.dto.FuelChargeKeyDto;
+import com.apl.lms.price.exp.pojo.dto.FuelChargeSaveDto;
 import com.apl.lms.price.exp.pojo.po.FuelChargePo;
 import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,17 +32,17 @@ public interface FuelChargeService extends IService<FuelChargePo> {
 
     /**
      * 更新燃油费
-     * @param fuelChargeUpdDto
+     * @param fuelChargeSaveDto
      * @return
      */
-    ResultUtil<Boolean> updFuelCharge(FuelChargeUpdDto fuelChargeUpdDto);
+    ResultUtil<Boolean> updFuelCharge(FuelChargeSaveDto fuelChargeSaveDto);
 
     /**
      * 新增燃油费
-     * @param fuelChargeAddDto
+     * @param fuelChargeSaveDto
      * @return
      */
-    ResultUtil<String> addFulCharge(FuelChargeAddDto fuelChargeAddDto);
+    ResultUtil<String> addFulCharge(FuelChargeSaveDto fuelChargeSaveDto);
 
     /**
      * 获取燃油费详情

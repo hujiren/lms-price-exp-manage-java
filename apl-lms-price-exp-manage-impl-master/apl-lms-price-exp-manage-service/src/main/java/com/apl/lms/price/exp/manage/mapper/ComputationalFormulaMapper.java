@@ -1,10 +1,8 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.price.exp.pojo.dto.ComputationalFormulaKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,11 +17,11 @@ import java.util.List;
 public interface ComputationalFormulaMapper extends BaseMapper<PriceExpComputationalFormulaPo> {
 
     /**
-     * 获取燃油费分页信息列表
-     * @param page
+     * 获取快递价格计算公式
+     * @param priceId
      * @return
      */
-    List<ComputationalFormulaVo> getList(Page<ComputationalFormulaVo> page, @Param("key") ComputationalFormulaKeyDto computationalFormulaKeyDto);
+    List<ComputationalFormulaVo> getList(Long priceId);
 
     /**
      * 根据Id删除计算公式
