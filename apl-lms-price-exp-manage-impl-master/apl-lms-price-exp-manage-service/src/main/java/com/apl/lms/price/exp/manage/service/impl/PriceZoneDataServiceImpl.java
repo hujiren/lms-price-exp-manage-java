@@ -20,6 +20,18 @@ import java.util.List;
 @Slf4j
 public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, PriceZoneDataListVo> implements PriceZoneDataService {
 
+    enum PriceZoneDataServiceCode {
+        ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在");
+
+        private String code;
+        private String msg;
+
+        PriceZoneDataServiceCode(String code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+    }
+
     /**
      * 获取列表
      * @param id
@@ -29,7 +41,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
     public ResultUtil<List<PriceZoneDataListVo>> getList(Long id) {
         List<PriceZoneDataListVo> priceZoneDataListVo = baseMapper.getList(id);
         if(priceZoneDataListVo.size() == 0){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+            return ResultUtil.APPRESULT(PriceZoneDataServiceCode.ID_DOES_NOT_EXITS.code, PriceZoneDataServiceCode.ID_DOES_NOT_EXITS.msg, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneDataListVo);
     }

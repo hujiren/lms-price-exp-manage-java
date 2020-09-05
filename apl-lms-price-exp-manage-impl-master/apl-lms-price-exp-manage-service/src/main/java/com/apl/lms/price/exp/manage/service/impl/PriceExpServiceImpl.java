@@ -518,7 +518,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpMainPo.setInnerOrgId(securityUser.getInnerOrgId());
         priceExpMainPo.setMainStatus(1);
         saveSuccess = priceExpMainPo.insert();
-
         if (!saveSuccess) {
             throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,
                     ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.msg, null);
@@ -534,7 +533,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             //公布价(IsPublishedPrice=1) 或 成本价(有服务商)
             priceId = SnowflakeIdWorker.generateId();
             saveSuccess = priceExpCostService.addPriceExpCost(priceMainId, priceExpCostAddDto, priceId);
-
             if (!saveSuccess) {
                 throw new AplException(ExpListServiceCode.PRICE_EXP_COST_SAVE_DATA_FAILED.code,
                         ExpListServiceCode.PRICE_EXP_COST_SAVE_DATA_FAILED.msg, null);
@@ -571,7 +569,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             // 有客户组或有客户就是销售价
             priceId = SnowflakeIdWorker.generateId();
             saveSuccess = priceExpSaleService.addPriceExpSale(priceExpCostAddDto, priceExpSaleAddDto, priceMainId, priceId);
-
             if (!saveSuccess) {
                 throw new AplException(ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.code,
                         ExpListServiceCode.PRICE_EXP_SALE_SAVE_DATA_FAILED.msg, null);
@@ -603,7 +600,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         //保存价格表数据
         saveSuccess = priceExpDataService.addPriceExpData(priceMainId, priceExpDataAddDto);
-
         if (!saveSuccess) {
             throw new AplException(ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.code,
                     ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.msg, null);
@@ -611,7 +607,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         //保存价格表轴数据
         saveSuccess = priceExpAxisService.addPriceExpAxis(priceMainId, priceExpAxisAddDto);
-
         if (!saveSuccess) {
             throw new AplException(ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.code,
                     ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.msg, null);

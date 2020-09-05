@@ -42,10 +42,5 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      */
     ResultUtil<Long> addComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo);
 
-    /**
-     * 获取计算公式详细
-     * @param id
-     * @return
-     */
-    ResultUtil<ComputationalFormulaVo> getComputationalFormula(Long id);
+
 }

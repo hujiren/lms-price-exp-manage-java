@@ -51,7 +51,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
 
-
+        if(null != fuelChargeKeyDto.getChannelCategory())
         fuelChargeKeyDto.setChannelCategory(fuelChargeKeyDto.getChannelCategory().toUpperCase());
         List<FuelChargeVo> fuelChargeVoList = baseMapper.getList(page, fuelChargeKeyDto);
 

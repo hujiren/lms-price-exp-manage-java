@@ -61,8 +61,8 @@ public class PriceExpMainAddDto extends Model<PriceExpMainAddDto> {
     @Range(min = 0, max = 100000, message = "截止重量不能为空")
     private Double endWeight;
 
-    @ApiModelProperty(name = "pricePublishedId" , value = "公布价id", required = true)
-    @Min(value = 0, message = "公布价不能为空")
+    @ApiModelProperty(name = "pricePublishedId" , value = "公布价id")
+    @Min(value = 0, message = "公布价最小值为0")
     private Long pricePublishedId;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是", required = true)

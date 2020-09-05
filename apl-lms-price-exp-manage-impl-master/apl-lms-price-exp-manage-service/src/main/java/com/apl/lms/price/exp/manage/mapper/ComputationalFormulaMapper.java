@@ -21,26 +21,8 @@ public interface ComputationalFormulaMapper extends BaseMapper<PriceExpComputati
      * @param priceId
      * @return
      */
-    List<ComputationalFormulaVo> getList(Long priceId);
+    List<ComputationalFormulaVo> getList(@Param("priceId") Long priceId);
 
-    /**
-     * 根据Id删除计算公式
-     * @param id
-     * @return
-     */
-    Integer delById(@Param("id") Long id);
 
-    /**
-     * 更新计算公式
-     * @param priceExpComputationalFormulaPo
-     * @return
-     */
-    Integer updComputationalFormula(@Param("po") PriceExpComputationalFormulaPo priceExpComputationalFormulaPo);
 
-    /**
-     * 获取计算公式详细
-     * @param id
-     * @return
-     */
-    ComputationalFormulaVo getComputationalFormula(@Param("id") Long id);
 }

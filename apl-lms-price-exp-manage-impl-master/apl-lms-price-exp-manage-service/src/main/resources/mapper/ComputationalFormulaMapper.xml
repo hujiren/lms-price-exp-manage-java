@@ -5,54 +5,11 @@
     <!--获取快递价格计算公式-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo">
         select
-            id, price_id, formula, zone_num, country, start_weight, end_weight, package_type
+            id, formula, zone_num, country, start_weight, end_weight, package_type
         from
         price_computational_formula
         where
-            1=1
-            <if test="key.zoneNum != null">
-                and zone_num = #{key.zoneNum}
-            </if>
-            <if test="key.country != null">
-                and country = #{key.country}
-            </if>
-            <if test="key.startingWeight != null">
-                and start_weight &lt;= #{key.startWeight}
-            </if>
-            <if test="key.endingWeight != null">
-                and end_weight >= #{key.endWeight}
-            </if>
-            <if test="key.packageType != null">
-                and package_type = #{key.packageType}
-            </if>
-            <if test="key.keyword != null">
-                and zone_num LIKE CONCAT( '%' , #{key.keyword} , '%' )
-                or country LIKE CONCAT( '%' , #{key.keyword} , '%' )
-                or package_type LIKE CONCAT( '%' , #{key.keyword} , '%' )
-            </if>
+            price_id = #{priceId}
     </select>
 
-    <!--根据id删除计算公式-->
-    <delete id="delById">
-        delete from price_computational_formula where id = #{id}
-    </delete>
-
-    <!--更新计算公式-->
-    <update id="updComputationalFormula">
-        update
-            price_computational_formula
-        set
-            price_id = #{po.priceId}, formula = #{po.formula}, zone_num = #{po.zoneNum}, country = #{po.country},
-            start_weight = #{po.startWeight}, end_weight = #{po.endWeight}, package_type = #{po.packageType}
-        where
-            id = #{po.id}
-    </update>
-
-    <!--获取计算公式详细-->
-    <select id="getComputationalFormula" resultType="com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo">
-        select
-            id, price_id, formula, zone_num, country, start_weight, end_weight, package_type
-        from
-            price_computational_formula where id = #{id}
-    </select>
 </mapper>

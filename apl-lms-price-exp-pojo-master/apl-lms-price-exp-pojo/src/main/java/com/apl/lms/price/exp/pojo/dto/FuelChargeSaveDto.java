@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -14,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value="燃油费  插入对象", description="燃油费 插入对象")
 public class FuelChargeSaveDto extends Model<FuelChargeSaveDto> {
 
-    @ApiModelProperty(name = "id" , value = "燃油费id", required = true)
+    @ApiModelProperty(name = "id" , value = "id", required = true)
     @NotNull(message = "id不能为空")
     private Long id;
 
@@ -28,6 +30,7 @@ public class FuelChargeSaveDto extends Model<FuelChargeSaveDto> {
 
     @ApiModelProperty(name = "fuelCharge" , value = "燃油费" , required = true)
     @NotNull(message = "燃油费不能为空")
+    @Range(min = 1, max = 2, message = "燃油费为1-2之间")
     private Double fuelCharge;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)

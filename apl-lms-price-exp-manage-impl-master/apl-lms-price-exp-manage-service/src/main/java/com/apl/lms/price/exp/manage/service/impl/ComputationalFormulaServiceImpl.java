@@ -58,7 +58,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     @Override
     public ResultUtil<Boolean> delComputationalFormula(Long id) {
 
-        Integer integer = baseMapper.delById(id);
+        Integer integer = baseMapper.deleteById(id);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
         }
@@ -73,13 +73,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     @Override
     public ResultUtil<Boolean> updComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo) {
 
-
-        ComputationalFormulaVo computationalFormulaVo = baseMapper.getComputationalFormula(priceExpComputationalFormulaPo.getId());
-        if(computationalFormulaVo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
-        }
-
-        Integer integer = baseMapper.updComputationalFormula(priceExpComputationalFormulaPo);
+        Integer integer = baseMapper.updateById(priceExpComputationalFormulaPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -102,18 +96,5 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceExpComputationalFormulaPo.getId());
     }
 
-    /**
-     * 获取计算公式详细
-     * @param id
-     * @return
-     */
-    @Override
-    public ResultUtil<ComputationalFormulaVo> getComputationalFormula(Long id) {
 
-        ComputationalFormulaVo computationalFormulaVo = baseMapper.getComputationalFormula(id);
-        if(computationalFormulaVo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
-        }
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, computationalFormulaVo);
-    }
 }

@@ -22,6 +22,7 @@
             and charge_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
             or charge_name_en LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
+        order by code
     </select>
 
     <!--批量插入附加费-->

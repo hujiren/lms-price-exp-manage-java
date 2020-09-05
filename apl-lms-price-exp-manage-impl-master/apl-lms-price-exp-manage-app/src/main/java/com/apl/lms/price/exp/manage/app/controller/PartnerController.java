@@ -33,7 +33,7 @@ public class PartnerController {
     PartnerService partnerService;
 
     @PostMapping(value = "/get-list")
-    @ApiOperation(value =  "分页获取特殊物品列表" , notes = "根据关键字来查询")
+    @ApiOperation(value =  "分页获取服务商列表" , notes = "根据关键字来查询")
     public ResultUtil<Page<PartnerPo>> getList(PageDto pageDto ,
                                                @Validated PartnerKeyDto partnerKeyDto){
         return partnerService.getList(pageDto, partnerKeyDto);

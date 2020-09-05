@@ -21,6 +21,7 @@
             and weight_way_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
             and weight_way_name_en LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
+        order by code
     </select>
 
     <!--批量插入附加费-->
