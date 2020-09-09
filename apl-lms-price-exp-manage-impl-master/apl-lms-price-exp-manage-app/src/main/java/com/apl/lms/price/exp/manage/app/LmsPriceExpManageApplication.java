@@ -1,14 +1,10 @@
 package com.apl.lms.price.exp.manage.app;
 
-import org.apache.shardingsphere.shardingjdbc.jdbc.adapter.AbstractDataSourceAdapter;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import javax.sql.DataSource;
 
 /**
  * @author hjr start
@@ -23,20 +19,21 @@ import javax.sql.DataSource;
                 //"com.apl.db.dynamicdb", //动态数据源
                 "com.apl.cache", // redis代理
                 "com.apl.lms.price.exp.manage",
+                "com.apl.shardingjdbc", // 分库
                 "com.apl.lms.price.exp.lib"},
         exclude = {
             JtaAutoConfiguration.class
         })
-@MapperScan("com.apl.lms.price.exp.manage.mapper")
+//@MapperScan("com.apl.lms.price.exp.manage.mapper")
+@MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc")
+//@MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper2", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc2")
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
 
     public static void main(String[] args) {
-
-        //com.apl.db.abatis
+//        com.apl.shardingjdbc.mybatis.ShardingJdbcMybatisConfig
         //mybatis-plus.pagination.tenantTableFilter
         //AbstractDataSourceAdapter
-
         SpringApplication.run(LmsPriceExpManageApplication.class , args);
     }
 }

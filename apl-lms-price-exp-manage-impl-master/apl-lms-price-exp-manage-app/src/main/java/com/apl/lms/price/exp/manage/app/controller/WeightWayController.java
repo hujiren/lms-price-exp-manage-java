@@ -34,7 +34,7 @@ public class WeightWayController {
     WeightWayService weightWayService;
 
     @PostMapping(value = "/get-list")
-    @ApiOperation(value =  "分页获取特殊物品列表" , notes = "根据关键字来查询")
+    @ApiOperation(value =  "分页计泡方式列表" , notes = "根据关键字来查询")
     public ResultUtil<Page<WeightWayUpdDto>> getList(PageDto pageDto ,
                                                      @Validated WeightWayKeyDto weightWayKeyDto){
         return weightWayService.getList(pageDto, weightWayKeyDto);

@@ -34,7 +34,7 @@ public class SurchargeController {
     SurchargeService surchargeService;
 
     @PostMapping(value = "/get-list")
-    @ApiOperation(value =  "分页获取特殊物品列表" , notes = "根据关键字来查询")
+    @ApiOperation(value =  "分页获取附加费列表" , notes = "根据关键字来查询")
     public ResultUtil<Page<SurchargeUpdDto>> getList(PageDto pageDto ,
                                                      @Validated SurchargeKeyDto surchargeKeyDto){
         return surchargeService.getList(pageDto, surchargeKeyDto);
@@ -42,7 +42,7 @@ public class SurchargeController {
 
     @PostMapping(value = "/delete")
     @ApiOperation(value =  "删除" , notes = "根据id删除")
-    @ApiImplicitParam(name = "id", value = "特殊物品Id", required = true, paramType = "query")
+    @ApiImplicitParam(name = "id", value = "附加费Id", required = true, paramType = "query")
     public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") Long id){
 
         return surchargeService.delSurcharge(id);
