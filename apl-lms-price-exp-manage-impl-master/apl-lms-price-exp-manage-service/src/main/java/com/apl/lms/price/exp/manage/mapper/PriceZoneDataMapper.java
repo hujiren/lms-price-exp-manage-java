@@ -24,8 +24,8 @@ public interface PriceZoneDataMapper extends BaseMapper<PriceZoneDataListVo> {
 
     /**
      * 根据分区表id批量删除
-     * @param id
+     * @param ids
      * @return
      */
-    Integer deleteByZoneId(@Param("id") Long id);
+    Integer deleteByZoneId(@Param("ids") List<Long> ids);
 }

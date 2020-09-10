@@ -19,12 +19,12 @@ public interface PriceZoneDataService extends IService<PriceZoneDataListVo> {
      * @param id
      * @return
      */
-    ResultUtil<List<PriceZoneDataListVo>> getList(Long id);
+    ResultUtil<List<PriceZoneDataListVo>> getList(Long id) throws Exception;
 
     /**
      * 批量删除
-     * @param id
+     * @param ids
      * @return
      */
-    ResultUtil<Boolean> deleteBatch(Long id);
+    ResultUtil<Boolean> deleteBatch(List<Long> ids);
 }

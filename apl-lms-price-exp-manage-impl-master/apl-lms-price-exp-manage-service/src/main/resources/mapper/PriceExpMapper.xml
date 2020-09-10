@@ -132,10 +132,10 @@
     </select>
 
     <!--新增快递价格-->
-    <insert id="insertPriceExpMain">
+    <insert id="addPriceExpMain">
         insert into
              price_exp_main(id, start_date, end_date, currency, zone_id, volume_divisor, account_type, account_no,
-             main_status, special_commodity, price_form, price_data_id, start_weight, end_weight, price_published_id,
+             main_status, special_commodity, price_form, start_weight, end_weight, price_published_id,
              is_published_price, aging, inner_org_id)
          values
              (#{po.id},
@@ -149,7 +149,6 @@
              #{po.mainStatus},
              #{po.specialCommodity},
              #{po.priceForm},
-             #{po.priceDataId},
              #{po.startWeight},
              #{po.endWeight},
              #{po.pricePublishedId},
@@ -157,7 +156,6 @@
              #{po.aging},
              #{po.innerOrgId})
      </insert>
-
 
 
     <!--校验id是否存在啊-->

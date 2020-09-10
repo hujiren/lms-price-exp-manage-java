@@ -20,7 +20,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
                 "com.apl.cache", // redis代理
                 "com.apl.lms.price.exp.manage",
                 "com.apl.shardingjdbc", // 分库
-                "com.apl.lms.price.exp.lib"},
+                "com.apl.lms.price.exp.lib",
+                "com.apl.lms.common.lib"},
         exclude = {
             JtaAutoConfiguration.class
         })
@@ -31,7 +32,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class LmsPriceExpManageApplication {
 
     public static void main(String[] args) {
-//        com.apl.shardingjdbc.mybatis.ShardingJdbcMybatisConfig
+        //com.apl.shardingjdbc.mybatis.ShardingJdbcMybatisConfig
         //mybatis-plus.pagination.tenantTableFilter
         //AbstractDataSourceAdapter
         SpringApplication.run(LmsPriceExpManageApplication.class , args);

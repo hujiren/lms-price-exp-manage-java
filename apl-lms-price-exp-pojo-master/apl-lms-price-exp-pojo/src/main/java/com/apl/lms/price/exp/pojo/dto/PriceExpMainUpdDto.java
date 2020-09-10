@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,4 +86,11 @@ public class PriceExpMainUpdDto extends Model<PriceExpMainUpdDto> {
     @ApiModelProperty(name = "mainStatus" , value = "主表状态 1正常 2计账 3无效")
     @TypeValidator(value = {"0","1","2","3"} , message = "账号类型错误")
     private Integer mainStatus;
+
+    public List<Integer> getSpecialCommodity() {
+        if(null==specialCommodity)
+            specialCommodity = new ArrayList<>();
+
+        return specialCommodity;
+    }
 }

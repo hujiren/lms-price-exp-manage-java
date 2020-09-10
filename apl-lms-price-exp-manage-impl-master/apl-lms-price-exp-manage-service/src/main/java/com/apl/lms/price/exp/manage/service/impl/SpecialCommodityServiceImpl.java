@@ -26,6 +26,19 @@ import java.util.List;
 @Slf4j
 public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMapper, SpecialCommodityUpdDto> implements SpecialCommodityService {
 
+    enum SpecialCommodityServiceCode {
+        ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在");
+        ;
+
+        private String code;
+        private String msg;
+
+        SpecialCommodityServiceCode(String code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+    }
+
     /**
      * 分页查找
      * @param specialCommodityKeyDto
@@ -55,7 +68,7 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
     public ResultUtil<Boolean> delSpecialCommodity(Long id) {
         Integer integer = baseMapper.deleteById(id);
         if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
+            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, SpecialCommodityServiceCode.ID_DOES_NOT_EXITS.msg, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }

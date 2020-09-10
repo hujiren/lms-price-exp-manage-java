@@ -28,6 +28,19 @@ import java.util.List;
 @Slf4j
 public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> implements PartnerService {
 
+    enum PartnerServiceCode {
+        ID_IS_NOT_EXITS("ID_IS_NOT_EXITS","id不存在")
+        ;
+
+        private String code;
+        private String msg;
+
+        PartnerServiceCode(String code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+    }
+
     @Override
     public ResultUtil<Page<PartnerPo>> getList(PageDto pageDto, PartnerKeyDto partnerKeyDto){
 
@@ -46,9 +59,9 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
 
         Integer integer = baseMapper.deleteById(id);
         if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);
+            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, PartnerServiceCode.ID_IS_NOT_EXITS.msg, false);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
+        return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
     @Override

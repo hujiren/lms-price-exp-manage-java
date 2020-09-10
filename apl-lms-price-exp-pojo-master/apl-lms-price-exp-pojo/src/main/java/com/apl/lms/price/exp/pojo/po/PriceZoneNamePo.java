@@ -22,7 +22,7 @@ public class PriceZoneNamePo extends Model<PriceZoneNamePo> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "id" , value = "快递分区id", required = true)
     private Long id;
-    
+
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)
     private String channelCategory;
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -30,14 +31,13 @@ public class PriceZoneDataController {
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "获取快递分区数据" , notes = "获取快递分区数据")
     @ApiImplicitParam(name = "id", value = "分区表id", required = true, paramType = "query")
-    public ResultUtil<List<PriceZoneDataListVo>> getList(@NotNull(message = "id不能为空") Long id){
+    public ResultUtil<List<PriceZoneDataListVo>> getList(@NotNull(message = "id不能为空") Long id) throws Exception {
         return priceZoneDataService.getList(id);
     }
 
     @PostMapping(value = "/delete-batch")
     @ApiOperation(value =  "批量删除" , notes = "批量删除")
-    @ApiImplicitParam(name = "id", value = "分区表id", required = true, paramType = "query")
-    public ResultUtil<Boolean> deleteBatch(@NotNull(message = "id不能为空") Long id){
-        return priceZoneDataService.deleteBatch(id);
+    public ResultUtil<Boolean> deleteBatch(@NotEmpty(message = "id不能为空") @RequestBody List<Long> ids){
+        return priceZoneDataService.deleteBatch(ids);
     }
 }

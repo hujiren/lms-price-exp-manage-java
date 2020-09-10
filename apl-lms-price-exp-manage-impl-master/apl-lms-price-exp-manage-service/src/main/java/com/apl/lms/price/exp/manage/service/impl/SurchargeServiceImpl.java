@@ -25,6 +25,19 @@ import java.util.List;
 @Slf4j
 public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, SurchargeUpdDto> implements SurchargeService {
 
+    enum SurchargeServiceCode {
+        ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在");
+        ;
+
+        private String code;
+        private String msg;
+
+        SurchargeServiceCode(String code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+    }
+
     /**
      * 分页查找附加费
      * @param surchargeKeyDto
@@ -54,7 +67,7 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
     public ResultUtil<Boolean> delSurcharge(Long id) {
         Integer integer = baseMapper.deleteById(id);
         if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
+            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, SurchargeServiceCode.ID_DOES_NOT_EXITS.msg, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }

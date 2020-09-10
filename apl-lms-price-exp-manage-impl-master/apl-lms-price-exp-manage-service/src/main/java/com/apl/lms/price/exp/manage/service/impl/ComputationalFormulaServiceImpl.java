@@ -25,6 +25,7 @@ import java.util.List;
 public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFormulaMapper, PriceExpComputationalFormulaPo> implements ComputationalFormulaService {
 
     enum ExpListServiceCode {
+        ID_IS_NOT_EXITS("ID_IS_NOT_EXITS","id不存在")
         ;
 
         private String code;
@@ -60,7 +61,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
 
         Integer integer = baseMapper.deleteById(id);
         if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
+            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }

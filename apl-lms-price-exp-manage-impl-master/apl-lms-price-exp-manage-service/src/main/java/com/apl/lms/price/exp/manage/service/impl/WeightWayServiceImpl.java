@@ -25,6 +25,19 @@ import java.util.List;
 @Slf4j
 public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWayUpdDto> implements WeightWayService {
 
+    enum WeightWayServiceCode {
+        ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在");
+        ;
+
+        private String code;
+        private String msg;
+
+        WeightWayServiceCode(String code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+    }
+
     /**
      * 分页查找附加费
      * @param weightWayKeyDto
@@ -54,7 +67,7 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
     public ResultUtil<Boolean> delWeightWay(Long id) {
         Integer integer = baseMapper.deleteById(id);
         if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
+            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, WeightWayServiceCode.ID_DOES_NOT_EXITS.msg, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }

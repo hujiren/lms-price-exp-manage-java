@@ -36,4 +36,9 @@ public class FuelChargeSaveDto extends Model<FuelChargeSaveDto> {
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)
     private String channelCategory;
 
+    public String getChannelCategory() {
+        if(null != channelCategory)
+            channelCategory = channelCategory.toUpperCase();
+        return channelCategory;
+    }
 }

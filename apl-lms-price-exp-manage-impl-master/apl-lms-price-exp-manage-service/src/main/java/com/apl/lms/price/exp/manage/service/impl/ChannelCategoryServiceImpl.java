@@ -29,7 +29,7 @@ import java.util.List;
 public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMapper, ChannelCategoryPo> implements ChannelCategoryService {
 
     enum ChannelCategoryServiceCode {
-
+        ID_IS_NOT_EXITS("ID_IS_NOT_EXITS","id不存在")
         ;
 
         private String code;
@@ -71,7 +71,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
 
         Integer integer = baseMapper.delById(id);
         if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
+            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code,ChannelCategoryServiceCode.ID_IS_NOT_EXITS.msg, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }

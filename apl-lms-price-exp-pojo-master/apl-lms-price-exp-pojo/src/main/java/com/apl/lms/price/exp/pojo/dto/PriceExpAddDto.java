@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -125,5 +126,6 @@ public class PriceExpAddDto extends Model<PriceExpAddDto> implements Serializabl
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
     @NotEmpty(message = "价格表数据不能为空")
     private List<Object> priceData;
+
 
 }

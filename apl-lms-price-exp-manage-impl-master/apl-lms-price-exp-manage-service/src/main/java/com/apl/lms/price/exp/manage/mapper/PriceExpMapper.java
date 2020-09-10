@@ -57,13 +57,6 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
     Long getExpListById(@Param("id") Long id);
 
     /**
-     * 新增价格表主表
-     * @param priceExpMainPo
-     * @return
-     */
-    Boolean insertPriceExpMain(@Param("po") PriceExpMainPo priceExpMainPo);
-
-    /**
      * 获取主表详情
      * @param id
      * @return
@@ -91,4 +84,10 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      */
     Long getInnerOrgById(@Param("id") Long priceMainId);
 
+    /**
+     * 新增
+     * @param priceExpMainPo
+     * @return
+     */
+    Integer addPriceExpMain(@Param("po") PriceExpMainPo priceExpMainPo);
 }

@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,4 +75,18 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
 
     @ApiModelProperty(name = "innerOrgId" , value = "多租户Id")
     private Long innerOrgId;
+
+    public String getAccountNo() {
+        if(null == accountNo){
+            accountNo = "";
+        }
+        return accountNo;
+    }
+
+    public List<Integer> getSpecialCommodity() {
+//        if(null==specialCommodity) {
+//            specialCommodity = new ArrayList<>();
+//        }
+        return specialCommodity;
+    }
 }

@@ -25,6 +25,7 @@ import java.util.List;
 public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZoneNamePo> implements PriceZoneNameService {
 
     enum ExpListServiceCode {
+        ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在");
         ;
 
         private String code;
@@ -66,7 +67,7 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
 
         Integer integer = baseMapper.delPriceZoneName(ids);
         if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL, false);
+            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, ExpListServiceCode.ID_DOES_NOT_EXITS.msg, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }

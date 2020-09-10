@@ -31,8 +31,9 @@ public class ComputationalFormulaController {
     ComputationalFormulaService computationalFormulaService;
 
     @PostMapping(value = "/get-list")
-    @ApiOperation(value =  "获取报价计算公式列表" , notes = "根据关键字来查询")
-    public ResultUtil<List<ComputationalFormulaVo>> getList(@Validated @NotNull Long priceId){
+    @ApiOperation(value =  "获取报价计算公式列表" , notes = "")
+    @ApiImplicitParam(name = "priceId",value = "价格表id",required = true  , paramType = "query")
+    public ResultUtil<List<ComputationalFormulaVo>> getList(@NotNull @Min(value = 1, message = "id不能小于1") Long priceId){
 
         return computationalFormulaService.getList(priceId);
     }
@@ -51,7 +52,7 @@ public class ComputationalFormulaController {
 
         return computationalFormulaService.updComputationalFormula(computationalFormulaUpdDto);
     }
-    
+
     @PostMapping(value = "/add")
     @ApiOperation(value =  "新增计算公式" , notes = "新增计算公式")
     public ResultUtil<Long> add(@Validated PriceExpComputationalFormulaPo computationalFormulaAddDto){
