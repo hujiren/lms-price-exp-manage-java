@@ -4,6 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -28,6 +29,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@MapperScan("com.apl.lms.price.exp.manage.mapper")
 @MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc")
 //@MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper2", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc2")
+@EnableFeignClients(  basePackages = {   "com.apl.lms.common.lib.feign"})
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
 

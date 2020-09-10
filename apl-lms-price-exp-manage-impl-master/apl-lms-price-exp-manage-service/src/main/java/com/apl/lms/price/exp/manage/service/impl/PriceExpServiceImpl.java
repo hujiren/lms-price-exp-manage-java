@@ -458,7 +458,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         String[] customerName = null;
         String[] customerGroup = null;
 
-        //Boolean isNull = checkObjFieldINull.checkObjFieldIsNull(priceExpSaleAddDto);
         //校验客户id与客户是否匹配
         if (null != priceExpSaleAddDto.getCustomerGroupsId()) {
 
@@ -496,8 +495,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         //不是公布价且不是成本价且不是销售价
         if (priceExpMainAddDto.getIsPublishedPrice() == 2
                 && priceExpCostAddDto.getPartnerId() < 1
-                && null == priceExpSaleAddDto.getCustomerGroupsId()
-                && null == priceExpSaleAddDto.getCustomerIds()) {
+                && 0 == priceExpSaleAddDto.getCustomerGroupsId().size()
+                && 0 == priceExpSaleAddDto.getCustomerIds().size()) {
 
             return ResultUtil.APPRESULT(ExpListServiceCode.PARTNER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP.code,
                     ExpListServiceCode.PARTNER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP.msg, null);
@@ -517,12 +516,16 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpMainPo.setId(priceMainId);
         priceExpMainPo.setInnerOrgId(securityUser.getInnerOrgId());
         priceExpMainPo.setMainStatus(1);
-        saveSuccess = priceExpMainPo.insert();
-        if (!saveSuccess) {
+//        saveSuccess = priceExpMainPo.insert();
+//        if (!saveSuccess) {
+//            throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,
+//                    ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.msg, null);
+//        }
+        Integer integer = baseMapper.addPriceExpMain(priceExpMainPo);
+        if(integer<1){
             throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,
                     ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.msg, null);
         }
-
         if (priceExpMainAddDto.getIsPublishedPrice() == 1) {
             priceExpCostAddDto.setPartnerId(0L);
         }
@@ -552,13 +555,15 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
 
             //保存备注
-            PriceExpRemarkPo priceExpRemarkPo = new PriceExpRemarkPo();
-            priceExpRemarkPo.setId(priceId);
-            priceExpRemarkPo.setRemark(priceExpCostAddDto.getPartnerRemark());
-            saveSuccess = priceExpRemarkPo.insert();
-            if (!saveSuccess) {
-                throw new AplException(ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.code,
-                        ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.msg, null);
+            if(priceExpCostAddDto.getPartnerRemark() != null) {
+                PriceExpRemarkPo priceExpRemarkPo = new PriceExpRemarkPo();
+                priceExpRemarkPo.setId(priceId);
+                priceExpRemarkPo.setRemark(priceExpCostAddDto.getPartnerRemark());
+                saveSuccess = priceExpRemarkPo.insert();
+                if (!saveSuccess) {
+                    throw new AplException(ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.code,
+                            ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.msg, null);
+                }
             }
         }
 
@@ -588,13 +593,15 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
 
             //保存备注
-            PriceExpRemarkPo priceExpRemarkPo = new PriceExpRemarkPo();
-            priceExpRemarkPo.setId(priceId);
-            priceExpRemarkPo.setRemark(priceExpSaleAddDto.getSaleRemark());
-            saveSuccess = priceExpRemarkPo.insert();
-            if (!saveSuccess) {
-                throw new AplException(ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.code,
-                        ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.msg, null);
+            if(priceExpSaleAddDto.getSaleRemark() != null) {
+                PriceExpRemarkPo priceExpRemarkPo = new PriceExpRemarkPo();
+                priceExpRemarkPo.setId(priceId);
+                priceExpRemarkPo.setRemark(priceExpSaleAddDto.getSaleRemark());
+                saveSuccess = priceExpRemarkPo.insert();
+                if (!saveSuccess) {
+                    throw new AplException(ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.code,
+                            ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.msg, null);
+                }
             }
         }
 

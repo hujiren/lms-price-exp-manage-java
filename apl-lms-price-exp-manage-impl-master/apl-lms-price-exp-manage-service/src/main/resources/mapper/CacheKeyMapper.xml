@@ -17,7 +17,7 @@
             id = #{keys}
         </if>
         <if test="minKey!=maxKey">
-            id BETWEEN #{minKey} AND #{maxKey} AND id in(#{keys})
+            id BETWEEN #{minKey} AND #{maxKey} AND id in(${keys})
         </if>
         <if test="(minKey == null or minKey&lt;=0) and (maxKey == null or maxKey&gt;=0)">
             1 = 2

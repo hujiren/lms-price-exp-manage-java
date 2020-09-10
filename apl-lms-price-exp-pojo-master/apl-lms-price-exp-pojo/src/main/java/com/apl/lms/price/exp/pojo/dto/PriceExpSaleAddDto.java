@@ -3,6 +3,8 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,4 +30,16 @@ public class PriceExpSaleAddDto extends Model<PriceExpSaleAddDto> {
 
     @ApiModelProperty(name = "saleRemark" , value = "销售备注")
     private String saleRemark;
+
+    public List<Long> getCustomerGroupsId() {
+        if(null == customerGroupsId)
+            customerGroupsId = new ArrayList<>();
+        return customerGroupsId;
+    }
+
+    public List<Long> getCustomerIds() {
+        if(null == customerIds)
+            customerIds = new ArrayList<>();
+        return customerIds;
+    }
 }

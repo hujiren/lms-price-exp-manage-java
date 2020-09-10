@@ -14,8 +14,8 @@
 
     <!--批量删除-->
     <delete id="deleteByZoneId">
-        delete from price_zone_data where zone_id in
-        <foreach collection="ids" index="" item="row" close=")" open="" separator=",">
+        delete from price_zone_data where id in
+        <foreach collection="ids" index="" item="row" close=")" open="(" separator=",">
             #{row}
         </foreach>
     </delete>

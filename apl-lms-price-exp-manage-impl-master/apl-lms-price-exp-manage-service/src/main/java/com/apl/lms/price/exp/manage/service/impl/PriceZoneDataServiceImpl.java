@@ -5,12 +5,10 @@ import com.apl.lib.join.JoinBase;
 import com.apl.lib.join.JoinFieldInfo;
 import com.apl.lib.join.JoinUtil;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.common.lib.cache.CountryCacheBo;
 import com.apl.lms.common.lib.cache.JoinCountry;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.price.exp.manage.mapper.PriceZoneDataMapper;
 import com.apl.lms.price.exp.manage.service.PriceZoneDataService;
-import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -67,14 +65,6 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
         if(null!=joinCountryFieldInfo) {
             //已经缓存国家反射字段
             joinCountry.setJoinFieldInfo(joinCountryFieldInfo);
-            for (PriceZoneDataListVo zoneDataListVo : priceZoneDataListVo) {
-                CountryCacheBo entity = joinCountry.getEntity(zoneDataListVo.getId());
-                if (entity != null) {
-                    zoneDataListVo.setCountryNameCn(entity.getNameCn());
-                    zoneDataListVo.setCountryNameEn(entity.getNameEn());
-
-                }
-            }
         }
         else{
             joinCountry.addField("countryCode",  String.class, "nameCn", "countryNameCn",String.class);

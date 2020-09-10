@@ -86,10 +86,16 @@
         <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
             and main.main_status = #{key.mainStatus}
         </if>
+        <!-- 未过期 -->
         <if test="key.mainStatus == 4">
-            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
+            and main.end_date > now()
         </if>
+        <!-- 即将过期 -->
         <if test="key.mainStatus == 5">
+            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '7 day'
+        </if>
+        <!-- 已过期 -->
+        <if test="key.mainStatus == 6">
             and now() - main.end_date > '0 day'
         </if>
         <if test="key.partnerId != null">
@@ -147,7 +153,7 @@
              #{po.accountType},
              #{po.accountNo},
              #{po.mainStatus},
-             #{po.specialCommodity},
+             #{po.specialCommodity,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
              #{po.priceForm},
              #{po.startWeight},
              #{po.endWeight},

@@ -5,6 +5,7 @@ import com.apl.lms.price.exp.manage.mapper.PriceExpRemarkMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpRemarkService;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.core.SpringVersion;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,18 @@ import java.util.List;
  */
 @Service
 public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper, PriceExpRemarkPo> implements PriceExpRemarkService {
+
+    enum PriceExpRemarkEnum{
+        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA","没有对应数据");
+
+        private String code;
+        private String msg;
+
+        PriceExpRemarkEnum(String code, String msg){
+            this.code = code;
+            this.msg = msg;
+        }
+    }
 
 
     /**
@@ -47,7 +60,7 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
     public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id) {
         PriceExpRemarkPo priceExpRemarkPo = baseMapper.selectById(id);
         if (priceExpRemarkPo == null) {
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+            return ResultUtil.APPRESULT(PriceExpRemarkEnum.NO_CORRESPONDING_DATA.code, PriceExpRemarkEnum.NO_CORRESPONDING_DATA.msg, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpRemarkPo);
     }

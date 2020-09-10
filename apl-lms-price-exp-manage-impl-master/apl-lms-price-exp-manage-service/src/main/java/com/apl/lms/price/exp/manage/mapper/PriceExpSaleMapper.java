@@ -3,6 +3,7 @@ import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -51,4 +52,10 @@ public interface PriceExpSaleMapper extends BaseMapper<PriceExpSalePo> {
      */
     Long getMainId(@Param("id") Long id);
 
+    /**
+     * 新增
+     * @param priceExpSalePo
+     * @return
+     */
+    Integer addPriceExpSale(@Param("po") PriceExpSalePo priceExpSalePo);
 }

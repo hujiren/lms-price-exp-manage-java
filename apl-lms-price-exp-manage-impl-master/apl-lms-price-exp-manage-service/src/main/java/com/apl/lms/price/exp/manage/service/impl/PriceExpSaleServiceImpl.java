@@ -80,8 +80,12 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
         priceExpSalePo.setPriceStatus(1);
         priceExpSalePo.setPriceMainId(priceMainId);
         priceExpSalePo.setChannelCategory(priceExpCostAddDto.getChannelCategory());
-        Boolean saveSuccess = priceExpSalePo.insert();
-        return saveSuccess;
+//        Boolean saveSuccess = priceExpSalePo.insert();
+        Integer integer = baseMapper.addPriceExpSale(priceExpSalePo);
+        if(integer<1){
+            return false;
+        }
+        return true;
     }
 
     /**
