@@ -40,17 +40,6 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long zoneId;
 
-    public Long getZoneId() {
-        if(null == zoneId){
-            zoneId = 0L;
-        }
-        return zoneId;
-    }
-
-    public void setZoneId(Long zoneId) {
-        this.zoneId = zoneId;
-    }
-
     @ApiModelProperty(name = "volumeDivisor" , value = "体积除数")
     private Integer volumeDivisor;
 
@@ -92,6 +81,18 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
             accountNo = "";
         }
         return accountNo;
+    }
+
+
+    public Long getZoneId() {
+        if(null == zoneId){
+            zoneId = 0L;
+        }
+        return zoneId;
+    }
+
+    public void setZoneId(Long zoneId) {
+        this.zoneId = zoneId;
     }
 
     public List<Integer> getSpecialCommodity() {

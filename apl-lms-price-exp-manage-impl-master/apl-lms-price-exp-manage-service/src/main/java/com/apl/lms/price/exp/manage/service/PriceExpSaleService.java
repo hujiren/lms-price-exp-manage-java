@@ -66,4 +66,11 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
      * @return
      */
     Long getMainId(Long id);
+
+    /**
+     * 添加引用销售价格
+     * @param priceExpSalePo
+     * @return
+     */
+    Long addReferenceSale(PriceExpSalePo priceExpSalePo);
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper">
+
+    <!--新增-->
+    <insert id="addProfit">
+        insert into price_exp_profit(
+            id,
+            price_sale_id,
+            price_cost_id,
+            increase_profit,
+            final_profit,
+            start_weight
+        )values (
+            #{po.id},
+            #{po.priceSaleId},
+            #{po.priceCostId},
+            #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+            #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+            #{po.startWeight}
+        )
+    </insert>
+
+    <!--更新-->
+    <update id="updProfit">
+        update price_exp_profit set
+            <if test="po.priceSaleId != null">
+                price_sale_id = #{po.priceSaleId},
+            </if>
+            <if test="po.priceCostId != null">
+                price_cost_id = #{po.priceCostId},
+            </if>
+            <if test="po.increaseProfit != null">
+                increase_profit = #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+            </if>
+            <if test="po.finalProfit != null">
+                final_profit = #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+            </if>
+            start_weight = #{po.startWeight}
+        where
+            id = #{po.id}
+    </update>
+
+    <!--查询价格表id-->
+    <select id="getPriceId" resultType="java.lang.Integer">
+        select count(id) from price_exp_profit where price_sale_id = #{id}
+    </select>
+
+    <!-- 查找列表 2020-09-11-->
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpProfitListVo">
+        SELECT
+           id, 
+           price_sale_id, 
+           price_cost_id, 
+           increase_profit, 
+           start_weight
+        FROM
+           price_exp_profit
+        where
+            <if test="variable == 1">
+                price_sale_id = #{priceId}
+            </if>
+            <if test="variable == 2">
+                price_cost_id = #{priceId}
+            </if>
+    </select>
+
+
+</mapper>

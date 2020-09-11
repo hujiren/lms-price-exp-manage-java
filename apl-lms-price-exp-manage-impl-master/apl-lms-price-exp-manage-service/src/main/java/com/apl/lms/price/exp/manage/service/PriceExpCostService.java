@@ -59,4 +59,6 @@ public interface PriceExpCostService extends IService<PriceExpCostPo> {
      * @return
      */
     Long getMainId(Long id);
+
+    Long addReferenceCost(PriceExpCostPo priceExpCostPo);
 }

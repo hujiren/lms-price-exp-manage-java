@@ -102,20 +102,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
                                  PriceExpDataAddDto priceExpDataAddDto);
 
 
-    /**
-     * 新增销售价格
-     * @param priceExpSaleAddDto
-     * @return
-     */
-    ResultUtil<Long> addSalePrice(PriceExpSaleAddDto priceExpSaleAddDto);
-
-    /**
-     * 新增成本价格
-     * @param priceExpCostAddDto
-     * @return
-     */
-    ResultUtil<Long> addCostPrice(PriceExpCostAddDto priceExpCostAddDto);
-
 
     /**
      * 根据id批量删除成本价格数据
@@ -130,4 +116,11 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<Boolean> deleteSaleBatch(List<Long> ids);
+
+    /**
+     * 引用价格表
+     * @param referencePriceDto
+     * @return
+     */
+    ResultUtil<Long> referencePriceList(ReferencePriceDto referencePriceDto);
 }

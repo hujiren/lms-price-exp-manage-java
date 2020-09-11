@@ -108,4 +108,15 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
     public Long getMainId(Long id) {
         return baseMapper.getMainId(id);
     }
+
+    /**
+     * 添加引用销售价
+     * @param priceExpSalePo
+     * @return
+     */
+    @Override
+    public Long addReferenceSale(PriceExpSalePo priceExpSalePo) {
+        Integer integer = baseMapper.addPriceExpSale(priceExpSalePo);
+        return integer > 0 ? priceExpSalePo.getId() : 0L;
+    }
 }

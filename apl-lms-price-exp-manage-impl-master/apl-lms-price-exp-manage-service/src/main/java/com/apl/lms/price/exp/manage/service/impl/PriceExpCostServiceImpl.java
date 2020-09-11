@@ -92,4 +92,10 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
     public Long getMainId(Long id) {
         return baseMapper.getMainId(id);
     }
+
+    @Override
+    public Long addReferenceCost(PriceExpCostPo priceExpCostPo) {
+        boolean insert = priceExpCostPo.insert();
+        return insert ? priceExpCostPo.getId() : 0L;
+    }
 }

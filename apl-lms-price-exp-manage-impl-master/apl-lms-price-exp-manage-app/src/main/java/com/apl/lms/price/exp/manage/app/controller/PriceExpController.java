@@ -193,5 +193,12 @@ public class PriceExpController {
 
         return priceExpService.deleteSaleBatch(ids);
     }
+
+    @PostMapping(value = "/reference-price-list")
+    @ApiOperation(value = "引用价格表", notes = "引用价格表")
+    public ResultUtil<Long> referencePriceList(@RequestBody @Validated ReferencePriceDto referencePriceDto){
+
+        return priceExpService.referencePriceList(referencePriceDto);
+    }
 }
 
