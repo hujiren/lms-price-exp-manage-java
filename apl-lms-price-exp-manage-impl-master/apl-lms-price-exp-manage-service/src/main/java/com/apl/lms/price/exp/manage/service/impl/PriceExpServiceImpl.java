@@ -762,7 +762,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         Long id = SnowflakeIdWorker.generateId();
 
         //服务商, 客户,客户组至少要填写一组
-        if(referencePriceDto.getPartnerId() == null
+        if((referencePriceDto.getPartnerId() == null || referencePriceDto.getPartnerId() < 1)
         && referencePriceDto.getCustomerName() == null
         && referencePriceDto.getCustomerGroupsName() == null){
             return ResultUtil.APPRESULT(ExpListServiceCode.PARTNER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP.code,
@@ -803,7 +803,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             referencePriceDto.setCustomerName(null);
         }
 
-        if(referencePriceDto.getPartnerId() != null){
+        if(referencePriceDto.getPartnerId() != null && referencePriceDto.getPartnerId() > 0){
 
             //保存引用成本价
             PriceExpCostPo priceExpCostPo = new PriceExpCostPo();
