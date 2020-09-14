@@ -28,13 +28,13 @@
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>
-        <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
-            and main.main_status = #{key.mainStatus}
+        <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
+            and main.main_status = #{key.priceStatus}
         </if>
-        <if test="key.mainStatus == 4">
+        <if test="key.priceStatus == 4">
             and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
         </if>
-        <if test="key.mainStatus == 5">
+        <if test="key.priceStatus == 5">
             and now() - main.end_date > '0 day'
         </if>
         <if test="key.specialCommodity > 0">
@@ -83,19 +83,19 @@
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>
-        <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
-            and main.main_status = #{key.mainStatus}
+        <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
+            and main.main_status = #{key.priceStatus}
         </if>
         <!-- 未过期 -->
-        <if test="key.mainStatus == 4">
+        <if test="key.priceStatus == 4">
             and main.end_date > now()
         </if>
         <!-- 即将过期 -->
-        <if test="key.mainStatus == 5">
+        <if test="key.priceStatus == 5">
             and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '7 day'
         </if>
         <!-- 已过期 -->
-        <if test="key.mainStatus == 6">
+        <if test="key.priceStatus == 6">
             and now() - main.end_date > '0 day'
         </if>
         <if test="key.partnerId != null">
