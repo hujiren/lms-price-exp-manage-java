@@ -1,9 +1,9 @@
 package com.apl.lms.price.exp.manage.app;
 
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -24,7 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
                 "com.apl.lms.price.exp.lib",
                 "com.apl.lms.common.lib"},
         exclude = {
-            JtaAutoConfiguration.class
+            DruidDataSourceAutoConfigure.class
         })
 //@MapperScan("com.apl.lms.price.exp.manage.mapper")
 @MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc")
@@ -34,6 +34,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class LmsPriceExpManageApplication {
 
     public static void main(String[] args) {
+        //com.apl.shardingjdbc.ShardingDataSourceConfig
         //com.apl.shardingjdbc.mybatis.ShardingJdbcMybatisConfig
         //mybatis-plus.pagination.tenantTableFilter
         //AbstractDataSourceAdapter

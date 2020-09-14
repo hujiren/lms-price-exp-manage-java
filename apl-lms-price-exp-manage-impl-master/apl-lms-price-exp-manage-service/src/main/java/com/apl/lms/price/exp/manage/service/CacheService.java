@@ -8,6 +8,5 @@ import com.apl.lib.utils.ResultUtil;
  */
 public interface CacheService {
 
-
     ResultUtil<Boolean> addPartnerCache(String keys, Long minKey, Long maxKey);
 }

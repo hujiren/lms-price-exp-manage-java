@@ -6,9 +6,6 @@ import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.lib.cache.bo.PartnerCacheBo;
-import com.apl.lms.price.exp.lib.cache.bo.SpecialCommodityCacheBo;
-import com.apl.lms.price.exp.lib.cache.bo.SurchargeCacheBo;
-import com.apl.lms.price.exp.lib.cache.bo.WeightWayCacheBo;
 import com.apl.lms.price.exp.manage.mapper.CacheMapper;
 import com.apl.lms.price.exp.manage.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +23,7 @@ import java.util.Map;
 public class CacheServiceImpl implements CacheService {
 
     @Autowired
-    AplCacheUtil redisTemplate;
+    AplCacheUtil aplCacheUtil;
 
     @Autowired
     CacheMapper cacheMapper;
@@ -36,7 +33,7 @@ public class CacheServiceImpl implements CacheService {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
         Map<String, PartnerCacheBo> maps = cacheMapper.addPartnerCache(keys, minKey, maxKey, securityUser.getInnerOrgId());
         if(null != maps && maps.size()>0) {
-            redisTemplate.opsForValue().multiSet(maps);
+            aplCacheUtil.opsForValue().multiSet(maps);
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
         }
 
