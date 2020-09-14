@@ -19,10 +19,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
                 "com.apl.db.adb", // adb数据库操作助手
                 //"com.apl.db.dynamicdb", //动态数据源
                 "com.apl.cache", // redis代理
-                "com.apl.lms.price.exp.manage",
                 "com.apl.shardingjdbc", // 分库
+                "com.apl.lms.common.lib",
+                "com.apl.lms.price.exp.manage",
                 "com.apl.lms.price.exp.lib",
-                "com.apl.lms.common.lib"},
+                },
         exclude = {
             DruidDataSourceAutoConfigure.class
         })
