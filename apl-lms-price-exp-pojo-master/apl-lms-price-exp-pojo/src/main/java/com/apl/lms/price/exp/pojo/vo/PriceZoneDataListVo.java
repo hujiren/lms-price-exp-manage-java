@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 @Data
-//@Accessors(chain = true)
 @ApiModel(value="分区表数据  返回对象", description="分区表数据 返回对象")
 public class PriceZoneDataListVo {
 

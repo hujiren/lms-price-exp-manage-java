@@ -5,9 +5,9 @@ spring:
   application:
     name: apl-lms-price-exp-manage-app
 
-  main:
-    allow-bean-definition-overriding: true
-
   profiles:
     include:
       common, apl-lms-price-exp-manage-app
+
+  main:
+    allow-bean-definition-overriding: true
