@@ -17,39 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface PriceExpFeign {
 
     /**
-     * 添加特殊物品缓存
+     * 添加服务商缓存
      * @param keys
      * @param minKey
      * @param maxKey
      * @return
      */
-    @PostMapping("/cache/add-special-commodity-cache")
-    ResultUtil<Boolean> addSpecialCommodityCache(@RequestParam("keys") String keys,
-                                               @RequestParam("minKey") Long minKey,
-                                               @RequestParam("maxKey") Long maxKey);
-
-
-    /**
-     * 添加附加费缓存
-     * @param keys
-     * @param minKey
-     * @param maxKey
-     * @return
-     */
-    @PostMapping("/cache/add-surcharge-cache")
-    ResultUtil<Boolean> addSurchargeCache(@RequestParam("keys") String keys,
-                                                 @RequestParam("minKey") Long minKey,
-                                                 @RequestParam("maxKey") Long maxKey);
-
-    /**
-     * 添加计泡方式缓存
-     * @param keys
-     * @param minKey
-     * @param maxKey
-     * @return
-     */
-    @PostMapping("/cache/add-weight-way-cache")
-    ResultUtil<Boolean> addWeightWayCache(@RequestParam("keys") String keys,
+    @PostMapping("/cache/add-partner-cache")
+    ResultUtil<Boolean> addPartnerCache(@RequestParam("keys") String keys,
                                           @RequestParam("minKey") Long minKey,
                                           @RequestParam("maxKey") Long maxKey);
 

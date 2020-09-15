@@ -3,31 +3,30 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper">
 
     <!--根据主表id批量删除-->
-    <delete id="deleteByMainIds">
-        delete from price_exp_data where price_main_id in
+    <delete id="deleteBatchById">
+        delete from price_exp_data where id in
         <foreach collection="ids" separator="," open="(" close=")" item="row" index="">
             #{row}
         </foreach>
     </delete>
 
     <!--根据主表id获取详细数据-->
-    <select id="getPriceExpDataInfoByMainId" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpDataVo">
+    <select id="getPriceExpDataInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpDataVo">
         select
-            price_main_id,
             price_data
         from
             price_exp_data
         where
-            price_main_id = #{id}
+            id = #{id}
     </select>
 
     <!--新增-->
     <insert id="insertData">
-        insert into price_exp_data(price_main_id, price_data) values (#{po.priceMainId}, #{po.priceData,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler})
+        insert into price_exp_data(id, price_data) values (#{po.id}, #{po.priceData,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler})
     </insert>
 
     <!--更新-->
-    <update id="updateByMainId">
-        update price_exp_data set price_data = #{po.priceData,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler} where price_main_id = #{po.priceMainId}
+    <update id="updById">
+        update price_exp_data set price_data = #{po.priceData,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler} where id = #{po.id}
     </update>
 </mapper>

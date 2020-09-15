@@ -1,9 +1,10 @@
 package com.apl.lms.price.exp.manage.mapper;
+import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
+import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,11 +33,11 @@ public interface PriceExpSaleMapper extends BaseMapper<PriceExpSalePo> {
     Integer getPriceDataIdCount(@Param("ids") List<Long> ids);
 
     /**
-     * 根据id得到主表id
+     * 根据id得到主表id和price_data_id
      * @param ids
      * @return
      */
-    List<Long> getPriceDataIds(@Param("ids") List<Long> ids);
+    RelevanceForMainData getPriceDataIds(@Param("ids") List<Long> ids);
 
     /**
      * 更新
@@ -50,7 +51,7 @@ public interface PriceExpSaleMapper extends BaseMapper<PriceExpSalePo> {
      * @param id
      * @return
      */
-    Long getMainId(@Param("id") Long id);
+    Long getPriceDataId(@Param("id") Long id);
 
     /**
      * 新增
@@ -58,4 +59,11 @@ public interface PriceExpSaleMapper extends BaseMapper<PriceExpSalePo> {
      * @return
      */
     Integer addPriceExpSale(@Param("po") PriceExpSalePo priceExpSalePo);
+
+    /**
+     * 构建批量删除销售价格表条件集合
+     * @param ids
+     * @return
+     */
+    List<PriceListForDelBatch> getPriceListForDel(@Param("ids") List<Long> ids);
 }

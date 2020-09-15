@@ -2,10 +2,11 @@ package com.apl.lms.price.exp.manage.service;
 
 
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostAddDto;
+import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
+import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,11 +26,11 @@ public interface PriceExpCostService extends IService<PriceExpCostPo> {
     PriceExpCostVo getPriceExpCostInfo(Long id);
 
     /**
-     * 根据ids得到主表ids
+     * 根据ids得到主表ids和数据表ids
      * @param ids
      * @return
      */
-    List<Long> getPriceDataIds(List<Long> ids);
+    RelevanceForMainData getPriceDataIds(List<Long> ids);
 
     /**
      * 通过主表id获取统计条数
@@ -54,11 +55,23 @@ public interface PriceExpCostService extends IService<PriceExpCostPo> {
     Integer deleteById(List<Long> ids);
 
     /**
-     * 获取主表id
+     * 获取priceDataId
      * @param id
      * @return
      */
-    Long getMainId(Long id);
+    Long getPriceDataId(Long id);
 
+    /**
+     * 添加引用成本价格
+     * @param priceExpCostPo
+     * @return
+     */
     Long addReferenceCost(PriceExpCostPo priceExpCostPo);
+
+    /**
+     * 组装批量删除条件集合
+     * @param priceIdList
+     * @return
+     */
+    List<PriceListForDelBatch> getPriceListForDel(List<Long> priceIdList);
 }

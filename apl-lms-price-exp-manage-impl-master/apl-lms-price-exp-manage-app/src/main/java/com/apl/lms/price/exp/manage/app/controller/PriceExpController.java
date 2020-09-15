@@ -12,6 +12,7 @@ import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.apl.lms.price.exp.pojo.vo.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -96,8 +97,8 @@ public class PriceExpController {
 
     @PostMapping(value = "/get-price-axis")
     @ApiOperation(value = "获取数据轴", notes = "获取数据轴")
-    @ApiImplicitParam(name = "id", value = "主表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpAxisVo> getPriceExpAxis(@NotNull(message = "主表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+    @ApiImplicitParam(name = "id", value = "轴数据id", required = true, paramType = "query")
+    public ResultUtil<PriceExpAxisVo> getPriceExpAxis(@NotNull(message = "轴数据id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
 
         return priceExpAxisService.getAxisInfoById(id);
     }
@@ -105,8 +106,8 @@ public class PriceExpController {
     @PostMapping(value = "/get-price-data")
     @ApiOperation(value = "获取价格表数据", notes = "获取价格表数据")
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
-        return priceExpDataService.getPriceExpDataInfoByPriceId(id);
+    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long priceId) {
+        return priceExpDataService.getPriceExpDataInfoByPriceId(priceId);
     }
 
     @PostMapping(value = "/get-price-remark")
@@ -173,7 +174,7 @@ public class PriceExpController {
     }
 
     @PostMapping(value = "/upd-price-data")
-    @ApiOperation(value = "更新主表数据", notes = "更新主表数据")
+    @ApiOperation(value = "更新数据表数据", notes = "更新数据表数据")
     public ResultUtil<Boolean> updatePriceData(@Validated PriceExpDataAddDto priceExpDataAddDto,
                                                @Validated PriceExpAxisPo priceExpAxisPo){
         return priceExpService.updatePriceData(priceExpDataAddDto, priceExpAxisPo);
@@ -181,24 +182,33 @@ public class PriceExpController {
 
     @PostMapping(value = "/delete-cost-batch")
     @ApiOperation(value = "批量删除成本价格表", notes = "根据Id批量删除成本价格表")
-    public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "id不能为空") @RequestParam("ids") ArrayList<Long> ids){
-
-        return priceExpService.deleteCostBatch(ids);
+    @ApiImplicitParam(name = "isDelSaleAndCost", value = "是否同时删除销售价和成本价", required = true, paramType = "query")
+    public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "id不能为空") @RequestParam("ids") ArrayList<Long> ids, Integer isDelSaleAndCost){
+        Boolean delSaleAndCost = false;
+        if(isDelSaleAndCost == 1){
+            delSaleAndCost = true;
+        }
+        Integer priceType = 2;
+        return priceExpService.deletePriceBatch(ids, priceType, delSaleAndCost);
     }
-
 
     @PostMapping(value = "/delete-sale-batch")
     @ApiOperation(value = "批量删除销售价格表", notes = "根据Id批量删除销售价格表")
-    public ResultUtil<Boolean> deleteSalePrice(@NotEmpty(message = "销售价格表id不能为空") @RequestParam("ids") List<Long> ids){
-
-        return priceExpService.deleteSaleBatch(ids);
+    @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
+    public ResultUtil<Boolean> deleteSalePrice(@NotEmpty(message = "销售价格表id不能为空") @RequestParam("ids") List<Long> ids, Integer isDelSaleAndCost){
+        Boolean delSaleAndCost = false;
+        if(isDelSaleAndCost == 1){
+            delSaleAndCost = true;
+        }
+        Integer priceType = 1;
+        return priceExpService.deletePriceBatch(ids, priceType, delSaleAndCost);
     }
 
-    @PostMapping(value = "/reference-price-list")
+    @PostMapping(value = "/reference-price")
     @ApiOperation(value = "引用价格表", notes = "引用价格表")
-    public ResultUtil<Long> referencePriceList(@RequestBody @Validated ReferencePriceDto referencePriceDto){
+    public ResultUtil<Long> referencePrice(@RequestBody @Validated ReferencePriceDto referencePriceDto){
 
-        return priceExpService.referencePriceList(referencePriceDto);
+        return priceExpService.referencePrice(referencePriceDto);
     }
 }
 

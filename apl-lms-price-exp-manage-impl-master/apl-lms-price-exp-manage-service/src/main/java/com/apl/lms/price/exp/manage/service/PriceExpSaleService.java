@@ -1,10 +1,11 @@
 package com.apl.lms.price.exp.manage.service;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostAddDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleAddDto;
+import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
+import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,11 +31,11 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
     Integer getPriceDataIdCount(List<Long> ids);
 
     /**
-     * 根据ids得到主表ids
+     * 根据ids得到主表id和price_data_id
      * @param ids
      * @return
      */
-    List<Long> getPriceDataIds(List<Long> ids);
+    RelevanceForMainData getPriceDataIds(List<Long> ids);
 
     /**
      * 根据id删除数据
@@ -61,11 +62,11 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
     Boolean updateSaleById(PriceExpSalePo priceExpSalePo);
 
     /**
-     * 获取主表Id
+     * 获取price_data_id
      * @param id
      * @return
      */
-    Long getMainId(Long id);
+    Long getPriceDataId(Long id);
 
     /**
      * 添加引用销售价格
@@ -73,4 +74,11 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
      * @return
      */
     Long addReferenceSale(PriceExpSalePo priceExpSalePo);
+
+    /**
+     * 构建批量删除销售价格表条件集合
+     * @param ids
+     * @return
+     */
+    List<PriceListForDelBatch> getPriceListForDel(List<Long> ids);
 }

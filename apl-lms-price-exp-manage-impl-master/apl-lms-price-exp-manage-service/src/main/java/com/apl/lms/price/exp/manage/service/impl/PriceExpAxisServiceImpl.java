@@ -1,5 +1,4 @@
 package com.apl.lms.price.exp.manage.service.impl;
-import cn.hutool.core.bean.BeanUtil;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper;
@@ -21,26 +20,26 @@ import java.util.List;
 public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, PriceExpAxisPo> implements PriceExpAxisService {
 
     /**
-     * 根据主表id删除数据
-     * @param priceExpMainIds
+     * 根据id删除数据
+     * @param ids
      * @return
      */
     @Override
-    public Integer deleteByPriceExpMainId(List<Long> priceExpMainIds) {
-        return baseMapper.deleteByMainIds(priceExpMainIds);
+    public Integer deleteByIds(List<Long> ids) {
+        return baseMapper.deleteByIds(ids);
     }
 
 
     /**
      * 保存价格表轴数据
-     * @param priceMainId
+     * @param priceDataId
      * @param priceExpAxisAddDto
      * @return
      */
     @Override
-    public Boolean addPriceExpAxis(Long priceMainId, PriceExpAxisAddDto priceExpAxisAddDto) {
+    public Boolean addPriceExpAxis(Long priceDataId, PriceExpAxisAddDto priceExpAxisAddDto) {
         PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
-        priceExpAxisPo.setPriceMainId(priceMainId);
+        priceExpAxisPo.setId(priceDataId);
         priceExpAxisPo.setAxisPortrait(priceExpAxisAddDto.getAxisPortrait().toString());
         priceExpAxisPo.setAxisTransverse(priceExpAxisAddDto.getAxisTransverse().toString());
         Integer saveSuccess = baseMapper.insertAxis(priceExpAxisPo);

@@ -20,8 +20,8 @@ import java.util.List;
 public class PriceExpDataPo extends Model<PriceExpDataPo> implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceMainId" , value = "价格主表Id", required = true)
-    private Long priceMainId;
+    @ApiModelProperty(name = "id" , value = "价格主表Id", required = true)
+    private Long id;
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
     @NotBlank(message = "价格表数据不能为空")

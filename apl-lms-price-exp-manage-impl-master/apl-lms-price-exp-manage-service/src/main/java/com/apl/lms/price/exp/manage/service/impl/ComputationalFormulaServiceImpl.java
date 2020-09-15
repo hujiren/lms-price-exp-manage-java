@@ -11,6 +11,7 @@ import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -97,5 +98,14 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceExpComputationalFormulaPo.getId());
     }
 
-
+    /**
+     * 根据价格表id批量删除
+     * @param ids
+     * @return
+     */
+    @Override
+    public Integer deleteBatch(List<Long> ids) {
+        Integer integer = baseMapper.deleteBatch(ids);
+        return integer;
+    }
 }

@@ -42,5 +42,10 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      */
     ResultUtil<Long> addComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo);
 
-
+    /**
+     * 根据价格表id批量删除
+     * @param ids
+     * @return
+     */
+    Integer deleteBatch(List<Long> ids);
 }

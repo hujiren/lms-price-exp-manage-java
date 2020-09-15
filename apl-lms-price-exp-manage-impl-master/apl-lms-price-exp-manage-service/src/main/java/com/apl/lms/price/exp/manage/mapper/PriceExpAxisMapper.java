@@ -30,11 +30,11 @@ public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
     Integer updateByMainId(@Param("po") PriceExpAxisPo priceExpAxisPo);
 
     /**
-     * 根据主表id批量删除
+     * 根据id批量删除
      * @param priceExpMainIds
      * @return
      */
-    Integer deleteByMainIds(@Param("ids") List<Long> priceExpMainIds);
+    Integer deleteByIds(@Param("ids") List<Long> priceExpMainIds);
 
     /**
      * 获取详细

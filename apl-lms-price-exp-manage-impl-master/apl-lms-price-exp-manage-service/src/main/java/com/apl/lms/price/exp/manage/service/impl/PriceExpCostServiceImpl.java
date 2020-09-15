@@ -1,9 +1,10 @@
 package com.apl.lms.price.exp.manage.service.impl;
 import cn.hutool.core.bean.BeanUtil;
-import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceExpCostMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpCostService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostAddDto;
+import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
+import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -36,7 +37,7 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
      * @return
      */
     @Override
-    public List<Long> getPriceDataIds(List<Long> ids) {
+    public RelevanceForMainData getPriceDataIds(List<Long> ids) {
         return baseMapper.getPriceDataIds(ids);
     }
 
@@ -89,13 +90,24 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
      * @return
      */
     @Override
-    public Long getMainId(Long id) {
-        return baseMapper.getMainId(id);
+    public Long getPriceDataId(Long id) {
+        return baseMapper.getPriceDataId(id);
     }
 
     @Override
     public Long addReferenceCost(PriceExpCostPo priceExpCostPo) {
         boolean insert = priceExpCostPo.insert();
         return insert ? priceExpCostPo.getId() : 0L;
+    }
+
+    /**
+     * 组装批量删除条件集合
+     * @param priceIdList
+     * @return
+     */
+    @Override
+    public List<PriceListForDelBatch> getPriceListForDel(List<Long> priceIdList) {
+        List<PriceListForDelBatch> dataList = baseMapper.getPriceListForDel(priceIdList);
+        return dataList;
     }
 }

@@ -1,5 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
 
+import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
+import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -37,12 +39,19 @@ public interface PriceExpCostMapper extends BaseMapper<PriceExpCostPo> {
      * @param ids
      * @return
      */
-    List<Long> getPriceDataIds(@Param("ids") List<Long> ids);
+    RelevanceForMainData getPriceDataIds(@Param("ids") List<Long> ids);
 
     /**
      * 获取主表id
      * @param id
      * @return
      */
-    Long getMainId(@Param("id") Long id);
+    Long getPriceDataId(@Param("id") Long id);
+
+    /**
+     * 组装批量删除条件集合
+     * @param ids
+     * @return
+     */
+    List<PriceListForDelBatch> getPriceListForDel(@Param("ids") List<Long> ids);
 }

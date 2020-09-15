@@ -1,14 +1,14 @@
 package com.apl.lms.price.exp.manage.service.impl;
 import cn.hutool.core.bean.BeanUtil;
-import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceExpSaleMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpSaleService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostAddDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleAddDto;
+import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
+import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,12 +42,12 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
     }
 
     /**
-     * 根据id得到主表Id
+     * 根据id得到主表Id和price_data_id
      * @param ids
      * @return
      */
     @Override
-    public List<Long> getPriceDataIds(List<Long> ids) {
+    public RelevanceForMainData getPriceDataIds(List<Long> ids) {
         return baseMapper.getPriceDataIds(ids);
     }
 
@@ -105,8 +105,8 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
      * @return
      */
     @Override
-    public Long getMainId(Long id) {
-        return baseMapper.getMainId(id);
+    public Long getPriceDataId(Long id) {
+        return baseMapper.getPriceDataId(id);
     }
 
     /**
@@ -118,5 +118,17 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
     public Long addReferenceSale(PriceExpSalePo priceExpSalePo) {
         Integer integer = baseMapper.addPriceExpSale(priceExpSalePo);
         return integer > 0 ? priceExpSalePo.getId() : 0L;
+    }
+
+    /**
+     * 构建批量删除销售价格表条件集合
+     * @param ids
+     * @return
+     */
+    @Override
+    public List<PriceListForDelBatch> getPriceListForDel(List<Long> ids) {
+
+        List<PriceListForDelBatch> saleDataList = baseMapper.getPriceListForDel(ids);
+        return null;
     }
 }

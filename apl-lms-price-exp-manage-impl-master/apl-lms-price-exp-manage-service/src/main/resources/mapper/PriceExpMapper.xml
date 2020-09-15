@@ -6,7 +6,7 @@
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
             main.id as priceMainId, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
-            main.main_status, main.special_commodity,
+            main.main_status, main.special_commodity, main.price_data_id,
             sale.id, sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
             sale.channel_category, sale.price_status
         from
@@ -28,14 +28,20 @@
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>
-        <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
-            and main.main_status = #{key.mainStatus}
+        <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
+            and sale.price_status = #{key.mainStatus}
         </if>
-        <if test="key.mainStatus == 4">
-            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
+        <!-- 未过期 -->
+        <if test="key.priceStatus == 4">
+            and main.end_date > now()
         </if>
-        <if test="key.mainStatus == 5">
-            and now() - main.end_date > '0 day'
+        <!-- 即将过期 -->
+        <if test="key.priceStatus == 5">
+            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '7 day'
+        </if>
+        <!-- 已过期 -->
+        <if test="key.priceStatus == 6">
+            and now() > main.end_date
         </if>
         <if test="key.specialCommodity > 0">
             and main.special_commodity = #{key.specialCommodity}
@@ -45,9 +51,6 @@
         </if>
         <if test="key.customerId != null">
             and sale.customer_ids @> #{key.customerId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
-        </if>
-        <if test="key.priceStatus != null and key.priceStatus > 0">
-            and sale.price_status = #{key.priceStatus}
         </if>
         <if test="key.channelCategory != null">
             and sale.channel_category = #{key.channelCategory}
@@ -63,7 +66,7 @@
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
         main.id as priceMainId, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
-        main.main_status, main.special_commodity,
+        main.main_status, main.special_commodity, main.price_data_id,
         cost.id, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
         from
         price_exp_cost cost
@@ -83,26 +86,23 @@
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>
-        <if test="key.mainStatus > 0 and key.mainStatus &lt; 4">
-            and main.main_status = #{key.mainStatus}
+        <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
+            and cost.price_status = #{key.mainStatus}
         </if>
         <!-- 未过期 -->
-        <if test="key.mainStatus == 4">
+        <if test="key.priceStatus == 4">
             and main.end_date > now()
         </if>
         <!-- 即将过期 -->
-        <if test="key.mainStatus == 5">
+        <if test="key.priceStatus == 5">
             and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '7 day'
         </if>
         <!-- 已过期 -->
-        <if test="key.mainStatus == 6">
-            and now() - main.end_date > '0 day'
+        <if test="key.priceStatus == 6">
+            and now() > main.end_date
         </if>
         <if test="key.partnerId != null">
             and cost.partner_id = #{key.partnerId}
-        </if>
-        <if test="key.priceStatus != null and key.priceStatus > 0">
-            and cost.price_status = #{key.priceStatus}
         </if>
         <if test="key.channelCategory != null">
             and cost.channel_category = #{key.channelCategory}
@@ -116,7 +116,7 @@
     <!--分页查询公布价价格列表 -->
     <select id="getPublishedPriceList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
-        main.id as priceMainId, main.start_date, main.end_date, main.currency, main.main_status,
+        main.id as priceMainId, main.start_date, main.end_date, main.currency, main.main_status, main.price_data_id,
         cost.id, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
         from
         price_exp_cost cost
@@ -142,7 +142,7 @@
         insert into
              price_exp_main(id, start_date, end_date, currency, zone_id, volume_divisor, account_type, account_no,
              main_status, special_commodity, price_form, start_weight, end_weight, price_published_id,
-             is_published_price, aging, inner_org_id)
+             is_published_price, aging, inner_org_id, price_data_id)
          values
              (#{po.id},
              #{po.startDate},
@@ -160,7 +160,8 @@
              #{po.pricePublishedId},
              #{po.isPublishedPrice},
              #{po.aging},
-             #{po.innerOrgId})
+             #{po.innerOrgId}),
+             #{po.priceDataId}
      </insert>
 
 
@@ -172,7 +173,6 @@
     <!--获取主表详细-->
     <select id="getPriceExpMainInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo">
         select
-            id,
             start_date,
             end_date,
             currency,
@@ -186,7 +186,8 @@
             start_weight,
             end_weight,
             is_published_price,
-            aging
+            aging,
+            price_data_id
         from
             price_exp_main
         where

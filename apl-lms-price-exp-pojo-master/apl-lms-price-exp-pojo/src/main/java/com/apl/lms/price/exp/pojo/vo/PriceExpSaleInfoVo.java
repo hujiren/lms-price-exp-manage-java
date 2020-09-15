@@ -69,6 +69,8 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
 
+    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
+    private Long priceDataId;
     //销售表
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;

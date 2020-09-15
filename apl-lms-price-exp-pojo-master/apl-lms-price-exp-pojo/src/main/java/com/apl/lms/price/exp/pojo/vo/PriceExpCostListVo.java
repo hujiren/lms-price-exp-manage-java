@@ -24,6 +24,10 @@ public class PriceExpCostListVo extends Model<PriceExpCostListVo> {
     @ApiModelProperty(name = "priceMainId" , value = "主表id")
     private Long priceMainId;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
+    private Long priceDataId;
+
     @ApiModelProperty(name = "priceCode" , value = "成本价格表代码")
     private String priceCode;
 

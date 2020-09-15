@@ -20,16 +20,16 @@ public interface PriceExpAxisService extends IService<PriceExpAxisPo> {
      * @param priceExpMainIds
      * @return
      */
-    Integer deleteByPriceExpMainId(List<Long> priceExpMainIds);
+    Integer deleteByIds(List<Long> priceExpMainIds);
 
 
     /**
      * 保存价格表轴数据
-     * @param priceMainId
+     * @param priceDataId
      * @param priceExpAxisAddDto
      * @return
      */
-    Boolean addPriceExpAxis(Long priceMainId, PriceExpAxisAddDto priceExpAxisAddDto);
+    Boolean addPriceExpAxis(Long priceDataId, PriceExpAxisAddDto priceExpAxisAddDto);
 
     /**
      * 更新

@@ -12,8 +12,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,25 +29,22 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     PriceExpSaleService priceExpSaleService;
 
     @Override
-    public Integer deleteByPriceExpMainId(List<Long> priceExpMainIds) {
-        return baseMapper.deleteByMainIds(priceExpMainIds);
+    public Integer deleteBatchById(List<Long> ids) {
+        return baseMapper.deleteBatchById(ids);
     }
 
     /**
      * 根据价格表Id获取详细
-     * @param id
+     * @param priceId
      * @return
      */
     @Override
-    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) {
-        //根据价格表Id获取主表Id
-        Long mainId = 0L;
-        mainId = priceExpCostService.getMainId(id);
-        if(null == mainId || mainId == 0){
-            mainId = priceExpSaleService.getMainId(id);
-        }
+    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long priceId) {
 
-        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoByMainId(mainId);
+        //判断是成本表还是销售表
+        Long mainId = priceExpCostService.getPriceDataId(priceId);
+        Long mainId2 = priceExpSaleService.getPriceDataId(priceId);
+        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoById(priceId);
         if (priceExpDataVo == null) {
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
         }
@@ -60,16 +55,16 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
 
     /**
      * 保存价格表数据
-     * @param priceMainId
+     * @param priceDataId
      * @param priceExpDataAddDto
      * @return
      */
     @Override
-    public Boolean addPriceExpData(Long priceMainId, PriceExpDataAddDto priceExpDataAddDto) {
+    public Boolean addPriceExpData(Long priceDataId, PriceExpDataAddDto priceExpDataAddDto) {
 
         PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
         priceExpDataPo.setPriceData(priceExpDataAddDto.getPriceData());
-        priceExpDataPo.setPriceMainId(priceMainId);
+        priceExpDataPo.setId(priceDataId);
         Integer saveSuccess = baseMapper.insertData(priceExpDataPo);
         return saveSuccess > 0 ? true :false;
     }
@@ -80,8 +75,8 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      * @return
      */
     @Override
-    public Boolean updateByMainId(PriceExpDataPo priceExpDataPo) {
-        Integer integer = baseMapper.updateByMainId(priceExpDataPo);
+    public Boolean updById(PriceExpDataPo priceExpDataPo) {
+        Integer integer = baseMapper.updById(priceExpDataPo);
         return integer > 0 ? true : false;
     }
 }

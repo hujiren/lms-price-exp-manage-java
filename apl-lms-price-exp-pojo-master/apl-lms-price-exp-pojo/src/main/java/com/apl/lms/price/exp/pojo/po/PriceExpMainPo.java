@@ -27,6 +27,9 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "id" , value = "销售价格主表Id")
     private Long id;
 
+    @ApiModelProperty(name = "priceDataId" , value = "数据表Id")
+    private Long priceDataId;
+
     @ApiModelProperty(name = "startDate" , value = "起始日期")
     private Timestamp startDate;
 

@@ -19,6 +19,10 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
+    private Long priceDataId;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "mainId" , value = "主表id")
     private Long mainId;
 

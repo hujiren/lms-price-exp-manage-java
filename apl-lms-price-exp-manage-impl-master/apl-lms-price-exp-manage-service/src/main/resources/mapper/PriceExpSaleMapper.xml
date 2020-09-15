@@ -58,8 +58,10 @@
     </select>
 
     <!--根据id得到主表id-->
-    <select id="getPriceDataIds" resultType="java.lang.Long">
-        select price_main_id from price_exp_sale where id in
+    <select id="getPriceDataIds" resultType="com.apl.lms.price.exp.pojo.entity.RelevanceForMainData">
+        select main.id, main.price_data_id from price_exp_main main
+        left join
+        price_exp_sale sale on sale.price_main_id = main.id where sale.id in
         <foreach collection="ids" item="row" open="(" close=")" separator=",">
             #{row}
         </foreach>
@@ -92,8 +94,33 @@
     </update>
 
     <!--获取主表id-->
-    <select id="getMainId" resultType="java.lang.Long">
-        select price_main_id from price_exp_sale where id = #{id}
+    <select id="getPriceDataId" resultType="java.lang.Long">
+        select
+            main.price_data_id
+        from
+            price_exp_main main
+        left join
+            price_exp_sale sale
+        on
+            main.id = sale.price_main_id
+        where
+            sale.id = #{id}
+    </select>
+
+    <!--构建批量删除销售价格表条件集合-->
+    <select id="getPriceListForDel" resultType="com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch">
+        select
+            sale.id,
+            sale.quote_price_id,
+            sale.price_main_id,
+            main.price_data_id
+        from
+            price_exp_sale sale left join price_exp_main main on sale.price_main_id = main.id
+        where
+            sale.id in
+        <foreach collection="ids" index="" item="row" close=")" open="(" separator=",">
+            #{row}
+        </foreach>
     </select>
 
 </mapper>

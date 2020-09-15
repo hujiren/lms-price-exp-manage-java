@@ -12,4 +12,11 @@
             price_id = #{priceId}
     </select>
 
+    <!--根据价格表id批量删除-->
+    <delete id="deleteBatch">
+        delete from price_computational_formula where id in
+        <foreach collection="ids" separator="," open="(" close=")" item="row" index="">
+            #{row}
+        </foreach>
+    </delete>
 </mapper>

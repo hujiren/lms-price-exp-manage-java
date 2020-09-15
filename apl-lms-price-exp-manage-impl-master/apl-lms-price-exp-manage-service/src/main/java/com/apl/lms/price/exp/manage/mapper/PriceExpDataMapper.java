@@ -17,10 +17,10 @@ public interface PriceExpDataMapper extends BaseMapper<PriceExpDataPo> {
 
     /**
      * 根据价格表id获取详细数据
-     * @param id
+     * @param priceId
      * @return
      */
-    PriceExpDataVo getPriceExpDataInfoByMainId(@Param("id") Long id);
+    PriceExpDataVo getPriceExpDataInfoById(@Param("priceId") Long priceId);
 
     /**
      * 新增
@@ -34,12 +34,12 @@ public interface PriceExpDataMapper extends BaseMapper<PriceExpDataPo> {
      * @param priceExpDataPo
      * @return
      */
-    Integer updateByMainId(@Param("po") PriceExpDataPo priceExpDataPo);
+    Integer updById(@Param("po") PriceExpDataPo priceExpDataPo);
 
     /**
      * 批量删除
-     * @param priceExpMainIds
+     * @param ids
      * @return
      */
-    Integer deleteByMainIds(@Param("ids") List<Long> priceExpMainIds);
+    Integer deleteBatchById(@Param("ids") List<Long> ids);
 }

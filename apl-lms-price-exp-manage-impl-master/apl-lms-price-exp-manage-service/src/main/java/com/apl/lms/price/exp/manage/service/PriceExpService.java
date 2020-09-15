@@ -104,23 +104,17 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
 
 
     /**
-     * 根据id批量删除成本价格数据
+     * 根据id批量删除价格数据
      * @param ids
      * @return
      */
-    ResultUtil<Boolean> deleteCostBatch(List<Long> ids);
+    ResultUtil<Boolean> deletePriceBatch(List<Long> ids, Integer priceType, Boolean delSaleAndCost);
 
-    /**
-     * 根据id批量删除销售价格数据
-     * @param ids
-     * @return
-     */
-    ResultUtil<Boolean> deleteSaleBatch(List<Long> ids);
 
     /**
      * 引用价格表
      * @param referencePriceDto
      * @return
      */
-    ResultUtil<Long> referencePriceList(ReferencePriceDto referencePriceDto);
+    ResultUtil<Long> referencePrice(ReferencePriceDto referencePriceDto);
 }

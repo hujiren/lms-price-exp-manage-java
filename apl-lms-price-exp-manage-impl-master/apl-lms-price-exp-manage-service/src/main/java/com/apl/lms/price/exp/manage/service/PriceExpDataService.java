@@ -17,32 +17,32 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
 
     /**
      * 根据价格主表删除数据
-     * @param priceExpMainIds
+     * @param ids
      * @return
      */
-    Integer deleteByPriceExpMainId(List<Long> priceExpMainIds);
+    Integer deleteBatchById(List<Long> ids);
 
     /**
      * 根据价格表id获取主数据信息
-     * @param id
+     * @param priceId
      * @return
      */
-    ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id);
+    ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long priceId);
 
 
 
     /**
      * 保存价格表数据
-     * @param priceMainId
+     * @param priceDataId
      * @param priceExpDataAddDto
      * @return
      */
-    Boolean addPriceExpData(Long priceMainId, PriceExpDataAddDto priceExpDataAddDto);
+    Boolean addPriceExpData(Long priceDataId, PriceExpDataAddDto priceExpDataAddDto);
 
     /**
      * 更新
      * @param priceExpDataPo
      * @return
      */
-    Boolean updateByMainId(PriceExpDataPo priceExpDataPo);
+    Boolean updById(PriceExpDataPo priceExpDataPo);
 }
