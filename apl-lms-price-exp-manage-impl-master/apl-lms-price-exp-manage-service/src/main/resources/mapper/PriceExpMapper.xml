@@ -29,6 +29,7 @@
             and main.account_type = #{key.accountType}
         </if>
         <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
+<<<<<<< HEAD
             and sale.price_status = #{key.mainStatus}
         </if>
         <!-- 未过期 -->
@@ -42,6 +43,15 @@
         <!-- 已过期 -->
         <if test="key.priceStatus == 6">
             and now() > main.end_date
+=======
+            and main.main_status = #{key.priceStatus}
+        </if>
+        <if test="key.priceStatus == 4">
+            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
+        </if>
+        <if test="key.priceStatus == 5">
+            and now() - main.end_date > '0 day'
+>>>>>>> ffd0f379bc0e6e4c277678d1fe5dc10c87477ce7
         </if>
         <if test="key.specialCommodity > 0">
             and main.special_commodity = #{key.specialCommodity}
@@ -87,7 +97,11 @@
             and main.account_type = #{key.accountType}
         </if>
         <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
+<<<<<<< HEAD
             and cost.price_status = #{key.mainStatus}
+=======
+            and main.main_status = #{key.priceStatus}
+>>>>>>> ffd0f379bc0e6e4c277678d1fe5dc10c87477ce7
         </if>
         <!-- 未过期 -->
         <if test="key.priceStatus == 4">
@@ -99,7 +113,11 @@
         </if>
         <!-- 已过期 -->
         <if test="key.priceStatus == 6">
+<<<<<<< HEAD
             and now() > main.end_date
+=======
+            and now() - main.end_date > '0 day'
+>>>>>>> ffd0f379bc0e6e4c277678d1fe5dc10c87477ce7
         </if>
         <if test="key.partnerId != null">
             and cost.partner_id = #{key.partnerId}

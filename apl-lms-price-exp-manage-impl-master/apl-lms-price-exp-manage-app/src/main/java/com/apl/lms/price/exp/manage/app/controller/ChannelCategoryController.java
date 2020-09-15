@@ -1,12 +1,15 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
+import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
+import com.apl.lib.reflect.MethodManage;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.ChannelCategoryUpdDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCategoryAddDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
+import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.Method;
 
 /**
  * @author hjr start
@@ -34,7 +38,7 @@ public class  ChannelCategoryController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取渠道类型列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto , ChannelCategoryKeyDto channelCateGoryKeyDto){
+    public ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto , ChannelCategoryKeyDto channelCateGoryKeyDto) throws Exception {
 
         return channelCategoryService.getList(pageDto, channelCateGoryKeyDto);
     }

@@ -39,6 +39,8 @@ public class LmsPriceExpManageApplication {
         //com.apl.shardingjdbc.mybatis.ShardingJdbcMybatisConfig
         //mybatis-plus.pagination.tenantTableFilter
         //AbstractDataSourceAdapter
+        //com.apl.shardingjdbc.ShardingDataSourceConfig
+
         SpringApplication.run(LmsPriceExpManageApplication.class , args);
     }
 }
