@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author hjr start
@@ -18,10 +19,9 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "快递销售价格利润-组装对象", description = "快递销售价格利润-组装对象")
 public class PriceExpSaleProfitBo {
 
-    @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称", required = true)
-    @NotBlank(message = "客户组名称不能为空")
-    @Length(max = 50, message = "客户组名称长度不能超过50")
-    private String customerGroupsName;
+    @ApiModelProperty(name = "customerGroup" , value = "客户组", required = true)
+    @NotBlank(message = "客户组不能为空")
+    private Long customerGroup;
 
     @ApiModelProperty(name = "zoneNum", value = "分区号")
     @Length(max = 3, message = "分区号最大长度为3")

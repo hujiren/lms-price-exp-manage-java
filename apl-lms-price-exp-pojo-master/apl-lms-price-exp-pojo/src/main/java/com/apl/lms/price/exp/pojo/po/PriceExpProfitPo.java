@@ -35,12 +35,12 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
 
     @ApiModelProperty(name = "priceSaleId", value = "销售价id", required = true)
     @NotNull(message = "id不能为空")
-    @Min(value = 0, message = "销售价id不不合法")
+    @Min(value = 0, message = "id不能小于0")
     @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
-    @ApiModelProperty(name = "priceId", value = "价格表id")
-    @Min(value = 0, message = "销售价id不不合法")
+    @ApiModelProperty(name = "priceId", value = "快递价格id不不合法")
+    @Min(value = 0, message = "快递价格id不能小于0")
     private Long priceId;
 
     @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
@@ -50,10 +50,6 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
     @ApiModelProperty(name = "finalProfit", value = "最终利润", hidden = true)
     private List<PriceExpSaleProfitBo> finalProfit;
 
-    @ApiModelProperty(name = "startWeight", value = "起始重", required = true)
-    @NotNull(message = "起始重不能为空")
-    @Min(value = 0, message = "起始重不能小于0")
-    private Double startWeight;
 
     private static final long serialVersionUID = 1L;
 
