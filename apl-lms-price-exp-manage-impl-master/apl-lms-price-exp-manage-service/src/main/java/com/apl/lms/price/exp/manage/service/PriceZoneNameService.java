@@ -4,7 +4,6 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
-import com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -17,12 +16,19 @@ import java.util.List;
 public interface PriceZoneNameService extends IService<PriceZoneNamePo> {
 
     /**
+     * 获取快递分区名称
+     * @param id
+     * @return
+     */
+    ResultUtil<String> getPriceZoneName(Long id);
+
+    /**
      * 分页查询快递分区名称列表
      * @param pageDto
      * @param priceZoneNameKeyDto
      * @return
      */
-    ResultUtil<Page<PriceZoneNameVo>> getPriceZoneNameList(PageDto pageDto, PriceZoneNameKeyDto priceZoneNameKeyDto);
+    ResultUtil<Page<PriceZoneNamePo>> getPriceZoneNameList(PageDto pageDto, PriceZoneNameKeyDto priceZoneNameKeyDto);
 
     /**
      * 批量从删除快递分区名称

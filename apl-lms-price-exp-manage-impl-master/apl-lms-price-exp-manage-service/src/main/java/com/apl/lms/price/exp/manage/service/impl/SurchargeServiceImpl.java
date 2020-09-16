@@ -7,7 +7,7 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.SurchargeMapper;
 import com.apl.lms.price.exp.manage.service.SurchargeService;
 import com.apl.lms.price.exp.pojo.dto.SurchargeUpdDto;
-import com.apl.lms.price.exp.pojo.dto.SurchargeAddDto;
+import com.apl.lms.price.exp.pojo.po.SurchargePo;
 import com.apl.lms.price.exp.pojo.dto.SurchargeKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -89,18 +89,18 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
 
     /**
      * 添加附加费
-     * @param surchargeAddDtoList
+     * @param surchargePoList
      * @return
      */
     @Override
-    public ResultUtil<Integer> addSurcharge(List<SurchargeAddDto> surchargeAddDtoList) {
+    public ResultUtil<Integer> addSurcharge(List<SurchargePo> surchargePoList) {
 
-        for (SurchargeAddDto surchargeDtoList : surchargeAddDtoList) {
+        for (SurchargePo surchargeDtoList : surchargePoList) {
 
             surchargeDtoList.setId(SnowflakeIdWorker.generateId());
         }
 
-        Integer integer = baseMapper.addSurcharge(surchargeAddDtoList);
+        Integer integer = baseMapper.addSurcharge(surchargePoList);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }

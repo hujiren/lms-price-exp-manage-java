@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper">
 
     <!--分页查询渠道类型-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.po.ChannelCategoryPo">
         select
             id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_divisor
         from

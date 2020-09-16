@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
@@ -31,10 +32,12 @@ public class ChannelCategoryPo extends Model<ChannelCategoryPo> {
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)
     @NotBlank(message = "渠道类型不能为空")
+    @Length(max = 20, message = "渠道类型长度不能超过20")
     private String channelCategory;
 
     @ApiModelProperty(name = "weightWay" , value = "计泡方式" , required = true)
     @NotBlank(message = "计泡方式不能为空")
+    @Length(max = 20, message = "计泡方式长度不能超过20")
     private String weightWay;
 
     @ApiModelProperty(name = "volumeWeightWay" , value = "材积计重方式 1按多件 2按单件及进位 3按单件不进位" , required = true)
@@ -44,6 +47,7 @@ public class ChannelCategoryPo extends Model<ChannelCategoryPo> {
 
     @ApiModelProperty(name = "carrier" , value = "承运商" , required = true)
     @NotBlank(message = "承运商不能为空")
+    @Length(max = 50, message = "承运商长度不能超过50")
     private String carrier;
 
     @ApiModelProperty(name = "cargoType" , value = "运件类型 1国际快递 2国际空运 3国际海运 4国际小巴 5空派 6海派" , required = true)
@@ -52,7 +56,7 @@ public class ChannelCategoryPo extends Model<ChannelCategoryPo> {
     private Integer cargoType;
 
     @ApiModelProperty(name = "volumeDivisor" , value = "体积基数" , required = true)
-    @Range(min = 1, message = "体重基数不能小于1")
+    @Range(min = 5000, max = 9999, message = "体重基数取值范围5000-9999")
     @NotNull(message = "体积基数不能为空")
     private Integer volumeDivisor;
 }

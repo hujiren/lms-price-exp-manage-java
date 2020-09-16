@@ -1,12 +1,13 @@
-package com.apl.lms.price.exp.pojo.dto;
-
-import com.baomidou.mybatisplus.annotation.IdType;
+package com.apl.lms.price.exp.pojo.po;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -15,29 +16,36 @@ import javax.validation.constraints.NotNull;
  * @date 2020/8/8 - 9:17
  */
 @Data
+@TableName("price_surcharge")
 @ApiModel(value = "附加费插入对象", description = "附加费插入对象")
-public class SurchargeAddDto {
+public class SurchargePo extends Model<SurchargePo> {
 
+    @TableId("id")
     @ApiModelProperty(name = "id", value = "附加费Id", hidden = true)
     private Long id;
 
     @ApiModelProperty(name = "chargeName", value = "附加费名称", required = true)
     @NotBlank(message = "附加费名称不能为空")
+    @Length(max = 50, message = "附加费名称长度不能超过50")
     private String chargeName;
 
     @ApiModelProperty(name = "chargeNameEn", value = "附加费英文名称", required = true)
     @NotBlank(message = "附加费英文名称不能为空")
+    @Length(max = 50, message = "附加费英文名称长度不能超过50")
     private String chargeNameEn;
 
     @ApiModelProperty(name = "computingFormula", value = "计算公式", required = true)
     @NotBlank(message = "计算公式不能为空")
+    @Length(max = 50, message = "计算公式长度不能超过50")
     private String computingFormula;
 
     @ApiModelProperty(name = "currency", value = "币制", required = true)
     @NotBlank(message = "币制不能为空")
+    @Length(max = 50, message = "币制长度不能超过50")
     private String currency;
 
     @ApiModelProperty(name = "code", value = "代码", required = true)
     @NotNull(message = "code不能为空")
+    @Min(value = 0, message = "计算公式简码不能小于0")
     private Integer code;
 }

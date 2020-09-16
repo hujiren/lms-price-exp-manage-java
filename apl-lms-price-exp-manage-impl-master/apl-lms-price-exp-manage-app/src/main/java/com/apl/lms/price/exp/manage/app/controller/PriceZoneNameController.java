@@ -5,7 +5,6 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
-import com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,9 +30,16 @@ public class PriceZoneNameController {
     @Autowired
     PriceZoneNameService priceZoneService;
 
+    @PostMapping(value = "/get-zone-name")
+    @ApiOperation(value =  "获取快递分区名称" , notes = "获取快递分区名称")
+    public ResultUtil<String> getZoneName(Long id){
+
+        return priceZoneService.getPriceZoneName(id);
+    }
+
     @PostMapping(value = "/get-zone-name-list")
     @ApiOperation(value =  "分页获取快递分区名称列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<PriceZoneNameVo>> getList(PageDto pageDto ,
+    public ResultUtil<Page<PriceZoneNamePo>> getList(PageDto pageDto ,
                                                      @Validated PriceZoneNameKeyDto priceZoneNameKeyDto){
 
         return priceZoneService.getPriceZoneNameList(pageDto, priceZoneNameKeyDto);

@@ -3,7 +3,7 @@ package com.apl.lms.price.exp.manage.service;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.SurchargeUpdDto;
-import com.apl.lms.price.exp.pojo.dto.SurchargeAddDto;
+import com.apl.lms.price.exp.pojo.po.SurchargePo;
 import com.apl.lms.price.exp.pojo.dto.SurchargeKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -46,7 +46,7 @@ public interface SurchargeService extends IService<SurchargeUpdDto> {
      * @author hjr
      * @since 2020-08-08
      */
-    ResultUtil<Integer> addSurcharge(List<SurchargeAddDto> surchargeAddDtoList);
+    ResultUtil<Integer> addSurcharge(List<SurchargePo> surchargePoList);
 
     /**
      * 获取附加费详细

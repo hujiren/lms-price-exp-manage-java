@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
-import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;

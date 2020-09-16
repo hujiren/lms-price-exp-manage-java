@@ -3,7 +3,7 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.SurchargeService;
 import com.apl.lms.price.exp.pojo.dto.SurchargeUpdDto;
-import com.apl.lms.price.exp.pojo.dto.SurchargeAddDto;
+import com.apl.lms.price.exp.pojo.po.SurchargePo;
 import com.apl.lms.price.exp.pojo.dto.SurchargeKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -57,9 +57,9 @@ public class SurchargeController {
 
     @PostMapping(value = "/add-batch")
     @ApiOperation(value =  "批量新增" , notes = "批量新增附加费")
-    public ResultUtil<Integer> addBatch(@RequestBody List<SurchargeAddDto> surchargeAddDtoList){
+    public ResultUtil<Integer> addBatch(@RequestBody List<SurchargePo> surchargePoList){
 
-        return surchargeService.addSurcharge(surchargeAddDtoList);
+        return surchargeService.addSurcharge(surchargePoList);
     }
 
     @PostMapping(value = "/get")

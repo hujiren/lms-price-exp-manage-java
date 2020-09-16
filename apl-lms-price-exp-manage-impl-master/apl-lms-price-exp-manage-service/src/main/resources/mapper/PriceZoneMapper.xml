@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceZoneMapper">
 
     <!--分页查询快递分区列表-->
-    <select id="getPriceZoneNameList" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo" parameterType="com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto">
+    <select id="getPriceZoneNameList" resultType="com.apl.lms.price.exp.pojo.po.PriceZoneNamePo" parameterType="com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto">
         select
             id, channel_category, zone_name
         from
@@ -16,6 +16,14 @@
         <if test="dto.keyword != null">
             and zone_name LIKE CONCAT( '%' , #{dto.keyword} , '%' )
         </if>
+    </select>
+    <select id="getPriceZoneName" resultType="java.lang.String">
+        select
+        zone_name
+        from
+        price_zone
+        where
+         id=#{id}
     </select>
 
 

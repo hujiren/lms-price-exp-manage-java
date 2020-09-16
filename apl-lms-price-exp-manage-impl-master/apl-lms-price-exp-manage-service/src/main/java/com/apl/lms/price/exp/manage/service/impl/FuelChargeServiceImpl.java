@@ -90,11 +90,6 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         fuelChargePo.setChannelCategory(fuelChargeSaveDto.getChannelCategory());
         fuelChargePo.setId(fuelChargeSaveDto.getId());
 
-        FuelChargeVo fuelChargeVo = baseMapper.getFuelCharge(fuelChargePo.getId());
-        if(fuelChargeVo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
-        }
-
         Integer integer = baseMapper.updFuelCharge(fuelChargePo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);

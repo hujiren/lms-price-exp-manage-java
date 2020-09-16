@@ -1,19 +1,13 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import com.apl.lib.constants.CommonStatusCode;
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.ComputationalFormulaMapper;
 import com.apl.lms.price.exp.manage.service.ComputationalFormulaService;
-import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
-import com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -45,9 +39,9 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
      * @return
      */
     @Override
-    public ResultUtil<List<ComputationalFormulaVo>> getList(Long priceId) {
+    public ResultUtil<List<PriceExpComputationalFormulaPo>> getList(Long priceId) {
 
-        List<ComputationalFormulaVo> computationalFormulaVoList = baseMapper.getList(priceId);
+        List<PriceExpComputationalFormulaPo> computationalFormulaVoList = baseMapper.getList(priceId);
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, computationalFormulaVoList);
     }
@@ -96,17 +90,6 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceExpComputationalFormulaPo.getId());
-    }
-
-    /**
-     * 根据价格表id批量删除
-     * @param ids
-     * @return
-     */
-    @Override
-    public Integer deleteBatch(List<Long> ids) {
-        Integer integer = baseMapper.deleteBatch(ids);
-        return integer;
     }
 
     /**

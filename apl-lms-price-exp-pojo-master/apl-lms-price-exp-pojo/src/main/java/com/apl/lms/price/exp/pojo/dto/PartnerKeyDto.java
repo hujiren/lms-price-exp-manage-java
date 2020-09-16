@@ -16,6 +16,9 @@ public class PartnerKeyDto {
     @ApiModelProperty(name = "keyword", value = "关键字")
     private String keyword;
 
+    @ApiModelProperty(name = "code", value = "服务商简码")
+    private String code;
+
     public String getKeyword() {
         if (keyword != null && keyword.trim().equals(""))
             keyword = null;

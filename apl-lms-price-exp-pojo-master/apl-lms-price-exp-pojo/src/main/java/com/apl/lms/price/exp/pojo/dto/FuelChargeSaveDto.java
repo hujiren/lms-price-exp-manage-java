@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,14 +21,17 @@ public class FuelChargeSaveDto extends Model<FuelChargeSaveDto> {
 
     @ApiModelProperty(name = "id" , value = "id", required = true)
     @NotNull(message = "id不能为空")
+    @Min(value = 0, message = "id不能小于0")
     private Long id;
 
     @ApiModelProperty(name = "startDate" , value = "起始时间" , required = true)
     @NotNull(message = "起始时间不能为空")
+    @Min(value = 0, message = "起始时间不能小于0")
     private Long startDate;
 
     @ApiModelProperty(name = "endDate" , value = "截止时间" , required = true)
     @NotNull(message = "截止时间不能为空")
+    @Min(value = 0, message = "截止时间不能小于0")
     private Long endDate;
 
     @ApiModelProperty(name = "fuelCharge" , value = "燃油费" , required = true)
@@ -34,6 +40,8 @@ public class FuelChargeSaveDto extends Model<FuelChargeSaveDto> {
     private Double fuelCharge;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型" , required = true)
+    @NotBlank(message = "渠道类型不能为空")
+    @Length(max = 20, message = "渠道类型长度不能超过20")
     private String channelCategory;
 
     public String getChannelCategory() {

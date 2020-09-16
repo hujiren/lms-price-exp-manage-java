@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.CacheMapper">
 
     <!--添加服务商缓存-->
-    <select id="addPartnerCache">
+    <select id="addPartnerCache" resultType="com.apl.lms.price.exp.lib.cache.bo.PartnerCacheBo">
         select
             concat('JOIN_CACHE:partner_',  ${innerOrgId}, '_', id) AS cache_key,
             id,
@@ -14,7 +14,7 @@
             partner
         where
         <if test="minKey>0 and minKey==maxKey">
-            id = #{keys}
+            id in (${keys})
         </if>
         <if test="minKey!=maxKey">
             id BETWEEN #{minKey} AND #{maxKey} AND id in(${keys})

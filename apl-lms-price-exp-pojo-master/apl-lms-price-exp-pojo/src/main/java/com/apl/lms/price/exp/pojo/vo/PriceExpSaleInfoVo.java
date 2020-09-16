@@ -1,7 +1,5 @@
 package com.apl.lms.price.exp.pojo.vo;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
-import com.apl.lms.price.exp.pojo.entity.Customer;
-import com.apl.lms.price.exp.pojo.entity.CustomerGroupInfo;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -23,6 +21,27 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @ApiModelProperty(name = "id" , value = "价格表id")
     private Long id;
 
+    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
+    private Long priceDataId;
+
+    @ApiModelProperty(name = "priceCode" , value = "价格表代码")
+    private String priceCode;
+
+    @ApiModelProperty(name = "priceName" , value = "价格表名称")
+    private String priceName;
+
+    @ApiModelProperty(name = "customerGroupVo", value = "客户组")
+    private List<CustomerGroupVo> customerGroupVo;
+
+    @ApiModelProperty(name = "customerVos", value = "客户")
+    private List<CustomerVo> customerVos;
+
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
+    private String channelCategory;
+
+    @ApiModelProperty(name = "priceStatus" , value = "状态 1正常 2计账 3无效")
+    private Integer priceStatus;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "mainId" , value = "主表id")
     private Long mainId;
@@ -37,8 +56,10 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     private String currency;
 
     @ApiModelProperty(name = "zoneTabId" , value = "分区表Id")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long zoneId;
+
+    @ApiModelProperty(name = "zoneName" , value = "分区表名称")
+    private String zoneName;
 
     @ApiModelProperty(name = "volumeDivisor" , value = "体积除数")
     private Integer volumeDivisor;
@@ -52,8 +73,8 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @ApiModelProperty(name = "specialCommodityStr" , value = "特殊物品", hidden = true)
     private String specialCommodityStr;
 
-    @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private List<SpecialCommodityDto> specialCommodity;
+    @ApiModelProperty(name = "specialCommodityVo" , value = "特殊物品")
+    private List<SpecialCommodityDto> specialCommodityVo;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;
@@ -70,28 +91,8 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
 
-    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
-    private Long priceDataId;
-    //销售表
-    @ApiModelProperty(name = "priceCode" , value = "价格表代码")
-    private String priceCode;
 
-    @ApiModelProperty(name = "priceName" , value = "价格表名称")
-    private String priceName;
 
-    @ApiModelProperty(name = "customerGroupInfo", value = "客户组")
-    private List<CustomerGroupInfo> customerGroupInfo;
-
-    @ApiModelProperty(name = "customers", value = "客户")
-    private List<Customer> customers;
-
-    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
-    private String channelCategory;
-
-    @ApiModelProperty(name = "priceStatus" , value = "状态 1正常 2计账 3无效")
-    private Integer priceStatus;
-
-    //扩展数据
     @ApiModelProperty(name = "remark" , value = "备注")
     private String remark;
 

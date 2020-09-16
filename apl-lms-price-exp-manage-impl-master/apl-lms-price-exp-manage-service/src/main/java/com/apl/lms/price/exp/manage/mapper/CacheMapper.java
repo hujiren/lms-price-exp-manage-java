@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.Map;
 
 /**
@@ -18,7 +17,7 @@ public interface CacheMapper extends BaseMapper {
 
     //添加服务商缓存
     @MapKey("cacheKey")
-    Map<String, PartnerCacheBo> addPartnerCache(@Param("key") String keys,
+    Map<String, PartnerCacheBo> addPartnerCache(@Param("keys") String keys,
                                                 @Param("minKey") Long minKey,
                                                 @Param("maxKey") Long maxKey,
                                                 @Param("innerOrgId") Long innerOrgId);

@@ -3,7 +3,6 @@ package com.apl.lms.price.exp.manage.app.controller;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.ComputationalFormulaService;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
-import com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +32,7 @@ public class ComputationalFormulaController {
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "获取报价计算公式列表" , notes = "")
     @ApiImplicitParam(name = "priceId",value = "价格表id",required = true  , paramType = "query")
-    public ResultUtil<List<ComputationalFormulaVo>> getList(@NotNull @Min(value = 1, message = "id不能小于1") Long priceId){
+    public ResultUtil<List<PriceExpComputationalFormulaPo>> getList(@NotNull @Min(value = 1, message = "id不能小于1") Long priceId){
 
         return computationalFormulaService.getList(priceId);
     }

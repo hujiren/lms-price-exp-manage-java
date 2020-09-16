@@ -2,9 +2,7 @@ package com.apl.lms.price.exp.manage.service;
 
 
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
-import com.apl.lms.price.exp.pojo.vo.ComputationalFormulaVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
@@ -19,7 +17,7 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @param priceId
      * @return
      */
-    ResultUtil<List<ComputationalFormulaVo>> getList(Long priceId);
+    ResultUtil<List<PriceExpComputationalFormulaPo>> getList(Long priceId);
 
     /**
      * 删除计算公式
@@ -41,13 +39,6 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @return
      */
     ResultUtil<Long> addComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo);
-
-    /**
-     * 根据价格表id批量删除
-     * @param ids
-     * @return
-     */
-    Integer deleteBatch(List<Long> ids);
 
     /**
      * 批量删除

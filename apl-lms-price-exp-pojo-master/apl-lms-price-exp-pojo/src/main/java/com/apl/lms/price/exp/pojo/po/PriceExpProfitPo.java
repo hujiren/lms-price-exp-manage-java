@@ -54,6 +54,7 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
 
     @ApiModelProperty(name = "startWeight", value = "起始重", required = true)
     @NotNull(message = "起始重不能为空")
+    @Min(value = 0, message = "起始重不能小于0")
     private Double startWeight;
 
     private static final long serialVersionUID = 1L;

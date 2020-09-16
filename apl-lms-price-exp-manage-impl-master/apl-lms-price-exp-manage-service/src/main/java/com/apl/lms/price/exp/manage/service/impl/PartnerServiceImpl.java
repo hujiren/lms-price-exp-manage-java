@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
@@ -8,15 +7,11 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PartnerMapper;
 import com.apl.lms.price.exp.manage.service.PartnerService;
 import com.apl.lms.price.exp.pojo.dto.PartnerKeyDto;
-import com.apl.lms.price.exp.pojo.dto.PartnerAddDto;
 import com.apl.lms.price.exp.pojo.po.PartnerPo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -47,7 +42,9 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
         Page<PartnerPo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
-
+        if(null != partnerKeyDto && partnerKeyDto.getCode() != null){
+            partnerKeyDto.setCode(partnerKeyDto.getCode().toUpperCase());
+        }
         List<PartnerPo> partnerPoList = baseMapper.getList(page, partnerKeyDto);
 
         page.setRecords(partnerPoList);
@@ -66,7 +63,7 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
 
     @Override
     public ResultUtil<Boolean> updPartner(PartnerPo partnerPo) {
-
+        partnerPo.setPartnerCode(partnerPo.getPartnerCode().toUpperCase());
         Integer integer = baseMapper.updateById(partnerPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
@@ -76,10 +73,9 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
     }
 
     @Override
-    public ResultUtil<Integer> addPartner(PartnerAddDto partnerAddDto) {
+    public ResultUtil<Integer> addPartner(PartnerPo partnerPo) {
 
-        PartnerPo partnerPo = new PartnerPo();
-        BeanUtil.copyProperties(partnerAddDto, partnerPo);
+        partnerPo.setPartnerCode(partnerPo.getPartnerCode().toUpperCase());
         partnerPo.setId(SnowflakeIdWorker.generateId());
         Integer integer = baseMapper.insert(partnerPo);
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);

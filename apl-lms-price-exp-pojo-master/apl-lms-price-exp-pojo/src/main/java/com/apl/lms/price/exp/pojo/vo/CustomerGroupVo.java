@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.pojo.entity;
+package com.apl.lms.price.exp.pojo.vo;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2020-08-18 17:33
  */
 @Data
-public class CustomerGroupInfo {
+public class CustomerGroupVo {
 
     private Long customerGroupsId;
 

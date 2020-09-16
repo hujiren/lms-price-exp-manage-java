@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.SpecialCommodityMapper">
 
     <!-- 查找特殊物品列表-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.po.SpecialCommodityPo">
         SELECT
             id,
             special_commodity_name,
@@ -36,7 +36,7 @@
     </insert>
 
     <!--获取特殊物品详细-->
-    <select id="getSpecialCommodity" resultType="com.apl.lms.price.exp.pojo.vo.SpecialCommodityVo">
+    <select id="getSpecialCommodity" resultType="com.apl.lms.price.exp.pojo.po.SpecialCommodityPo">
         select id,special_commodity_name, special_commodity_name_en, code from special_commodity where id = #{id}
     </select>
 </mapper>

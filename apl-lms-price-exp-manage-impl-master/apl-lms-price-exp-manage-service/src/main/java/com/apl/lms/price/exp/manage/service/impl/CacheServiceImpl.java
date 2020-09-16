@@ -5,6 +5,7 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lms.common.lib.cache.bo.WeightWayCacheBo;
 import com.apl.lms.price.exp.lib.cache.bo.PartnerCacheBo;
 import com.apl.lms.price.exp.manage.mapper.CacheMapper;
 import com.apl.lms.price.exp.manage.service.CacheService;
@@ -36,7 +37,7 @@ public class CacheServiceImpl implements CacheService {
             aplCacheUtil.opsForValue().multiSet(maps);
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
         }
-
-        return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, false);
+        return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);
     }
+
 }

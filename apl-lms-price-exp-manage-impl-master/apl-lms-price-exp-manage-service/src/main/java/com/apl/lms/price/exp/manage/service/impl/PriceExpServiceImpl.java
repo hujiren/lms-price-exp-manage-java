@@ -19,17 +19,15 @@ import com.apl.lms.price.exp.manage.mapper.PriceExpMapper;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.manage.util.CheckObjFieldINull;
 import com.apl.lms.price.exp.pojo.dto.*;
-import com.apl.lms.price.exp.pojo.entity.Customer;
-import com.apl.lms.price.exp.pojo.entity.CustomerGroupInfo;
+import com.apl.lms.price.exp.pojo.vo.CustomerVo;
+import com.apl.lms.price.exp.pojo.vo.CustomerGroupVo;
 import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.*;
 import com.apl.lms.price.exp.pojo.vo.*;
-import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,6 +107,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Autowired
     PriceExpProfitService priceExpProfitService;
 
+    @Autowired
+    PriceZoneNameService priceZoneNameService;
     /**
      * 分页查询销售价格列表
      *
@@ -195,22 +195,28 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpSaleInfoVo.setPriceStatus(priceExpSaleVo.getPriceStatus());
         priceExpSaleInfoVo.setChannelCategory(priceExpSaleVo.getChannelCategory());
 
+        //获取分区名称
+        ResultUtil<String> priceZoneNameResult = priceZoneNameService.getPriceZoneName(priceExpSaleInfoVo.getZoneId());
+        priceExpSaleInfoVo.setZoneName(priceZoneNameResult.getData());
+
+
+
         //组装客户List (客户id, 客户名称)
         if (priceExpSaleVo.getCustomerIds() != null && priceExpSaleVo.getCustomerName() != null) {
             String customerIds = priceExpSaleVo.getCustomerIds().replace("[", "").replace("]", "").replaceAll(" ", "");
             String customerNames = priceExpSaleVo.getCustomerName().replace("[", "").replace("]", "").replaceAll(" ", "");
 
-            List<Customer> customerList = new ArrayList<>();
+            List<CustomerVo> customerVoList = new ArrayList<>();
 
             String[] customerIdArr = customerIds.split(",");
             String[] customerNameArr = customerNames.split(",");
             for (int i = 0; i < customerIdArr.length; i++) {
-                Customer customer = new Customer();
-                customer.setCustomerId(Long.valueOf(customerIdArr[i]));
-                customer.setCustomerName(customerNameArr[i]);
-                customerList.add(customer);
+                CustomerVo customerVo = new CustomerVo();
+                customerVo.setCustomerId(Long.valueOf(customerIdArr[i]));
+                customerVo.setCustomerName(customerNameArr[i]);
+                customerVoList.add(customerVo);
             }
-            priceExpSaleInfoVo.setCustomers(customerList);
+            priceExpSaleInfoVo.setCustomerVos(customerVoList);
         }
         //组装客户组List(客户组id, 客户组名称)
         if (priceExpSaleVo.getCustomerGroupsId() != null && priceExpSaleVo.getCustomerGroupsName() != null) {
@@ -219,18 +225,18 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             String customerGroupsName = priceExpSaleVo.getCustomerGroupsName().replace("[", "").replace("]", "").replaceAll(" ", "");
 
 
-            List<CustomerGroupInfo> customerGroupInfoList = new ArrayList<>();
+            List<CustomerGroupVo> customerGroupVoList = new ArrayList<>();
 
             String[] customerGroupIdArr = customerGroupsIds.split(",");
             String[] customerGroupNameArr = customerGroupsName.split(",");
 
             for (int i = 0; i < customerGroupIdArr.length; i++) {
-                CustomerGroupInfo customerGroupInfo = new CustomerGroupInfo();
-                customerGroupInfo.setCustomerGroupsId(Long.valueOf(customerGroupIdArr[i]));
-                customerGroupInfo.setCustomerGroupsName(customerGroupNameArr[i]);
-                customerGroupInfoList.add(customerGroupInfo);
+                CustomerGroupVo customerGroupVo = new CustomerGroupVo();
+                customerGroupVo.setCustomerGroupsId(Long.valueOf(customerGroupIdArr[i]));
+                customerGroupVo.setCustomerGroupsName(customerGroupNameArr[i]);
+                customerGroupVoList.add(customerGroupVo);
             }
-            priceExpSaleInfoVo.setCustomerGroupInfo(customerGroupInfoList);
+            priceExpSaleInfoVo.setCustomerGroupVo(customerGroupVoList);
         }
 
 
@@ -261,7 +267,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             //执行跨项目跨库关联
             JoinUtil.join(specialCommodityList, joinTabs);
 
-            priceExpSaleInfoVo.setSpecialCommodity(specialCommodityList);
+            priceExpSaleInfoVo.setSpecialCommodityVo(specialCommodityList);
         }
 
 
@@ -309,6 +315,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpCostInfoVo.setMainId(priceExpCostVo.getPriceMainId());
         priceExpCostInfoVo.setId(priceExpCostVo.getId());
 
+        //获取分区名称
+        ResultUtil<String> priceZoneNameResult = priceZoneNameService.getPriceZoneName(priceExpCostInfoVo.getZoneId());
+        priceExpCostInfoVo.setZoneName(priceZoneNameResult.getData());
+
         if(priceExpSaleInfoVo.getSpecialCommodityStr()!=null) {
             String specialCommodityStr = priceExpSaleInfoVo.getSpecialCommodityStr().replace("[", "").replace("]", "").replaceAll(" ", "");
 
@@ -336,7 +346,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             //执行跨项目跨库关联
             JoinUtil.join(specialCommodityList, joinTabs);
 
-            priceExpSaleInfoVo.setSpecialCommodity(specialCommodityList);
+            priceExpSaleInfoVo.setSpecialCommodityVo(specialCommodityList);
         }
 
         //获取扩展信息并组装

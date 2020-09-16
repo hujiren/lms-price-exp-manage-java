@@ -20,6 +20,23 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     @ApiModelProperty(name = "id" , value = "价格表id")
     private Long id;
 
+    //成本表
+    @ApiModelProperty(name = "priceCode" , value = "价格表代码")
+    private String priceCode;
+
+    @ApiModelProperty(name = "priceName" , value = "价格表名称")
+    private String priceName;
+
+    @ApiModelProperty(name = "partnerId" , value = "服务商id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long partnerId;
+
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
+    private String channelCategory;
+
+    @ApiModelProperty(name = "priceStatus" , value = "状态 1正常 2计账 3无效")
+    private Integer priceStatus;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "priceDataId" , value = "数据表id")
     private Long priceDataId;
@@ -38,8 +55,10 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     private String currency;
 
     @ApiModelProperty(name = "zoneTabId" , value = "分区表Id")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long zoneId;
+
+    @ApiModelProperty(name = "zoneName" , value = "分区表名称")
+    private String zoneName;
 
     @ApiModelProperty(name = "volumeDivisor" , value = "体积除数")
     private Integer volumeDivisor;
@@ -53,8 +72,8 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     @ApiModelProperty(name = "specialCommodityStr" , value = "特殊物品", hidden = true)
     private String specialCommodityStr;
 
-    @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private List<SpecialCommodityDto> specialCommodity;
+    @ApiModelProperty(name = "specialCommodityVo" , value = "特殊物品")
+    private List<SpecialCommodityDto> specialCommodityVo;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;
@@ -71,22 +90,6 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
 
-    //成本表
-    @ApiModelProperty(name = "priceCode" , value = "价格表代码")
-    private String priceCode;
-
-    @ApiModelProperty(name = "priceName" , value = "价格表名称")
-    private String priceName;
-
-    @ApiModelProperty(name = "partnerId" , value = "服务商id")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long partnerId;
-
-    @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
-    private String channelCategory;
-
-    @ApiModelProperty(name = "priceStatus" , value = "状态 1正常 2计账 3无效")
-    private Integer priceStatus;
 
     //扩展数据
     @ApiModelProperty(name = "remark" , value = "销售备注")

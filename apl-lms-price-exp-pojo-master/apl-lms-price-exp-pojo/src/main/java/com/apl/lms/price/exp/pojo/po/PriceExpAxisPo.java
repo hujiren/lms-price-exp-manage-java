@@ -30,6 +30,4 @@ public class PriceExpAxisPo extends Model<PriceExpAxisPo> implements Serializabl
     @NotBlank(message = "y轴数据不能为空")
     private String axisPortrait;
 
-//    @ApiModelProperty(name = "innerOrgId" , value = "多租户id", required = true)
-//    private Long innerOrgId;
 }

@@ -14,6 +14,8 @@ import lombok.Data;
 @Data
 public class PartnerCacheBo {
 
+    private String cacheKey;
+
     @ApiModelProperty(name = "id", value = "服务商id")
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
