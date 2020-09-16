@@ -3,6 +3,7 @@ package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpPublishedKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
+import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
@@ -90,4 +91,31 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     Integer addPriceExpMain(@Param("po") PriceExpMainPo priceExpMainPo);
+
+    /**
+     * 组装批量删除数据列表
+     * @return
+     */
+    List<PriceListForDelBatch> getCostPriceList(@Param("ids") List<Long> mainPriceList);
+
+    /**
+     * 组装批量删除数据列表
+     * @param mainPriceList
+     * @return
+     */
+    List<PriceListForDelBatch> getSalePriceList(@Param("ids") List<Long> mainPriceList);
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatchs(@Param("ids") String ids);
+
+    /**
+     * 查询引用的主表Id
+     * @param priceMainId
+     * @return
+     */
+    Long getPriceMainId(@Param("id") Long priceMainId);
 }

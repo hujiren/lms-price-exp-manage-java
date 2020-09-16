@@ -50,8 +50,6 @@ public class PriceExpProfitController {
     @PostMapping(value = "/upd")
     @ApiOperation(value = "更新", notes = "")
     public ResultUtil<Boolean> updById(@Validated @RequestBody PriceExpProfitPo priceExpProfitPo) {
-        ApiParamValidate.notEmpty("id", priceExpProfitPo.getId());
-        ApiParamValidate.validate(priceExpProfitPo);
 
         return priceExpProfitService.updById(priceExpProfitPo);
     }

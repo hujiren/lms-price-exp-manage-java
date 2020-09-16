@@ -48,4 +48,11 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @return
      */
     Integer deleteBatch(List<Long> ids);
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatch(String ids);
 }

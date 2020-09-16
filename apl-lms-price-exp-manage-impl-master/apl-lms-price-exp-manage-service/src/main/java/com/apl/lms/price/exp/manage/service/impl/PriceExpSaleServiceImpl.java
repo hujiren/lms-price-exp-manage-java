@@ -2,8 +2,8 @@ package com.apl.lms.price.exp.manage.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpSaleMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpSaleService;
-import com.apl.lms.price.exp.pojo.dto.PriceExpCostAddDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpSaleAddDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
@@ -63,23 +63,24 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
 
     /**
      * 保存销售价
-     * @param priceExpCostAddDto
-     * @param priceExpSaleAddDto
      * @param priceMainId
-     * @param saleId
+     * @param salePriceId
      * @return
      */
     @Override
-    public Boolean addPriceExpSale(PriceExpCostAddDto priceExpCostAddDto, PriceExpSaleAddDto priceExpSaleAddDto, Long priceMainId, Long saleId) {
+    public Boolean addPriceExpSale(PriceExpAddBaseDto priceExpAddDto, Long salePriceId, Long priceMainId, Long quotePriceId) {
+
+
+
         PriceExpSalePo priceExpSalePo = new PriceExpSalePo();
-        BeanUtil.copyProperties(priceExpSaleAddDto, priceExpSalePo);
-        priceExpSalePo.setId(saleId);
-        priceExpSalePo.setQuotePriceId(0L);
-        priceExpSalePo.setPriceCode(priceExpCostAddDto.getPriceCode());
-        priceExpSalePo.setPriceName(priceExpCostAddDto.getPriceName());
+        BeanUtil.copyProperties(priceExpAddDto, priceExpSalePo);
+        priceExpSalePo.setId(salePriceId);
+        priceExpSalePo.setQuotePriceId(quotePriceId);
+        priceExpSalePo.setPriceCode(priceExpAddDto.getPriceCode());
+        priceExpSalePo.setPriceName(priceExpAddDto.getPriceName());
         priceExpSalePo.setPriceStatus(1);
         priceExpSalePo.setPriceMainId(priceMainId);
-        priceExpSalePo.setChannelCategory(priceExpCostAddDto.getChannelCategory());
+        priceExpSalePo.setChannelCategory(priceExpAddDto.getChannelCategory());
 //        Boolean saveSuccess = priceExpSalePo.insert();
         Integer integer = baseMapper.addPriceExpSale(priceExpSalePo);
         if(integer<1){
@@ -129,6 +130,18 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
     public List<PriceListForDelBatch> getPriceListForDel(List<Long> ids) {
 
         List<PriceListForDelBatch> saleDataList = baseMapper.getPriceListForDel(ids);
-        return null;
+        return saleDataList;
     }
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @Override
+    public Integer delBatch(String ids) {
+        Integer res = baseMapper.delBatch(ids);
+        return res;
+    }
+
 }

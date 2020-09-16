@@ -2,7 +2,8 @@ package com.apl.lms.price.exp.manage.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpCostMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpCostService;
-import com.apl.lms.price.exp.pojo.dto.PriceExpCostAddDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
@@ -55,21 +56,21 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
     /**
      * 保存成本价格数据
      * @param priceMainId
-     * @param priceExpCostAddDto
+     * @param priceExpAddDto
      * @return
      */
     @Override
-    public Boolean addPriceExpCost(Long priceMainId, PriceExpCostAddDto priceExpCostAddDto, Long costId) {
+    public Boolean addPriceExpCost(PriceExpAddBaseDto priceExpAddDto, Long costPriceId, Long priceMainId, Long quotePriceId) {
 
         PriceExpCostPo priceExpCostPo = new PriceExpCostPo();
-        BeanUtil.copyProperties(priceExpCostAddDto, priceExpCostPo);
-        priceExpCostPo.setId(costId);
+        BeanUtil.copyProperties(priceExpAddDto, priceExpCostPo);
+        priceExpCostPo.setId(costPriceId);
         priceExpCostPo.setPriceStatus(1);
-        priceExpCostPo.setQuotePriceId(0l);
+        priceExpCostPo.setQuotePriceId(quotePriceId);
         priceExpCostPo.setPriceMainId(priceMainId);
-        priceExpCostPo.setPriceCode(priceExpCostAddDto.getPriceCode());
-        priceExpCostPo.setPriceName(priceExpCostAddDto.getPriceName());
-        priceExpCostPo.setChannelCategory(priceExpCostAddDto.getChannelCategory());
+        priceExpCostPo.setPriceCode(priceExpAddDto.getPriceCode());
+        priceExpCostPo.setPriceName(priceExpAddDto.getPriceName());
+        priceExpCostPo.setChannelCategory(priceExpAddDto.getChannelCategory());
         Boolean insertSuccess = priceExpCostPo.insert();
         return insertSuccess;
     }
@@ -110,4 +111,16 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
         List<PriceListForDelBatch> dataList = baseMapper.getPriceListForDel(priceIdList);
         return dataList;
     }
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @Override
+    public Integer delBatch(String ids) {
+        Integer res = baseMapper.delBatch(ids);
+        return res;
+    }
+
 }

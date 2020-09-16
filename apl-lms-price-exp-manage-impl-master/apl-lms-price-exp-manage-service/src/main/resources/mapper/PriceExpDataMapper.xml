@@ -29,4 +29,9 @@
     <update id="updById">
         update price_exp_data set price_data = #{po.priceData,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler} where id = #{po.id}
     </update>
+
+    <!--批量删除-->
+    <delete id="delBatch">
+        delete from price_exp_data where id in(${ids})
+    </delete>
 </mapper>

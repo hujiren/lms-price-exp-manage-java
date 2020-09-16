@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
@@ -34,10 +35,9 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
     /**
      * 保存价格表数据
      * @param priceDataId
-     * @param priceExpDataAddDto
      * @return
      */
-    Boolean addPriceExpData(Long priceDataId, PriceExpDataAddDto priceExpDataAddDto);
+    Boolean addPriceExpData(Long priceDataId, PriceExpAddDto priceExpAddDto);
 
     /**
      * 更新
@@ -45,4 +45,11 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      * @return
      */
     Boolean updById(PriceExpDataPo priceExpDataPo);
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatch(String ids);
 }

@@ -26,4 +26,8 @@ public class PriceExpDataPo extends Model<PriceExpDataPo> implements Serializabl
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
     @NotBlank(message = "价格表数据不能为空")
     private List<Object> priceData;
+
+//    @JsonFormat(shape = JsonFormat.Shape.STRING)
+//    @ApiModelProperty(name = "innerOrgId" , value = "多租户id", required = true)
+//    private Long innerOrgId;
 }

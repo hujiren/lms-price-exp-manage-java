@@ -41,13 +41,9 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
     @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
-    @ApiModelProperty(name = "priceSaleId", value = "销售价id")
+    @ApiModelProperty(name = "priceId", value = "价格表id")
     @Min(value = 0, message = "销售价id不不合法")
-    private Long priceSaleId;
-
-    @ApiModelProperty(name = "priceCostId", value = "成本价id")
-    @Min(value = 0, message = "成本价id不不合法")
-    private Long priceCostId;
+    private Long priceId;
 
     @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
     @NotEmpty(message = "上调的利润不能为空")

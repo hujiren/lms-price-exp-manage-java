@@ -29,4 +29,9 @@
         where
             id = #{id}
     </select>
+
+    <!--批量删除-->
+    <delete id="delBatch">
+        delete from price_exp_axis where id in(${ids})
+    </delete>
 </mapper>

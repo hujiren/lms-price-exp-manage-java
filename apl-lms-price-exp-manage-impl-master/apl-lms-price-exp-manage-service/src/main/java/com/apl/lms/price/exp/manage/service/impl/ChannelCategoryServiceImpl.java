@@ -6,15 +6,11 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryUpdDto;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryAddDto;
 import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
-import com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 
@@ -48,13 +44,13 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      * @return
      */
     @Override
-    public ResultUtil<Page<ChannelCategoryVo>> getList(PageDto pageDto, ChannelCategoryKeyDto channelCateGoryKeyDto) {
+    public ResultUtil<Page<ChannelCategoryPo>> getList(PageDto pageDto, ChannelCategoryKeyDto channelCateGoryKeyDto) {
 
-        Page<ChannelCategoryVo> page = new Page();
+        Page<ChannelCategoryPo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
 
-        List<ChannelCategoryVo> channelCategoryVoList = baseMapper.getList(page, channelCateGoryKeyDto);
+        List<ChannelCategoryPo> channelCategoryVoList = baseMapper.getList(page, channelCateGoryKeyDto);
 
         page.setRecords(channelCategoryVoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
@@ -78,21 +74,13 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
 
     /**
      * 修改
-     * @param channelCateGoryUpdDto
+     * @param channelCategoryPo
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updChannelCategory(ChannelCategoryUpdDto channelCateGoryUpdDto) {
+    public ResultUtil<Boolean> updChannelCategory(ChannelCategoryPo channelCategoryPo) {
 
-        ChannelCategoryPo channelCateGoryPo = new ChannelCategoryPo();
-        BeanUtils.copyProperties(channelCateGoryUpdDto, channelCateGoryPo);
-
-        ChannelCategoryVo channelCateGoryVo = baseMapper.getChannelCateGory(channelCateGoryUpdDto.getId());
-
-        if(channelCateGoryVo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL.getCode(), "id不存在", null);
-        }
-        Integer integer = baseMapper.updChannelCategory(channelCateGoryPo);
+        Integer integer = baseMapper.updChannelCategory(channelCategoryPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -101,20 +89,17 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
 
     /**
      * 添加
-     * @param channelCateGoryAddDto
+     * @param channelCategoryPo
      * @return
      */
     @Override
-    public ResultUtil<String> addChannelCategory(ChannelCategoryAddDto channelCateGoryAddDto) {
-
-        ChannelCategoryPo channelCateGoryPo = new ChannelCategoryPo();
-        BeanUtils.copyProperties(channelCateGoryAddDto, channelCateGoryPo);
-        channelCateGoryPo.setId(SnowflakeIdWorker.generateId());
-        Integer integer = baseMapper.addChannelCategory(channelCateGoryPo);
+    public ResultUtil<String> addChannelCategory(ChannelCategoryPo channelCategoryPo) {
+        channelCategoryPo.setId(SnowflakeIdWorker.generateId());
+        Integer integer = baseMapper.addChannelCategory(channelCategoryPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, channelCateGoryPo.getId().toString());
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, channelCategoryPo.getId().toString());
     }
 
     /**
@@ -123,14 +108,14 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      * @return
      */
     @Override
-    public ResultUtil<ChannelCategoryVo> getChannelCategory(Long id) {
+    public ResultUtil<ChannelCategoryPo> getChannelCategory(Long id) {
 
-        ChannelCategoryVo channelCateGory = baseMapper.getChannelCateGory(id);
+        ChannelCategoryPo channelCategoryPo = baseMapper.getChannelCateGory(id);
 
-        if(channelCateGory == null){
+        if(channelCategoryPo == null){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
         }
 
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, channelCateGory);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, channelCategoryPo);
     }
 }

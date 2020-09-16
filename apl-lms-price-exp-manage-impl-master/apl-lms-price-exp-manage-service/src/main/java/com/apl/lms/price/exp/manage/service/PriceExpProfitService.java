@@ -50,4 +50,10 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      */
     ResultUtil<PriceExpProfitListVo> getList(Long priceId);
 
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatch(String ids);
 }

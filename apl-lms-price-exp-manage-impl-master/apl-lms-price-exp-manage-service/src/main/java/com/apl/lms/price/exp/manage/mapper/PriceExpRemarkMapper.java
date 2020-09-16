@@ -12,5 +12,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PriceExpRemarkMapper extends BaseMapper<PriceExpRemarkPo> {
-
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatch(@Param("ids") String ids);
 }

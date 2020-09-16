@@ -41,7 +41,7 @@
             (#{po.id}, #{po.channelCategory}, #{po.weightWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeDivisor})
     </insert>
 
-    <select id="getChannelCateGory" resultType="com.apl.lms.price.exp.pojo.vo.ChannelCategoryVo">
+    <select id="getChannelCateGory" resultType="com.apl.lms.price.exp.pojo.po.ChannelCategoryPo">
         select
             id, channel_category, weight_way, volume_weight_way, carrier, cargo_type, volume_divisor
         from

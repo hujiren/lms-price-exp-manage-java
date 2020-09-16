@@ -29,7 +29,6 @@
             and main.account_type = #{key.accountType}
         </if>
         <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
-<<<<<<< HEAD
             and sale.price_status = #{key.mainStatus}
         </if>
         <!-- 未过期 -->
@@ -43,7 +42,6 @@
         <!-- 已过期 -->
         <if test="key.priceStatus == 6">
             and now() > main.end_date
-=======
             and main.main_status = #{key.priceStatus}
         </if>
         <if test="key.priceStatus == 4">
@@ -51,7 +49,6 @@
         </if>
         <if test="key.priceStatus == 5">
             and now() - main.end_date > '0 day'
->>>>>>> ffd0f379bc0e6e4c277678d1fe5dc10c87477ce7
         </if>
         <if test="key.specialCommodity > 0">
             and main.special_commodity = #{key.specialCommodity}
@@ -97,11 +94,8 @@
             and main.account_type = #{key.accountType}
         </if>
         <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
-<<<<<<< HEAD
             and cost.price_status = #{key.mainStatus}
-=======
             and main.main_status = #{key.priceStatus}
->>>>>>> ffd0f379bc0e6e4c277678d1fe5dc10c87477ce7
         </if>
         <!-- 未过期 -->
         <if test="key.priceStatus == 4">
@@ -113,11 +107,8 @@
         </if>
         <!-- 已过期 -->
         <if test="key.priceStatus == 6">
-<<<<<<< HEAD
             and now() > main.end_date
-=======
             and now() - main.end_date > '0 day'
->>>>>>> ffd0f379bc0e6e4c277678d1fe5dc10c87477ce7
         </if>
         <if test="key.partnerId != null">
             and cost.partner_id = #{key.partnerId}
@@ -129,7 +120,6 @@
             and cost.price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
-
 
     <!--分页查询公布价价格列表 -->
     <select id="getPublishedPriceList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
@@ -160,7 +150,7 @@
         insert into
              price_exp_main(id, start_date, end_date, currency, zone_id, volume_divisor, account_type, account_no,
              main_status, special_commodity, price_form, start_weight, end_weight, price_published_id,
-             is_published_price, aging, inner_org_id, price_data_id)
+             is_published_price, aging, price_data_id)
          values
              (#{po.id},
              #{po.startDate},
@@ -178,10 +168,8 @@
              #{po.pricePublishedId},
              #{po.isPublishedPrice},
              #{po.aging},
-             #{po.innerOrgId}),
              #{po.priceDataId}
      </insert>
-
 
     <!--校验id是否存在啊-->
     <select id="getExpListById" resultType="java.lang.Long">
@@ -199,7 +187,7 @@
             account_type,
             account_no,
             main_status,
-            special_commodity,
+            special_commodity as special_commodity_str,
             price_form,
             start_weight,
             end_weight,
@@ -219,6 +207,7 @@
             #{row}
         </foreach>
     </select>
+
     <select id="getInnerOrgById" resultType="java.lang.Long">
         select inner_org_id from price_exp_main where id = #{id}
     </select>
@@ -253,4 +242,48 @@
         where
             id = #{po.id}
     </update>
+
+    <select id="getCostPriceList" resultType="com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch">
+        select
+            cost.id,
+            sale.price_main_id
+        from
+            price_exp_main main
+        left join
+            price_exp_cost cost on main.id = cost.price_main_id
+        left join
+            price_exp_sale sale on main.id = sale.price_main_id
+        where
+            main.id in
+        <foreach collection="ids" index="" item="row" close=")" open="(" separator=",">
+            #{row}
+        </foreach>
+    </select>
+
+    <select id="getSalePriceList" resultType="com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch">
+        select
+        sale.id,
+        cost.price_main_id
+        from
+        price_exp_main main
+        left join
+        price_exp_sale sale on main.id = sale.price_main_id
+        left join
+        price_exp_cost cost on main.id = cost.price_main_id
+        where
+        main.id in
+        <foreach collection="ids" index="" item="row" close=")" open="(" separator=",">
+            #{row}
+        </foreach>
+    </select>
+
+    <!--批量删除-->
+    <delete id="delBatchs">
+        delete from price_exp_main where id in(${ids})
+    </delete>
+
+    <!--查询租户主表Id-->
+    <select id="getPriceMainId" resultType="java.lang.Long">
+        select id from price_exp_main where id = #{id}
+    </select>
 </mapper>

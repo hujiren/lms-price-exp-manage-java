@@ -5,6 +5,7 @@ import com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpCostService;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
 import com.apl.lms.price.exp.manage.service.PriceExpSaleService;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
@@ -56,14 +57,13 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     /**
      * 保存价格表数据
      * @param priceDataId
-     * @param priceExpDataAddDto
      * @return
      */
     @Override
-    public Boolean addPriceExpData(Long priceDataId, PriceExpDataAddDto priceExpDataAddDto) {
+    public Boolean addPriceExpData(Long priceDataId, PriceExpAddDto priceExpAddDto) {
 
         PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
-        priceExpDataPo.setPriceData(priceExpDataAddDto.getPriceData());
+        priceExpDataPo.setPriceData(priceExpAddDto.getPriceData());
         priceExpDataPo.setId(priceDataId);
         Integer saveSuccess = baseMapper.insertData(priceExpDataPo);
         return saveSuccess > 0 ? true :false;
@@ -78,5 +78,13 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     public Boolean updById(PriceExpDataPo priceExpDataPo) {
         Integer integer = baseMapper.updById(priceExpDataPo);
         return integer > 0 ? true : false;
+    }
+
+    /**
+     * 批量删除
+     */
+    @Override
+    public Integer delBatch(String ids) {
+        return baseMapper.delBatch(ids);
     }
 }

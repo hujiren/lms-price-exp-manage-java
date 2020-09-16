@@ -1,18 +1,15 @@
 package com.apl.lms.price.exp.manage.app.controller;
-import cn.hutool.core.bean.BeanUtil;
+
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
 import com.apl.lms.price.exp.manage.service.PriceExpRemarkService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
 import com.apl.lms.price.exp.pojo.dto.*;
-import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.apl.lms.price.exp.pojo.vo.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -120,50 +117,21 @@ public class PriceExpController {
     @PostMapping(value = "/add-price")
     @ApiOperation(value = "新增快递价格", notes = "新增快递价格", consumes = "application/json")
     public ResultUtil<Long> addPrice(@Validated @RequestBody PriceExpAddDto priceExpAddDto){
-        PriceExpMainAddDto priceExpMainAddDto = new PriceExpMainAddDto();
-        PriceExpCostAddDto priceExpCostAddDto = new PriceExpCostAddDto();
-        PriceExpSaleAddDto priceExpSaleAddDto = new PriceExpSaleAddDto();
-        PriceExpAxisAddDto priceExpAxisAddDto = new PriceExpAxisAddDto();
-        PriceExpDataAddDto priceExpDataAddDto = new PriceExpDataAddDto();
-        BeanUtil.copyProperties(priceExpAddDto, priceExpMainAddDto);
-        BeanUtil.copyProperties(priceExpAddDto, priceExpCostAddDto);
-        BeanUtil.copyProperties(priceExpAddDto, priceExpSaleAddDto);
-        BeanUtil.copyProperties(priceExpAddDto, priceExpAxisAddDto);
-        BeanUtil.copyProperties(priceExpAddDto, priceExpDataAddDto);
-        return priceExpService.addExpPrice(priceExpMainAddDto,priceExpCostAddDto, priceExpSaleAddDto, priceExpAxisAddDto, priceExpDataAddDto);
-    }
 
+        return priceExpService.addExpPrice(priceExpAddDto);
+    }
 
     @PostMapping(value = "/upd-sale-price")
     @ApiOperation(value = "更新销售价格表", notes = "根据Id修改销售价格表")
-    public ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdDto priceExpMainUpdDto,
-                                               @Validated PriceExpSaleUpdateDto priceExpSaleUpdateDto) {
-        if(priceExpMainUpdDto != null){
-            ApiParamValidate.validate(priceExpMainUpdDto);
-            ApiParamValidate.notEmpty("startWeight", priceExpMainUpdDto.getStartWeight().toString());
-            ApiParamValidate.notEmpty("endWeight", priceExpMainUpdDto.getEndWeight().toString());
-            ApiParamValidate.notEmpty("startDate", priceExpMainUpdDto.getStartDate().toString());
-            ApiParamValidate.notEmpty("endDate", priceExpMainUpdDto.getEndDate().toString());
-        }
-
-        return priceExpService.updateSalePrice(priceExpMainUpdDto, priceExpSaleUpdateDto);
+    public ResultUtil<Boolean> updateSalePrice(@RequestBody @Validated PriceExpSaleUpdDto priceExpSaleUpdDto) {
+        return priceExpService.updateSalePrice(priceExpSaleUpdDto);
     }
-
 
     @PostMapping(value = "/upd-cost-price")
     @ApiOperation(value = "更新成本价格表", notes = "根据Id修改成本价格表")
-    public ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdDto priceExpMainUpdDto,
-                                               @Validated PriceExpCostUpdDto priceExpCostUpdDto) {
+    public ResultUtil<Boolean> updateCostPrice(@Validated @RequestBody PriceExpCostUpdDto priceExpCostUpdDto) {
 
-        if(priceExpMainUpdDto != null){
-            ApiParamValidate.validate(priceExpMainUpdDto);
-            ApiParamValidate.notEmpty("startWeight", priceExpMainUpdDto.getStartWeight().toString());
-            ApiParamValidate.notEmpty("endWeight", priceExpMainUpdDto.getEndWeight().toString());
-            ApiParamValidate.notEmpty("startDate", priceExpMainUpdDto.getStartDate().toString());
-            ApiParamValidate.notEmpty("endDate", priceExpMainUpdDto.getEndDate().toString());
-        }
-
-        return priceExpService.updateCostPrice(priceExpMainUpdDto, priceExpCostUpdDto);
+        return priceExpService.updateCostPrice(priceExpCostUpdDto);
     }
 
     @PostMapping(value = "/upd-remark")
@@ -175,9 +143,8 @@ public class PriceExpController {
 
     @PostMapping(value = "/upd-price-data")
     @ApiOperation(value = "更新数据表数据", notes = "更新数据表数据")
-    public ResultUtil<Boolean> updatePriceData(@Validated PriceExpDataAddDto priceExpDataAddDto,
-                                               @Validated PriceExpAxisPo priceExpAxisPo){
-        return priceExpService.updatePriceData(priceExpDataAddDto, priceExpAxisPo);
+    public ResultUtil<Boolean> updatePriceData(@Validated @RequestBody PriceExpDataAddDto priceExpDataAddDto){
+        return priceExpService.updatePriceData(priceExpDataAddDto);
     }
 
     @PostMapping(value = "/delete-cost-batch")

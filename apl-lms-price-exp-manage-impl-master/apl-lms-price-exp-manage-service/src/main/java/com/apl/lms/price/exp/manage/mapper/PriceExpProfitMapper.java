@@ -39,16 +39,16 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
     Integer updProfit(@Param("po") PriceExpProfitPo priceExpProfitPo);
 
     /**
-     * 查询价格表Id
-     * @param priceId
-     * @return
-     */
-    Integer getPriceId(@Param("id") Long priceId);
-
-    /**
      * @Desc: 查找列表
      * @Author: ${cfg.author}
      * @Date: 2020-09-11
      */
-    List<PriceExpProfitListVo> getList(@Param("variable")Integer variable, @Param("priceId") Long priceId);
+    List<PriceExpProfitListVo> getList(@Param("priceId") Long priceId);
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatch(@Param("ids") String ids);
 }

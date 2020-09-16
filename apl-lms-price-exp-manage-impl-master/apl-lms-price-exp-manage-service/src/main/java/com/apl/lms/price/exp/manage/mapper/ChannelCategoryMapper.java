@@ -25,7 +25,7 @@ public interface ChannelCategoryMapper extends BaseMapper<ChannelCategoryPo> {
      * @return
      */
 
-    List<ChannelCategoryVo> getList(Page<ChannelCategoryVo> page, @Param("key") ChannelCategoryKeyDto channelCateGoryKeyDto);
+    List<ChannelCategoryPo> getList(Page<ChannelCategoryPo> page, @Param("key") ChannelCategoryKeyDto channelCateGoryKeyDto);
 
     /**
      * 根据Id删除渠道类型数据
@@ -53,5 +53,5 @@ public interface ChannelCategoryMapper extends BaseMapper<ChannelCategoryPo> {
      * @param id
      * @return
      */
-    ChannelCategoryVo getChannelCateGory(@Param("id") Long id);
+    ChannelCategoryPo getChannelCateGory(@Param("id") Long id);
 }

@@ -1,7 +1,8 @@
 package com.apl.lms.price.exp.manage.service;
 
 
-import com.apl.lms.price.exp.pojo.dto.PriceExpCostAddDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
@@ -42,10 +43,9 @@ public interface PriceExpCostService extends IService<PriceExpCostPo> {
     /**
      * 保存成本价格表数据
      * @param priceMainId
-     * @param priceExpCostAddDto
      * @return
      */
-    Boolean addPriceExpCost(Long priceMainId, PriceExpCostAddDto priceExpCostAddDto, Long costId);
+    Boolean addPriceExpCost(PriceExpAddBaseDto priceExpAddDto, Long costPriceId, Long priceMainId,   Long quotePriceId);
 
     /**
      * 根据id删除
@@ -74,4 +74,12 @@ public interface PriceExpCostService extends IService<PriceExpCostPo> {
      * @return
      */
     List<PriceListForDelBatch> getPriceListForDel(List<Long> priceIdList);
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatch(String ids);
+
 }

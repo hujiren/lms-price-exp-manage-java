@@ -6,15 +6,13 @@
     <insert id="addProfit">
         insert into price_exp_profit(
             id,
-            price_sale_id,
-            price_cost_id,
+            price_id,
             increase_profit,
             final_profit,
             start_weight
         )values (
             #{po.id},
-            #{po.priceSaleId},
-            #{po.priceCostId},
+            #{po.priceId},
             #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
             #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
             #{po.startWeight}
@@ -24,11 +22,8 @@
     <!--更新-->
     <update id="updProfit">
         update price_exp_profit set
-            <if test="po.priceSaleId != null">
-                price_sale_id = #{po.priceSaleId},
-            </if>
-            <if test="po.priceCostId != null">
-                price_cost_id = #{po.priceCostId},
+            <if test="po.priceId != null">
+                price_id = #{po.priceId},
             </if>
             <if test="po.increaseProfit != null">
                 increase_profit = #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
@@ -41,29 +36,22 @@
             id = #{po.id}
     </update>
 
-    <!--查询价格表id-->
-    <select id="getPriceId" resultType="java.lang.Integer">
-        select count(id) from price_exp_profit where price_sale_id = #{id}
-    </select>
-
     <!-- 查找列表 2020-09-11-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpProfitListVo">
         SELECT
            id, 
-           price_sale_id, 
-           price_cost_id, 
-           increase_profit, 
+           price_id,
+           increase_profit,
            start_weight
         FROM
            price_exp_profit
         where
-            <if test="variable == 1">
-                price_sale_id = #{priceId}
-            </if>
-            <if test="variable == 2">
-                price_cost_id = #{priceId}
-            </if>
+            price_id = #{priceId}
     </select>
 
+    <!--批量删除-->
+    <delete id="delBatch">
+        delete from price_exp_profit where price_id in(${ids})
+    </delete>
 
 </mapper>

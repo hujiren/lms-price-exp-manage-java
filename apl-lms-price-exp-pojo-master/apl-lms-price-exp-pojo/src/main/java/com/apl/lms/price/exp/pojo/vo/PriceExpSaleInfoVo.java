@@ -1,4 +1,5 @@
 package com.apl.lms.price.exp.pojo.vo;
+import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.apl.lms.price.exp.pojo.entity.Customer;
 import com.apl.lms.price.exp.pojo.entity.CustomerGroupInfo;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -48,8 +49,11 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @ApiModelProperty(name = "accountNo" , value = "快递账号")
     private String accountNo;
 
+    @ApiModelProperty(name = "specialCommodityStr" , value = "特殊物品", hidden = true)
+    private String specialCommodityStr;
+
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private String specialCommodity;
+    private List<SpecialCommodityDto> specialCommodity;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;
@@ -77,18 +81,6 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
 
     @ApiModelProperty(name = "priceName" , value = "价格表名称")
     private String priceName;
-
-    @ApiModelProperty(name = "customerGroupsId" , value = "客户组id")
-    private String customerGroupsId;
-
-    @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称")
-    private String customerGroupsName;
-
-    @ApiModelProperty(name = "customerIds" , value = "客户ids")
-    private String customerIds;
-
-    @ApiModelProperty(name = "customerName" , value = "客户名称")
-    private String customerName;
 
     @ApiModelProperty(name = "customerGroupInfo", value = "客户组")
     private List<CustomerGroupInfo> customerGroupInfo;

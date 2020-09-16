@@ -3,13 +3,11 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
-import com.apl.lms.price.exp.pojo.dto.PriceExpAxisAddDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author hjr start
@@ -19,29 +17,19 @@ import java.util.List;
 @Service
 public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, PriceExpAxisPo> implements PriceExpAxisService {
 
-    /**
-     * 根据id删除数据
-     * @param ids
-     * @return
-     */
-    @Override
-    public Integer deleteByIds(List<Long> ids) {
-        return baseMapper.deleteByIds(ids);
-    }
-
 
     /**
      * 保存价格表轴数据
      * @param priceDataId
-     * @param priceExpAxisAddDto
+     * @param priceExpAddDto
      * @return
      */
     @Override
-    public Boolean addPriceExpAxis(Long priceDataId, PriceExpAxisAddDto priceExpAxisAddDto) {
+    public Boolean addPriceExpAxis(Long priceDataId, PriceExpAddDto priceExpAddDto) {
         PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
         priceExpAxisPo.setId(priceDataId);
-        priceExpAxisPo.setAxisPortrait(priceExpAxisAddDto.getAxisPortrait().toString());
-        priceExpAxisPo.setAxisTransverse(priceExpAxisAddDto.getAxisTransverse().toString());
+        priceExpAxisPo.setAxisPortrait(priceExpAddDto.getAxisPortrait().toString());
+        priceExpAxisPo.setAxisTransverse(priceExpAddDto.getAxisTransverse().toString());
         Integer saveSuccess = baseMapper.insertAxis(priceExpAxisPo);
         return saveSuccess > 0 ? true : false;
     }
@@ -69,5 +57,16 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpAxisVo);
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @Override
+    public Integer delBatch(String ids) {
+        Integer res = baseMapper.delBatch(ids);
+        return res;
     }
 }

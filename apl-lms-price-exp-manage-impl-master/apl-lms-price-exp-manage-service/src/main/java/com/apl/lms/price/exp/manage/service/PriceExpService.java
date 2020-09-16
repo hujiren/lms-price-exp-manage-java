@@ -49,7 +49,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param id
      * @return
      */
-    ResultUtil<PriceExpSaleInfoVo> getPriceExpSaleInfo(Long id);
+    ResultUtil<PriceExpSaleInfoVo> getPriceExpSaleInfo(Long id) throws Exception;
 
     /**
      * 获取成本价格详情
@@ -61,45 +61,32 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
 
     /**
      * 更新销售价格
-     * @param priceExpMainUpdDto
-     * @param priceExpSaleUpdateDto
+     * @param priceExpSaleUpdDto
      * @return
      */
-    ResultUtil<Boolean> updateSalePrice(PriceExpMainUpdDto priceExpMainUpdDto,
-                                        PriceExpSaleUpdateDto priceExpSaleUpdateDto);
+    ResultUtil<Boolean> updateSalePrice(PriceExpSaleUpdDto priceExpSaleUpdDto);
 
     /**
      * 更新成本价格表
-     * @param priceExpMainUpdDto
      * @param priceExpCostUpdDto
      * @return
      */
-    ResultUtil<Boolean> updateCostPrice(PriceExpMainUpdDto priceExpMainUpdDto,
-                                        PriceExpCostUpdDto priceExpCostUpdDto);
+    ResultUtil<Boolean> updateCostPrice(PriceExpCostUpdDto priceExpCostUpdDto);
 
     /**
      * 更新价格表数据
      * @param priceExpDataAddDto
-     * @param priceExpAxisPo
      * @return
      */
-    ResultUtil<Boolean> updatePriceData(PriceExpDataAddDto priceExpDataAddDto, PriceExpAxisPo priceExpAxisPo);
+    ResultUtil<Boolean> updatePriceData(PriceExpDataAddDto priceExpDataAddDto);
 
 
     /**
      * 新增快递价格
-     * @param priceExpMainAddDto
-     * @param priceExpSaleAddDto
-     * @param priceExpCostAddDto
-     * @param priceExpAxisAddDto
-     * @param priceExpDataAddDto
+     * @param priceExpAddDto
      * @return
      */
-    ResultUtil<Long> addExpPrice(PriceExpMainAddDto priceExpMainAddDto,
-                                 PriceExpCostAddDto priceExpCostAddDto,
-                                 PriceExpSaleAddDto priceExpSaleAddDto,
-                                 PriceExpAxisAddDto priceExpAxisAddDto,
-                                 PriceExpDataAddDto priceExpDataAddDto);
+    ResultUtil<Long> addExpPrice(PriceExpAddDto priceExpAddDto);
 
 
 

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JacksonAnnotation;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -33,28 +35,20 @@ public class PriceExpProfitListVo implements Serializable {
 
 
     @TableId(value = "id", type = IdType.UUID)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
-    @ApiModelProperty(name = "priceSaleId", value = "销售价id")
-    @NotNull(message = "销售价id不能为空")
-    @Min(value = 0, message = "销售价id不不合法")
-    private Long priceSaleId;
-
-    @ApiModelProperty(name = "priceCostId", value = "成本价id")
-    @NotNull(message = "成本价id不能为空")
-    @Min(value = 0, message = "成本价id不不合法")
-    private Long priceCostId;
+    @ApiModelProperty(name = "priceId", value = "价格表id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long priceId;
 
     @ApiModelProperty(name = "increaseProfit", value = "上调的利润")
-    @NotEmpty(message = "上调的利润不能为空")
     private String increaseProfit;
 
     @ApiModelProperty(name = "finalProfit", value = "最终利润")
-    @NotEmpty(message = "最终利润不能为空")
     private String finalProfit;
 
     @ApiModelProperty(name = "startWeight", value = "起始重")
-    @NotEmpty(message = "起始重不能为空")
     private String startWeight;
 
 

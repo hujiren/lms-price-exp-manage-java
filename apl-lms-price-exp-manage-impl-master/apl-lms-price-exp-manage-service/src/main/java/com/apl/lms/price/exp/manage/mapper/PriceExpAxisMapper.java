@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -41,5 +42,13 @@ public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
      * @param id
      * @return
      */
+    @SqlParser(filter = true)
     PriceExpAxisVo getAxisInfoById(@Param("id") Long id);
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatch(@Param("ids") String ids);
 }

@@ -108,4 +108,13 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
         Integer integer = baseMapper.deleteBatch(ids);
         return integer;
     }
+
+    /**
+     * 批量删除
+     */
+    @Override
+    public Integer delBatch(String ids) {
+        Integer res = baseMapper.delBatch(ids);
+        return res;
+    }
 }

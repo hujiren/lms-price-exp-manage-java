@@ -106,15 +106,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     @Override
     public ResultUtil<PriceExpProfitListVo> getList(Long priceId){
 
-        Integer variable = 0;
-
-        Integer count = baseMapper.getPriceId(priceId);
-        if(count > 0){
-            variable = 1;
-        }else{
-            variable = 2;
-        }
-        List<PriceExpProfitListVo> list = baseMapper.getList(variable, priceId);
+        List<PriceExpProfitListVo> list = baseMapper.getList(priceId);
 
         if(list.size() == 0){
             return ResultUtil.APPRESULT(PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.code,
@@ -123,5 +115,12 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , list);
     }
 
-
+    /**
+     * 批量删除
+     */
+    @Override
+    public Integer delBatch(String ids) {
+        Integer res = baseMapper.delBatch(ids);
+        return res;
+    }
 }

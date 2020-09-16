@@ -79,5 +79,14 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
 
-
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @Override
+    public Integer delBatch(String ids) {
+        Integer res = baseMapper.delBatch(ids);
+        return res;
+    }
 }

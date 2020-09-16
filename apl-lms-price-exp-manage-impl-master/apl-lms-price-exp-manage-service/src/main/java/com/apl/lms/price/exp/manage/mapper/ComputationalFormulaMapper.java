@@ -29,4 +29,11 @@ public interface ComputationalFormulaMapper extends BaseMapper<PriceExpComputati
      * @return
      */
     Integer deleteBatch(@Param("ids") List<Long> ids);
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatch(@Param("ids") String ids);
 }

@@ -41,4 +41,11 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
      * @return
      */
     ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id);
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatch(String ids);
 }
