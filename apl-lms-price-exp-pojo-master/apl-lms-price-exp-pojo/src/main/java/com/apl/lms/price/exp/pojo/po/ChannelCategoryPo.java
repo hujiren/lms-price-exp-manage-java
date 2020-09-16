@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @TableName("channel_category")
-@ApiModel(value="渠道类型  持久化对象", description="渠道类型 持久化对象")
+@ApiModel(value="渠道类型-持久化对象", description="渠道类型-持久化对象")
 public class ChannelCategoryPo extends Model<ChannelCategoryPo> {
 
     @TableId(value = "id", type = IdType.INPUT)

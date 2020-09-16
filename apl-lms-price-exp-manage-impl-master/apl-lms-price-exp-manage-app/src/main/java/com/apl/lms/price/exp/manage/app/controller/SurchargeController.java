@@ -35,7 +35,7 @@ public class SurchargeController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "分页获取附加费列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<SurchargeUpdDto>> getList(PageDto pageDto ,
+    public ResultUtil<Page<SurchargePo>> getList(PageDto pageDto ,
                                                      @Validated SurchargeKeyDto surchargeKeyDto){
         return surchargeService.getList(pageDto, surchargeKeyDto);
     }
@@ -65,7 +65,7 @@ public class SurchargeController {
     @PostMapping(value = "/get")
     @ApiOperation(value =  "获取附加费详细" , notes = "获取附加费详细")
     @ApiImplicitParam(name = "id", value = "附加费id", required = true, paramType = "query")
-    public ResultUtil<SurchargeUpdDto> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    public ResultUtil<SurchargePo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 
         return surchargeService.getSurcharge(id);
     }

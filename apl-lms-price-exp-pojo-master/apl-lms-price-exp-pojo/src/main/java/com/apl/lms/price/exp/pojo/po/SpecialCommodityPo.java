@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @Date 2020/9/16 15:35
  */
 @Data
-@ApiModel(value = "特殊物品 持久化对象", description = "特殊物品持久化对象")
+@ApiModel(value = "特殊物品-持久化对象", description = "特殊物品-持久化对象")
 @TableName("special_commodity")
 public class SpecialCommodityPo extends Model<SpecialCommodityPo> implements Serializable {
 

@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @TableName("price_computational_formula")
-@ApiModel(value="计算公式  持久化对象", description="计算公式 持久化对象")
+@ApiModel(value="计算公式-持久化对象", description="计算公式-持久化对象")
 public class PriceExpComputationalFormulaPo extends Model<PriceExpComputationalFormulaPo> {
 
     @TableId(value = "id", type = IdType.INPUT)
@@ -32,7 +32,7 @@ public class PriceExpComputationalFormulaPo extends Model<PriceExpComputationalF
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "priceId" , value = "价格清单id", required = true)
-    @NotBlank(message = "价格清单id不能为空")
+    @NotNull(message = "价格清单id不能为空")
     @Min(value = 0, message = "价格清单id不能小于0")
     private Long priceId;
 

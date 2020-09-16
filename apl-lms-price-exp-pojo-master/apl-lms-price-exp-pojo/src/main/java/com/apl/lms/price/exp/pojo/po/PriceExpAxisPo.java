@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName(value = "price_exp_axis")
-@ApiModel(value="轴  持久化对象", description="轴 持久化对象")
+@ApiModel(value="轴-持久化对象", description="轴-持久化对象")
 public class PriceExpAxisPo extends Model<PriceExpAxisPo> implements Serializable {
 
     @ApiModelProperty(name = "id" , value = "id", required = true)

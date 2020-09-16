@@ -15,7 +15,7 @@ import lombok.Data;
  */
 @Data
 @TableName("price_exp_cost")
-@ApiModel(value="成本价格表  持久化对象", description="成本价格表 持久化对象")
+@ApiModel(value="快递成本价格表-持久化对象", description="快递成本价格表-持久化对象")
 public class PriceExpCostPo extends Model<PriceExpCostPo> {
 
     @TableId(value = "id", type = IdType.INPUT)

@@ -8,7 +8,7 @@ import lombok.Data;
  * @date 2020/8/8 - 9:17
  */
 @Data
-@ApiModel(value = "特殊物品查询对象", description = "特殊物品查询对象")
+@ApiModel(value = "特殊物品-条件查询对象", description = "特殊物品-条件查询对象")
 public class SpecialCommodityKeyDto {
 
     @ApiModelProperty(name = "keyword", value = "关键字")

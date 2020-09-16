@@ -13,8 +13,8 @@ import java.sql.Timestamp;
  * @date 2020/8/5 - 10:36
  */
 @Data
-@ApiModel(value="成本价格表  返回对象", description="成本价格表 返回对象")
-public class PriceExpCostVo extends Model<PriceExpCostVo> {
+@ApiModel(value="快递成本价格表-返回对象", description="快递成本价格表-返回对象")
+public class PriceExpCostVo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "id" , value = "成本表id")

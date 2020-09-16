@@ -6,10 +6,7 @@
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto">
         SELECT
             id,
-            weight_way_name,
-            weight_way_name_en,
-            computing_formula,
-            code
+            computing_formula
         FROM
             weight_way
         where
@@ -35,6 +32,6 @@
 
     <!--获取计泡方式详情-->
     <select id="getWeightWay" resultType="com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto">
-        select id, weight_way_name, weight_way_name_en, computing_formula, code from weight_way where id = #{id}
+        select id, computing_formula from weight_way where id = #{id}
     </select>
 </mapper>

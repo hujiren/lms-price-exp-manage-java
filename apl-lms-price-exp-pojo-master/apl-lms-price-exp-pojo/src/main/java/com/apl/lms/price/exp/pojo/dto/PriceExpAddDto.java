@@ -2,7 +2,12 @@ package com.apl.lms.price.exp.pojo.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -11,8 +16,8 @@ import java.util.List;
  * @Date 2020/9/1 15:48
  */
 @Data
-@ApiModel(value="快递价格表  插入对象", description="快递价格表 插入对象")
-public class PriceExpAddDto extends PriceExpAddBaseDto {
+@ApiModel(value="快递价格表-插入对象", description="快递价格表-插入对象")
+public class PriceExpAddDto extends PriceExpAddBaseDto{
 
     @ApiModelProperty(name = "axisTransverse" , value = "x轴数据", required = true)
     @NotEmpty(message = "x轴数据不能为空")

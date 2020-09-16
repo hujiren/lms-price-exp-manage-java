@@ -18,8 +18,8 @@ import java.util.List;
  */
 @Data
 @TableName(value = "price_exp_data")
-@ApiModel(value="价格表数据  插入对象", description="价格表数据 插入对象")
-public class PriceExpDataAddDto extends Model<PriceExpDataAddDto> implements Serializable {
+@ApiModel(value="快递价格表数据-插入对象", description="快递价格表数据-插入对象")
+public class PriceExpDataAddDto implements Serializable {
 
     @ApiModelProperty(name = "id" , value = "主表id", required = true)
     @NotNull(message = "主表id不能为空")

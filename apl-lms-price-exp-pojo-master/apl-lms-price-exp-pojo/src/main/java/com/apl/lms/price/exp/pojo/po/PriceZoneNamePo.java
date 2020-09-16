@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @TableName("price_zone")
-@ApiModel(value="快递分区  持久化对象", description="快递分区 持久化对象")
+@ApiModel(value="快递分区名称-持久化对象", description="快递分区名称-持久化对象")
 public class PriceZoneNamePo extends Model<PriceZoneNamePo> {
 
     @TableId(value = "id", type = IdType.INPUT)

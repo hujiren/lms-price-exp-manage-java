@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.SurchargeMapper">
 
     <!-- 查找附加费列表-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.SurchargeUpdDto">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.po.SurchargePo">
         SELECT
             id,
             charge_name,
@@ -38,4 +38,15 @@
 
     </insert>
 
+    <update id="updById">
+        update price_surcharge set computing_formula = #{po.computingFormula}, currency = #{po.currency} where id = #{po.id}
+    </update>
+
+    <select id="getById" resultType="com.apl.lms.price.exp.pojo.po.SurchargePo">
+        select charge_name, computing_formula, currency, code, charge_name_en from price_surcharge where id = #{id}
+    </select>
+
+    <delete id="delById">
+        delete from price_surcharge where id = #{id}
+    </delete>
 </mapper>

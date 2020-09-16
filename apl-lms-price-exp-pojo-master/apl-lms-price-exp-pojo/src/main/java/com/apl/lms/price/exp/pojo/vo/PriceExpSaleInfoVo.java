@@ -1,5 +1,7 @@
 package com.apl.lms.price.exp.pojo.vo;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
+import com.apl.lms.price.exp.pojo.dto.CustomerDto;
+import com.apl.lms.price.exp.pojo.dto.CustomerGroupDto;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -14,8 +16,8 @@ import java.util.List;
  * @date 2020/8/5 - 10:36
  */
 @Data
-@ApiModel(value="销售价格表  返回对象", description="销售价格表 返回对象")
-public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
+@ApiModel(value="快递销售价格表-详细信息返回对象", description="快递销售价格表-详细信息返回对象")
+public class PriceExpSaleInfoVo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "id" , value = "价格表id")
@@ -30,11 +32,11 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @ApiModelProperty(name = "priceName" , value = "价格表名称")
     private String priceName;
 
-    @ApiModelProperty(name = "customerGroupVo", value = "客户组")
-    private List<CustomerGroupVo> customerGroupVo;
+    @ApiModelProperty(name = "customerGroup", value = "客户组")
+    private List<CustomerGroupDto> customerGroup;
 
-    @ApiModelProperty(name = "customerVos", value = "客户")
-    private List<CustomerVo> customerVos;
+    @ApiModelProperty(name = "customer", value = "客户")
+    private List<CustomerDto> customer;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;
@@ -73,8 +75,8 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @ApiModelProperty(name = "specialCommodityStr" , value = "特殊物品", hidden = true)
     private String specialCommodityStr;
 
-    @ApiModelProperty(name = "specialCommodityVo" , value = "特殊物品")
-    private List<SpecialCommodityDto> specialCommodityVo;
+    @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
+    private List<SpecialCommodityDto> specialCommodity;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;
@@ -90,8 +92,6 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
 
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
-
-
 
     @ApiModelProperty(name = "remark" , value = "备注")
     private String remark;

@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel(value="分区表数据  返回对象", description="分区表数据 返回对象")
+@ApiModel(value="快递分区表数据-列表返回对象", description="快递分区表数据-列表返回对象")
 public class PriceZoneDataListVo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)

@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 @Data
 @TableName("partner")
-@ApiModel(value="服务商  持久化对象", description="服务商 持久化对象")
+@ApiModel(value="服务商-持久化对象", description="服务商-持久化对象")
 public class PartnerPo extends Model<PartnerPo> implements Serializable {
 
     @TableId(value = "id", type = IdType.INPUT)

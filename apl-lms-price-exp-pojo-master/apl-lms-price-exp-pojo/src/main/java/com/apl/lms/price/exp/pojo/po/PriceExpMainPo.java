@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Data
 @TableName("price_exp_main")
-@ApiModel(value="销售价格主表  持久化对象", description="销售价格主表 持久化对象")
+@ApiModel(value="快递价格主表-持久化对象", description="快递价格主表-持久化对象")
 public class PriceExpMainPo extends Model<PriceExpMainPo> {
 
     @TableId(value = "id", type = IdType.INPUT)

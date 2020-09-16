@@ -1,15 +1,16 @@
 package com.apl.lms.price.exp.pojo.dto;
 
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.apl.lib.validate.TypeValidator;
+import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
@@ -20,13 +21,30 @@ import java.util.List;
  * @Date 2020/9/1 15:48
  */
 @Data
-@ApiModel(value="快递价格表  插入对象", description="快递价格表 插入对象")
-public class PriceExpUpdDto extends Model<PriceExpUpdDto> implements Serializable {
+public class PriceExpBaseUpdDto implements Serializable {
 
-    @ApiModelProperty(name = "priceMainId" , value = "主表id", required = true)
-    @NotNull(message = "主表id不能为空")
-    @Min(value = 0, message = "主表id不能小于0")
+    @TableId(value = "id", type = IdType.INPUT)
+    @ApiModelProperty(name = "id" , value = "价格表Id", required = true)
+    @NotNull(message = "价格表id不能为空")
+    private Long id;
+
+    @ApiModelProperty(name = "priceMainId" , value = "主表Id")
     private Long priceMainId;
+
+    @ApiModelProperty(name = "priceCode" , value = "价格表代码")
+    private String priceCode;
+
+    @ApiModelProperty(name = "priceName" , value = "价格表名称", required = true)
+    @NotBlank(message = "价格表名称不能为空")
+    private String priceName;
+
+    @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)
+    @NotBlank(message = "渠道类型不能为空")
+    private String channelCategory;
+
+    @ApiModelProperty(name = "priceStatus" , value = "销售价格表状态 1正常 2计账 3无效")
+    @TypeValidator(value = {"0","1","2","3"} , message = "销售价格表状态错误")
+    private Integer priceStatus;
 
     @ApiModelProperty(name = "startDate" , value = "起始日期", required = true)
     @NotNull(message = "起始日期不能为空")
@@ -40,7 +58,6 @@ public class PriceExpUpdDto extends Model<PriceExpUpdDto> implements Serializabl
 
     @ApiModelProperty(name = "currency" , value = "币制", required = true)
     @NotBlank(message = "币制不能为空")
-    @Length(max = 4, message = "币制最大长度为4")
     private String currency;
 
     @ApiModelProperty(name = "zoneId" , value = "分区表Id")
@@ -49,6 +66,7 @@ public class PriceExpUpdDto extends Model<PriceExpUpdDto> implements Serializabl
 
     @ApiModelProperty(name = "accountType" , value = "账号类型 1代理账号 2贸易账号 3第三方账号")
     @Range(min = 1, max = 3, message = "账号类型值只能为1或2或3")
+    @NotNull(message = "账号类型不能为空")
     private Integer accountType;
 
     @ApiModelProperty(name = "accountNo" , value = "快递账号")
@@ -60,7 +78,7 @@ public class PriceExpUpdDto extends Model<PriceExpUpdDto> implements Serializabl
     private Integer volumeDivisor;
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private List<Integer> specialCommodity;
+    private List<SpecialCommodityDto> specialCommodity;
 
     @ApiModelProperty(name = "pricePublishedId" , value = "公布价id")
     @Min(value = 0, message = "公布价最小值为0")
@@ -74,18 +92,7 @@ public class PriceExpUpdDto extends Model<PriceExpUpdDto> implements Serializabl
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
 
-    @ApiModelProperty(name = "priceCode" , value = "价格表代码")
-    private String priceCode;
-
-    @ApiModelProperty(name = "priceName" , value = "价格表名称", required = true)
-    @NotBlank(message = "价格表名称不能为空")
-    private String priceName;
-
-    @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)
-    @NotBlank(message = "渠道类型不能为空")
-    private String channelCategory;
-
-    @ApiModelProperty(name = "remark", value = "备注")
+    @ApiModelProperty(name = "remark" , value = "备注")
     private String remark;
 
 

@@ -1,14 +1,12 @@
 package com.apl.lms.price.exp.pojo.dto;
 
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
+import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +15,7 @@ import java.util.List;
  * @Date 2020/9/11 16:33
  */
 @Data
-@ApiModel(value="引用价格表对象", description="引用价格表对象")
+@ApiModel(value="快递引用价格表-插入对象", description="快递引用价格表-插入对象")
 public class ReferencePriceDto extends PriceExpAddBaseDto{
 
     @ApiModelProperty(name = "priceMainId" , value = "价格主表id", required = true)

@@ -3,7 +3,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpCostMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpCostService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;
-import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
+import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -71,8 +71,8 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
      * @return
      */
     @Override
-    public List<PriceListForDelBatch> getPriceListForDel(List<Long> priceIdList) {
-        List<PriceListForDelBatch> dataList = baseMapper.getPriceListForDel(priceIdList);
+    public List<PriceListForDelBatchBo> getPriceListForDel(List<Long> priceIdList) {
+        List<PriceListForDelBatchBo> dataList = baseMapper.getPriceListForDel(priceIdList);
         return dataList;
     }
 

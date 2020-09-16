@@ -13,8 +13,8 @@ import java.util.List;
  * @date 2020/8/5 - 10:36
  */
 @Data
-@ApiModel(value="成本价格表  返回对象", description="成本价格表 返回对象")
-public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
+@ApiModel(value="快递成本价格表-返回对象", description="快递成本价格表-返回对象")
+public class PriceExpCostInfoVo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "id" , value = "价格表id")
@@ -72,8 +72,8 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     @ApiModelProperty(name = "specialCommodityStr" , value = "特殊物品", hidden = true)
     private String specialCommodityStr;
 
-    @ApiModelProperty(name = "specialCommodityVo" , value = "特殊物品")
-    private List<SpecialCommodityDto> specialCommodityVo;
+    @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
+    private List<SpecialCommodityDto> specialCommodity;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;

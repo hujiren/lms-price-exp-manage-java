@@ -12,8 +12,8 @@ import java.io.Serializable;
  * @Date 2020/8/19 15:12
  */
 @Data
-@ApiModel(value="价格表主数据  返回对象", description="价格表主数据 返回对象")
-public class PriceExpDataVo extends Model<PriceExpDataVo> implements Serializable {
+@ApiModel(value="快递价格表主数据-返回对象", description="快递价格表主数据-返回对象")
+public class PriceExpDataVo implements Serializable {
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据")
     private String priceData;

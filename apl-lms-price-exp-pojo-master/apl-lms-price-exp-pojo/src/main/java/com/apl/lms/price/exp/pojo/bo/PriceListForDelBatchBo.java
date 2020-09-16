@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.pojo.entity;
+package com.apl.lms.price.exp.pojo.bo;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
@@ -7,12 +7,12 @@ import lombok.Data;
 
 /**
  * @author hjr start
- * @Classname PriceListForDelBatch
+ * @Classname PriceListForDelBatchBo
  * @Date 2020/9/15 11:37
  */
 @Data
-@ApiModel(value = "组装批量删除价格表条件entity")
-public class PriceListForDelBatch extends Model<PriceListForDelBatch> {
+@ApiModel(value = "快递价格批量删除-组装对象", description = "快递价格批量删除-组装对象")
+public class PriceListForDelBatchBo {
 
     @ApiModelProperty(name = "价格表Id", value = "价格表id")
     private Long id;

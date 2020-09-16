@@ -3,7 +3,7 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.WeightWayService;
 import com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto;
-import com.apl.lms.price.exp.pojo.dto.WeightWayAddDto;
+import com.apl.lms.price.exp.pojo.po.WeightWayPo;
 import com.apl.lms.price.exp.pojo.dto.WeightWayKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -57,9 +57,9 @@ public class WeightWayController {
 
     @PostMapping(value = "/add")
     @ApiOperation(value =  "批量新增" , notes = "批量新增新增计泡方式")
-    public ResultUtil<Integer> insertBatch( @RequestBody List<WeightWayAddDto> weightWayAddDtoList){
+    public ResultUtil<Integer> insertBatch( @RequestBody List<WeightWayPo> weightWayPoList){
 
-        return weightWayService.addWeightWay(weightWayAddDtoList);
+        return weightWayService.addWeightWay(weightWayPoList);
     }
 
     @PostMapping(value = "/get")

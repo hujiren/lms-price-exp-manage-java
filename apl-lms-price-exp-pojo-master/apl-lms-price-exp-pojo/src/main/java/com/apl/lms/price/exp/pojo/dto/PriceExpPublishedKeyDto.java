@@ -13,7 +13,7 @@ import javax.validation.constraints.Min;
  * @date 2020/8/5 - 12:03
  */
 @Data
-@ApiModel(value="成本价格表  按条件查询对象", description="成本价格表  按条件查询对象")
+@ApiModel(value="快递成本价格-条件查询对象", description="快递价格成本价格-条件查询对象")
 public class PriceExpPublishedKeyDto {
 
 

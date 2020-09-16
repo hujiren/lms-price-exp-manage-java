@@ -22,7 +22,7 @@ import java.sql.Timestamp;
  */
 @Data
 @TableName("fuel_charge")
-@ApiModel(value="燃油费  持久化对象", description="燃油费 持久化对象")
+@ApiModel(value="燃油费-持久化对象", description="燃油费-持久化对象")
 public class FuelChargePo extends Model<FuelChargePo> {
 
     @TableId(value = "id", type = IdType.INPUT)

@@ -10,8 +10,8 @@ import lombok.Data;
  * @date 2020/8/6 - 14:13
  */
 @Data
-@ApiModel(value="燃油费  查询对象", description="燃油费 查询对象")
-public class FuelChargeKeyDto extends Model<FuelChargeKeyDto> {
+@ApiModel(value="燃油费-条件查询对象", description="燃油费-条件查询对象")
+public class FuelChargeKeyDto {
 
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")

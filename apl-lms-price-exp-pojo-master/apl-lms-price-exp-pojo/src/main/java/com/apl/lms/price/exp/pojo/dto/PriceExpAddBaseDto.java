@@ -1,13 +1,11 @@
 package com.apl.lms.price.exp.pojo.dto;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
@@ -18,7 +16,6 @@ import java.util.List;
  * @Date 2020/9/1 15:48
  */
 @Data
-@ApiModel(value="快递价格表  插入对象", description="快递价格表 插入对象")
 public class PriceExpAddBaseDto implements Serializable {
 
     @ApiModelProperty(name = "startDate" , value = "起始日期", required = true)

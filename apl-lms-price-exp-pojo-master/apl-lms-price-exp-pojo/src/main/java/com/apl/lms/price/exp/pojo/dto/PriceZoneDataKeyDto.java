@@ -11,8 +11,8 @@ import lombok.Data;
  * @Date 2020/8/31 15:13
  */
 @Data
-@ApiModel(value="销售价格表  返回对象", description="销售价格表 返回对象")
-public class PriceZoneDataKeyDto extends Model<PriceZoneDataKeyDto> {
+@ApiModel(value="快递分区数据-查询条件对象", description="快递分区数据-查询条件对象")
+public class PriceZoneDataKeyDto {
 
     @ApiModelProperty(name = "keyword" , value = "关键字")
     private String keyword;

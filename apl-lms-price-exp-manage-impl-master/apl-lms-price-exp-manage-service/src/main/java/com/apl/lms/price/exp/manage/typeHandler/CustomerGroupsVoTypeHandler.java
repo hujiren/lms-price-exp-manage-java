@@ -38,15 +38,15 @@ public class CustomerGroupsVoTypeHandler extends BaseTypeHandler<List> {
 //        String ids = rs.getString("customer_groups_id");
 //        String names = rs.getString("customer_groups_name");
 //
-//        List<CustomerGroupVo> list = new ArrayList<>();
+//        List<CustomerGroupDto> list = new ArrayList<>();
 //
 //        String[] idArr = ids.replace("[", "").replace("]", "").split(",");
 //        String[] nameArr = names.split(",");
 //        for (int i = 0; i < idArr.length; i++) {
-//            CustomerGroupVo customerGroupVo = new CustomerGroupVo();
-//            customerGroupVo.setCustomerGroupsId(Long.parseLong(idArr[i]));
-//            customerGroupVo.setCustomerGroupsName(nameArr[i]);
-//            list.add(customerGroupVo);
+//            CustomerGroupDto customerGroupDto = new CustomerGroupDto();
+//            customerGroupDto.setCustomerGroupsId(Long.parseLong(idArr[i]));
+//            customerGroupDto.setCustomerGroupsName(nameArr[i]);
+//            list.add(customerGroupDto);
 //        }
 //
         return null;

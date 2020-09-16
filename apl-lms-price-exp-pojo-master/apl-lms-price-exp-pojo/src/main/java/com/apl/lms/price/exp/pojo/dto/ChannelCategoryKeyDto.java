@@ -10,8 +10,8 @@ import lombok.Data;
  * @date 2020/8/5 - 18:00
  */
 @Data
-@ApiModel(value="渠道类型  查询对象", description="渠道类型 查询对象")
-public class ChannelCategoryKeyDto extends Model<ChannelCategoryKeyDto> {
+@ApiModel(value="渠道类型-条件查询对象", description="渠道类型-条件查询对象")
+public class ChannelCategoryKeyDto {
 
 
     @ApiModelProperty(name = "keyword" , value = "关键字")

@@ -123,7 +123,7 @@ public class PriceExpController {
 
     @PostMapping(value = "/upd-sale-price")
     @ApiOperation(value = "更新销售价格表", notes = "根据Id修改销售价格表")
-    public ResultUtil<Boolean> updateSalePrice(@RequestBody @Validated PriceExpSaleUpdDto priceExpSaleUpdDto) {
+    public ResultUtil<Boolean> updateSalePrice(@Validated @RequestBody PriceExpSaleUpdDto priceExpSaleUpdDto) {
         return priceExpService.updateSalePrice(priceExpSaleUpdDto);
     }
 

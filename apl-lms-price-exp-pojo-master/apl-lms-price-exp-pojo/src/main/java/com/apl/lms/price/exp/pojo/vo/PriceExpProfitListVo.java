@@ -31,6 +31,7 @@ import lombok.EqualsAndHashCode;
  * @since 2020-09-11
  */
 @Data
+@ApiModel(value = "快递报价利润-列表返回对象", description = "快递报价利润-列表返回对象")
 public class PriceExpProfitListVo implements Serializable {
 
 

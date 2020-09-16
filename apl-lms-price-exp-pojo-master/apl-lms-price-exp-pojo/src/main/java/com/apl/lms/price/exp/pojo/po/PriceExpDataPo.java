@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Data
 @TableName(value = "price_exp_data")
-@ApiModel(value="价格表数据  持久化对象", description="价格表数据 持久化对象")
+@ApiModel(value="快递价格表数据-持久化对象", description="快递价格表数据-持久化对象")
 public class PriceExpDataPo extends Model<PriceExpDataPo> implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)

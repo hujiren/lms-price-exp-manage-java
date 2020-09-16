@@ -49,16 +49,16 @@ public class FuelChargeController {
 
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新燃油费")
-    public ResultUtil<Boolean> upd( @Validated FuelChargeSaveDto fuelChargeSaveDto){
+    public ResultUtil<Boolean> upd( @Validated FuelChargeAddDto fuelChargeAddDto){
 
-        return fuelChargeService.updFuelCharge(fuelChargeSaveDto);
+        return fuelChargeService.updFuelCharge(fuelChargeAddDto);
     }
 
     @PostMapping(value = "/add")
     @ApiOperation(value =  "添加" , notes = "添加燃油费")
-    public ResultUtil<String> add( @Validated FuelChargeSaveDto fuelChargeSaveDto){
+    public ResultUtil<String> add( @Validated FuelChargeAddDto fuelChargeAddDto){
 
-        return fuelChargeService.addFulCharge(fuelChargeSaveDto);
+        return fuelChargeService.addFulCharge(fuelChargeAddDto);
     }
 
     @PostMapping(value = "/get")

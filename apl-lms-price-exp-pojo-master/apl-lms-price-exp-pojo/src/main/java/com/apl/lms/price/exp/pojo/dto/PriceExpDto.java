@@ -20,8 +20,8 @@ import java.util.List;
  * @Date 2020/8/31 14:53
  */
 @Data
-@ApiModel(value="快递价格  插入对象", description="快递价格 插入对象")
-public class PriceExpDto extends Model<PriceExpDto> implements Serializable {
+@ApiModel(value="快递价格-插入对象", description="快递价格-插入对象")
+public class PriceExpDto implements Serializable {
 
     private static final long serialVersionUID = -4184931173102027207L;
     @ApiModelProperty(name = "startDate" , value = "起始日期", required = true)

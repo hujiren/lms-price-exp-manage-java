@@ -12,8 +12,8 @@ import lombok.Data;
  * @Date 2020/9/1 17:25
  */
 @Data
-@ApiModel(value="轴  返回对象", description="轴 返回对象")
-public class PriceExpAxisVo extends Model<PriceExpAxisVo> {
+@ApiModel(value="轴-返回对象", description="轴-返回对象")
+public class PriceExpAxisVo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "priceMainId" , value = "价格主表id")

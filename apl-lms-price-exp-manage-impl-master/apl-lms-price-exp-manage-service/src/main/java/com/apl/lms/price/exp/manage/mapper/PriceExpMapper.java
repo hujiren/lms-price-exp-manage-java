@@ -1,9 +1,9 @@
 package com.apl.lms.price.exp.manage.mapper;
 
+import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpPublishedKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
-import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
@@ -96,14 +96,14 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * 组装批量删除数据列表
      * @return
      */
-    List<PriceListForDelBatch> getCostPriceList(@Param("ids") List<Long> mainPriceList);
+    List<PriceListForDelBatchBo> getCostPriceList(@Param("ids") List<Long> mainPriceList);
 
     /**
      * 组装批量删除数据列表
      * @param mainPriceList
      * @return
      */
-    List<PriceListForDelBatch> getSalePriceList(@Param("ids") List<Long> mainPriceList);
+    List<PriceListForDelBatchBo> getSalePriceList(@Param("ids") List<Long> mainPriceList);
 
     /**
      * 批量删除

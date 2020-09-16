@@ -1,6 +1,6 @@
 package com.apl.lms.price.exp.manage.service;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;
-import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
+import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
 import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -50,7 +50,7 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
      * @param ids
      * @return
      */
-    List<PriceListForDelBatch> getPriceListForDel(List<Long> ids);
+    List<PriceListForDelBatchBo> getPriceListForDel(List<Long> ids);
 
     /**
      * 批量删除

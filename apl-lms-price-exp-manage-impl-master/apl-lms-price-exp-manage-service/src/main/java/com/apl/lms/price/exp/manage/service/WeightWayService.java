@@ -3,7 +3,7 @@ package com.apl.lms.price.exp.manage.service;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto;
-import com.apl.lms.price.exp.pojo.dto.WeightWayAddDto;
+import com.apl.lms.price.exp.pojo.po.WeightWayPo;
 import com.apl.lms.price.exp.pojo.dto.WeightWayKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -46,7 +46,7 @@ public interface WeightWayService extends IService<WeightWayUpdDto> {
      * @author hjr
      * @since 2020-08-08
      */
-    ResultUtil<Integer> addWeightWay(List<WeightWayAddDto> weightWayAddDtoList);
+    ResultUtil<Integer> addWeightWay(List<WeightWayPo> weightWayPoList);
 
     /**
      * 获取计泡方式详情

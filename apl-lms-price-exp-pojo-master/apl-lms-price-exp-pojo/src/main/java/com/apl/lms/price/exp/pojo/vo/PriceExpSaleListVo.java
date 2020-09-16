@@ -1,5 +1,5 @@
 package com.apl.lms.price.exp.pojo.vo;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,8 +11,8 @@ import java.sql.Timestamp;
  * @date 2020/8/5 - 10:36
  */
 @Data
-@ApiModel(value="销售价格表  返回对象", description="销售价格表 返回对象")
-public class PriceExpSaleListVo extends Model<PriceExpSaleListVo> {
+@ApiModel(value="快递销售价格表-列表返回对象", description="快递销售价格表-列表返回对象")
+public class PriceExpSaleListVo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "id" , value = "价格表id")

@@ -1,11 +1,10 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
-import com.apl.lms.price.exp.pojo.entity.PriceExpSaleProfit;
+import com.apl.lms.price.exp.pojo.bo.PriceExpSaleProfitBo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,13 +12,8 @@ import com.apl.lib.constants.CommonStatusCode;
 
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpProfitListVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpProfitInfoVo;
-import com.apl.lms.price.exp.pojo.dto.PriceExpProfitKeyDto;
 
 import java.util.List;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import javax.validation.constraints.NotEmpty;
 
 
 /**
@@ -50,11 +44,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     @Override
     public ResultUtil<Long> add(PriceExpProfitPo priceExpProfitPo){
 
-        List<PriceExpSaleProfit> increaseProfit = priceExpProfitPo.getIncreaseProfit();
+        List<PriceExpSaleProfitBo> increaseProfit = priceExpProfitPo.getIncreaseProfit();
         if(increaseProfit.size() != 0){
-            for (PriceExpSaleProfit priceExpSaleProfit : increaseProfit) {
-                if(null != priceExpSaleProfit.getCountryCode()){
-                    priceExpSaleProfit.setCountryCode(priceExpSaleProfit.getCountryCode().toUpperCase());
+            for (PriceExpSaleProfitBo priceExpSaleProfitBo : increaseProfit) {
+                if(null != priceExpSaleProfitBo.getCountryCode()){
+                    priceExpSaleProfitBo.setCountryCode(priceExpSaleProfitBo.getCountryCode().toUpperCase());
                 }
             }
         }
@@ -72,11 +66,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
     @Override
     public ResultUtil<Boolean> updById(PriceExpProfitPo priceExpProfitPo){
-        List<PriceExpSaleProfit> increaseProfit = priceExpProfitPo.getIncreaseProfit();
+        List<PriceExpSaleProfitBo> increaseProfit = priceExpProfitPo.getIncreaseProfit();
         if(increaseProfit.size() != 0){
-            for (PriceExpSaleProfit priceExpSaleProfit : increaseProfit) {
-                if(null != priceExpSaleProfit.getCountryCode()){
-                    priceExpSaleProfit.setCountryCode(priceExpSaleProfit.getCountryCode().toUpperCase());
+            for (PriceExpSaleProfitBo priceExpSaleProfitBo : increaseProfit) {
+                if(null != priceExpSaleProfitBo.getCountryCode()){
+                    priceExpSaleProfitBo.setCountryCode(priceExpSaleProfitBo.getCountryCode().toUpperCase());
                 }
             }
         }

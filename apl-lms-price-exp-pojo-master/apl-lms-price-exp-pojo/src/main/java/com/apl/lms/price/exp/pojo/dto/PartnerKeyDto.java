@@ -10,7 +10,7 @@ import lombok.Data;
  * @Date 2020/8/26 9:46
  */
 @Data
-@ApiModel(value = "服务商查询对象", description = "服务商查询对象")
+@ApiModel(value = "服务商-条件查询对象", description = "服务商-条件查询对象")
 public class PartnerKeyDto {
 
     @ApiModelProperty(name = "keyword", value = "关键字")

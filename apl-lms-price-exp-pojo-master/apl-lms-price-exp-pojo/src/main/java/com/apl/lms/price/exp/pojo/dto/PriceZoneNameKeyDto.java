@@ -7,8 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @author hjr start
  * @date 2020/8/6 - 14:13
  */
-@ApiModel(value="快递分区名称  查询对象", description="快递分区名称 查询对象")
-public class PriceZoneNameKeyDto extends Model<PriceZoneNameKeyDto> {
+@ApiModel(value="快递分区名称-条件查询对象", description="快递分区名称-条件查询对象")
+public class PriceZoneNameKeyDto {
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;

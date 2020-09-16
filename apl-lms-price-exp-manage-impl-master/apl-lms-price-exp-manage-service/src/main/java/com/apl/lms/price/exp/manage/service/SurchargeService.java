@@ -25,7 +25,7 @@ public interface SurchargeService extends IService<SurchargeUpdDto> {
      * @author hjr
      * @since 2020-08-08
      */
-    ResultUtil<Page<SurchargeUpdDto>> getList(PageDto pageDto, SurchargeKeyDto surchargeKeyDto);
+    ResultUtil<Page<SurchargePo>> getList(PageDto pageDto, SurchargeKeyDto surchargeKeyDto);
 
     /**
      * @Desc: 根据Id删除附加费
@@ -54,5 +54,5 @@ public interface SurchargeService extends IService<SurchargeUpdDto> {
      * @param id
      * @return
      */
-    ResultUtil<SurchargeUpdDto> getSurcharge(Long id);
+    ResultUtil<SurchargePo> getSurcharge(Long id);
 }

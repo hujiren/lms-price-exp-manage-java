@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value=" 分页查询对象", description=" 分页查询对象")
+@ApiModel(value="快递价格利润-分页查询对象", description="快递价格利润-分页查询对象")
 public class PriceExpProfitKeyDto implements Serializable {
 
     private static final long serialVersionUID=1L;

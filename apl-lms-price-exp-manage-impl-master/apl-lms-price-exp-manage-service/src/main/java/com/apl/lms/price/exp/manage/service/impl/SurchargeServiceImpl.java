@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
@@ -44,15 +45,15 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
      * @return
      */
     @Override
-    public ResultUtil<Page<SurchargeUpdDto>> getList(PageDto pageDto, SurchargeKeyDto surchargeKeyDto) {
+    public ResultUtil<Page<SurchargePo>> getList(PageDto pageDto, SurchargeKeyDto surchargeKeyDto) {
 
-        Page<SurchargeUpdDto> page = new Page();
+        Page<SurchargePo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
         if(null == surchargeKeyDto.getCode() || surchargeKeyDto.getCode() < 0){
             surchargeKeyDto.setCode(0);
         }
-        List<SurchargeUpdDto> surchargeUpdDtoList = baseMapper.getList(page, surchargeKeyDto);
+        List<SurchargePo> surchargeUpdDtoList = baseMapper.getList(page, surchargeKeyDto);
 
         page.setRecords(surchargeUpdDtoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
@@ -65,7 +66,7 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
      */
     @Override
     public ResultUtil<Boolean> delSurcharge(Long id) {
-        Integer integer = baseMapper.deleteById(id);
+        Integer integer = baseMapper.delById(id);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, SurchargeServiceCode.ID_DOES_NOT_EXITS.msg, false);
         }
@@ -79,8 +80,7 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
      */
     @Override
     public ResultUtil<Boolean> updSurcharge(SurchargeUpdDto surchargeUpdDto) {
-
-        Integer integer = baseMapper.updateById(surchargeUpdDto);
+        Integer integer = baseMapper.updById(surchargeUpdDto);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -113,13 +113,13 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
      * @return
      */
     @Override
-    public ResultUtil<SurchargeUpdDto> getSurcharge(Long id) {
+    public ResultUtil<SurchargePo> getSurcharge(Long id) {
 
-        SurchargeUpdDto surchargeUpdDto = baseMapper.selectById(id);
-        if(surchargeUpdDto == null){
+        SurchargePo surchargePo = baseMapper.getById(id);
+        if(surchargePo == null){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
         }
 
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, surchargeUpdDto);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, surchargePo);
     }
 }

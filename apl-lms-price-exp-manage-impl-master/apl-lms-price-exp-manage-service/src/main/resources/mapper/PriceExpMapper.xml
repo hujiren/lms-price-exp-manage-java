@@ -236,7 +236,7 @@
             id = #{po.id}
     </update>
 
-    <select id="getCostPriceList" resultType="com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch">
+    <select id="getCostPriceList" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
         select
             cost.id,
             sale.price_main_id
@@ -253,7 +253,7 @@
         </foreach>
     </select>
 
-    <select id="getSalePriceList" resultType="com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch">
+    <select id="getSalePriceList" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
         select
         sale.id,
         cost.price_main_id

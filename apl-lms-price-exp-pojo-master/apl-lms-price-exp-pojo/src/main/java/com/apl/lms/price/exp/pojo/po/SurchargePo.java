@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @TableName("price_surcharge")
-@ApiModel(value = "附加费插入对象", description = "附加费插入对象")
+@ApiModel(value = "附加费-持久化对象", description = "附加费-持久化对象")
 public class SurchargePo extends Model<SurchargePo> {
 
     @TableId("id")

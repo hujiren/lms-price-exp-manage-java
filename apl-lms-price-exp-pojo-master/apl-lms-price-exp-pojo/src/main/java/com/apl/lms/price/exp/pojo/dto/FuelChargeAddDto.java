@@ -16,8 +16,8 @@ import javax.validation.constraints.NotNull;
  * @date 2020/8/6 - 14:13
  */
 @Data
-@ApiModel(value="燃油费  插入对象", description="燃油费 插入对象")
-public class FuelChargeSaveDto extends Model<FuelChargeSaveDto> {
+@ApiModel(value="燃油费-插入对象", description="燃油费-插入对象")
+public class FuelChargeAddDto {
 
     @ApiModelProperty(name = "id" , value = "id", required = true)
     @NotNull(message = "id不能为空")

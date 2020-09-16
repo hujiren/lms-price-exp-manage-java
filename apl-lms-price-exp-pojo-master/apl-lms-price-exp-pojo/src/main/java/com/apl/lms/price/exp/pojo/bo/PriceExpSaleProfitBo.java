@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.pojo.entity;
+package com.apl.lms.price.exp.pojo.bo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,12 +11,12 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @author hjr start
- * @Classname PriceExpSaleProfit
+ * @Classname PriceExpSaleProfitBo
  * @Date 2020/9/11 11:14
  */
 @Data
-@ApiModel(value = "销售利润", description = "销售利润")
-public class PriceExpSaleProfit {
+@ApiModel(value = "快递销售价格利润-组装对象", description = "快递销售价格利润-组装对象")
+public class PriceExpSaleProfitBo {
 
     @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称", required = true)
     @NotBlank(message = "客户组名称不能为空")

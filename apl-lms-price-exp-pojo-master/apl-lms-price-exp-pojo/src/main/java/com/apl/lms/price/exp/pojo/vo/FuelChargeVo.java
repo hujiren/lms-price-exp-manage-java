@@ -10,7 +10,7 @@ import java.util.Date;
  * @date 2020/8/6 - 14:13
  */
 @Data
-@ApiModel(value="燃油费  返回对象", description="燃油费 返回对象")
+@ApiModel(value="燃油费-返回对象", description="燃油费-返回对象")
 public class FuelChargeVo{
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)

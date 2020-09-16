@@ -7,7 +7,7 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.WeightWayMapper;
 import com.apl.lms.price.exp.manage.service.WeightWayService;
 import com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto;
-import com.apl.lms.price.exp.pojo.dto.WeightWayAddDto;
+import com.apl.lms.price.exp.pojo.po.WeightWayPo;
 import com.apl.lms.price.exp.pojo.dto.WeightWayKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -89,18 +89,18 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
 
     /**
      * 批量添加附加费
-     * @param weightWayAddDtoList
+     * @param weightWayPoList
      * @return
      */
     @Override
-    public ResultUtil<Integer> addWeightWay(List<WeightWayAddDto> weightWayAddDtoList) {
+    public ResultUtil<Integer> addWeightWay(List<WeightWayPo> weightWayPoList) {
 
-        for (WeightWayAddDto weightWayDto : weightWayAddDtoList) {
+        for (WeightWayPo weightWayDto : weightWayPoList) {
 
             weightWayDto.setId(SnowflakeIdWorker.generateId());
         }
 
-        Integer integer = baseMapper.addWeightWay(weightWayAddDtoList);
+        Integer integer = baseMapper.addWeightWay(weightWayPoList);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }

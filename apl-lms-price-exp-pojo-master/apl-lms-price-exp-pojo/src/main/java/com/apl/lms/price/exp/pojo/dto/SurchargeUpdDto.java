@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
  * @date 2020/8/8 - 9:17
  */
 @Data
-@ApiModel(value = "附加费持久化对象", description = "附加费持久化对象")
+@ApiModel(value = "附加费-修改对象", description = "附加费-修改对象")
 public class SurchargeUpdDto {
 
     @ApiModelProperty(name = "id", value = "附加费Id", required = true)
