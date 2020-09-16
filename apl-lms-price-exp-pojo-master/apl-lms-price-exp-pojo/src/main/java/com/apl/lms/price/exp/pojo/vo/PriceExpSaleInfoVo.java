@@ -58,9 +58,6 @@ public class PriceExpSaleInfoVo extends Model<PriceExpSaleInfoVo> {
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;
 
-    @ApiModelProperty(name = "mainStatus" , value = "价格主表状态 1正常 2计账 3无效")
-    private Integer mainStatus;
-
     @ApiModelProperty(name = "priceForm" , value = "价格表格式")
     private Integer priceForm;
 

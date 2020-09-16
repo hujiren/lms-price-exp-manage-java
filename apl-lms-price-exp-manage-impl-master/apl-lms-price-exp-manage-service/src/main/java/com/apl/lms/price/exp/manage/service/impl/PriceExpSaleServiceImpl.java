@@ -3,8 +3,6 @@ import cn.hutool.core.bean.BeanUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpSaleMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpSaleService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
-import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
@@ -31,25 +29,6 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
         return baseMapper.getPriceExpSaleInfoById(id);
     }
 
-    /**
-     * 根据主表id获取统计数量
-     * @param ids
-     * @return
-     */
-    @Override
-    public Integer getPriceDataIdCount(List<Long> ids) {
-        return baseMapper.getPriceDataIdCount(ids);
-    }
-
-    /**
-     * 根据id得到主表Id和price_data_id
-     * @param ids
-     * @return
-     */
-    @Override
-    public RelevanceForMainData getPriceDataIds(List<Long> ids) {
-        return baseMapper.getPriceDataIds(ids);
-    }
 
     /**
      * 根据id删除数据
@@ -70,8 +49,6 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
     @Override
     public Boolean addPriceExpSale(PriceExpAddBaseDto priceExpAddDto, Long salePriceId, Long priceMainId, Long quotePriceId) {
 
-
-
         PriceExpSalePo priceExpSalePo = new PriceExpSalePo();
         BeanUtil.copyProperties(priceExpAddDto, priceExpSalePo);
         priceExpSalePo.setId(salePriceId);
@@ -81,7 +58,6 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
         priceExpSalePo.setPriceStatus(1);
         priceExpSalePo.setPriceMainId(priceMainId);
         priceExpSalePo.setChannelCategory(priceExpAddDto.getChannelCategory());
-//        Boolean saveSuccess = priceExpSalePo.insert();
         Integer integer = baseMapper.addPriceExpSale(priceExpSalePo);
         if(integer<1){
             return false;
@@ -100,26 +76,6 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
         return integer > 0 ? true : false;
     }
 
-    /**
-     * 获取主表id
-     * @param id
-     * @return
-     */
-    @Override
-    public Long getPriceDataId(Long id) {
-        return baseMapper.getPriceDataId(id);
-    }
-
-    /**
-     * 添加引用销售价
-     * @param priceExpSalePo
-     * @return
-     */
-    @Override
-    public Long addReferenceSale(PriceExpSalePo priceExpSalePo) {
-        Integer integer = baseMapper.addPriceExpSale(priceExpSalePo);
-        return integer > 0 ? priceExpSalePo.getId() : 0L;
-    }
 
     /**
      * 构建批量删除销售价格表条件集合

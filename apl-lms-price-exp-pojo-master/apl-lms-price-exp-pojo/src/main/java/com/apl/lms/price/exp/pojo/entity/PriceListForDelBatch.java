@@ -23,6 +23,4 @@ public class PriceListForDelBatch extends Model<PriceListForDelBatch> {
     @ApiModelProperty(name = "主表id", value = "主表id")
     private Long priceMainId;
 
-    @ApiModelProperty(name = "价格数据表id", value = "价格数据表id")
-    private Long priceDataId;
 }

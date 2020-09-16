@@ -1,7 +1,5 @@
 package com.apl.lms.price.exp.manage.service;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
-import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
@@ -23,19 +21,6 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
      */
     PriceExpSaleVo getPriceExpSaleInfoById(Long id);
 
-    /**
-     * 根据主表id获取数据统计数量
-     * @param ids
-     * @return
-     */
-    Integer getPriceDataIdCount(List<Long> ids);
-
-    /**
-     * 根据ids得到主表id和price_data_id
-     * @param ids
-     * @return
-     */
-    RelevanceForMainData getPriceDataIds(List<Long> ids);
 
     /**
      * 根据id删除数据
@@ -59,19 +44,6 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
      */
     Boolean updateSaleById(PriceExpSalePo priceExpSalePo);
 
-    /**
-     * 获取price_data_id
-     * @param id
-     * @return
-     */
-    Long getPriceDataId(Long id);
-
-    /**
-     * 添加引用销售价格
-     * @param priceExpSalePo
-     * @return
-     */
-    Long addReferenceSale(PriceExpSalePo priceExpSalePo);
 
     /**
      * 构建批量删除销售价格表条件集合

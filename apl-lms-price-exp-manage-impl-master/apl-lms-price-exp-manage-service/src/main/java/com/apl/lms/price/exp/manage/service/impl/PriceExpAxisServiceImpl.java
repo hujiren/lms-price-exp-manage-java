@@ -20,14 +20,14 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
 
     /**
      * 保存价格表轴数据
-     * @param priceDataId
+     * @param priceMainId
      * @param priceExpAddDto
      * @return
      */
     @Override
-    public Boolean addPriceExpAxis(Long priceDataId, PriceExpAddDto priceExpAddDto) {
+    public Boolean addPriceExpAxis(Long priceMainId, PriceExpAddDto priceExpAddDto) {
         PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
-        priceExpAxisPo.setId(priceDataId);
+        priceExpAxisPo.setId(priceMainId);
         priceExpAxisPo.setAxisPortrait(priceExpAddDto.getAxisPortrait().toString());
         priceExpAxisPo.setAxisTransverse(priceExpAddDto.getAxisTransverse().toString());
         Integer saveSuccess = baseMapper.insertAxis(priceExpAxisPo);

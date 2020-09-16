@@ -3,6 +3,7 @@ package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,6 +24,7 @@ public interface PriceZoneMapper extends BaseMapper<PriceZoneNamePo> {
      * @param page
      * @return
      */
+    @SqlParser(filter = true)
     List<PriceZoneNameVo> getPriceZoneNameList(Page<PriceZoneNameVo> page, @Param("dto") PriceZoneNameKeyDto priceZoneNameKeyDto);
 
     /**

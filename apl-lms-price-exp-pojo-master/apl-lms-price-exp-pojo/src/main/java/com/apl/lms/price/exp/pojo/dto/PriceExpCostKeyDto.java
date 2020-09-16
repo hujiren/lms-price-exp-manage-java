@@ -28,14 +28,13 @@ public class PriceExpCostKeyDto {
     @ApiModelProperty(name = "specialCommodity", value = "特殊物品code")
     private Integer specialCommodity;
 
-
     @ApiModelProperty(name = "partnerId", value = "服务商id")
     @Min(value = 0, message = "服务商id不能小于0")
     private Long partnerId;
 
-    @ApiModelProperty(name = "priceStatus", value = "价格表状态 1正常 2计账 3无效")
-    @TypeValidator(value = {"0","1","2","3"} , message = "成本价格表状态错误")
-    @Min(value = 0, message = "价格表状态不能小于0")
+    @ApiModelProperty(name = "priceStatus", value = "销售价格表状态 1正常 2计账 3无效 4未过期 5即将过期 6已过期")
+    @TypeValidator(value = {"0","1","2","3","4","5","6"} , message = "销售价格表状态错误")
+    @Min(value = 0, message = "销售价格表状态不能小于0")
     private Integer priceStatus;
 
     @ApiModelProperty(name = "channelCategory", value = "成本价渠道类型")

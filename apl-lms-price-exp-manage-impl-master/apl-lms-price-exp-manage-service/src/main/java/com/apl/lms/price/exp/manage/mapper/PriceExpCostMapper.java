@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
-import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -25,28 +24,6 @@ public interface PriceExpCostMapper extends BaseMapper<PriceExpCostPo> {
      */
     PriceExpCostVo getPriceExpCostInfo(@Param("id") Long id);
 
-
-    /**
-     * 通过主表ids获取统计条数
-     * @param priceMainIds
-     * @return
-     */
-    Integer getPriceDataIdCount(@Param("ids") List<Long> priceMainIds);
-
-
-    /**
-     * 批量获取主表Id
-     * @param ids
-     * @return
-     */
-    RelevanceForMainData getPriceDataIds(@Param("ids") List<Long> ids);
-
-    /**
-     * 获取主表id
-     * @param id
-     * @return
-     */
-    Long getPriceDataId(@Param("id") Long id);
 
     /**
      * 组装批量删除条件集合

@@ -79,7 +79,7 @@ public class PriceExpController {
     @PostMapping(value = "/get-sale-info")
     @ApiOperation(value = "获取销售价格详情", notes = "获取销售价格详情")
     @ApiImplicitParam(name = "id", value = "销售价格表id", required = true, paramType = "query")
-    public ResultUtil<PriceExpSaleInfoVo> getPriceExpSaleInfo(@NotNull(message = "销售id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+    public ResultUtil<PriceExpSaleInfoVo> getPriceExpSaleInfo(@NotNull(message = "销售id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
 
         return priceExpService.getPriceExpSaleInfo(id);
     }
@@ -87,7 +87,7 @@ public class PriceExpController {
     @PostMapping(value = "/get-cost-info")
     @ApiOperation(value = "获取成本价格详情", notes = "获取成本价格详情")
     @ApiImplicitParam(name = "id", value = "成本价格表id", required = true, paramType = "query")
-    public ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(@NotNull(message = "成本id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+    public ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(@NotNull(message = "成本id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
 
         return priceExpService.getPriceExpCostInfo(id);
     }
@@ -103,8 +103,8 @@ public class PriceExpController {
     @PostMapping(value = "/get-price-data")
     @ApiOperation(value = "获取价格表数据", notes = "获取价格表数据")
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long priceId) {
-        return priceExpDataService.getPriceExpDataInfoByPriceId(priceId);
+    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+        return priceExpDataService.getPriceExpDataInfoByPriceId(id);
     }
 
     @PostMapping(value = "/get-price-remark")

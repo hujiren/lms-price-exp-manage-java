@@ -28,16 +28,16 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      * @param priceId
      * @return
      */
-    ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long priceId);
+    ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id);
 
 
 
     /**
      * 保存价格表数据
-     * @param priceDataId
+     * @param priceMainId
      * @return
      */
-    Boolean addPriceExpData(Long priceDataId, PriceExpAddDto priceExpAddDto);
+    Boolean addPriceExpData(Long priceMainId, PriceExpAddDto priceExpAddDto);
 
     /**
      * 更新

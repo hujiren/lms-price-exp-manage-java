@@ -36,16 +36,14 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
 
     /**
      * 根据价格表Id获取详细
-     * @param priceId
+     * @param id
      * @return
      */
     @Override
-    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long priceId) {
+    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) {
 
         //判断是成本表还是销售表
-        Long mainId = priceExpCostService.getPriceDataId(priceId);
-        Long mainId2 = priceExpSaleService.getPriceDataId(priceId);
-        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoById(priceId);
+        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoById(id);
         if (priceExpDataVo == null) {
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
         }
@@ -56,15 +54,15 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
 
     /**
      * 保存价格表数据
-     * @param priceDataId
+     * @param priceMainId
      * @return
      */
     @Override
-    public Boolean addPriceExpData(Long priceDataId, PriceExpAddDto priceExpAddDto) {
+    public Boolean addPriceExpData(Long priceMainId, PriceExpAddDto priceExpAddDto) {
 
         PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
         priceExpDataPo.setPriceData(priceExpAddDto.getPriceData());
-        priceExpDataPo.setId(priceDataId);
+        priceExpDataPo.setId(priceMainId);
         Integer saveSuccess = baseMapper.insertData(priceExpDataPo);
         return saveSuccess > 0 ? true :false;
     }

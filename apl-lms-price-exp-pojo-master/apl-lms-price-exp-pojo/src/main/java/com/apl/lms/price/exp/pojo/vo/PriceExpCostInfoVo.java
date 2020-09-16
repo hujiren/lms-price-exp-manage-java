@@ -1,10 +1,12 @@
 package com.apl.lms.price.exp.pojo.vo;
+import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author hjr start
@@ -48,14 +50,14 @@ public class PriceExpCostInfoVo extends Model<PriceExpCostInfoVo> {
     @ApiModelProperty(name = "accountNo" , value = "快递账号")
     private String accountNo;
 
+    @ApiModelProperty(name = "specialCommodityStr" , value = "特殊物品", hidden = true)
+    private String specialCommodityStr;
+
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private String specialCommodity;
+    private List<SpecialCommodityDto> specialCommodity;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;
-
-    @ApiModelProperty(name = "mainStatus" , value = "价格主表状态 1正常 2计账 3无效")
-    private Integer mainStatus;
 
     @ApiModelProperty(name = "priceForm" , value = "价格表格式")
     private Integer priceForm;

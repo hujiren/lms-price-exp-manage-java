@@ -27,9 +27,6 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "id" , value = "销售价格主表Id")
     private Long id;
 
-    @ApiModelProperty(name = "priceDataId" , value = "数据表Id")
-    private Long priceDataId;
-
     @ApiModelProperty(name = "startDate" , value = "起始日期")
     private Timestamp startDate;
 
@@ -63,9 +60,6 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
 
     @ApiModelProperty(name = "endWeight" , value = "截止重")
     private Double endWeight;
-
-    @ApiModelProperty(name = "mainStatus" , value = "主表状态 1正常 2计账 3无效")
-    private Integer mainStatus;
 
     @ApiModelProperty(name = "pricePublishedId" , value = "公布价id")
     private Long pricePublishedId;

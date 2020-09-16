@@ -1,5 +1,4 @@
 package com.apl.lms.price.exp.manage.mapper;
-import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
 import com.apl.lms.price.exp.pojo.po.PriceExpSalePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
@@ -26,32 +25,12 @@ public interface PriceExpSaleMapper extends BaseMapper<PriceExpSalePo> {
     PriceExpSaleVo getPriceExpSaleInfoById(@Param("id") Long id);
 
     /**
-     * 根据主表id获取数据统计数量
-     * @param ids
-     * @return
-     */
-    Integer getPriceDataIdCount(@Param("ids") List<Long> ids);
-
-    /**
-     * 根据id得到主表id和price_data_id
-     * @param ids
-     * @return
-     */
-    RelevanceForMainData getPriceDataIds(@Param("ids") List<Long> ids);
-
-    /**
      * 更新
      * @param priceExpSalePo
      * @return
      */
     Integer updateSaleById(@Param("po") PriceExpSalePo priceExpSalePo);
 
-    /**
-     * 获取主表id
-     * @param id
-     * @return
-     */
-    Long getPriceDataId(@Param("id") Long id);
 
     /**
      * 新增

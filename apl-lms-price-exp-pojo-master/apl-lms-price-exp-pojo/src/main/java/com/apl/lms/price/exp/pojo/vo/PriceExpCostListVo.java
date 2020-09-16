@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  */
 @Data
 @ApiModel(value="成本价格表  返回对象", description="成本价格表 返回对象")
-public class PriceExpCostListVo extends Model<PriceExpCostListVo> {
+public class PriceExpCostListVo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "id" , value = "价格表id")
@@ -23,10 +23,6 @@ public class PriceExpCostListVo extends Model<PriceExpCostListVo> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "priceMainId" , value = "主表id")
     private Long priceMainId;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
-    private Long priceDataId;
 
     @ApiModelProperty(name = "priceCode" , value = "成本价格表代码")
     private String priceCode;
@@ -54,9 +50,6 @@ public class PriceExpCostListVo extends Model<PriceExpCostListVo> {
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private String specialCommodity;
-
-    @ApiModelProperty(name = "mainStatus" , value = "主表状态")
-    private Integer mainStatus;
 
     @ApiModelProperty(name = "priceStatus" , value = "成本价格状态")
     private Integer priceStatus;

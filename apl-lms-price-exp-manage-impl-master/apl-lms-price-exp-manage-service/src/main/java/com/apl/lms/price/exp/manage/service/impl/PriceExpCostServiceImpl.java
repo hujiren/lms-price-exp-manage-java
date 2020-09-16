@@ -3,9 +3,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpCostMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpCostService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch;
-import com.apl.lms.price.exp.pojo.entity.RelevanceForMainData;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,25 +30,6 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
         return baseMapper.getPriceExpCostInfo(id);
     }
 
-    /**
-     * 根据id获取主表id
-     * @param ids
-     * @return
-     */
-    @Override
-    public RelevanceForMainData getPriceDataIds(List<Long> ids) {
-        return baseMapper.getPriceDataIds(ids);
-    }
-
-    /**
-     * 通过主表id获取统计条数
-     * @param priceMainIds
-     * @return
-     */
-    @Override
-    public Integer getPriceDataIdCount(List<Long> priceMainIds) {
-        return baseMapper.getPriceDataIdCount(priceMainIds);
-    }
 
 
     /**
@@ -85,21 +64,6 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
         return baseMapper.deleteBatchIds(ids);
     }
 
-    /**
-     * 获取主表Id
-     * @param id
-     * @return
-     */
-    @Override
-    public Long getPriceDataId(Long id) {
-        return baseMapper.getPriceDataId(id);
-    }
-
-    @Override
-    public Long addReferenceCost(PriceExpCostPo priceExpCostPo) {
-        boolean insert = priceExpCostPo.insert();
-        return insert ? priceExpCostPo.getId() : 0L;
-    }
 
     /**
      * 组装批量删除条件集合

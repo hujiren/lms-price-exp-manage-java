@@ -18,36 +18,6 @@
             id = #{id}
     </select>
 
-    <!--根据主表id获取统计条数-->
-    <select id="getPriceDataIdCount" resultType="java.lang.Integer">
-        select count(id) from price_exp_cost where price_main_id in
-        <foreach collection="ids" separator="," open="(" close=")" item="row" index="">
-            #{row}
-        </foreach>
-    </select>
-
-    <!--获取主表ids-->
-    <select id="getPriceDataIds" resultType="com.apl.lms.price.exp.pojo.entity.RelevanceForMainData">
-        select main.price_data_id, main.id from price_exp_main main
-        left join price_exp_cost cost on cost.price_main_id = main.id where cost.id in
-        <foreach collection="ids" close=")" index="" item="row" open="(" separator=",">
-            #{row}
-        </foreach>
-    </select>
-
-    <!--获取主表id-->
-    <select id="getPriceDataId" resultType="java.lang.Long">
-        select
-            main.price_data_id
-        from
-            price_exp_main main
-        left join
-            price_exp_cost cost
-        on
-            main.id = cost.price_main_id
-        where
-            cost.id = #{id}
-    </select>
 
     <!--组装批量删除条件集合-->
     <select id="getPriceListForDel" resultType="com.apl.lms.price.exp.pojo.entity.PriceListForDelBatch">

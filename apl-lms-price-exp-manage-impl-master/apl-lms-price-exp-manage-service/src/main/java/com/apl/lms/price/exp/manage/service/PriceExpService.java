@@ -56,7 +56,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param id
      * @return
      */
-    ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(Long id);
+    ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(Long id) throws Exception;
 
 
     /**

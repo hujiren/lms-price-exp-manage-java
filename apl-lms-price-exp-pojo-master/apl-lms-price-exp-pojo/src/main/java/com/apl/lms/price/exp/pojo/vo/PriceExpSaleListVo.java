@@ -59,9 +59,6 @@ public class PriceExpSaleListVo extends Model<PriceExpSaleListVo> {
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private String specialCommodity;
 
-    @ApiModelProperty(name = "mainStatus" , value = "主表状态")
-    private Integer mainStatus;
-
     @ApiModelProperty(name = "priceStatus" , value = "价格表状态")
     private Integer priceStatus;
 

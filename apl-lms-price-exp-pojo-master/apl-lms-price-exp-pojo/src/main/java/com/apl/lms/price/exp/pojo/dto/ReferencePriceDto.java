@@ -30,8 +30,4 @@ public class ReferencePriceDto extends PriceExpAddBaseDto{
     @NotNull( message = "引用价格表id不能为空")
     private Long quotePriceId;
 
-    @ApiModelProperty(name = "priceDataId" , value = "价格数据id", required = true)
-    @Min(value = 0, message = "价格数据id不能小于0")
-    @NotNull( message = "价格数据不能为空")
-    private Long priceDataId;
 }

@@ -22,7 +22,7 @@ public interface PriceExpDataMapper extends BaseMapper<PriceExpDataPo> {
      * @return
      */
     @SqlParser(filter = true)
-    PriceExpDataVo getPriceExpDataInfoById(@Param("priceId") Long priceId);
+    PriceExpDataVo getPriceExpDataInfoById(@Param("id") Long priceId);
 
     /**
      * 新增

@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
-import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
+
 import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,7 @@ public interface PriceZoneDataMapper extends BaseMapper<PriceZoneDataListVo> {
      * @param id
      * @return
      */
+    @SqlParser(filter = true)
     List<PriceZoneDataListVo> getList(@Param("id") Long id);
 
     /**

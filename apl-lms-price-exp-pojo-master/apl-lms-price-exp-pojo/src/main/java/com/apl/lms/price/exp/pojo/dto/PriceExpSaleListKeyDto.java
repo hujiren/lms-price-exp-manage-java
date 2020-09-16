@@ -28,11 +28,6 @@ public class PriceExpSaleListKeyDto {
     @Min(value = 0, message = "账号类型不能小于0")
     private Integer accountType;
 
-    @ApiModelProperty(name = "mainStatus", value = "价格主表状态 1正常 2计账 3无效 4即将过期 5已过期")
-    @TypeValidator(value = {"0","1","2","3","4","5"} , message = "价格主表状态错误")
-    @Min(value = 0, message = "价格主表状态不能小于0")
-    private Integer mainStatus;
-
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是", hidden = true)
     @TypeValidator(value = {"0","1","2"} , message = "公布价错误")
     private Integer isPublishedPrice;
@@ -46,8 +41,8 @@ public class PriceExpSaleListKeyDto {
     @ApiModelProperty(name = "customerId", value = "客户id")
     private Long customerId;
 
-    @ApiModelProperty(name = "priceStatus", value = "销售价格表状态 1正常 2计账 3无效")
-    @TypeValidator(value = {"0","1","2","3"} , message = "销售价格表状态错误")
+    @ApiModelProperty(name = "priceStatus", value = "销售价格表状态 1正常 2计账 3无效 4未过期 5即将过期 6已过期")
+    @TypeValidator(value = {"0","1","2","3","4","5","6"} , message = "销售价格表状态错误")
     @Min(value = 0, message = "销售价格表状态不能小于0")
     private Integer priceStatus;
 
