@@ -15,6 +15,7 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
+import com.apl.lms.price.exp.manage.dao.PriceExpMainDao;
 import com.apl.lms.price.exp.manage.mapper.PriceExpMapper;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.manage.util.CheckObjFieldINull;
@@ -54,7 +55,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         price_exp_remark_SAVE_DATA_FAILED("price_exp_remark_SAVE_DATA_FAILED", "保存价格表扩展数据失败"),
         ID_IS_NOT_EXITS("ID_IS_NOT_EXITS", "id不存在"),
         CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH("CUSTOMER_ID_AND_CUSTOMER_NAME_DO_NOT_MATCH", "客户id和客户名称不匹配"),
-        THERE_IS_NO_CORRESPONDING_DATA_FOR_THE_MAIN_TABLE("THERE_IS_NO_CORRESPONDING_DATA_FOR_THE_MAIN_TABLE", "主表没有对应数据"),
+        THERE_IS_NO_CORRESPONDING_DATA("THERE_IS_NO_CORRESPONDING_DATA", "没有对应数据"),
         PARTNER_MUST_BE_NOT_ZERO("PARTNER_MUST_BE_NOT_ZERO", "服务商id不能为0"),
         PARTNER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP(
                 "PARTNER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP",
@@ -96,9 +97,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     PriceExpSaleService priceExpSaleService;
 
     @Autowired
-    DataSource dataSource;
-
-    @Autowired
     ComputationalFormulaService computationalFormulaService;
 
     @Autowired
@@ -110,6 +108,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Autowired
     PriceZoneNameService priceZoneNameService;
 
+    @Autowired
+    PriceExpMainDao priceExpMainDao;
+
     /**
      * 分页查询销售价格列表
      *
@@ -119,6 +120,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      */
     @Override
     public ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleListKeyDto keyDto) {
+
+        priceExpMainDao.createRealTable();
 
         Page<PriceExpSaleListVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
@@ -149,9 +152,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             keyDto.setChannelCategory(keyDto.getChannelCategory().toUpperCase());
         }
 
-        if(null != keyDto && keyDto.getSpecialCommodity() != null){
-            keyDto.setSpecialCommodityCopy(keyDto.getSpecialCommodity().toString());
-        }
+//        if(null != keyDto && keyDto.getSpecialCommodity() != null){
+//            keyDto.setSpecialCommodityCopy(keyDto.getSpecialCommodity().toString());
+//        }
 
         List<PriceExpCostListVo> priceExpListVoCostList = baseMapper.getPriceExpCostList(page, keyDto);
 
@@ -201,8 +204,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         //查询主表
         PriceExpSaleInfoVo priceExpSaleInfoVo = baseMapper.getPriceExpMainInfoById(priceExpSaleVo.getPriceMainId());
         if (priceExpSaleInfoVo == null) {
-            throw new AplException(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA_FOR_THE_MAIN_TABLE.code,
-                    ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA_FOR_THE_MAIN_TABLE.msg, null);
+            throw new AplException(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
+                    ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg, null);
         }
         priceExpSaleInfoVo.setId(priceExpSaleVo.getId());
         priceExpSaleInfoVo.setPriceCode(priceExpSaleVo.getPriceCode());
@@ -306,14 +309,14 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         //查询成本价格表并组装
         PriceExpCostVo priceExpCostVo = priceExpCostService.getPriceExpCostInfo(id);
 
-        if (priceExpCostVo == null) {
-            ResultUtil.APPRESULT(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, null);
+        if (null == priceExpCostVo) {
+            return ResultUtil.APPRESULT(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, null);
         }
 
         //查询主表  用priceExpSaleInfoVo接收是为了复用方法
         PriceExpSaleInfoVo priceExpSaleInfoVo = baseMapper.getPriceExpMainInfoById(priceExpCostVo.getPriceMainId());
 
-        if (priceExpSaleInfoVo != null) {
+        if (null != priceExpSaleInfoVo) {
 
             BeanUtil.copyProperties(priceExpSaleInfoVo, priceExpCostInfoVo);
 
@@ -331,7 +334,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         ResultUtil<String> priceZoneNameResult = priceZoneNameService.getPriceZoneName(priceExpCostInfoVo.getZoneId());
         priceExpCostInfoVo.setZoneName(priceZoneNameResult.getData());
 
-        if(priceExpSaleInfoVo.getSpecialCommodityStr()!=null) {
+        if(null != priceExpSaleInfoVo && null != priceExpSaleInfoVo.getSpecialCommodityStr()) {
             String specialCommodityStr = priceExpSaleInfoVo.getSpecialCommodityStr().replace("[", "").replace("]", "").replaceAll(" ", "");
 
             List<SpecialCommodityDto> specialCommodityList = new ArrayList<>();
@@ -363,7 +366,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         //获取扩展信息并组装
         PriceExpRemarkPo priceExpRemarkPo = priceExpRemarkService.getDevelopInfoById(id);
-        if (priceExpRemarkPo != null) {
+        if (null != priceExpRemarkPo) {
             priceExpCostInfoVo.setRemark(priceExpRemarkPo.getRemark());
         }
 
@@ -669,6 +672,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         //保存价格主表数据
         if (null == tenantPriceMainId || tenantPriceMainId.equals(0)) {
 
+            priceExpMainDao.createRealTable();
+
             PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
             BeanUtil.copyProperties(priceExpAddDto, priceExpMainPo);
             priceExpMainPo.setId(priceMainId);
@@ -707,7 +712,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             computationalFormulaService.addComputationalFormula(computationalFormulaPo);
 
             //保存备注
-            if (priceExpAddDto.getPartnerRemark() != null) {
+            if (null != priceExpAddDto.getPartnerRemark()) {
                 PriceExpRemarkPo priceExpRemarkPo = new PriceExpRemarkPo();
                 priceExpRemarkPo.setId(priceId);
                 priceExpRemarkPo.setRemark(priceExpAddDto.getPartnerRemark());
@@ -785,7 +790,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         StringBuffer sbDelPriceMainIds = new StringBuffer();
         StringBuffer sbPriceIds = new StringBuffer();
         List<Long> mainPriceList = new ArrayList<>();
-
+        if(priceList.isEmpty()){
+            throw new AplException(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code, ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg,null);
+        }
         for (PriceListForDelBatchBo priceListForDelBatchBo : priceList) {
             if (priceListForDelBatchBo.getQuotePriceId() == 0) {
                 //没有引用其他表的表Id
@@ -813,6 +820,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 // key main_price_id
                 //  costPriceList = select cost.id, sale.main_price_id  price_exp_main inner join price_exp_cost  where main.id in (mainPriceList)
                 List<PriceListForDelBatchBo> costPriceList = baseMapper.getCostPriceList(mainPriceList);
+                if(costPriceList.isEmpty()){
+                        throw new AplException(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
+                                ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg,null);
+                }
                 for (PriceListForDelBatchBo priceExpCostListVo : costPriceList) {
                     costPriceMaps.put(priceExpCostListVo.getPriceMainId(), priceExpCostListVo.getPriceMainId());
                     if (costPriceIds.length() > 0)
@@ -823,6 +834,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 // key main_price_id
                 //List  salePriceList = select sale.id, cost.main_price_id  price_exp_main inner join  price_exp_cost  where main.id in (mainPriceList)
                 List<PriceListForDelBatchBo> salePriceList = baseMapper.getSalePriceList(mainPriceList);
+                if(salePriceList.isEmpty()){
+                    throw new AplException(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
+                            ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg,null);
+                }
                 for (PriceListForDelBatchBo priceExpSaleListVo : salePriceList) {
                     salePriceMaps.put(priceExpSaleListVo.getPriceMainId(), priceExpSaleListVo.getPriceMainId());
                     if (salePriceIds.length() > 0)
@@ -910,7 +925,13 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         ResultUtil<PriceExpDataVo> priceExpDataInfo = priceExpDataService.getPriceExpDataInfoByPriceId(id);
         PriceExpDataVo priceExpDataVo = priceExpDataInfo.getData();
-        ResultUtil<PriceExpAxisVo> axisInfo = priceExpAxisService.getAxisInfoById(priceExpDataVo.getId());
+        ResultUtil<PriceExpAxisVo> axisInfo = null;
+        if(null != priceExpDataVo) {
+            axisInfo = priceExpAxisService.getAxisInfoById(priceExpDataVo.getId());
+        }else{
+            return ResultUtil.APPRESULT(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
+                    ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg, null);
+        }
         PriceExpDataAxisVo priceExpDataAxisVo = new PriceExpDataAxisVo();
         BeanUtil.copyProperties(axisInfo.getData(), priceExpDataAxisVo);
         priceExpDataAxisVo.setPriceData(priceExpDataVo.getPriceData());

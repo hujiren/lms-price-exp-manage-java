@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class PriceExpController {
     PriceExpRemarkService priceExpRemarkService;
 
     @PostMapping(value = "/get-sale-list")
-    @ApiOperation(value = "分页获取销售价格列表", notes = "分页获取销售价格列表")
+    @ApiOperation(value = "分页查询销售价格列表", notes = "分页查询销售价格列表")
     public ResultUtil<Page<PriceExpSaleListVo>> getSaleList(PageDto pageDto, @Validated PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
 
         priceExpSaleListKeyDto.setPriceType(1);
@@ -54,7 +55,7 @@ public class PriceExpController {
     }
 
     @PostMapping(value = "/get-customer-list")
-    @ApiOperation(value = "分页获取客户价格列表", notes = "分页获取客户价格列表")
+    @ApiOperation(value = "分页查询客户价格列表", notes = "分页查询客户价格列表")
     public ResultUtil<Page<PriceExpSaleListVo>> getCustomerList(PageDto pageDto, @Validated PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
 
         priceExpSaleListKeyDto.setPriceType(2);
@@ -63,14 +64,14 @@ public class PriceExpController {
     }
 
     @PostMapping(value = "/get-cost-list")
-    @ApiOperation(value = "分页获取成本价格列表", notes = "分页获取成本价格列表")
+    @ApiOperation(value = "分页查询成本价格列表", notes = "分页查询成本价格列表")
     public ResultUtil<Page<PriceExpCostListVo>> getCostList(PageDto pageDto, @Validated PriceExpCostKeyDto priceExpCostListKeyDto) {
 
         return priceExpService.getPriceExpCostList(pageDto, priceExpCostListKeyDto);
     }
 
     @PostMapping(value = "/get-published-price-list")
-    @ApiOperation(value = "分页获取公布价列表", notes = "分页获取公布价列表")
+    @ApiOperation(value = "分页查询公布价列表", notes = "分页查询公布价列表")
     public ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, @Validated PriceExpPublishedKeyDto keyDto) {
 
         return priceExpService.getPublishedPriceList(pageDto, keyDto);
@@ -156,21 +157,26 @@ public class PriceExpController {
 
     @PostMapping(value = "/delete-cost-batch")
     @ApiOperation(value = "批量删除成本价格表", notes = "根据Id批量删除成本价格表")
-    @ApiImplicitParam(name = "isDelSaleAndCost", value = "是否同时删除销售价和成本价", required = true, paramType = "query")
-    public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "id不能为空") @RequestParam("ids") ArrayList<Long> ids, Integer isDelSaleAndCost){
+    @ApiImplicitParam(name = "isDelSaleAndCost", value = "是否同时删除销售价和成本价 1是 2否", required = true, paramType = "query")
+    public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "id不能为空") @RequestBody ArrayList<Long> ids, Integer isDelSaleAndCost){
+
         Boolean delSaleAndCost = false;
-        if(isDelSaleAndCost == 1){
-            delSaleAndCost = true;
+        if(isDelSaleAndCost != 1 && isDelSaleAndCost != 2){
+           return ResultUtil.APPRESULT("PARAMETER_ERROR","参数错误", false);
         }
+        if(isDelSaleAndCost == 1){ delSaleAndCost = true; }
         Integer priceType = 2;
         return priceExpService.deletePriceBatch(ids, priceType, delSaleAndCost);
     }
 
     @PostMapping(value = "/delete-sale-batch")
     @ApiOperation(value = "批量删除销售价格表", notes = "根据Id批量删除销售价格表")
-    @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
-    public ResultUtil<Boolean> deleteSalePrice(@NotEmpty(message = "销售价格表id不能为空") @RequestParam("ids") List<Long> ids, Integer isDelSaleAndCost){
+    @ApiImplicitParam(name = "isDelSaleAndCost", value = "是否同时删除销售价和成本价 1是 2否", required = true, paramType = "query")
+    public ResultUtil<Boolean> deleteSalePrice(@NotEmpty(message = "销售价格表id不能为空") @RequestBody List<Long> ids, Integer isDelSaleAndCost){
         Boolean delSaleAndCost = false;
+        if(isDelSaleAndCost != 1 && isDelSaleAndCost != 2){
+            return ResultUtil.APPRESULT("PARAMETER_ERROR","参数错误", false);
+        }
         if(isDelSaleAndCost == 1){
             delSaleAndCost = true;
         }

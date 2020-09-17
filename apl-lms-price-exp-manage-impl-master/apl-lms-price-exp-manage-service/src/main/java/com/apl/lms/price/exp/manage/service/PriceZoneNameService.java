@@ -4,6 +4,7 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -20,6 +21,7 @@ public interface PriceZoneNameService extends IService<PriceZoneNamePo> {
      * @param id
      * @return
      */
+    @SqlParser(filter = true)
     ResultUtil<String> getPriceZoneName(Long id);
 
     /**

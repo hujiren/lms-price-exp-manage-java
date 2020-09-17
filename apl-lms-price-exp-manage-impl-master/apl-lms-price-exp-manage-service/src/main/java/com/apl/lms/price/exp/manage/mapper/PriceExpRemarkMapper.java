@@ -18,4 +18,11 @@ public interface PriceExpRemarkMapper extends BaseMapper<PriceExpRemarkPo> {
      * @return
      */
     Integer delBatch(@Param("ids") String ids);
+
+    /**
+     * 获取详细
+     * @param id
+     * @return
+     */
+    PriceExpRemarkPo getById(@Param("id") Long id);
 }

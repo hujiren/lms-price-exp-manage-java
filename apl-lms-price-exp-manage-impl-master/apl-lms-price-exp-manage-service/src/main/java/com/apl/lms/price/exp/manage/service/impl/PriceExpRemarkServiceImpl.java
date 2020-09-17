@@ -58,8 +58,8 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
      */
     @Override
     public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id) {
-        PriceExpRemarkPo priceExpRemarkPo = baseMapper.selectById(id);
-        if (priceExpRemarkPo == null) {
+        PriceExpRemarkPo priceExpRemarkPo = baseMapper.getById(id);
+        if (null == priceExpRemarkPo) {
             return ResultUtil.APPRESULT(PriceExpRemarkEnum.NO_CORRESPONDING_DATA.code, PriceExpRemarkEnum.NO_CORRESPONDING_DATA.msg, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpRemarkPo);

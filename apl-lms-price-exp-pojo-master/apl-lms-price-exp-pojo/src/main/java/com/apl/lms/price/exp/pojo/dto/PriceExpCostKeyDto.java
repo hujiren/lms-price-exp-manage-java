@@ -43,8 +43,8 @@ public class PriceExpCostKeyDto {
     @ApiModelProperty(name = "keyword", value = "关键词: 按价格表名称")
     private String keyword;
 
-    @ApiModelProperty(name = "specialCommodity2", value = "特殊物品code", hidden = true)
-    private String specialCommodityCopy;
+//    @ApiModelProperty(name = "specialCommodity2", value = "特殊物品code", hidden = true)
+//    private String specialCommodityCopy;
 
     public String getKeyword() {
         if (keyword != null && keyword.trim().equals(""))

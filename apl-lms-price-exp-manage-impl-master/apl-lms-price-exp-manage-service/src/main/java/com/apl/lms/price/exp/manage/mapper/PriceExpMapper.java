@@ -8,6 +8,7 @@ import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,6 +32,9 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     List<PriceExpSaleListVo> getPriceExpSaleList(Page<PriceExpSaleListVo> page, @Param("key") PriceExpSaleListKeyDto keyDto);
+
+    @SqlParser(filter = true)
+    List<PriceExpSaleListVo> getPriceExpSaleList2(@Param("key") PriceExpSaleListKeyDto keyDto);
 
     /**
      * 分页查询成本价格列表

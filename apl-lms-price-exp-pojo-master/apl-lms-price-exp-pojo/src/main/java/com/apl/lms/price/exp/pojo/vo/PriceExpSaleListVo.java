@@ -58,13 +58,4 @@ public class PriceExpSaleListVo {
     @ApiModelProperty(name = "priceMainId" , value = "主表ID")
     private Long priceMainId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
-    private Long priceDataId;
-
-
-
-
-
-
 }

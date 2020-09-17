@@ -50,15 +50,15 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         Long resMainId2 = priceExpSaleService.getMainId(id);
 
         Long mainId = 0L;
-        if(resMainId != null && resMainId != 0){
+        if(null != resMainId && resMainId != 0){
             mainId = resMainId;
-        }else if(resMainId2 != null && resMainId2 != 0){
+        }else if(null != resMainId2 && resMainId2 != 0){
             mainId = resMainId2;
         }
 
         PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoById(mainId);
 
-        if (null == priceExpDataVo.getId()) {
+        if (null == priceExpDataVo && null != priceExpDataVo.getId()) {
             return ResultUtil.APPRESULT(PriceExpDataServiceCode.NO_CORRESPONDING_DATA.code,
                     PriceExpDataServiceCode.NO_CORRESPONDING_DATA.msg, null);
         }

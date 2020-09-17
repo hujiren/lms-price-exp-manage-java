@@ -6,4 +6,9 @@
     <delete id="delBatch">
         delete from price_exp_remark where id in(${ids})
     </delete>
+
+    <!--获取详情-->
+    <select id="getById" resultType="com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo">
+        select remark from price_exp_remark where id = #{id}
+    </select>
 </mapper>

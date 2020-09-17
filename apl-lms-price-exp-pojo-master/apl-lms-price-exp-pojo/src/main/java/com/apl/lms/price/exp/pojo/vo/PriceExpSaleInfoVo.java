@@ -23,9 +23,6 @@ public class PriceExpSaleInfoVo {
     @ApiModelProperty(name = "id" , value = "价格表id")
     private Long id;
 
-    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
-    private Long priceDataId;
-
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;
 

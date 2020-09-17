@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.service.impl;
 import cn.hutool.core.bean.BeanUtil;
+import com.apl.lms.price.exp.manage.dao.PriceExpCostDao;
 import com.apl.lms.price.exp.manage.mapper.PriceExpCostMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpCostService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;
@@ -7,6 +8,7 @@ import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
 import com.apl.lms.price.exp.pojo.po.PriceExpCostPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,9 @@ import java.util.List;
  */
 @Service
 public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, PriceExpCostPo> implements PriceExpCostService {
+
+    @Autowired
+    PriceExpCostDao priceExpCostDao;
 
 
     /**
@@ -40,6 +45,8 @@ public class PriceExpCostServiceImpl extends ServiceImpl<PriceExpCostMapper, Pri
      */
     @Override
     public Boolean addPriceExpCost(PriceExpAddBaseDto priceExpAddDto, Long costPriceId, Long priceMainId, Long quotePriceId) {
+
+        priceExpCostDao.createRealTable();
 
         PriceExpCostPo priceExpCostPo = new PriceExpCostPo();
         BeanUtil.copyProperties(priceExpAddDto, priceExpCostPo);
