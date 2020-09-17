@@ -20,7 +20,7 @@ import java.util.List;
  * @date 2020/6/11 - 10:10
 */
 @Component
-public class CustomerGroupsIdTypeHandler extends BaseTypeHandler<List> {
+public class PriceDataTypeHandler extends BaseTypeHandler<List> {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

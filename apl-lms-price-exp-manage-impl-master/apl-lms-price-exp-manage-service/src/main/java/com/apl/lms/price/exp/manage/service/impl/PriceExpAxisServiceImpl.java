@@ -17,6 +17,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, PriceExpAxisPo> implements PriceExpAxisService {
 
+    enum PriceExpAxisServiceCode {
+        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA", "没有对应数据");
+
+        private String code;
+        private String msg;
+
+        PriceExpAxisServiceCode(String code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+    }
 
     /**
      * 保存价格表轴数据
@@ -54,7 +65,8 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
     public ResultUtil<PriceExpAxisVo> getAxisInfoById(Long id) {
         PriceExpAxisVo priceExpAxisVo = baseMapper.getAxisInfoById(id);
         if(priceExpAxisVo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+            return ResultUtil.APPRESULT(PriceExpAxisServiceCode.NO_CORRESPONDING_DATA.code,
+                    PriceExpAxisServiceCode.NO_CORRESPONDING_DATA.msg, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpAxisVo);
     }

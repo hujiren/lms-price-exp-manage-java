@@ -70,9 +70,6 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
 
-//    @ApiModelProperty(name = "innerOrgId" , value = "多租户Id")
-//    private Long innerOrgId;
-
     public String getAccountNo() {
         if(null == accountNo){
             accountNo = "";

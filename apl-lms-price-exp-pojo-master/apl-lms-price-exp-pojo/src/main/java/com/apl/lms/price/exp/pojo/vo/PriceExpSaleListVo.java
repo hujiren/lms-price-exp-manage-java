@@ -18,14 +18,6 @@ public class PriceExpSaleListVo {
     @ApiModelProperty(name = "id" , value = "价格表id")
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceMainId" , value = "主表ID")
-    private Long priceMainId;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
-    private Long priceDataId;
-
     @ApiModelProperty(name = "priceCode" , value = "销售价格表代码")
     private String priceCode;
 
@@ -40,6 +32,9 @@ public class PriceExpSaleListVo {
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;
+
+    @ApiModelProperty(name = "priceStatus" , value = "价格表状态")
+    private Integer priceStatus;
 
     @ApiModelProperty(name = "startDate" , value = "起始日期")
     private Timestamp startDate;
@@ -59,8 +54,13 @@ public class PriceExpSaleListVo {
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private String specialCommodity;
 
-    @ApiModelProperty(name = "priceStatus" , value = "价格表状态")
-    private Integer priceStatus;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ApiModelProperty(name = "priceMainId" , value = "主表ID")
+    private Long priceMainId;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ApiModelProperty(name = "priceDataId" , value = "数据表id")
+    private Long priceDataId;
 
 
 

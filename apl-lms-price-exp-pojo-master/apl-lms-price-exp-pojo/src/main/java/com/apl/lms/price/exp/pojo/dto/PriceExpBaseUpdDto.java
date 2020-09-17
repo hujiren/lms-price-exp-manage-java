@@ -28,8 +28,8 @@ public class PriceExpBaseUpdDto implements Serializable {
     @NotNull(message = "价格表id不能为空")
     private Long id;
 
-    @ApiModelProperty(name = "priceMainId" , value = "主表Id")
-    private Long priceMainId;
+    @ApiModelProperty(name = "priceMainId" , value = "主表Id", required = true)
+    private Long mainId;
 
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;

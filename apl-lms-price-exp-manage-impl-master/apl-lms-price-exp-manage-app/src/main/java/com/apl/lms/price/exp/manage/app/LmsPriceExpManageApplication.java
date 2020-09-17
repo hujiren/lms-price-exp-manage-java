@@ -30,7 +30,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@MapperScan("com.apl.lms.price.exp.manage.mapper")
 @MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc")
 //@MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper2", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc2")
-@EnableFeignClients(  basePackages = {   "com.apl.lms.common.lib.feign"})
+@EnableFeignClients(basePackages = {"com.apl.lms.common.lib.feign"})
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
 

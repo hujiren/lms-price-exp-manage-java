@@ -39,4 +39,10 @@
     <delete id="delBatch">
         delete from price_exp_cost where id in(${str})
     </delete>
+
+    <!--获取主表Id-->
+    <select id="getMainId" resultType="java.lang.Long">
+        select price_main_id from price_exp_cost where id = #{id}
+    </select>
+
 </mapper>

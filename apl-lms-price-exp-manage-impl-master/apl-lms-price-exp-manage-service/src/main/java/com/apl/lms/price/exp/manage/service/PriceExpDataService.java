@@ -4,6 +4,7 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpDataAxisVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,21 +17,13 @@ import java.util.List;
  */
 public interface PriceExpDataService extends IService<PriceExpDataPo> {
 
-    /**
-     * 根据价格主表删除数据
-     * @param ids
-     * @return
-     */
-    Integer deleteBatchById(List<Long> ids);
 
     /**
      * 根据价格表id获取主数据信息
-     * @param priceId
+     * @param id
      * @return
      */
     ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id);
-
-
 
     /**
      * 保存价格表数据
@@ -52,4 +45,5 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      * @return
      */
     Integer delBatch(String ids);
+
 }

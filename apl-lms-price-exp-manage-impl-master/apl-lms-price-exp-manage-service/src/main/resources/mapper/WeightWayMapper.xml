@@ -16,7 +16,7 @@
         </if>
         <if test="key.keyword != null">
             and weight_way_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
-            and weight_way_name_en LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            or weight_way_name_en LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
         order by code
     </select>

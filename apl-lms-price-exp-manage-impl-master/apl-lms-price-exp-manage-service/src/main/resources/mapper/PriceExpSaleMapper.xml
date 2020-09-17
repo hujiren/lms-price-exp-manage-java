@@ -97,4 +97,8 @@
         delete from price_exp_sale where id in(${ids})
     </delete>
 
+    <!--获取主表id-->
+    <select id="getMainId" resultType="java.lang.Long">
+        select price_main_id from price_exp_sale where id = #{id}
+    </select>
 </mapper>

@@ -54,4 +54,8 @@ public interface PriceExpCostService extends IService<PriceExpCostPo> {
      */
     Integer delBatch(String ids);
 
+    /**
+     * 获取主表id
+     */
+    Long getMainId(Long id);
 }

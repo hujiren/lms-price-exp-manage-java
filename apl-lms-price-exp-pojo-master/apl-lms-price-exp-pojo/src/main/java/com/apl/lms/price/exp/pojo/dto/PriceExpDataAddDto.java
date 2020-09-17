@@ -1,10 +1,12 @@
 package com.apl.lms.price.exp.pojo.dto;
+import com.apl.lib.validate.TypeValidator;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -36,4 +38,20 @@ public class PriceExpDataAddDto implements Serializable {
     @ApiModelProperty(name = "axisPortrait" , value = "y轴数据", required = true)
     @NotBlank(message = "y轴数据不能为空")
     private String axisPortrait;
+
+    @ApiModelProperty(name = "priceForm" , value = "价格表格式 1横向 2纵向", required = true)
+    @NotNull(message = "价格表格式不能为空")
+    @TypeValidator(value = {"1","2"}, message = "价格表格式只能为1或者2")
+    private Integer priceForm;
+
+    @ApiModelProperty(name = "startWeight" , value = "起始重", required = true)
+    @NotNull(message = "起始重不能为空")
+    @Min(value = 0, message = "起始重不能小于0")
+    private Double startWeight;
+
+    @ApiModelProperty(name = "endWeight" , value = "截止重", required = true)
+    @NotNull(message = "截止重不能为空")
+    @Min(value = 0, message = "截止重不能小于0")
+    private Double endWeight;
+
 }

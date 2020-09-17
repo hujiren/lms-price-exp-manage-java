@@ -53,4 +53,10 @@ public interface PriceExpSaleMapper extends BaseMapper<PriceExpSalePo> {
      */
     Integer delBatch(@Param("ids") String ids);
 
+    /**
+     * 获取主表id
+     * @param id
+     * @return
+     */
+    Long getMainId(@Param("id") Long id);
 }

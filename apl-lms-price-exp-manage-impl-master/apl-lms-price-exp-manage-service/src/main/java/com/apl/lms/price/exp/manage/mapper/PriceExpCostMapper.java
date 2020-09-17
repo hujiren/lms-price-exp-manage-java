@@ -38,4 +38,11 @@ public interface PriceExpCostMapper extends BaseMapper<PriceExpCostPo> {
      * @return
      */
     Integer delBatch(@Param("str") String ids);
+
+    /**
+     * 获取主表id
+     * @param id
+     * @return
+     */
+    Long getMainId(@Param("id") Long id);
 }

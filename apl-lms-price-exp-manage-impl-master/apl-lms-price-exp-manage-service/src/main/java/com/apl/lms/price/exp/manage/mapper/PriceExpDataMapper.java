@@ -43,12 +43,6 @@ public interface PriceExpDataMapper extends BaseMapper<PriceExpDataPo> {
      * @param ids
      * @return
      */
-    Integer deleteBatchById(@Param("ids") List<Long> ids);
-
-    /**
-     * 批量删除
-     * @param ids
-     * @return
-     */
     Integer delBatch(@Param("ids") String ids);
+
 }

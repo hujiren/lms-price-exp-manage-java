@@ -78,6 +78,9 @@ public class PriceExpSaleInfoVo {
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private List<SpecialCommodityDto> specialCommodity;
 
+    @ApiModelProperty(name = "pricePublishedId" , value = "公布价id")
+    private Long pricePublishedId;
+
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;
 
@@ -93,8 +96,8 @@ public class PriceExpSaleInfoVo {
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
 
-    @ApiModelProperty(name = "remark" , value = "备注")
-    private String remark;
+//    @ApiModelProperty(name = "remark" , value = "备注")
+//    private String remark;
 
 
 }

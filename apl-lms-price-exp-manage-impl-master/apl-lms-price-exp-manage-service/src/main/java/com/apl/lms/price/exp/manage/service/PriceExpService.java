@@ -33,7 +33,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     ResultUtil<Page<PriceExpCostListVo>> getPriceExpCostList(PageDto pageDto, PriceExpCostKeyDto keyDto);
 
-
     /**
      * 分页公布价列表(分页)
      * @param pageDto
@@ -41,8 +40,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, PriceExpPublishedKeyDto keyDto);
-
-
 
     /**
      * 获取销售价格详情
@@ -57,7 +54,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(Long id) throws Exception;
-
 
     /**
      * 更新销售价格
@@ -80,14 +76,12 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     ResultUtil<Boolean> updatePriceData(PriceExpDataAddDto priceExpDataAddDto);
 
-
     /**
      * 新增快递价格
      * @param priceExpAddDto
      * @return
      */
     ResultUtil<Long> addExpPrice(PriceExpAddDto priceExpAddDto);
-
 
 
     /**
@@ -104,4 +98,11 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<Long> referencePrice(ReferencePriceDto referencePriceDto);
+
+    /**
+     * 获取价格表数据和轴数据
+     * @param id
+     * @return
+     */
+    ResultUtil<PriceExpDataAxisVo> getPriceExpDataAxis(Long id);
 }

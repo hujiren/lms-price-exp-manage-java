@@ -22,6 +22,7 @@
     <!--获取详细-->
     <select id="getAxisInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo">
         select
+            id,
             axis_transverse,
             axis_portrait
         from

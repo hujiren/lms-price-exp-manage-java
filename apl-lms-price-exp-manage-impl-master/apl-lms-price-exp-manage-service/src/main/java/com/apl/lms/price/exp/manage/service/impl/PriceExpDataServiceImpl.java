@@ -6,14 +6,11 @@ import com.apl.lms.price.exp.manage.service.PriceExpCostService;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
 import com.apl.lms.price.exp.manage.service.PriceExpSaleService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author hjr start
@@ -23,16 +20,24 @@ import java.util.List;
 @Service
 public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, PriceExpDataPo> implements PriceExpDataService {
 
+    enum PriceExpDataServiceCode {
+        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA", "没有对应数据");
+
+        private String code;
+        private String msg;
+
+        PriceExpDataServiceCode(String code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+    }
+
     @Autowired
     PriceExpCostService priceExpCostService;
 
     @Autowired
     PriceExpSaleService priceExpSaleService;
 
-    @Override
-    public Integer deleteBatchById(List<Long> ids) {
-        return baseMapper.deleteBatchById(ids);
-    }
 
     /**
      * 根据价格表Id获取详细
@@ -41,15 +46,24 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      */
     @Override
     public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) {
+        Long resMainId = priceExpCostService.getMainId(id);
+        Long resMainId2 = priceExpSaleService.getMainId(id);
 
-        //判断是成本表还是销售表
-        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoById(id);
-        if (priceExpDataVo == null) {
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
+        Long mainId = 0L;
+        if(resMainId != null && resMainId != 0){
+            mainId = resMainId;
+        }else if(resMainId2 != null && resMainId2 != 0){
+            mainId = resMainId2;
+        }
+
+        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoById(mainId);
+
+        if (null == priceExpDataVo.getId()) {
+            return ResultUtil.APPRESULT(PriceExpDataServiceCode.NO_CORRESPONDING_DATA.code,
+                    PriceExpDataServiceCode.NO_CORRESPONDING_DATA.msg, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataVo);
     }
-
 
 
     /**
@@ -85,4 +99,5 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     public Integer delBatch(String ids) {
         return baseMapper.delBatch(ids);
     }
+
 }

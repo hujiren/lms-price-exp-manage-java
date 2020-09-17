@@ -43,14 +43,8 @@
         <if test="key.priceStatus == 6">
             and now() > main.end_date
         </if>
-        <if test="key.priceStatus == 4">
-            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '3 day'
-        </if>
-        <if test="key.priceStatus == 5">
-            and now() - main.end_date > '0 day'
-        </if>
         <if test="key.specialCommodity > 0">
-            and main.special_commodity = #{key.specialCommodity}
+            and main.special_commodity @> #{key.specialCommodity,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
         </if>
         <if test="key.customerGroupsId != null">
             and sale.customer_groups_id @> #{key.customerGroupsId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
@@ -85,10 +79,9 @@
         <if test="key.volumeDivisor != null">
             and main.volume_divisor = #{key.volumeDivisor}
         </if>
-        <if test="key.specialCommodity > 0">
-            and main.special_commodity = #{key.specialCommodity}
+        <if test="key.specialCommodityCopy > 0">
+            and main.special_commodity @> CONCAT('',${key.specialCommodityCopy}, '')
         </if>
-
         <if test="key.accountType != null">
             and main.account_type = #{key.accountType}
         </if>
@@ -187,6 +180,7 @@
             price_form,
             start_weight,
             end_weight,
+            price_published_id,
             is_published_price,
             aging,
             price_data_id
@@ -229,9 +223,11 @@
         <if test="po.isPublishedPrice != null">
             is_published_price = #{po.isPublishedPrice},
         </if>
+        <if test="po.pricePublishedId != null">
+            price_published_id = #{po.pricePublishedId},
+        </if>
             start_date = #{po.startDate}, end_date = #{po.endDate}, currency = #{po.currency}, account_type = #{po.accountType},
-            volume_divisor = #{po.volumeDivisor}, start_weight = #{po.startWeight}, end_weight = #{po.endWeight},
-            price_published_id = #{po.pricePublishedId}
+            volume_divisor = #{po.volumeDivisor}
         where
             id = #{po.id}
     </update>

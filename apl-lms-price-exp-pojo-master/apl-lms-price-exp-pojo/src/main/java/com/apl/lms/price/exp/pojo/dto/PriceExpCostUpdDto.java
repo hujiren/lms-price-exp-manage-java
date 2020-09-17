@@ -1,18 +1,9 @@
 package com.apl.lms.price.exp.pojo.dto;
 
-import com.apl.lib.validate.TypeValidator;
-import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.Range;
-
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author hjr start

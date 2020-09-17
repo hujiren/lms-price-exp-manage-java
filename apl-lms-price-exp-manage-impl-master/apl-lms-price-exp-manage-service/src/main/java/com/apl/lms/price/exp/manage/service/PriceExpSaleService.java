@@ -59,4 +59,10 @@ public interface PriceExpSaleService extends IService<PriceExpSalePo> {
      */
     Integer delBatch(String ids);
 
+    /**
+     * 获取主表Id
+     * @param id
+     * @return
+     */
+    Long getMainId(Long id);
 }

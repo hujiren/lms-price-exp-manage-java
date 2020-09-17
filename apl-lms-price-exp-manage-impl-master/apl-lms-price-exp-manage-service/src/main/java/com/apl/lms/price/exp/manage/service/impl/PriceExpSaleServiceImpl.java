@@ -100,4 +100,13 @@ public class PriceExpSaleServiceImpl extends ServiceImpl<PriceExpSaleMapper, Pri
         return res;
     }
 
+    /**
+     * 获取主表id
+     * @param id
+     * @return
+     */
+    @Override
+    public Long getMainId(Long id) {
+        return baseMapper.getMainId(id);
+    }
 }

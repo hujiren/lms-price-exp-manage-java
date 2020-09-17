@@ -74,7 +74,7 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
     public ResultUtil<Boolean> updateRemark(PriceExpRemarkPo priceExpRemarkPo) {
         Integer integer =  baseMapper.updateById(priceExpRemarkPo);
         if (integer < 1) {
-            return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);
+            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }

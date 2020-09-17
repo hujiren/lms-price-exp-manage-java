@@ -70,7 +70,7 @@ public class PriceExpController {
     }
 
     @PostMapping(value = "/get-published-price-list")
-    @ApiOperation(value = "获取公布价列表", notes = "获取公布价")
+    @ApiOperation(value = "分页获取公布价列表", notes = "分页获取公布价列表")
     public ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, @Validated PriceExpPublishedKeyDto keyDto) {
 
         return priceExpService.getPublishedPriceList(pageDto, keyDto);
@@ -94,8 +94,8 @@ public class PriceExpController {
 
     @PostMapping(value = "/get-price-axis")
     @ApiOperation(value = "获取数据轴", notes = "获取数据轴")
-    @ApiImplicitParam(name = "id", value = "轴数据id", required = true, paramType = "query")
-    public ResultUtil<PriceExpAxisVo> getPriceExpAxis(@NotNull(message = "轴数据id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+    @ApiImplicitParam(name = "id", value = "主表id", required = true, paramType = "query")
+    public ResultUtil<PriceExpAxisVo> getPriceExpAxis(@NotNull(message = "主表id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
 
         return priceExpAxisService.getAxisInfoById(id);
     }
@@ -105,6 +105,13 @@ public class PriceExpController {
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
     public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
         return priceExpDataService.getPriceExpDataInfoByPriceId(id);
+    }
+
+    @PostMapping(value = "/get-price-data-axis")
+    @ApiOperation(value = "获取价格表数据和轴数据", notes = "获取价格表数据和轴数据")
+    @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
+    public ResultUtil<PriceExpDataAxisVo> getPriceExpDataAxis(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+        return priceExpService.getPriceExpDataAxis(id);
     }
 
     @PostMapping(value = "/get-price-remark")

@@ -21,9 +21,9 @@ import java.io.Serializable;
 @ApiModel(value="快递价格备注-持久化对象", description="快递价格备注-持久化对象")
 public class PriceExpRemarkPo extends Model<PriceExpRemarkPo> implements Serializable {
 
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "价格表id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id", required = true)
+    @ApiModelProperty(name = "价格表id", required = true)
     private Long id;
 
     @ApiModelProperty(name = "remark" , value = "备注", required = true)

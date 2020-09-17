@@ -2,17 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper">
 
-    <!--根据主表id批量删除-->
-    <delete id="deleteBatchById">
-        delete from price_exp_data where id in
-        <foreach collection="ids" separator="," open="(" close=")" item="row" index="">
-            #{row}
-        </foreach>
-    </delete>
+    <resultMap id="BaseResultMap" type="com.apl.lms.price.exp.pojo.vo.PriceExpDataVo">
+        <result property="priceData" column="price_data" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
+    </resultMap>
 
     <!--根据主表id获取详细数据-->
-    <select id="getPriceExpDataInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpDataVo">
+    <select id="getPriceExpDataInfoById" resultMap="BaseResultMap">
         select
+            id,
             price_data
         from
             price_exp_data
@@ -34,4 +31,5 @@
     <delete id="delBatch">
         delete from price_exp_data where id in(${ids})
     </delete>
+
 </mapper>
