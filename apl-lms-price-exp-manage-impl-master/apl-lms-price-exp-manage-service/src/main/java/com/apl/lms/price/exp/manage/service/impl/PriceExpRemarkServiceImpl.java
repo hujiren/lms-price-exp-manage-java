@@ -47,16 +47,6 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
      * @return
      */
     @Override
-    public PriceExpRemarkPo getDevelopInfoById(Long id) {
-        return baseMapper.selectById(id);
-    }
-
-    /**
-     * 根据id获取详情
-     * @param id
-     * @return
-     */
-    @Override
     public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id) {
         PriceExpRemarkPo priceExpRemarkPo = baseMapper.getById(id);
         if (null == priceExpRemarkPo) {

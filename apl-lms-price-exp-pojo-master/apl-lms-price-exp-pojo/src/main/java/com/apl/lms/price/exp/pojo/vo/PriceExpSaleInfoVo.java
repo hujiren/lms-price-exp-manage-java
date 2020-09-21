@@ -26,8 +26,8 @@ public class PriceExpSaleInfoVo {
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;
 
-    @ApiModelProperty(name = "priceName" , value = "价格表名称")
-    private String priceName;
+    @ApiModelProperty(name = "priceSaleName" , value = "价格表名称")
+    private String priceSaleName;
 
     @ApiModelProperty(name = "customerGroup", value = "客户组")
     private List<CustomerGroupDto> customerGroup;
@@ -40,10 +40,6 @@ public class PriceExpSaleInfoVo {
 
     @ApiModelProperty(name = "priceStatus" , value = "状态 1正常 2计账 3无效")
     private Integer priceStatus;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "mainId" , value = "主表id")
-    private Long mainId;
 
     @ApiModelProperty(name = "startDate" , value = "起始日期")
     private Timestamp startDate;
@@ -81,8 +77,8 @@ public class PriceExpSaleInfoVo {
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;
 
-    @ApiModelProperty(name = "priceForm" , value = "价格表格式")
-    private Integer priceForm;
+    @ApiModelProperty(name = "priceFormat" , value = "价格表格式")
+    private Integer priceFormat;
 
     @ApiModelProperty(name = "startWeight" , value = "起始重")
     private Double startWeight;
@@ -93,8 +89,6 @@ public class PriceExpSaleInfoVo {
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
 
-//    @ApiModelProperty(name = "remark" , value = "备注")
-//    private String remark;
-
-
+    @ApiModelProperty(name = "priceDataId", value = "价格数据表id")
+    private Long priceDataId;
 }

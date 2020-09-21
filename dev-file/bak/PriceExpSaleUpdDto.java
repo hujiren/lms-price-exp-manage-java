@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(value="快递销售价格表-更新对象", description="快递销售价格表-更新对象")
-public class PriceExpSaleUpdDto extends PriceExpBaseUpdDto  {
+public class PriceExpSaleUpdDto extends PriceExpUpdDto {
 
 
     @ApiModelProperty(name = "customerGroup" , value = "客户组")

@@ -18,10 +18,10 @@ import java.util.List;
 @ApiModel(value="快递引用价格表-插入对象", description="快递引用价格表-插入对象")
 public class ReferencePriceDto extends PriceExpAddBaseDto{
 
-    @ApiModelProperty(name = "priceMainId" , value = "价格主表id", required = true)
-    @Min(value = 0, message = "引用主表id不能小于0")
-    @NotNull( message = "引用主表id不能为空")
-    private Long priceMainId;
+    @ApiModelProperty(name = "priceDataId" , value = "价格数据表id", required = true)
+    @Min(value = 0, message = "价格数据表id不能小于0")
+    @NotNull( message = "价格数据表id不能为空")
+    private Long priceDataId;
 
     @ApiModelProperty(name = "quotePriceId" , value = "引用价格表id", required = true)
     @Min(value = 0, message = "引用价格表id不能小于0")

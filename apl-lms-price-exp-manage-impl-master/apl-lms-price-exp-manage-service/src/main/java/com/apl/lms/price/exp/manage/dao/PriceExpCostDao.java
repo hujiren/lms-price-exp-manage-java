@@ -3,16 +3,24 @@ package com.apl.lms.price.exp.manage.dao;
 import com.apl.db.adb.AdbHelper;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
+import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class PriceExpCostDao {
 
     AdbHelper adbHelpeReal;
 
+    public PriceExpCostDao(){
+        // 创建真实数据源JDBC
+        adbHelpeReal = new AdbHelper("explist");
+    }
+
     public void createRealTable(){
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
-        String sql = "CREATE TABLE \"public\".\""+securityUser.getInnerOrgCode()+"_price_exp_cost\" (\n" +
+        String sql = "CREATE TABLE IF NOT EXISTS \"public\".\""+securityUser.getInnerOrgCode()+"_price_exp_cost\" (\n" +
                 "  \"id\" int8 NOT NULL,\n" +
                 "  \"partner_id\" int8 NOT NULL DEFAULT 0,\n" +
                 "  \"quote_price_id\" int8 NOT NULL DEFAULT 0,\n" +
@@ -25,11 +33,9 @@ public class PriceExpCostDao {
                 "  \"inner_org_id\" int8 NOT NULL\n" +
                 ")";
 
-        if(null==adbHelpeReal) {
-            // 创建真实数据源JDBC
-            adbHelpeReal = new AdbHelper("explist");
-        }
         //创建租户price_exp_cost物理表
         adbHelpeReal.execut(sql);
     }
+
+
 }

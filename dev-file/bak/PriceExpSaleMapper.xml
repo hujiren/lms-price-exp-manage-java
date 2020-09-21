@@ -83,11 +83,11 @@
             sale.quote_price_id,
             sale.price_main_id
         from
-            price_exp_sale sale left join price_exp_main main on sale.price_main_id = main.id
+            price_exp_sale sale
         where
             sale.id in
         <foreach collection="ids" index="" item="row" close=")" open="(" separator=",">
-            #{row}
+            ${row}
         </foreach>
     </select>
 

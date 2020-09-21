@@ -2,6 +2,7 @@ package com.apl.lms.price.exp.pojo.po;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class SurchargePo extends Model<SurchargePo> {
 
     @TableId("id")
     @ApiModelProperty(name = "id", value = "附加费Id", hidden = true)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     @ApiModelProperty(name = "chargeName", value = "附加费名称", required = true)

@@ -9,6 +9,11 @@
 
     <!--获取详情-->
     <select id="getById" resultType="com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo">
-        select remark from price_exp_remark where id = #{id}
+        select remark,sale_remark from price_exp_remark where id = #{id}
     </select>
+
+    <!--更新-->
+    <update id="updById">
+        update price_exp_remark set remark = #{po.remark}, sale_remark = #{po.saleRemark} where id = #{po.id}
+    </update>
 </mapper>

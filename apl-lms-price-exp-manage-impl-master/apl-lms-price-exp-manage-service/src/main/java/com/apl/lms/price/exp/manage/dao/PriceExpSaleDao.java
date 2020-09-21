@@ -13,9 +13,14 @@ public class PriceExpSaleDao {
     //真实数据源JDBC
     AdbHelper adbHelpeReal;
 
+    public PriceExpSaleDao(){
+        // 创建真实数据源JDBC
+        adbHelpeReal = new AdbHelper("explist");
+    }
+
     public void createRealTable(){
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
-        String sql = "CREATE TABLE \"public\".\""+securityUser.getInnerOrgCode()+"_price_exp_sale\" (\n" +
+        String sql = "CREATE TABLE IF NOT EXISTS \"public\".\""+securityUser.getInnerOrgCode()+"_price_exp_sale\" (\n" +
                 "  \"id\" int8 NOT NULL,\n" +
                 "  \"price_code\" varchar(50) COLLATE \"pg_catalog\".\"default\",\n" +
                 "  \"price_name\" varchar(50) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n" +
@@ -31,13 +36,11 @@ public class PriceExpSaleDao {
                 "  \"inner_org_id\" int8\n" +
                 ")";
 
-        if(null==adbHelpeReal) {
-            // 创建真实数据源JDBC
-            adbHelpeReal = new AdbHelper("explist");
-        }
         //创建租户price_exp_sale物理表
         adbHelpeReal.execut(sql);
     }
+
+
 
 
 

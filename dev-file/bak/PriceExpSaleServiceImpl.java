@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.manage.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.apl.lms.price.exp.manage.dao.PriceExpSaleDao;
-import com.apl.lms.price.exp.manage.mapper.PriceExpSaleMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpSaleService;
 import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddBaseDto;

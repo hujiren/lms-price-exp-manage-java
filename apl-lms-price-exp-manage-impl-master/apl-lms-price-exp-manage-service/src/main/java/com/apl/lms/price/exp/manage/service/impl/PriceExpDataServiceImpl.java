@@ -2,9 +2,9 @@ package com.apl.lms.price.exp.manage.service.impl;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper;
-import com.apl.lms.price.exp.manage.service.PriceExpCostService;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
-import com.apl.lms.price.exp.manage.service.PriceExpSaleService;
+import com.apl.lms.price.exp.manage.service.PriceExpService;
+import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
@@ -32,13 +32,6 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         }
     }
 
-    @Autowired
-    PriceExpCostService priceExpCostService;
-
-    @Autowired
-    PriceExpSaleService priceExpSaleService;
-
-
     /**
      * 根据价格表Id获取详细
      * @param id
@@ -46,19 +39,10 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      */
     @Override
     public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) {
-        Long resMainId = priceExpCostService.getMainId(id);
-        Long resMainId2 = priceExpSaleService.getMainId(id);
 
-        Long mainId = 0L;
-        if(null != resMainId && resMainId != 0){
-            mainId = resMainId;
-        }else if(null != resMainId2 && resMainId2 != 0){
-            mainId = resMainId2;
-        }
+        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoById(id);
 
-        PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoById(mainId);
-
-        if (null == priceExpDataVo && null != priceExpDataVo.getId()) {
+        if (null == priceExpDataVo || null == priceExpDataVo.getPriceDataId()) {
             return ResultUtil.APPRESULT(PriceExpDataServiceCode.NO_CORRESPONDING_DATA.code,
                     PriceExpDataServiceCode.NO_CORRESPONDING_DATA.msg, null);
         }
@@ -68,15 +52,15 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
 
     /**
      * 保存价格表数据
-     * @param priceMainId
+     * @param priceDataId
      * @return
      */
     @Override
-    public Boolean addPriceExpData(Long priceMainId, PriceExpAddDto priceExpAddDto) {
+    public Boolean addPriceExpData(Long priceDataId, PriceExpAddDto priceExpAddDto) {
 
         PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
         priceExpDataPo.setPriceData(priceExpAddDto.getPriceData());
-        priceExpDataPo.setId(priceMainId);
+        priceExpDataPo.setId(priceDataId);
         Integer saveSuccess = baseMapper.insertData(priceExpDataPo);
         return saveSuccess > 0 ? true :false;
     }

@@ -2,10 +2,7 @@ package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
-import com.apl.lms.price.exp.manage.service.PriceExpDataService;
-import com.apl.lms.price.exp.manage.service.PriceExpRemarkService;
-import com.apl.lms.price.exp.manage.service.PriceExpService;
+import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.apl.lms.price.exp.pojo.vo.*;
@@ -15,10 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -30,13 +24,13 @@ import java.util.List;
  * @date 2020/8/5 - 10:26
  */
 @RestController
-@RequestMapping("/price-list")
+@RequestMapping("/exp-list")
 @Validated
 @Api(value = "快递价格",tags = "快递价格")
-public class PriceExpController {
+public class PriceExpController2 {
 
     @Autowired
-    PriceExpService priceExpService;
+    PriceExpService2 priceExpService;
 
     @Autowired
     PriceExpAxisService priceExpAxisService;
@@ -97,8 +91,8 @@ public class PriceExpController {
 
     @PostMapping(value = "/get-price-axis")
     @ApiOperation(value = "获取数据轴", notes = "获取数据轴")
-    @ApiImplicitParam(name = "id", value = "价格表数据id", required = true, paramType = "query")
-    public ResultUtil<PriceExpAxisVo> getPriceExpAxis(@NotNull(message = "价格表数据idId不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+    @ApiImplicitParam(name = "id", value = "主表id", required = true, paramType = "query")
+    public ResultUtil<PriceExpAxisVo> getPriceExpAxis(@NotNull(message = "主表id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
 
         return priceExpAxisService.getAxisInfoById(id);
     }
@@ -107,7 +101,7 @@ public class PriceExpController {
     @ApiOperation(value = "获取价格表数据", notes = "获取价格表数据")
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
     public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
-        return priceExpService.getPriceExpDataInfoByPriceId(id);
+        return priceExpDataService.getPriceExpDataInfoByPriceId(id);
     }
 
     @PostMapping(value = "/get-price-data-axis")
@@ -131,10 +125,17 @@ public class PriceExpController {
         return priceExpService.addExpPrice(priceExpAddDto);
     }
 
-    @PostMapping(value = "/upd-exp-price")
-    @ApiOperation(value = "更新价格表", notes = "根据Id修改价格表")
-    public ResultUtil<Boolean> updExpPrice(@Validated @RequestBody PriceExpUpdDto priceExpUpdDto) {
-        return priceExpService.updExpPrice(priceExpUpdDto);
+    @PostMapping(value = "/upd-sale-price")
+    @ApiOperation(value = "更新销售价格表", notes = "根据Id修改销售价格表")
+    public ResultUtil<Boolean> updateSalePrice(@Validated @RequestBody PriceExpSaleUpdDto priceExpSaleUpdDto) {
+        return priceExpService.updateSalePrice(priceExpSaleUpdDto);
+    }
+
+    @PostMapping(value = "/upd-cost-price")
+    @ApiOperation(value = "更新成本价格表", notes = "根据Id修改成本价格表")
+    public ResultUtil<Boolean> updateCostPrice(@Validated @RequestBody PriceExpCostUpdDto priceExpCostUpdDto) {
+
+        return priceExpService.updateCostPrice(priceExpCostUpdDto);
     }
 
     @PostMapping(value = "/upd-remark")
@@ -150,10 +151,33 @@ public class PriceExpController {
         return priceExpService.updatePriceData(priceExpDataUpdDto);
     }
 
-    @PostMapping(value = "/delete-price-batch")
-    @ApiOperation(value = "批量删除价格表", notes = "根据Id批量删除价格表")
-    public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "价格表id不能为空") @RequestBody List<Long> ids){
-        return priceExpService.deletePriceBatch(ids);
+    @PostMapping(value = "/delete-cost-batch")
+    @ApiOperation(value = "批量删除成本价格表", notes = "根据Id批量删除成本价格表")
+    @ApiImplicitParam(name = "isDelSaleAndCost", value = "是否同时删除销售价和成本价 1是 2否", required = true, paramType = "query")
+    public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "id不能为空") @RequestBody ArrayList<Long> ids, Integer isDelSaleAndCost){
+
+        Boolean delSaleAndCost = false;
+        if(isDelSaleAndCost != 1 && isDelSaleAndCost != 2){
+           return ResultUtil.APPRESULT("PARAMETER_ERROR","参数错误", false);
+        }
+        if(isDelSaleAndCost == 1){ delSaleAndCost = true; }
+        Integer priceType = 2;
+        return priceExpService.deletePriceBatch(ids, priceType, delSaleAndCost);
+    }
+
+    @PostMapping(value = "/delete-sale-batch")
+    @ApiOperation(value = "批量删除销售价格表", notes = "根据Id批量删除销售价格表")
+    @ApiImplicitParam(name = "isDelSaleAndCost", value = "是否同时删除销售价和成本价 1是 2否", required = true, paramType = "query")
+    public ResultUtil<Boolean> deleteSalePrice(@NotEmpty(message = "销售价格表id不能为空") @RequestBody List<Long> ids, Integer isDelSaleAndCost){
+        Boolean delSaleAndCost = false;
+        if(isDelSaleAndCost != 1 && isDelSaleAndCost != 2){
+            return ResultUtil.APPRESULT("PARAMETER_ERROR","参数错误", false);
+        }
+        if(isDelSaleAndCost == 1){
+            delSaleAndCost = true;
+        }
+        Integer priceType = 1;
+        return priceExpService.deletePriceBatch(ids, priceType, delSaleAndCost);
     }
 
     @PostMapping(value = "/reference-price")

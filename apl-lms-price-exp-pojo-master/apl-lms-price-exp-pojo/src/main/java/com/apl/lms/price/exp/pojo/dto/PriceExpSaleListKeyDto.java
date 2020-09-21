@@ -14,7 +14,7 @@ import javax.validation.constraints.Min;
  */
 @Data
 @ApiModel(value="快递销售价格表-条件查询对象", description="快递销售价格表-按条件查询对象")
-public class PriceExpSaleListKeyDto {
+public class  PriceExpSaleListKeyDto {
 
     @ApiModelProperty(name = "priceType", value = "价格表类型", hidden = true)
     private Integer priceType;
@@ -61,8 +61,12 @@ public class PriceExpSaleListKeyDto {
 
 
     public String getChannelCategory() {
-        if (channelCategory != null && channelCategory.trim().equals(""))
-            channelCategory = null;
+        if (channelCategory != null){
+            if(channelCategory.trim().equals(""))
+                channelCategory = null;
+            else
+                channelCategory = channelCategory.toUpperCase();
+        }
 
         return channelCategory;
     }

@@ -12,7 +12,7 @@ import javax.validation.constraints.Min;
  */
 @Data
 @ApiModel(value="快递成本价-修改对象", description="快递成本价-修改对象")
-public class PriceExpCostUpdDto extends PriceExpBaseUpdDto  {
+public class PriceExpCostUpdDto extends PriceExpUpdDto {
 
     @ApiModelProperty(name = "partnerId" , value = "服务商id", required = true)
     @Min(value = 0, message = "服务商id不能为空")

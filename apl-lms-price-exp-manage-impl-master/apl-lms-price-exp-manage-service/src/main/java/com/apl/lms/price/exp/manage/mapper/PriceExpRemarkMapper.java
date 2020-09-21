@@ -25,4 +25,11 @@ public interface PriceExpRemarkMapper extends BaseMapper<PriceExpRemarkPo> {
      * @return
      */
     PriceExpRemarkPo getById(@Param("id") Long id);
+
+    /**
+     * 更新
+     * @param priceExpRemarkPo
+     * @return
+     */
+    Integer updById(@Param("po") PriceExpRemarkPo priceExpRemarkPo);
 }

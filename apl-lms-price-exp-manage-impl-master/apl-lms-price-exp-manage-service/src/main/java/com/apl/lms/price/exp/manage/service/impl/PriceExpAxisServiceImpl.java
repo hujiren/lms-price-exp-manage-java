@@ -3,10 +3,14 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
+import com.apl.lms.price.exp.manage.service.PriceExpService;
+import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.annotations.ApiModelProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,17 +32,18 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
             this.msg = msg;
         }
     }
-
+    @Autowired
+    PriceExpService priceExpService;
     /**
      * 保存价格表轴数据
-     * @param priceMainId
+     * @param priceDataId
      * @param priceExpAddDto
      * @return
      */
     @Override
-    public Boolean addPriceExpAxis(Long priceMainId, PriceExpAddDto priceExpAddDto) {
+    public Boolean addPriceExpAxis(Long priceDataId, PriceExpAddDto priceExpAddDto) {
         PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
-        priceExpAxisPo.setId(priceMainId);
+        priceExpAxisPo.setId(priceDataId);
         priceExpAxisPo.setAxisPortrait(priceExpAddDto.getAxisPortrait().toString());
         priceExpAxisPo.setAxisTransverse(priceExpAddDto.getAxisTransverse().toString());
         Integer saveSuccess = baseMapper.insertAxis(priceExpAxisPo);
@@ -63,6 +68,7 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
      */
     @Override
     public ResultUtil<PriceExpAxisVo> getAxisInfoById(Long id) {
+
         PriceExpAxisVo priceExpAxisVo = baseMapper.getAxisInfoById(id);
         if(null == priceExpAxisVo){
             return ResultUtil.APPRESULT(PriceExpAxisServiceCode.NO_CORRESPONDING_DATA.code,

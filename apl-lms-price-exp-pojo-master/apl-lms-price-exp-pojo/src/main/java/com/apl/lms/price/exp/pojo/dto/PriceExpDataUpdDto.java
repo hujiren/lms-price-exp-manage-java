@@ -20,11 +20,11 @@ import java.util.List;
  */
 @Data
 @TableName(value = "price_exp_data")
-@ApiModel(value="快递价格表数据-插入对象", description="快递价格表数据-插入对象")
-public class PriceExpDataAddDto implements Serializable {
+@ApiModel(value="快递价格表数据-更新对象", description="快递价格表数据-更新对象")
+public class PriceExpDataUpdDto implements Serializable {
 
-    @ApiModelProperty(name = "id" , value = "主表id", required = true)
-    @NotNull(message = "主表id不能为空")
+    @ApiModelProperty(name = "id" , value = "价格表id", required = true)
+    @NotNull(message = "价格表id不能为空")
     private Long id;
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
@@ -32,17 +32,17 @@ public class PriceExpDataAddDto implements Serializable {
     private List<Object> priceData;
 
     @ApiModelProperty(name = "axisTransverse" , value = "x轴数据", required = true)
-    @NotBlank(message = "x轴数据不能为空")
-    private String axisTransverse;
+    @NotEmpty(message = "x轴数据不能为空")
+    private List<Object> axisTransverse;
 
     @ApiModelProperty(name = "axisPortrait" , value = "y轴数据", required = true)
-    @NotBlank(message = "y轴数据不能为空")
-    private String axisPortrait;
+    @NotEmpty(message = "y轴数据不能为空")
+    private List<Object> axisPortrait;
 
-    @ApiModelProperty(name = "priceForm" , value = "价格表格式 1横向 2纵向", required = true)
+    @ApiModelProperty(name = "priceFormat" , value = "价格表格式 1横向 2纵向", required = true)
     @NotNull(message = "价格表格式不能为空")
     @TypeValidator(value = {"1","2"}, message = "价格表格式只能为1或者2")
-    private Integer priceForm;
+    private Integer priceFormat;
 
     @ApiModelProperty(name = "startWeight" , value = "起始重", required = true)
     @NotNull(message = "起始重不能为空")

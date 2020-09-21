@@ -13,13 +13,22 @@ import lombok.Data;
 @ApiModel(value = "快递价格批量删除-组装对象", description = "快递价格批量删除-组装对象")
 public class PriceListForDelBatchBo {
 
-    @ApiModelProperty(name = "价格表Id", value = "价格表id")
+    @ApiModelProperty(name = "id", value = "价格表id")
     private Long id;
 
-    @ApiModelProperty(name = "引用价格id", value = "引用价格id")
+    @ApiModelProperty(name = "quotePriceId", value = "引用价格id")
     private Long quotePriceId;
 
-    @ApiModelProperty(name = "主表id", value = "主表id")
-    private Long priceMainId;
+    @ApiModelProperty(name = "priceDataId", value = "价格数据表Id")
+    private Long priceDataId;
 
+    @ApiModelProperty(name = "innerOrgId", value = "租户Id")
+    private Long innerOrgId;
+
+    public PriceListForDelBatchBo(Long id, Long priceDataId, Long quotePriceId, Long innerOrgId) {
+        this.id = id;
+        this.quotePriceId = quotePriceId;
+        this.priceDataId = priceDataId;
+        this.innerOrgId = innerOrgId;
+    }
 }

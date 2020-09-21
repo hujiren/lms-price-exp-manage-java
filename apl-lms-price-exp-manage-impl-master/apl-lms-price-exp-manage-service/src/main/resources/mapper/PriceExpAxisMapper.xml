@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper">
+
     <!--根据主表id批量删除-->
     <delete id="deleteByIds">
         delete from price_exp_axis where id in
@@ -11,18 +12,29 @@
 
     <!--新增-->
     <insert id="insertAxis">
-        insert into price_exp_axis(id, axis_transverse, axis_portrait) values (#{po.id}, #{po.axisTransverse}, #{po.axisPortrait})
+        insert into
+            price_exp_axis(id, axis_transverse, axis_portrait)
+        values
+            (#{po.id},
+            #{po.axisTransverse},
+            #{po.axisPortrait})
     </insert>
 
     <!--更新-->
     <update id="updateByMainId">
-        update price_exp_axis set axis_transverse = #{po.axisTransverse}, axis_portrait = #{po.axisPortrait} where id = #{po.id}
+        update
+            price_exp_axis
+        set
+            axis_transverse = #{po.axisTransverse},
+            axis_portrait = #{po.axisPortrait}
+        where
+            id = #{po.id}
     </update>
 
     <!--获取详细-->
     <select id="getAxisInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo">
         select
-            id,
+            id as priceDataId,
             axis_transverse,
             axis_portrait
         from

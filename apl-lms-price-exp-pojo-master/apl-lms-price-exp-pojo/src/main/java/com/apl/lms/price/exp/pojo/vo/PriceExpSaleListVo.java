@@ -21,8 +21,8 @@ public class PriceExpSaleListVo {
     @ApiModelProperty(name = "priceCode" , value = "销售价格表代码")
     private String priceCode;
 
-    @ApiModelProperty(name = "priceName" , value = "销售价格表名称")
-    private String priceName;
+    @ApiModelProperty(name = "priceSaleName" , value = "报价销售名称")
+    private String priceSaleName;
 
     @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称")
     private String customerGroupsName;
@@ -53,9 +53,5 @@ public class PriceExpSaleListVo {
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private String specialCommodity;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceMainId" , value = "主表ID")
-    private Long priceMainId;
 
 }

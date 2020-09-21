@@ -22,13 +22,6 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
     Integer deleteById(List<Long> ids);
 
     /**
-     * 根据Id获取详情
-     * @param id
-     * @return
-     */
-    PriceExpRemarkPo getDevelopInfoById(Long id);
-
-    /**
      * 更新
      * @param priceExpRemarkPo
      * @return

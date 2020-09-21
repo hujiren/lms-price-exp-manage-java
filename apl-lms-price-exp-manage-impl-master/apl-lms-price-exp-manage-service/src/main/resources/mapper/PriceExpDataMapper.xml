@@ -9,7 +9,7 @@
     <!--根据主表id获取详细数据-->
     <select id="getPriceExpDataInfoById" resultMap="BaseResultMap">
         select
-            id,
+            id as priceDataId,
             price_data
         from
             price_exp_data

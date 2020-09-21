@@ -41,12 +41,5 @@ public class PriceExpSaleVo {
     @ApiModelProperty(name = "priceStatus" , value = "价格表状态")
     private Integer priceStatus;
 
-    @ApiModelProperty(name = "priceMainId" , value = "主表Id")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long priceMainId;
-
-
-
-
 
 }

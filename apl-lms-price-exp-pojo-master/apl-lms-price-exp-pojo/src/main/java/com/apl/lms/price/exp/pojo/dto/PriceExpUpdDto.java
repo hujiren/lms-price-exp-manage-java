@@ -21,15 +21,12 @@ import java.util.List;
  * @Date 2020/9/1 15:48
  */
 @Data
-public class PriceExpBaseUpdDto implements Serializable {
+public class PriceExpUpdDto implements Serializable {
 
     @TableId(value = "id", type = IdType.INPUT)
     @ApiModelProperty(name = "id" , value = "价格表Id", required = true)
     @NotNull(message = "价格表id不能为空")
     private Long id;
-
-    @ApiModelProperty(name = "priceMainId" , value = "主表Id", required = true)
-    private Long mainId;
 
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;
@@ -37,6 +34,10 @@ public class PriceExpBaseUpdDto implements Serializable {
     @ApiModelProperty(name = "priceName" , value = "价格表名称", required = true)
     @NotBlank(message = "价格表名称不能为空")
     private String priceName;
+
+    @ApiModelProperty(name = "priceSaleName" , value = "价格销售名称", required = true)
+    @NotBlank(message = "价格销售名称不能为空")
+    private String priceSaleName;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)
     @NotBlank(message = "渠道类型不能为空")
@@ -92,8 +93,15 @@ public class PriceExpBaseUpdDto implements Serializable {
     @ApiModelProperty(name = "aging" , value = "时效")
     private String aging;
 
-    @ApiModelProperty(name = "remark" , value = "备注")
-    private String remark;
+    @ApiModelProperty(name = "customerGroup" , value = "客户组")
+    private List<CustomerGroupDto> customerGroup;
 
+    @ApiModelProperty(name = "customer" , value = "客户")
+    private List<CustomerDto> customer;
+
+    @ApiModelProperty(name = "partnerId" , value = "服务商id", required = true)
+    @NotNull(message = "服务商id不能为空")
+    @Min(value = 0, message = "服务商Id不能小于0")
+    private Long partnerId;
 
 }

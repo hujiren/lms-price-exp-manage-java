@@ -2,13 +2,9 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpDataAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpDataAxisVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 /**
  * @author hjr start
@@ -27,10 +23,10 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
 
     /**
      * 保存价格表数据
-     * @param priceMainId
+     * @param priceDataId
      * @return
      */
-    Boolean addPriceExpData(Long priceMainId, PriceExpAddDto priceExpAddDto);
+    Boolean addPriceExpData(Long priceDataId, PriceExpAddDto priceExpAddDto);
 
     /**
      * 更新

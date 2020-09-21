@@ -18,8 +18,8 @@ import java.util.List;
 public class PriceExpDataAxisVo implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceMainId" , value = "价格主表id")
-    private Long priceMainId;
+    @ApiModelProperty(name = "priceDataId" , value = "价格数据表Id")
+    private Long priceDataId;
 
     @ApiModelProperty(name = "axisTransverse" , value = "x轴数据")
     private String axisTransverse;

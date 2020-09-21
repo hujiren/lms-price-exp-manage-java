@@ -5,260 +5,165 @@
     <!--分页查询销售价格列表-->
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
-            main.id as priceMainId, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
-            main.special_commodity, sale.id, sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
-            sale.channel_category, sale.price_status
+            id, start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_code,
+            price_sale_name, customer_groups_name, customer_name, channel_category, price_status
         from
-            price_exp_sale sale
-        left join
-            price_exp_main main
-        on
-            main.id = sale.price_main_id
+            lms_exp_price
         where
         <if test="key.priceType == 1">
-            sale.customer_groups_name is not null
+            customer_groups_name is not null
         </if>
         <if test="key.priceType == 2">
-            sale.customer_name is not null
+            customer_name is not null
         </if>
         <if test="key.volumeDivisor != null">
-            and main.volume_divisor = #{key.volumeDivisor}
+            and volume_divisor = #{key.volumeDivisor}
         </if>
         <if test="key.accountType != null">
-            and main.account_type = #{key.accountType}
+            and account_type = #{key.accountType}
         </if>
         <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
-            and sale.price_status = #{key.priceStatus}
+            and price_status = #{key.priceStatus}
         </if>
         <!-- 未过期 -->
         <if test="key.priceStatus == 4">
-            and main.end_date > now()
+            and end_date > now()
         </if>
         <!-- 即将过期 -->
         <if test="key.priceStatus == 5">
-            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '7 day'
+            and end_date - now() > '0 day' and end_date - now() &lt;= '7 day'
         </if>
         <!-- 已过期 -->
         <if test="key.priceStatus == 6">
-            and now() > main.end_date
+            and now() > end_date
         </if>
         <if test="key.specialCommodity > 0">
-            and main.special_commodity @> '${key.specialCommodity}'
+            and special_commodity @> '${key.specialCommodity}'
         </if>
         <if test="key.customerGroupsId != null">
-            and sale.customer_groups_id @> '${key.customerGroupsId}'
+            and customer_groups_id @> '${key.customerGroupsId}'
         </if>
         <if test="key.customerId != null">
-            and sale.customer_ids @> '${key.customerId}'
+            and customer_ids @> '${key.customerId}'
         </if>
         <if test="key.channelCategory != null">
-            and sale.channel_category = #{key.channelCategory}
+            and channel_category = #{key.channelCategory}
         </if>
         <if test="key.keyWord != null">
-            and sale.customer_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
-            or sale.price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
-            or sale.customer_groups_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
-        </if>
-    </select>
-
-    <select id="getPriceExpSaleList2" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
-        select
-        main.id as priceMainId, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
-        main.special_commodity, sale.id, sale.price_code, sale.price_name, sale.customer_groups_name, sale.customer_name,
-        sale.channel_category, sale.price_status
-        from
-        price_exp_sale sale
-        left join
-        price_exp_main main
-        on
-        main.id = sale.price_main_id
-        where
-        <if test="key.priceType == 1">
-            sale.customer_groups_name is not null
-        </if>
-        <if test="key.priceType == 2">
-            sale.customer_name is not null
-        </if>
-        <if test="key.volumeDivisor != null">
-            and main.volume_divisor = #{key.volumeDivisor}
-        </if>
-        <if test="key.accountType != null">
-            and main.account_type = #{key.accountType}
-        </if>
-        <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
-            and sale.price_status = #{key.priceStatus}
-        </if>
-        <!-- 未过期 -->
-        <if test="key.priceStatus == 4">
-            and main.end_date > now()
-        </if>
-        <!-- 即将过期 -->
-        <if test="key.priceStatus == 5">
-            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '7 day'
-        </if>
-        <!-- 已过期 -->
-        <if test="key.priceStatus == 6">
-            and now() > main.end_date
-        </if>
-        <if test="key.specialCommodity > 0">
-            and main.special_commodity @> '${key.specialCommodity}'
-        </if>
-        <if test="key.customerGroupsId != null">
-            and sale.customer_groups_id @> '${key.customerGroupsId}'
-        </if>
-        <if test="key.customerId != null">
-            and sale.customer_ids @> '${key.customerId}'
-        </if>
-        <if test="key.channelCategory != null">
-            and sale.channel_category = #{key.channelCategory}
-        </if>
-        <if test="key.keyWord != null">
-            and sale.customer_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
-            or sale.price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
-            or sale.customer_groups_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            and (customer_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or price_sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or customer_groups_name LIKE CONCAT( '%' , #{key.keyword} , '%' ))
         </if>
     </select>
 
     <!--分页查询成本价格列表  -->
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
-        main.id as priceMainId, main.start_date, main.end_date, main.currency, main.volume_divisor, main.account_type,
-        main.special_commodity, cost.id, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
+            id ,start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_status,
+            price_code, price_sale_name, channel_category
         from
-        price_exp_cost cost
-        left join
-        price_exp_main main
-        on
-        main.id = cost.price_main_id
+        lms_exp_price
         where
-        main.is_published_price = 2
+            is_published_price = 2
         <if test="key.volumeDivisor != null">
-            and main.volume_divisor = #{key.volumeDivisor}
+            and volume_divisor = #{key.volumeDivisor}
         </if>
         <if test="key.specialCommodity > 0">
-            and main.special_commodity @> '${key.specialCommodity}'
+            and special_commodity @> '${key.specialCommodity}'
         </if>
         <if test="key.accountType != null">
-            and main.account_type = #{key.accountType}
+            and account_type = #{key.accountType}
         </if>
         <if test="key.priceStatus > 0 and key.priceStatus &lt; 4">
-            and cost.price_status = #{key.priceStatus}
+            and price_status = #{key.priceStatus}
         </if>
         <!-- 未过期 -->
         <if test="key.priceStatus == 4">
-            and main.end_date > now()
+            and end_date > now()
         </if>
         <!-- 即将过期 -->
         <if test="key.priceStatus == 5">
-            and main.end_date - now() > '0 day' and main.end_date - now() &lt;= '7 day'
+            and end_date - now() > '0 day' and end_date - now() &lt;= '7 day'
         </if>
         <!-- 已过期 -->
         <if test="key.priceStatus == 6">
-            and now() > main.end_date
-            and now() - main.end_date > '0 day'
+            and now() > end_date
+            and now() - end_date > '0 day'
         </if>
         <if test="key.partnerId != null">
-            and cost.partner_id = #{key.partnerId}
+            and partner_id = #{key.partnerId}
         </if>
         <if test="key.channelCategory != null">
-            and cost.channel_category = #{key.channelCategory}
+            and channel_category = #{key.channelCategory}
         </if>
         <if test="key.keyWord != null">
-            and cost.price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            and price_sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
 
     <!--分页查询公布价价格列表 -->
     <select id="getPublishedPriceList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
-        main.id as priceMainId, main.start_date, main.end_date, main.currency,
-        cost.id, cost.price_status, cost.price_code, cost.price_name, cost.channel_category
+            id, start_date, end_date, currency, price_status, price_code, price_sale_name, channel_category
         from
-        price_exp_cost cost
-        left join
-        price_exp_main main
-        on
-        main.id = cost.price_main_id
+        lms_exp_price
         where
-        main.is_published_price = 1 and main.end_date>now()
+            is_published_price = 1 and end_date>now()
         <if test="key.priceStatus != null and key.priceStatus > 0">
-            and cost.price_status = #{key.priceStatus}
+            and price_status = #{key.priceStatus}
         </if>
         <if test="key.channelCategory != null">
-            and cost.channel_category = #{key.channelCategory}
+            and channel_category = #{key.channelCategory}
         </if>
         <if test="key.keyWord != null">
-            and cost.price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            and price_sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
 
     <!--新增快递价格-->
-    <insert id="addPriceExpMain">
+    <insert id="addExpPrice">
         insert into
-             price_exp_main(id, start_date, end_date, currency, zone_id, volume_divisor, account_type, account_no,
-             special_commodity, price_form, start_weight, end_weight, price_published_id,
-             is_published_price, aging)
+             lms_exp_price(
+             id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
+             price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_sale_name, channel_category,
+             price_status, quote_price_id, partner_id, customer_groups_id, customer_groups_name, customer_ids, customer_name)
          values
              (#{po.id},
              #{po.startDate},
              #{po.endDate},
              #{po.currency},
-             #{po.zoneId},
-             #{po.volumeDivisor},
              #{po.accountType},
              #{po.accountNo},
              #{po.specialCommodity,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
-             #{po.priceForm},
+             #{po.priceFormat},
              #{po.startWeight},
              #{po.endWeight},
              #{po.pricePublishedId},
              #{po.isPublishedPrice},
-             #{po.aging}
+             #{po.aging},
+             #{po.volumeDivisor},
+             #{po.zoneId},
+             #{po.priceDataId},
+             #{po.priceCode},
+             #{po.priceSaleName},
+             #{po.channelCategory},
+             #{po.priceStatus},
+             #{po.quotePriceId},
+             #{po.partnerId},
+             #{po.customerGroupsId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+             #{po.customerGroupsName},
+             #{po.customerIds,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+             #{po.customerName})
      </insert>
 
-    <!--校验id是否存在啊-->
-    <select id="getExpListById" resultType="java.lang.Long">
-        select id from price_exp_list where id = #{id}
-    </select>
-
-    <!--获取主表详细-->
-    <select id="getPriceExpMainInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo">
-        select
-            start_date,
-            end_date,
-            currency,
-            zone_id,
-            volume_divisor,
-            account_type,
-            account_no,
-            special_commodity as special_commodity_str,
-            price_form,
-            start_weight,
-            end_weight,
-            price_published_id,
-            is_published_price,
-            aging
-        from
-            price_exp_main
-        where
-            id = #{id}
-    </select>
-
-    <!--根据主表id查询多租户id-->
-    <select id="getInnerOrgId" resultType="java.lang.Long">
-        select inner_org_id from price_exp_main where id in
-        <foreach collection="ids" separator="," open="(" close=")" item="row">
-            #{row}
-        </foreach>
-    </select>
-
-    <select id="getInnerOrgById" resultType="java.lang.Long">
-        select inner_org_id from price_exp_main where id = #{id}
+    <!--获取租户和价格数据表id-->
+    <select id="getInnerOrgIdAndPriceDatId" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
+        select inner_org_id,price_data_id from lms_exp_price where id = #{id}
     </select>
 
     <!--更新-->
-    <update id="updateMainById">
-        update price_exp_main set
+    <update id="updById">
+        update lms_exp_price set
         <if test="po.zoneId != null">
             zone_id = #{po.zoneId},
         </if>
@@ -267,9 +172,6 @@
         </if>
         <if test="po.specialCommodity != null">
             special_commodity = #{po.specialCommodity, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
-        </if>
-        <if test="po.priceForm != null">
-            price_form = #{po.priceForm},
         </if>
         <if test="po.aging != null">
             aging = #{po.aging},
@@ -280,53 +182,110 @@
         <if test="po.pricePublishedId != null">
             price_published_id = #{po.pricePublishedId},
         </if>
+        <if test="po.priceCode != null">
+            price_code = #{po.priceCode},
+        </if>
+        <if test="po.customerGroupsId != null">
+            customer_groups_id = #{po.customerGroupsId, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+        </if>
+        <if test="po.customerGroupsName != null">
+            customer_groups_name = #{po.customerGroupsName},
+        </if>
+        <if test="po.customerIds">
+            customer_ids = #{po.customerIds, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+        </if>
+        <if test="po.customerName != null">
+            customer_name = #{po.customerName},
+        </if>
+        <if test="po.priceStatus != null">
+            price_status = #{po.priceStatus},
+        </if>
+            price_sale_name = #{po.priceSaleName},
+            channel_category = #{po.channelCategory},
             start_date = #{po.startDate}, end_date = #{po.endDate}, currency = #{po.currency}, account_type = #{po.accountType},
             volume_divisor = #{po.volumeDivisor}
         where
             id = #{po.id}
     </update>
 
-    <select id="getCostPriceList" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
-        select
-            cost.id,
-            sale.price_main_id
-        from
-            price_exp_main main
-        left join
-            price_exp_cost cost on main.id = cost.price_main_id
-        left join
-            price_exp_sale sale on main.id = sale.price_main_id
-        where
-            main.id in
-        <foreach collection="ids" index="" item="row" close=")" open="(" separator=",">
-            #{row}
-        </foreach>
-    </select>
-
-    <select id="getSalePriceList" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
-        select
-        sale.id,
-        cost.price_main_id
-        from
-        price_exp_main main
-        left join
-        price_exp_sale sale on main.id = sale.price_main_id
-        left join
-        price_exp_cost cost on main.id = cost.price_main_id
-        where
-        main.id in
-        <foreach collection="ids" index="" item="row" close=")" open="(" separator=",">
-            #{row}
-        </foreach>
-    </select>
-
     <!--批量删除-->
     <delete id="delBatchs">
-        delete from price_exp_main where id in(${ids})
+        delete from lms_exp_price where id in(${ids})
     </delete>
 
-    <!--查询租户主表Id-->
-    <select id="getPriceMainId" resultType="java.lang.Long">
-        select id from price_exp_main where id = #{id}
+    <!--根据主表id获取销售价格表Id-->
+    <select id="getPriceExpSaleInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo">
+        select
+            id,
+            price_code,
+            price_sale_name,
+            price_status,
+            channel_category,
+            start_date,
+            end_date,
+            currency,
+            zone_id,
+            volume_divisor,
+            account_type,
+            account_no,
+            special_commodity as special_commodity_str,
+            price_format,
+            start_weight,
+            end_weight,
+            price_published_id,
+            is_published_price,
+            aging,
+            price_data_id
+        from
+            lms_exp_price
+        where
+            id = #{id}
     </select>
+
+    <select id="getCustomerInfo" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo">
+        select
+            customer_groups_id,
+            customer_groups_name,
+            customer_ids,
+            customer_name
+        from
+            lms_exp_price
+        where
+            id = #{id}
+    </select>
+
+    <!--根据价格表Id获取成本价格详情-->
+    <select id="getPriceExpCostInfo" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostInfoVo">
+        select
+            id,
+            partner_id,
+            price_status,
+            price_code,
+            price_sale_name,
+            channel_category,
+            start_date,
+            end_date,
+            currency,
+            zone_id,
+            volume_divisor,
+            account_type,
+            account_no,
+            special_commodity as special_commodity_str,
+            price_format,
+            start_weight,
+            end_weight,
+            price_published_id,
+            is_published_price,
+            aging,
+            price_data_id
+        from
+            lms_exp_price
+        where
+            id = #{id}
+    </select>
+
+    <select id="getPriceDataIds" resultType="java.lang.Long">
+        select price_data_id from lms_exp_price where id in (${ids})
+    </select>
+
 </mapper>

@@ -5,7 +5,9 @@ import com.apl.lms.price.exp.pojo.dto.PriceExpCostKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpPublishedKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
-import com.apl.lms.price.exp.pojo.vo.*;
+import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
 import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,7 +23,7 @@ import java.util.List;
  */
 @Mapper
 @Repository
-public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
+public interface PriceExpMapper2 extends BaseMapper<PriceExpMainPo> {
 
     /**
      * 分页查询销售价格列表
@@ -30,6 +32,9 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     List<PriceExpSaleListVo> getPriceExpSaleList(Page<PriceExpSaleListVo> page, @Param("key") PriceExpSaleListKeyDto keyDto);
+
+    @SqlParser(filter = true)
+    List<PriceExpSaleListVo> getPriceExpSaleList2(@Param("key") PriceExpSaleListKeyDto keyDto);
 
     /**
      * 分页查询成本价格列表
@@ -48,48 +53,67 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      */
     List<PriceExpCostListVo> getPublishedPriceList(Page<PriceExpCostListVo> page, @Param("key") PriceExpPublishedKeyDto keyDto);
 
+
     /**
-     * 获取销售价格详情
+     * 校验id是否存在
      * @param id
      * @return
      */
-    PriceExpSaleInfoVo getPriceExpSaleInfoById(@Param("id") Long id);
+    Long getExpListById(@Param("id") Long id);
 
     /**
-     * 获取客户信息并组装
+     * 获取主表详情
      * @param id
      * @return
      */
-    PriceExpSaleVo getCustomerInfo(@Param("id") Long id);
+    PriceExpSaleInfoVo getPriceExpMainInfoById(@Param("id") Long id);
 
     /**
-     * 获取成本价格详情
-     * @param id
+     * 根据主表id查询多租户id
+     * @param priceMainIds
      * @return
      */
-    PriceExpCostInfoVo getPriceExpCostInfo(@Param("id") Long id);
-
+    List<Long> getInnerOrgId(@Param("ids") List<Long> priceMainIds);
 
     /**
      * 更新
      * @param priceExpMainPo
      * @return
      */
-    Integer updById(@Param("po") PriceExpMainPo priceExpMainPo);
+    Integer updateMainById(@Param("po") PriceExpMainPo priceExpMainPo);
 
     /**
-     * 获取多租户id和价格表数据Id
-     * @param priceId
+     * 获取多租户id
+     * @param priceMainId
      * @return
      */
-    PriceListForDelBatchBo getInnerOrgIdAndPriceDatId(@Param("id") Long priceId);
+    Long getInnerOrgById(@Param("id") Long priceMainId);
 
     /**
      * 新增
      * @param priceExpMainPo
      * @return
      */
-    Integer addExpPrice(@Param("po") PriceExpMainPo priceExpMainPo);
+    Integer addPriceExpMain(@Param("po") PriceExpMainPo priceExpMainPo);
+
+    /**
+     * 组装批量删除数据列表
+     * @return
+     */
+    List<PriceListForDelBatchBo> getCostPriceList(@Param("quotePriceIds") String quotePriceIds);
+
+
+    List<PriceListForDelBatchBo> getCostPriceListByMainIds(@Param("mainIds") String mainIds);
+
+    /**
+     * 组装批量删除数据列表
+     * @param quotePriceIds
+     * @return
+     */
+    List<PriceListForDelBatchBo> getSalePriceList(@Param("quotePriceIds") String quotePriceIds);
+
+
+    List<PriceListForDelBatchBo> getSalePriceListByMainIds(@Param("mainIds") String mainIds);
 
     /**
      * 批量删除
@@ -99,9 +123,9 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
     Integer delBatchs(@Param("ids") String ids);
 
     /**
-     * 获取价格表数据Ids
-     * @param ids
+     * 查询引用的主表Id
+     * @param priceMainId
      * @return
      */
-    List<Long> getPriceDataIds(@Param("ids") String ids);
+    Long getPriceMainId(@Param("id") Long priceMainId);
 }

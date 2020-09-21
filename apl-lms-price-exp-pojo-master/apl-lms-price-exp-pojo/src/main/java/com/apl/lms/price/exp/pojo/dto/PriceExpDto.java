@@ -54,9 +54,9 @@ public class PriceExpDto implements Serializable {
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private List<Integer> specialCommodity;
 
-    @ApiModelProperty(name = "priceForm" , value = "价格表格式 1横向 2纵向")
+    @ApiModelProperty(name = "priceFormat" , value = "价格表格式 1横向 2纵向")
     @TypeValidator(value = {"1","2"} , message = "价格表格式错误")
-    private Integer priceForm;
+    private Integer priceFormat;
 
     @ApiModelProperty(name = "startWeight" , value = "起始重", required = true)
     @NotNull(message = "起始重量不能为空")
@@ -112,12 +112,12 @@ public class PriceExpDto implements Serializable {
     private String saleRemark;
 
     @ApiModelProperty(name = "axisTransverse" , value = "x轴数据", required = true)
-    @NotBlank(message = "x轴数据不能为空")
-    private String axisTransverse;
+    @NotEmpty(message = "x轴数据不能为空")
+    private List<Object> axisTransverse;
 
     @ApiModelProperty(name = "axisPortrait" , value = "y轴数据", required = true)
-    @NotBlank(message = "y轴数据不能为空")
-    private String axisPortrait;
+    @NotEmpty(message = "y轴数据不能为空")
+    private List<Object> axisPortrait;
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)
     @NotEmpty(message = "价格表数据不能为空")
