@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(value="快递销售价格表-详细信息返回对象", description="快递销售价格表-详细信息返回对象")
-public class PriceExpSaleInfoVo {
+public class PriceExpPriceInfoVo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "id" , value = "价格表id")
@@ -26,14 +26,18 @@ public class PriceExpSaleInfoVo {
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;
 
-    @ApiModelProperty(name = "priceSaleName" , value = "价格表名称")
+    @ApiModelProperty(name = "priceSaleName" , value = "报价销售名称")
     private String priceSaleName;
 
-    @ApiModelProperty(name = "customerGroup", value = "客户组")
-    private List<CustomerGroupDto> customerGroup;
+    @ApiModelProperty(name = "priceName" , value = "报价名称")
+    private String priceName;
 
-    @ApiModelProperty(name = "customer", value = "客户")
-    private List<CustomerDto> customer;
+    @ApiModelProperty(name = "partnerId" , value = "服务商id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long partnerId;
+
+    @ApiModelProperty(name = "partnerName" , value = "服务商")
+    private String partnerName;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;
@@ -51,6 +55,7 @@ public class PriceExpSaleInfoVo {
     private String currency;
 
     @ApiModelProperty(name = "zoneTabId" , value = "分区表Id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long zoneId;
 
     @ApiModelProperty(name = "zoneName" , value = "分区表名称")
@@ -71,9 +76,6 @@ public class PriceExpSaleInfoVo {
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private List<SpecialCommodityDto> specialCommodity;
 
-    @ApiModelProperty(name = "pricePublishedId" , value = "公布价id")
-    private Long pricePublishedId;
-
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是")
     private Integer isPublishedPrice;
 
@@ -90,5 +92,32 @@ public class PriceExpSaleInfoVo {
     private String aging;
 
     @ApiModelProperty(name = "priceDataId", value = "价格数据表id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long priceDataId;
+
+    @ApiModelProperty(name = "customerGroup", value = "客户组")
+    private List<CustomerGroupDto> customerGroup;
+
+    @ApiModelProperty(name = "customer", value = "客户")
+    private List<CustomerDto> customer;
+
+    @ApiModelProperty(name = "pricePublishedId" , value = "公布价id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long pricePublishedId;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -222,7 +222,7 @@
     </select>
 
     <!--获取主表详细-->
-    <select id="getPriceExpMainInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo">
+    <select id="getPriceExpMainInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpPriceInfoVo">
         select
             start_date,
             end_date,

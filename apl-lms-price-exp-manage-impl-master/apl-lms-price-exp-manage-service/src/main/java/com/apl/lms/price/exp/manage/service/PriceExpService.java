@@ -29,7 +29,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param keyDto
      * @return
      */
-    ResultUtil<Page<PriceExpCostListVo>> getPriceExpCostList(PageDto pageDto, PriceExpCostKeyDto keyDto);
+    ResultUtil<Page<PriceExpCostListVo>> getPriceExpCostList(PageDto pageDto, PriceExpCostKeyDto keyDto) throws Exception;
 
     /**
      * 分页公布价列表(分页)
@@ -44,14 +44,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param id
      * @return
      */
-    ResultUtil<PriceExpSaleInfoVo> getPriceExpSaleInfo(Long id) throws Exception;
-
-    /**
-     * 获取成本价格详情
-     * @param id
-     * @return
-     */
-    ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(Long id) throws Exception;
+    ResultUtil<PriceExpPriceInfoVo> getPriceExpSaleInfo(Long id) throws Exception;
 
     /**
      * 更新价格表

@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.pojo.bo;
+package com.apl.lms.price.exp.pojo.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,16 +12,16 @@ import java.util.List;
 
 /**
  * @author hjr start
- * @Classname PriceExpSaleProfitBo
+ * @Classname PriceExpSaleProfitDto
  * @Date 2020/9/11 11:14
  */
 @Data
 @ApiModel(value = "快递销售价格利润-组装对象", description = "快递销售价格利润-组装对象")
-public class PriceExpSaleProfitBo {
+public class PriceExpSaleProfitDto {
 
     @ApiModelProperty(name = "customerGroup" , value = "客户组", required = true)
     @NotBlank(message = "客户组不能为空")
-    private Long customerGroup;
+    private List<Long> customerGroupsId;
 
     @ApiModelProperty(name = "zoneNum", value = "分区号")
     @Length(max = 3, message = "分区号最大长度为3")
@@ -31,22 +31,22 @@ public class PriceExpSaleProfitBo {
     @Length(max = 12, message = "国家简码最大长度为12")
     private String countryCode;
 
-    @ApiModelProperty(name = "startWeight", value = "起始重", required = true)
+    @ApiModelProperty(name = "startWeight", value = "起始重")
     @NotNull(message = "起始重不能为空")
     @Min(value = 0, message = "起始重不能小于0")
     private Double startWeight;
 
-    @ApiModelProperty(name = "endWeight", value = "截止重", required = true)
+    @ApiModelProperty(name = "endWeight", value = "截止重")
     @NotNull(message = "截止重不能为空")
     @Min(value = 0, message = "截止重不能小于0")
     private Double endWeight;
 
-    @ApiModelProperty(name = "firstWeightProfit", value = "为首重增加利润")
+    @ApiModelProperty(name = "firstWeightProfit", value = "首重加")
     private Double firstWeightProfit;
 
-    @ApiModelProperty(name = "unitWeightProfit", value = "按单位重量增加利润")
+    @ApiModelProperty(name = "unitWeightProfit", value = "单位重加")
     private Double unitWeightProfit;
 
-    @ApiModelProperty(name = "proportionProfit", value = "按比例增加利润")
+    @ApiModelProperty(name = "proportionProfit", value = "比例加")
     private Double proportionProfit;
 }

@@ -31,12 +31,12 @@ public class PriceExpUpdDto implements Serializable {
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;
 
-    @ApiModelProperty(name = "priceName" , value = "价格表名称", required = true)
-    @NotBlank(message = "价格表名称不能为空")
+    @ApiModelProperty(name = "priceName" , value = "报价名称", required = true)
+    @NotBlank(message = "报价名称不能为空")
     private String priceName;
 
-    @ApiModelProperty(name = "priceSaleName" , value = "价格销售名称", required = true)
-    @NotBlank(message = "价格销售名称不能为空")
+    @ApiModelProperty(name = "priceSaleName" , value = "销售名称")
+    @NotBlank(message = "报价销售名称不能为空")
     private String priceSaleName;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)

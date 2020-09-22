@@ -29,6 +29,7 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @param keyDto
      * @return
      */
+    @SqlParser(filter = true)
     List<PriceExpSaleListVo> getPriceExpSaleList(Page<PriceExpSaleListVo> page, @Param("key") PriceExpSaleListKeyDto keyDto);
 
     /**
@@ -37,6 +38,7 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @param keyDto
      * @return
      */
+    @SqlParser(filter = true)
     List<PriceExpCostListVo> getPriceExpCostList(Page<PriceExpCostListVo> page, @Param("key") PriceExpCostKeyDto keyDto);
 
 
@@ -53,7 +55,7 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @param id
      * @return
      */
-    PriceExpSaleInfoVo getPriceExpSaleInfoById(@Param("id") Long id);
+    PriceExpPriceInfoVo getPriceExpSaleInfoById(@Param("id") Long id);
 
     /**
      * 获取客户信息并组装
@@ -61,14 +63,6 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     PriceExpSaleVo getCustomerInfo(@Param("id") Long id);
-
-    /**
-     * 获取成本价格详情
-     * @param id
-     * @return
-     */
-    PriceExpCostInfoVo getPriceExpCostInfo(@Param("id") Long id);
-
 
     /**
      * 更新
@@ -104,4 +98,11 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     List<Long> getPriceDataIds(@Param("ids") String ids);
+
+    /**
+     * 更新数据表数据
+     * @param priceExpMainPo
+     * @return
+     */
+    Integer updData(@Param("po") PriceExpMainPo priceExpMainPo);
 }

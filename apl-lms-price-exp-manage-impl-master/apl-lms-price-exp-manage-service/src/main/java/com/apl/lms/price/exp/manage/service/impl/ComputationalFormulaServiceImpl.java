@@ -69,6 +69,21 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     @Override
     public ResultUtil<Boolean> updComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo) {
 
+        if(null == priceExpComputationalFormulaPo.getZoneNum()){
+            priceExpComputationalFormulaPo.setZoneNum("");
+        }
+        if(null == priceExpComputationalFormulaPo.getCountry()){
+            priceExpComputationalFormulaPo.setCountry("");
+        }
+        if(null == priceExpComputationalFormulaPo.getStartWeight()){
+            priceExpComputationalFormulaPo.setStartWeight(0.0);
+        }
+        if(null == priceExpComputationalFormulaPo.getEndWeight()){
+            priceExpComputationalFormulaPo.setEndWeight(0.0);
+        }
+        if(null == priceExpComputationalFormulaPo.getPackageType()){
+            priceExpComputationalFormulaPo.setPackageType("");
+        }
         Integer integer = baseMapper.updateById(priceExpComputationalFormulaPo);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);

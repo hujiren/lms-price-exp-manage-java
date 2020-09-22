@@ -19,11 +19,18 @@ public class PriceExpCostListVo {
     @ApiModelProperty(name = "id" , value = "价格表id")
     private Long id;
 
-    @ApiModelProperty(name = "priceCode" , value = "成本价格表代码")
+    @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;
 
-    @ApiModelProperty(name = "priceName" , value = "成本价格表名称")
+    @ApiModelProperty(name = "priceName" , value = "报价名称")
     private String priceName;
+
+    @ApiModelProperty(name = "partnerId" , value = "成本价id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long partnerId;
+
+    @ApiModelProperty(name = "partnerName" , value = "服务商")
+    private String partnerName;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;
@@ -48,7 +55,5 @@ public class PriceExpCostListVo {
 
     @ApiModelProperty(name = "priceStatus" , value = "成本价格状态")
     private Integer priceStatus;
-
-
 
 }

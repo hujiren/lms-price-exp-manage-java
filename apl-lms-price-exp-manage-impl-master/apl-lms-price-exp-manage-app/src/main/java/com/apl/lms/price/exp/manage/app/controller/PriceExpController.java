@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,7 +66,7 @@ public class PriceExpController {
 
     @PostMapping(value = "/get-cost-list")
     @ApiOperation(value = "分页查询成本价格列表", notes = "分页查询成本价格列表")
-    public ResultUtil<Page<PriceExpCostListVo>> getCostList(PageDto pageDto, @Validated PriceExpCostKeyDto priceExpCostListKeyDto) {
+    public ResultUtil<Page<PriceExpCostListVo>> getCostList(PageDto pageDto, @Validated PriceExpCostKeyDto priceExpCostListKeyDto) throws Exception {
 
         return priceExpService.getPriceExpCostList(pageDto, priceExpCostListKeyDto);
     }
@@ -79,20 +78,13 @@ public class PriceExpController {
         return priceExpService.getPublishedPriceList(pageDto, keyDto);
     }
 
-    @PostMapping(value = "/get-sale-info")
-    @ApiOperation(value = "获取销售价格详情", notes = "获取销售价格详情")
-    @ApiImplicitParam(name = "id", value = "销售价格表id", required = true, paramType = "query")
-    public ResultUtil<PriceExpSaleInfoVo> getPriceExpSaleInfo(@NotNull(message = "销售id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
+    @PostMapping(value = "/get-price-info")
+    @ApiOperation(value = "获取价格详情", notes = "获取价格详情")
+    @ApiImplicitParam(name = "id", value = "价格表id", required = true, paramType = "query")
+    public ResultUtil<PriceExpPriceInfoVo> getPriceExpSaleInfo(@NotNull(message = "价格表id不能为空")
+                                                               @Min(value = 1, message = "价格表id不能小于1") Long id) throws Exception {
 
         return priceExpService.getPriceExpSaleInfo(id);
-    }
-
-    @PostMapping(value = "/get-cost-info")
-    @ApiOperation(value = "获取成本价格详情", notes = "获取成本价格详情")
-    @ApiImplicitParam(name = "id", value = "成本价格表id", required = true, paramType = "query")
-    public ResultUtil<PriceExpCostInfoVo> getPriceExpCostInfo(@NotNull(message = "成本id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
-
-        return priceExpService.getPriceExpCostInfo(id);
     }
 
     @PostMapping(value = "/get-price-axis")

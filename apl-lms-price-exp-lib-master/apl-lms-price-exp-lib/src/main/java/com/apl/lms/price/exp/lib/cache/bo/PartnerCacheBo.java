@@ -27,6 +27,4 @@ public class PartnerCacheBo {
     @ApiModelProperty(name = "partnerShortName", value = "服务商简称")
     private String partnerShortName;
 
-    @ApiModelProperty(name = "partnerFullName", value = "服务商全称")
-    private String partnerFullName;
 }

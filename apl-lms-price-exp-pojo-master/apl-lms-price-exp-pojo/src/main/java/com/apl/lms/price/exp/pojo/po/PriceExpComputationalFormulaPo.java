@@ -31,20 +31,20 @@ public class PriceExpComputationalFormulaPo extends Model<PriceExpComputationalF
     private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "priceId" , value = "价格清单id", required = true)
-    @NotNull(message = "价格清单id不能为空")
-    @Min(value = 0, message = "价格清单id不能小于0")
+    @ApiModelProperty(name = "priceId" , value = "价格id", required = true)
+    @NotNull(message = "价格id不能为空")
+    @Min(value = 0, message = "价格id不能小于0")
     private Long priceId;
 
-    @ApiModelProperty(name = "formula" , value = "公式")
+    @ApiModelProperty(name = "formula" , value = "公式", required = true)
     private String formula;
 
-    @ApiModelProperty(name = "zoneNum" , value = "分区号", required = true)
+    @ApiModelProperty(name = "zoneNum" , value = "分区号")
     @NotBlank(message = "分区号不能为空")
     @Length(max = 50, message = "分区号长度不能超过50")
     private String zoneNum;
 
-    @ApiModelProperty(name = "country" , value = "国家", required = true)
+    @ApiModelProperty(name = "country" , value = "国家")
     @NotBlank(message = "国家不能为空")
     @Length(max = 50, message = "国家长度不能超过50")
     private String country;

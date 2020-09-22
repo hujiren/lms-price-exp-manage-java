@@ -1,6 +1,8 @@
 package com.apl.lms.price.exp.manage.app;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
+import com.apl.lib.security.SecurityUser;
+import com.apl.lib.utils.CommonContextHolder;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,7 +32,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@MapperScan("com.apl.lms.price.exp.manage.mapper")
 @MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc")
 //@MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper2", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc2")
-@EnableFeignClients(basePackages = {"com.apl.lms.common.lib.feign"})
+@EnableFeignClients(basePackages = {"com.apl.lms.common.lib.feign","com.apl.lms.price.exp.lib.feign"})
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
 
@@ -42,6 +44,7 @@ public class LmsPriceExpManageApplication {
         //com.apl.shardingjdbc.config.ShardingDataSourceConfig
         //com.apl.shardingjdbc.algorithm.TenantShardingTableAlgorithm
         //com.apl.tenant.AplTenantSqlParser
+        //com.apl.shardingjdbc.algorithm.TenantShardingTableAlgorithm
 
         SpringApplication.run(LmsPriceExpManageApplication.class , args);
     }

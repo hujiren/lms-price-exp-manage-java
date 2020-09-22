@@ -18,7 +18,7 @@ public class PriceExpPublishedKeyDto {
 
 
     @ApiModelProperty(name = "priceStatus", value = "价格表状态 1正常 2计账 3无效")
-    @TypeValidator(value = {"0","1","2","3"} , message = "成本价格表状态错误")
+    @TypeValidator(value = {"0","1","2","3"} , message = "价格表状态错误")
     @Min(value = 0, message = "价格表状态不能小于0")
     private Integer priceStatus;
 
@@ -41,4 +41,5 @@ public class PriceExpPublishedKeyDto {
 
         return channelCategory;
     }
+
 }

@@ -24,11 +24,4 @@ public class PriceListForDelBatchBo {
 
     @ApiModelProperty(name = "innerOrgId", value = "租户Id")
     private Long innerOrgId;
-
-    public PriceListForDelBatchBo(Long id, Long priceDataId, Long quotePriceId, Long innerOrgId) {
-        this.id = id;
-        this.quotePriceId = quotePriceId;
-        this.priceDataId = priceDataId;
-        this.innerOrgId = innerOrgId;
-    }
 }

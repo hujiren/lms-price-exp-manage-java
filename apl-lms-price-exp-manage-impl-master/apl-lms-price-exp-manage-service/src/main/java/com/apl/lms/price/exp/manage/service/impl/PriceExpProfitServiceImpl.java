@@ -4,7 +4,7 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
-import com.apl.lms.price.exp.pojo.bo.PriceExpSaleProfitBo;
+import com.apl.lms.price.exp.pojo.dto.PriceExpSaleProfitDto;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,11 +44,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     @Override
     public ResultUtil<Long> add(PriceExpProfitPo priceExpProfitPo){
 
-        List<PriceExpSaleProfitBo> increaseProfit = priceExpProfitPo.getIncreaseProfit();
+        List<PriceExpSaleProfitDto> increaseProfit = priceExpProfitPo.getIncreaseProfit();
         if(increaseProfit.size() != 0){
-            for (PriceExpSaleProfitBo priceExpSaleProfitBo : increaseProfit) {
-                if(null != priceExpSaleProfitBo.getCountryCode()){
-                    priceExpSaleProfitBo.setCountryCode(priceExpSaleProfitBo.getCountryCode().toUpperCase());
+            for (PriceExpSaleProfitDto priceExpSaleProfitDto : increaseProfit) {
+                if(null != priceExpSaleProfitDto.getCountryCode()){
+                    priceExpSaleProfitDto.setCountryCode(priceExpSaleProfitDto.getCountryCode().toUpperCase());
                 }
             }
         }
@@ -66,11 +66,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
     @Override
     public ResultUtil<Boolean> updById(PriceExpProfitPo priceExpProfitPo){
-        List<PriceExpSaleProfitBo> increaseProfit = priceExpProfitPo.getIncreaseProfit();
+        List<PriceExpSaleProfitDto> increaseProfit = priceExpProfitPo.getIncreaseProfit();
         if(increaseProfit.size() != 0){
-            for (PriceExpSaleProfitBo priceExpSaleProfitBo : increaseProfit) {
-                if(null != priceExpSaleProfitBo.getCountryCode()){
-                    priceExpSaleProfitBo.setCountryCode(priceExpSaleProfitBo.getCountryCode().toUpperCase());
+            for (PriceExpSaleProfitDto priceExpSaleProfitDto : increaseProfit) {
+                if(null != priceExpSaleProfitDto.getCountryCode()){
+                    priceExpSaleProfitDto.setCountryCode(priceExpSaleProfitDto.getCountryCode().toUpperCase());
                 }
             }
         }

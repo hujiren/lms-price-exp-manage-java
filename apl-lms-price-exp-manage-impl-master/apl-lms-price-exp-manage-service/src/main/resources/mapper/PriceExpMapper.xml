@@ -6,15 +6,17 @@
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
             id, start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_code,
-            price_sale_name, customer_groups_name, customer_name, channel_category, price_status
+            price_sale_name as price_name, customer_groups_name, customer_name, channel_category, price_status
         from
             lms_exp_price
         where
+        inner_org_id = #{key.innerOrgId} and
+        is_published_price=2 and
         <if test="key.priceType == 1">
-            customer_groups_name is not null
+            customer_groups_name != ''
         </if>
         <if test="key.priceType == 2">
-            customer_name is not null
+            customer_name != ''
         </if>
         <if test="key.volumeDivisor != null">
             and volume_divisor = #{key.volumeDivisor}
@@ -38,7 +40,7 @@
             and now() > end_date
         </if>
         <if test="key.specialCommodity > 0">
-            and special_commodity @> '${key.specialCommodity}'
+            and special_commodity @> '[${key.specialCommodity}]'::jsonb
         </if>
         <if test="key.customerGroupsId != null">
             and customer_groups_id @> '${key.customerGroupsId}'
@@ -50,9 +52,8 @@
             and channel_category = #{key.channelCategory}
         </if>
         <if test="key.keyWord != null">
-            and (customer_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
-                or price_sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
-                or customer_groups_name LIKE CONCAT( '%' , #{key.keyword} , '%' ))
+            and (  price_sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+                or price_name LIKE CONCAT( '%' , #{key.keyword} , '%' ) )
         </if>
     </select>
 
@@ -60,16 +61,18 @@
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
             id ,start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_status,
-            price_code, price_sale_name, channel_category
+            price_code, price_name, channel_category, partner_id
         from
         lms_exp_price
         where
-            is_published_price = 2
+        inner_org_id = #{key.innerOrgId}
+        and is_published_price = 2
+        and partner_id>0
         <if test="key.volumeDivisor != null">
             and volume_divisor = #{key.volumeDivisor}
         </if>
         <if test="key.specialCommodity > 0">
-            and special_commodity @> '${key.specialCommodity}'
+            and special_commodity @> '[${key.specialCommodity}]'::jsonb
         </if>
         <if test="key.accountType != null">
             and account_type = #{key.accountType}
@@ -97,14 +100,15 @@
             and channel_category = #{key.channelCategory}
         </if>
         <if test="key.keyWord != null">
-            and price_sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            and price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
 
     <!--分页查询公布价价格列表 -->
     <select id="getPublishedPriceList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
-            id, start_date, end_date, currency, price_status, price_code, price_sale_name, channel_category
+            id, start_date, end_date, currency, account_type, price_status, price_code, price_sale_name, price_name, channel_category, special_commodity,
+            volume_divisor
         from
         lms_exp_price
         where
@@ -116,7 +120,7 @@
             and channel_category = #{key.channelCategory}
         </if>
         <if test="key.keyWord != null">
-            and price_sale_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            and price_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
     </select>
 
@@ -125,7 +129,8 @@
         insert into
              lms_exp_price(
              id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
-             price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_sale_name, channel_category,
+             price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name,
+             price_sale_name, channel_category,
              price_status, quote_price_id, partner_id, customer_groups_id, customer_groups_name, customer_ids, customer_name)
          values
              (#{po.id},
@@ -145,6 +150,7 @@
              #{po.zoneId},
              #{po.priceDataId},
              #{po.priceCode},
+             #{po.priceName},
              #{po.priceSaleName},
              #{po.channelCategory},
              #{po.priceStatus},
@@ -158,7 +164,7 @@
 
     <!--获取租户和价格数据表id-->
     <select id="getInnerOrgIdAndPriceDatId" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
-        select inner_org_id,price_data_id from lms_exp_price where id = #{id}
+        select id, quote_price_id, inner_org_id, price_data_id from lms_exp_price where id = #{id}
     </select>
 
     <!--更新-->
@@ -200,12 +206,20 @@
         <if test="po.priceStatus != null">
             price_status = #{po.priceStatus},
         </if>
+        <if test="po.priceSaleName != null">
             price_sale_name = #{po.priceSaleName},
+        </if>
+            price_name = #{po.priceName},
             channel_category = #{po.channelCategory},
             start_date = #{po.startDate}, end_date = #{po.endDate}, currency = #{po.currency}, account_type = #{po.accountType},
             volume_divisor = #{po.volumeDivisor}
         where
             id = #{po.id}
+    </update>
+
+    <update id="updData">
+        update lms_exp_price set start_weight = #{po.startWeight}, end_Weight = #{po.endWeight}, price_format = #{po.priceFormat}
+        where id = #{po.id}
     </update>
 
     <!--批量删除-->
@@ -214,11 +228,13 @@
     </delete>
 
     <!--根据主表id获取销售价格表Id-->
-    <select id="getPriceExpSaleInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleInfoVo">
+    <select id="getPriceExpSaleInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpPriceInfoVo">
         select
             id,
             price_code,
             price_sale_name,
+            price_name,
+            partner_id,
             price_status,
             channel_category,
             start_date,
@@ -229,12 +245,12 @@
             account_type,
             account_no,
             special_commodity as special_commodity_str,
+            is_published_price,
             price_format,
             start_weight,
             end_weight,
-            price_published_id,
-            is_published_price,
             aging,
+            price_published_id,
             price_data_id
         from
             lms_exp_price
@@ -248,36 +264,6 @@
             customer_groups_name,
             customer_ids,
             customer_name
-        from
-            lms_exp_price
-        where
-            id = #{id}
-    </select>
-
-    <!--根据价格表Id获取成本价格详情-->
-    <select id="getPriceExpCostInfo" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostInfoVo">
-        select
-            id,
-            partner_id,
-            price_status,
-            price_code,
-            price_sale_name,
-            channel_category,
-            start_date,
-            end_date,
-            currency,
-            zone_id,
-            volume_divisor,
-            account_type,
-            account_no,
-            special_commodity as special_commodity_str,
-            price_format,
-            start_weight,
-            end_weight,
-            price_published_id,
-            is_published_price,
-            aging,
-            price_data_id
         from
             lms_exp_price
         where

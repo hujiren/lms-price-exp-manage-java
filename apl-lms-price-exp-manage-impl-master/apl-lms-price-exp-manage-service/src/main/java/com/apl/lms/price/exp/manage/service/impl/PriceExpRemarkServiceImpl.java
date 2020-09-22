@@ -30,17 +30,6 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
         }
     }
 
-
-    /**
-     * 根据扩展表Id删除数据
-     * @param ids
-     * @return
-     */
-    @Override
-    public Integer deleteById(List<Long> ids) {
-        return baseMapper.deleteBatchIds(ids);
-    }
-
     /**
      * 根据id获取详情
      * @param id

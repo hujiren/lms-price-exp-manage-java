@@ -41,16 +41,20 @@ public class  PriceExpSaleListKeyDto {
     @ApiModelProperty(name = "customerId", value = "客户id")
     private Long customerId;
 
-    @ApiModelProperty(name = "priceStatus", value = "销售价格表状态 1正常 2计账 3无效 4未过期 5即将过期 6已过期")
-    @TypeValidator(value = {"0","1","2","3","4","5","6"} , message = "销售价格表状态错误")
-    @Min(value = 0, message = "销售价格表状态不能小于0")
+    @ApiModelProperty(name = "priceStatus", value = "价格表状态 0全部 1正常(默认) 2计账 3无效 4未过期 5即将过期 6已过期")
+    @TypeValidator(value = {"0","1","2","3","4","5","6"} , message = "价格表状态错误")
+    @Min(value = 0, message = "价格表状态不能小于0")
     private Integer priceStatus;
 
     @ApiModelProperty(name = "channelCategory", value = "渠道类型")
     private String channelCategory;
 
-    @ApiModelProperty(name = "keyword", value = "关键词: 按客户名称, 客户组名称, 价格表名称")
+    @ApiModelProperty(name = "keyword", value = "关键词: 报价名称")
     private String keyword;
+
+    @ApiModelProperty(name = "innerOrgId", value = "租户id", hidden = true)
+    private Long innerOrgId;
+
 
     public String getKeyword() {
         if (keyword != null && keyword.trim().equals(""))

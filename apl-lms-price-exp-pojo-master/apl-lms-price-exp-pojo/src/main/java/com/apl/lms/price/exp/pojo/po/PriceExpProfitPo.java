@@ -1,6 +1,6 @@
 package com.apl.lms.price.exp.pojo.po;
 
-import com.apl.lms.price.exp.pojo.bo.PriceExpSaleProfitBo;
+import com.apl.lms.price.exp.pojo.dto.PriceExpSaleProfitDto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -45,10 +45,10 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
 
     @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
     @NotEmpty(message = "上调的利润不能为空")
-    private List<PriceExpSaleProfitBo> increaseProfit;
+    private List<PriceExpSaleProfitDto> increaseProfit;
 
     @ApiModelProperty(name = "finalProfit", value = "最终利润", hidden = true)
-    private List<PriceExpSaleProfitBo> finalProfit;
+    private List<PriceExpSaleProfitDto> finalProfit;
 
 
     private static final long serialVersionUID = 1L;

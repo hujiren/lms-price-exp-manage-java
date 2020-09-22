@@ -11,15 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author hjr start
- * @Classname JoinPartnerCommodity
+ * @Classname JoinPartner
  * @Date 2020/9/15 15:40
  */
-public class JoinPartnerCommodity extends JoinBase<PartnerCacheBo> {
+public class JoinPartner extends JoinBase<PartnerCacheBo> {
 
     @Autowired
     PriceExpFeign priceExpFeign;
 
-    public JoinPartnerCommodity(int joinStyle, PriceExpFeign priceExpFeign, BaseCacheUtil cacheUtil){
+    public JoinPartner(int joinStyle, PriceExpFeign priceExpFeign, BaseCacheUtil cacheUtil){
         this.priceExpFeign = priceExpFeign;
         this.cacheUtil = cacheUtil;
         this.tabName = "partner";

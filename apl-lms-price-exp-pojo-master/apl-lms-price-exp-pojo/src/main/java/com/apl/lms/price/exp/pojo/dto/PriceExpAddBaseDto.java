@@ -59,7 +59,6 @@ public class PriceExpAddBaseDto implements Serializable {
     private Double endWeight;
 
     @ApiModelProperty(name = "pricePublishedId" , value = "公布价id")
-    @Min(value = 0, message = "公布价最小值为0")
     private Long pricePublishedId;
 
     @ApiModelProperty(name = "isPublishedPrice" , value = "是否是公布价 1是 2不是", required = true)
@@ -81,16 +80,19 @@ public class PriceExpAddBaseDto implements Serializable {
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;
 
-    @ApiModelProperty(name = "priceSaleName" , value = "价格表名称", required = true)
-    @NotBlank(message = "价格表名称不能为空")
+    @ApiModelProperty(name = "priceName" , value = "报价名称", required = true)
+    @NotBlank(message = "报价名称不能为空")
+    private String priceName;
+
+    @ApiModelProperty(name = "priceSaleName" , value = "销售名称")
+    @NotBlank(message = "报价销售名称不能为空")
     private String priceSaleName;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)
     @NotBlank(message = "渠道类型不能为空")
     private String channelCategory;
 
-    @ApiModelProperty(name = "partnerId" , value = "服务商id", required = true)
-    @Min(value = 0, message = "服务商id不能为空")
+    @ApiModelProperty(name = "partnerId" , value = "服务商id")
     private Long partnerId;
 
     @ApiModelProperty(name = "customerGroup" , value = "客户组")

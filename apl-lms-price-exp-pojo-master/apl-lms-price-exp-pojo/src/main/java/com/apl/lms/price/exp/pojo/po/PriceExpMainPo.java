@@ -75,8 +75,11 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "priceCode" , value = "价格表代码")
     private String priceCode;
 
-    @ApiModelProperty(name = "priceSaleName" , value = "价格表名称")
+    @ApiModelProperty(name = "priceSaleName" , value = "报价销售名称")
     private String priceSaleName;
+
+    @ApiModelProperty(name = "priceName" , value = "报价名称")
+    private String priceName;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;

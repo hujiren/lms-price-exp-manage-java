@@ -14,12 +14,6 @@ import java.util.List;
 public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
 
 
-    /**
-     * 根据关联表id删除数据
-     * @param ids
-     * @return
-     */
-    Integer deleteById(List<Long> ids);
 
     /**
      * 更新

@@ -9,7 +9,7 @@
 
     <!--获取详情-->
     <select id="getById" resultType="com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo">
-        select remark,sale_remark from price_exp_remark where id = #{id}
+        select id,remark,sale_remark from price_exp_remark where id = #{id}
     </select>
 
     <!--更新-->

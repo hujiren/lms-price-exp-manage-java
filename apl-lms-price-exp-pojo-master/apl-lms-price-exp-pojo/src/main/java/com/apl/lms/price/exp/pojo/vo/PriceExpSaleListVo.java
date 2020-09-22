@@ -21,8 +21,8 @@ public class PriceExpSaleListVo {
     @ApiModelProperty(name = "priceCode" , value = "销售价格表代码")
     private String priceCode;
 
-    @ApiModelProperty(name = "priceSaleName" , value = "报价销售名称")
-    private String priceSaleName;
+    @ApiModelProperty(name = "priceName" , value = "报价名称")
+    private String priceName;
 
     @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称")
     private String customerGroupsName;
