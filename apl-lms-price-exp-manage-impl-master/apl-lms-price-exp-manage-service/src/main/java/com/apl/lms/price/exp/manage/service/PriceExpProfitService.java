@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.service;
 
+import com.apl.lms.price.exp.pojo.dto.PriceExpProfitAssembleDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpProfitListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpProfitInfoVo;
@@ -56,4 +57,5 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @return
      */
     Integer delBatch(String ids);
+
 }

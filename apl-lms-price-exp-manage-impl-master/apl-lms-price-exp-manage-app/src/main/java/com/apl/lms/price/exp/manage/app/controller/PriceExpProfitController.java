@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
+import com.apl.lms.price.exp.pojo.dto.PriceExpProfitAssembleDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,7 +40,7 @@ public class PriceExpProfitController {
 
 
     @PostMapping(value = "/add")
-    @ApiOperation(value = "添加", notes = "")
+    @ApiOperation(value = "添加", notes = "添加利润")
     public ResultUtil<Long> add(@Validated @RequestBody PriceExpProfitPo priceExpProfitPo) {
         ApiParamValidate.validate(priceExpProfitPo);
 
@@ -48,7 +49,7 @@ public class PriceExpProfitController {
 
 
     @PostMapping(value = "/upd")
-    @ApiOperation(value = "更新", notes = "")
+    @ApiOperation(value = "更新", notes = "更新利润")
     public ResultUtil<Boolean> updById(@Validated @RequestBody PriceExpProfitPo priceExpProfitPo) {
 
         return priceExpProfitService.updById(priceExpProfitPo);
@@ -72,4 +73,11 @@ public class PriceExpProfitController {
         return priceExpProfitService.getList(priceId);
     }
 
+
+//    @PostMapping(value = "/merge-profit")
+//    @ApiOperation(value = "合并利润", notes = "合并利润")
+//    public ResultUtil<PriceExpProfitListVo> mergeProfit(@Validated @RequestBody ) {
+//
+//        return priceExpProfitService.mergeProfit(priceExpProfitAssembleDto);
+//    }
 }

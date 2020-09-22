@@ -701,8 +701,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpRemarkService.delBatch(sbPriceIds.toString());
         //删除公式
         computationalFormulaService.delBatch(sbPriceIds.toString());
+
         //删除利润
-        priceExpProfitService.delBatch(sbPriceIds.toString());
+        //priceExpProfitService.delBatch(sbPriceIds.toString());
 
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }

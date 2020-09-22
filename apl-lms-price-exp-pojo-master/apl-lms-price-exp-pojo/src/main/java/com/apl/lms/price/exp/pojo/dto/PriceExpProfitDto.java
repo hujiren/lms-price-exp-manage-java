@@ -12,23 +12,23 @@ import java.util.List;
 
 /**
  * @author hjr start
- * @Classname PriceExpSaleProfitDto
+ * @Classname PriceExpProfitDto
  * @Date 2020/9/11 11:14
  */
 @Data
 @ApiModel(value = "快递销售价格利润-组装对象", description = "快递销售价格利润-组装对象")
-public class PriceExpSaleProfitDto {
+public class PriceExpProfitDto {
 
     @ApiModelProperty(name = "customerGroup" , value = "客户组", required = true)
     @NotBlank(message = "客户组不能为空")
     private List<Long> customerGroupsId;
 
     @ApiModelProperty(name = "zoneNum", value = "分区号")
-    @Length(max = 3, message = "分区号最大长度为3")
+    @Length(max = 100, message = "分区号最大长度为100")
     private String zoneNum;
 
     @ApiModelProperty(name = "countryCode", value = "国家简码")
-    @Length(max = 12, message = "国家简码最大长度为12")
+    @Length(max = 500, message = "国家简码最大长度为500")
     private String countryCode;
 
     @ApiModelProperty(name = "startWeight", value = "起始重")
@@ -49,4 +49,18 @@ public class PriceExpSaleProfitDto {
 
     @ApiModelProperty(name = "proportionProfit", value = "比例加")
     private Double proportionProfit;
+
+    // 客户组,  分区号,  国家简码, 起始重, 截止重, 首重加, 单位重加, 比例加
+    public PriceExpProfitDto(List<Long> customerGroupsId, String zoneNum,  String countryCode, Double startWeight, Double endWeight, Double firstWeightProfit, Double unitWeightProfit, Double proportionProfit) {
+        this.customerGroupsId = customerGroupsId;
+        this.zoneNum = zoneNum;
+        this.countryCode = countryCode;
+        this.startWeight = startWeight;
+        this.endWeight = endWeight;
+        this.firstWeightProfit = firstWeightProfit;
+        this.unitWeightProfit = unitWeightProfit;
+        this.proportionProfit = proportionProfit;
+    }
+
+    public PriceExpProfitDto(){}
 }
