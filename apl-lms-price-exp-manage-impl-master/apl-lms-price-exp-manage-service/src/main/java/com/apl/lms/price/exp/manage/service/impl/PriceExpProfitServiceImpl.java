@@ -139,9 +139,9 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             return list1;
         }
 
-        Double startWeight0 = 0.0;
         Double startWeight = 0.0;
         Double endWeight = 0.0;
+        Double priorEndWeight = 0.0;
 
         Double newFirstWeightProfit = 0.0;
         Double newUnitWeightProfit = 0.0;
@@ -153,21 +153,14 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
         for (PriceExpProfitDto profitDto: list1) {
 
-            startWeight0 = profitDto.getStartWeight();
-
             int i2=0;
             int size2 = list2.size();
             while (i2<size2){
                 PriceExpProfitDto profitDto2 = list2.get(i2);
 
-                if(!profitDto.getCustomerGroupsId().toString().equals(profitDto2.getCustomerGroupsId().toString())
-                 || !profitDto.getZoneNum().equals(profitDto2.getZoneNum())
-                 || !profitDto.getCountryCode().equals(profitDto2.getCountryCode())  ) {
-                    i2++;
-                    continue;
-                }
-
-                if(profitDto2.getEndWeight() < profitDto.getStartWeight()) {
+                if(!profitDto.getZoneNum().equals(profitDto2.getZoneNum())
+                        || !profitDto.getCountryCode().equals(profitDto2.getCountryCode())
+                        || profitDto2.getEndWeight() < profitDto.getStartWeight()) {
                     i2++;
                     continue;
                 }
@@ -175,11 +168,14 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                 if(profitDto2.getStartWeight() >= profitDto.getEndWeight())
                     break;
 
-                startWeight = startWeight0;
+                if(i2==0)
+                    startWeight = profitDto2.getStartWeight();
+                else
+                    startWeight = priorEndWeight;
+
                 endWeight = profitDto.getEndWeight();
                 if(endWeight > profitDto2.getEndWeight()) {
                     endWeight = profitDto2.getEndWeight();
-                    startWeight0 = endWeight;
                 }
 
                 newProfitDto = new PriceExpProfitDto();
@@ -206,6 +202,8 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                 newProfitDto.setUnitWeightProfit(newUnitWeightProfit);
                 newProfitDto.setProportionProfit(newProportionProfit);
                 newList.add(newProfitDto);
+
+                priorEndWeight = endWeight;
 
                 i2++;
             }
