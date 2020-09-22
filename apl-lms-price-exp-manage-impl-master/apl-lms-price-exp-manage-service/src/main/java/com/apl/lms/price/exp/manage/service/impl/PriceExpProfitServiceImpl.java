@@ -42,31 +42,9 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     }
 
 
-    @Override
-    public ResultUtil<Long> add(PriceExpProfitPo priceExpProfitPo){
-
-        List<PriceExpProfitDto> increaseProfit = priceExpProfitPo.getIncreaseProfit();
-        if(increaseProfit.size() != 0){
-            for (PriceExpProfitDto priceExpSaleProfitDto : increaseProfit) {
-                if(null != priceExpSaleProfitDto.getCountryCode()){
-                    priceExpSaleProfitDto.setCountryCode(priceExpSaleProfitDto.getCountryCode().toUpperCase());
-                }
-            }
-        }
-        priceExpProfitPo.setIncreaseProfit(increaseProfit);
-        priceExpProfitPo.setId(SnowflakeIdWorker.generateId());
-        priceExpProfitPo.setFinalProfit(increaseProfit);
-        Integer flag = baseMapper.addProfit(priceExpProfitPo);
-        if(flag.equals(1)){
-            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , priceExpProfitPo.getId());
-        }
-
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL , null);
-    }
-
 
     @Override
-    public ResultUtil<Boolean> updById(PriceExpProfitPo priceExpProfitPo){
+    public ResultUtil<Long> saveProfit(PriceExpProfitPo priceExpProfitPo){
 
         if(null == priceExpProfitPo.getIncreaseProfit()){
             List<PriceExpProfitDto> increaseProfitEmpty = new ArrayList<>();
@@ -82,15 +60,22 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             }
         }
 
-
+        Integer flag = 0;
         priceExpProfitPo.setIncreaseProfit(increaseProfit);
         priceExpProfitPo.setFinalProfit(priceExpProfitPo.getIncreaseProfit());
-        Integer flag = baseMapper.updProfit(priceExpProfitPo);
-        if(flag.equals(1)){
-            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , true);
+        if(priceExpProfitPo.getId()>0){
+            flag = baseMapper.updProfit(priceExpProfitPo);
+        }
+        else {
+            priceExpProfitPo.setId(SnowflakeIdWorker.generateId());
+            flag = baseMapper.addProfit(priceExpProfitPo);
         }
 
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL , false);
+        if(flag.equals(1)){
+            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , priceExpProfitPo.getId());
+        }
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL , null);
     }
 
 
@@ -127,7 +112,8 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         return res;
     }
 
-    public static List<PriceExpProfitDto> mergeProfit(List<PriceExpProfitDto> list1, List<PriceExpProfitDto> list2){
+    //合并利润
+    static List<PriceExpProfitDto> mergeProfit(List<PriceExpProfitDto> list1, List<PriceExpProfitDto> list2){
         if(list1.size()<1 && list2.size()<1){
             List<PriceExpProfitDto> emptyList = new ArrayList<>();
             return emptyList;
@@ -168,7 +154,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                 if(profitDto2.getStartWeight() >= profitDto.getEndWeight())
                     break;
 
-                if(i2==0)
+                if(i2 == 0)
                     startWeight = profitDto2.getStartWeight();
                 else
                     startWeight = priorEndWeight;
@@ -184,14 +170,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                 newUnitWeightProfit = profitDto.getUnitWeightProfit() + profitDto2.getUnitWeightProfit();
                 proportionProfit1 = profitDto.getProportionProfit();
                 if(proportionProfit1.equals(0))
-                    proportionProfit1=1.0;
+                    proportionProfit1 = 1.0;
                 proportionProfit2 = profitDto2.getProportionProfit();
                 if(proportionProfit2.equals(0))
-                    proportionProfit2=1.0;
-                if(proportionProfit1>0 && proportionProfit2>0)
-                    newProportionProfit = proportionProfit1 * proportionProfit2;
-                else
-                    newProportionProfit = 0.0;
+                    proportionProfit2 = 1.0;
+                newProportionProfit = proportionProfit1 * proportionProfit2;
 
                 newProfitDto.setCustomerGroupsId(profitDto.getCustomerGroupsId());
                 newProfitDto.setZoneNum(profitDto.getZoneNum());
@@ -202,6 +185,8 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                 newProfitDto.setUnitWeightProfit(newUnitWeightProfit);
                 newProfitDto.setProportionProfit(newProportionProfit);
                 newList.add(newProfitDto);
+
+                //System.out.println(newProfitDto);
 
                 priorEndWeight = endWeight;
 

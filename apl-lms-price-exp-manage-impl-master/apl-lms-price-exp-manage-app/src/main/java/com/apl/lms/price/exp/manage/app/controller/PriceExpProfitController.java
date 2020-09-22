@@ -38,30 +38,12 @@ public class PriceExpProfitController {
     @Autowired
     public PriceExpProfitService priceExpProfitService;
 
-
-    @PostMapping(value = "/add")
-    @ApiOperation(value = "添加", notes = "添加利润")
-    public ResultUtil<Long> add(@Validated @RequestBody PriceExpProfitPo priceExpProfitPo) {
+    @PostMapping(value = "/save")
+    @ApiOperation(value = "保存", notes = "保存")
+    public ResultUtil<Long> save(@Validated @RequestBody PriceExpProfitPo priceExpProfitPo) {
         ApiParamValidate.validate(priceExpProfitPo);
 
-        return priceExpProfitService.add(priceExpProfitPo);
-    }
-
-
-    @PostMapping(value = "/upd")
-    @ApiOperation(value = "更新", notes = "更新利润")
-    public ResultUtil<Boolean> updById(@Validated @RequestBody PriceExpProfitPo priceExpProfitPo) {
-
-        return priceExpProfitService.updById(priceExpProfitPo);
-    }
-
-
-    @PostMapping(value = "/del")
-    @ApiOperation(value = "删除", notes = "删除")
-    @ApiImplicitParam(name = "id", value = " id", required = true, paramType = "query")
-    public ResultUtil<Boolean> delById(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
-
-        return priceExpProfitService.delById(id);
+        return priceExpProfitService.saveProfit(priceExpProfitPo);
     }
 
 
@@ -74,10 +56,4 @@ public class PriceExpProfitController {
     }
 
 
-//    @PostMapping(value = "/merge-profit")
-//    @ApiOperation(value = "合并利润", notes = "合并利润")
-//    public ResultUtil<PriceExpProfitListVo> mergeProfit(@Validated @RequestBody ) {
-//
-//        return priceExpProfitService.mergeProfit(priceExpProfitAssembleDto);
-//    }
 }

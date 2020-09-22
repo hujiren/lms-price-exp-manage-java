@@ -20,20 +20,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  */
 public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
 
-    /**
-     * @Desc: 添加一个PriceExpProfitPo实体
-     * @author hjr
-     * @since 2020-09-11
-     */
-    ResultUtil<Long> add(PriceExpProfitPo priceExpProfitPo);
-
 
     /**
      * @Desc: 根据id 更新一个PriceExpProfitPo 实体
      * @author hjr
      * @since 2020-09-11
      */
-    ResultUtil<Boolean> updById(PriceExpProfitPo priceExpProfitPo);
+    ResultUtil<Long> saveProfit(PriceExpProfitPo priceExpProfitPo);
 
 
     /**
