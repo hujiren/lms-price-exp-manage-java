@@ -1,14 +1,10 @@
 package com.apl.lms.price.exp.manage.service;
 
-import com.apl.lms.price.exp.pojo.dto.PriceExpProfitAssembleDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpProfitListVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpProfitInfoVo;
-import com.apl.lms.price.exp.pojo.dto.PriceExpProfitKeyDto;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.List;
 
 /**
  * <p>
@@ -26,7 +22,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @author hjr
      * @since 2020-09-11
      */
-    ResultUtil<Long> saveProfit(PriceExpProfitPo priceExpProfitPo);
+    Long saveProfit(PriceExpProfitPo priceExpProfitPo);
 
 
     /**
@@ -42,7 +38,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @author hjr
      * @since 2020-09-11
      */
-    ResultUtil<PriceExpProfitListVo> getList(Long priceId);
+    ResultUtil<List<PriceExpProfitPo>> getList(Long priceId);
 
     /**
      * 批量删除
@@ -50,5 +46,6 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @return
      */
     Integer delBatch(String ids);
+
 
 }

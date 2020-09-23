@@ -77,7 +77,7 @@
 
 
     <!--构建批量删除销售价格表条件集合-->
-    <select id="getPriceListForDel" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
+    <select id="getPriceListForDel" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
         select
             sale.id,
             sale.quote_price_id,

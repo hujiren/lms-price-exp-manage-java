@@ -15,7 +15,6 @@ import java.util.List;
  * @Classname PriceExpProfitDto
  * @Date 2020/9/11 11:14
  */
-@Data
 @ApiModel(value = "快递销售价格利润-组装对象", description = "快递销售价格利润-组装对象")
 public class PriceExpProfitDto {
 
@@ -63,4 +62,68 @@ public class PriceExpProfitDto {
     }
 
     public PriceExpProfitDto(){}
+
+    public List<Long> getCustomerGroupsId() {
+        return customerGroupsId;
+    }
+
+    public void setCustomerGroupsId(List<Long> customerGroupsId) {
+        this.customerGroupsId = customerGroupsId;
+    }
+
+    public String getZoneNum() {
+        return zoneNum;
+    }
+
+    public void setZoneNum(String zoneNum) {
+        this.zoneNum = zoneNum;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public Double getStartWeight() {
+        return startWeight;
+    }
+
+    public void setStartWeight(Double startWeight) {
+        this.startWeight = startWeight;
+    }
+
+    public Double getEndWeight() {
+        return endWeight;
+    }
+
+    public void setEndWeight(Double endWeight) {
+        this.endWeight = endWeight;
+    }
+
+    public Double getFirstWeightProfit() {
+        return firstWeightProfit;
+    }
+
+    public void setFirstWeightProfit(Double firstWeightProfit) {
+        this.firstWeightProfit = firstWeightProfit;
+    }
+
+    public Double getUnitWeightProfit() {
+        return unitWeightProfit;
+    }
+
+    public void setUnitWeightProfit(Double unitWeightProfit) {
+        this.unitWeightProfit = unitWeightProfit;
+    }
+
+    public Double getProportionProfit() {
+        return proportionProfit;
+    }
+
+    public void setProportionProfit(Double proportionProfit) {
+        this.proportionProfit = proportionProfit;
+    }
 }

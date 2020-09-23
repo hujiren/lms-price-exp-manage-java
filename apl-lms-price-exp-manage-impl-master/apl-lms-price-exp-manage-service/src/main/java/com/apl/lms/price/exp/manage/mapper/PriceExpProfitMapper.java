@@ -1,15 +1,12 @@
 package com.apl.lms.price.exp.manage.mapper;
 
+import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpProfitListVo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpProfitInfoVo;
-import com.apl.lms.price.exp.pojo.dto.PriceExpProfitKeyDto;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -43,7 +40,7 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      * @Author: ${cfg.author}
      * @Date: 2020-09-11
      */
-    List<PriceExpProfitListVo> getList(@Param("priceId") Long priceId);
+    List<PriceExpProfitPo> getList(@Param("priceId") Long priceId);
 
     /**
      * 批量删除
@@ -51,4 +48,11 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      * @return
      */
     Integer delBatch(@Param("ids") String ids);
+
+    /**
+     * 获取最终利润
+     * @param priceId
+     * @return
+     */
+    List<PriceExpProfitDto> getPriceFinalProfit(@Param("priceId") Long priceId);
 }

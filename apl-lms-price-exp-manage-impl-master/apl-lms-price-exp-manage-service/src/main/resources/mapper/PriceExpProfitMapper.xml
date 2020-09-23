@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper">
 
+    <resultMap id="BaseResultMap" type="com.apl.lms.price.exp.pojo.po.PriceExpProfitPo">
+        <result property="finalProfit" column="final_profit" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
+        <result property="increaseProfit" column="increase_profit" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
+    </resultMap>
+
     <!--新增-->
     <insert id="addProfit">
         insert into price_exp_profit(
@@ -37,12 +42,11 @@
     </update>
 
     <!-- 查找列表 2020-09-11-->
-    <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpProfitListVo">
+    <select id="getList" resultMap="BaseResultMap">
         SELECT
            id, 
            price_id,
-           increase_profit,
-           start_weight
+           increase_profit
         FROM
            price_exp_profit
         where
@@ -54,4 +58,8 @@
         delete from price_exp_profit where price_id in(${ids})
     </delete>
 
+    <!--获取最终利润-->
+    <select id="getPriceFinalProfit" resultMap="BaseResultMap">
+        select final_profit from price_exp_profit where price_id = #{priceId}
+    </select>
 </mapper>

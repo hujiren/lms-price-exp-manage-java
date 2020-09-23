@@ -1,17 +1,19 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
+import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
+import com.apl.lms.price.exp.manage.service.PriceExpService;
+import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.apl.lib.constants.CommonStatusCode;
-
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpProfitListVo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,42 +43,8 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         }
     }
 
-
-
-    @Override
-    public ResultUtil<Long> saveProfit(PriceExpProfitPo priceExpProfitPo){
-
-        if(null == priceExpProfitPo.getIncreaseProfit()){
-            List<PriceExpProfitDto> increaseProfitEmpty = new ArrayList<>();
-            priceExpProfitPo.setIncreaseProfit(increaseProfitEmpty);
-        }
-
-        List<PriceExpProfitDto> increaseProfit = priceExpProfitPo.getIncreaseProfit();
-        if(increaseProfit.size() >0){
-            for (PriceExpProfitDto priceExpSaleProfitDto : increaseProfit) {
-                if(null != priceExpSaleProfitDto.getCountryCode()){
-                    priceExpSaleProfitDto.setCountryCode(priceExpSaleProfitDto.getCountryCode().toUpperCase());
-                }
-            }
-        }
-
-        Integer flag = 0;
-        priceExpProfitPo.setIncreaseProfit(increaseProfit);
-        priceExpProfitPo.setFinalProfit(priceExpProfitPo.getIncreaseProfit());
-        if(priceExpProfitPo.getId()>0){
-            flag = baseMapper.updProfit(priceExpProfitPo);
-        }
-        else {
-            priceExpProfitPo.setId(SnowflakeIdWorker.generateId());
-            flag = baseMapper.addProfit(priceExpProfitPo);
-        }
-
-        if(flag.equals(1)){
-            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , priceExpProfitPo.getId());
-        }
-
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL , null);
-    }
+    @Autowired
+    PriceExpService priceExpService;
 
 
     @Override
@@ -92,9 +60,9 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
 
     @Override
-    public ResultUtil<PriceExpProfitListVo> getList(Long priceId){
+    public ResultUtil<List<PriceExpProfitPo>> getList(Long priceId){
 
-        List<PriceExpProfitListVo> list = baseMapper.getList(priceId);
+        List<PriceExpProfitPo> list = baseMapper.getList(priceId);
 
         if(list.size() == 0){
             return ResultUtil.APPRESULT(PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.code,
@@ -110,6 +78,83 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     public Integer delBatch(String ids) {
         Integer res = baseMapper.delBatch(ids);
         return res;
+    }
+
+    /**
+     * 保存利润
+     * @param priceExpProfitPo
+     * @return
+     */
+    @Override
+    public Long saveProfit(PriceExpProfitPo priceExpProfitPo){
+
+        List<PriceExpProfitDto> emptyProfitList = new ArrayList<>();
+        if(null == priceExpProfitPo.getIncreaseProfit()){
+            priceExpProfitPo.setIncreaseProfit(emptyProfitList);
+        }
+
+        List<PriceExpProfitDto> increaseProfit = priceExpProfitPo.getIncreaseProfit();
+        if(increaseProfit.size() >0){
+            for (PriceExpProfitDto priceExpSaleProfitDto : increaseProfit) {
+                if(null != priceExpSaleProfitDto.getCountryCode()){
+                    priceExpSaleProfitDto.setCountryCode(priceExpSaleProfitDto.getCountryCode().toUpperCase());
+                }else{
+                    priceExpSaleProfitDto.setCountryCode("");
+                }
+
+                if(null == priceExpSaleProfitDto.getZoneNum())
+                    priceExpSaleProfitDto.setZoneNum("");
+
+                if(null == priceExpSaleProfitDto.getUnitWeightProfit())
+                    priceExpSaleProfitDto.setUnitWeightProfit(0.0);
+
+                if(null == priceExpSaleProfitDto.getFirstWeightProfit())
+                    priceExpSaleProfitDto.setFirstWeightProfit(0.0);
+
+                if(null == priceExpSaleProfitDto.getProportionProfit())
+                    priceExpSaleProfitDto.setProportionProfit(0.0);
+
+                if(null == priceExpSaleProfitDto.getStartWeight())
+                    priceExpSaleProfitDto.setStartWeight(0.0);
+
+                if(null == priceExpSaleProfitDto.getEndWeight())
+                    priceExpSaleProfitDto.setEndWeight(0.0);
+            }
+        }
+
+        List<PriceExpProfitDto> quoteProfit = null;
+        if(priceExpProfitPo.getPriceId() > 0){
+            //根据priceId找到引用价格id
+            ExpPriceInfoBo innerOrgIdAndPriceDatId = priceExpService.getInnerOrgIdAndPriceDatId(priceExpProfitPo.getPriceId());
+            if(innerOrgIdAndPriceDatId.getQuotePriceId() > 0) {
+                quoteProfit = getQuoteProfit(innerOrgIdAndPriceDatId.getQuotePriceId());
+            }
+        }
+        if(null == quoteProfit)
+            quoteProfit = emptyProfitList;
+        List<PriceExpProfitDto> finalProfit = mergeProfit(increaseProfit, quoteProfit);
+
+        Integer flag = 0;
+        priceExpProfitPo.setIncreaseProfit(increaseProfit);
+        priceExpProfitPo.setFinalProfit(finalProfit);
+        if(priceExpProfitPo.getId()>0){
+            flag = baseMapper.updProfit(priceExpProfitPo);
+        }
+        else {
+            priceExpProfitPo.setId(SnowflakeIdWorker.generateId());
+            flag = baseMapper.addProfit(priceExpProfitPo);
+        }
+
+        if(flag.equals(0)){
+            throw new AplException(CommonStatusCode.SYSTEM_FAIL , null);
+        }
+
+        return priceExpProfitPo.getId();
+    }
+
+    private List<PriceExpProfitDto> getQuoteProfit(Long priceId){
+        List<PriceExpProfitDto> priceFinalProfit = baseMapper.getPriceFinalProfit(priceId);
+        return priceFinalProfit;
     }
 
     //合并利润

@@ -3,13 +3,10 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
-import com.apl.lms.price.exp.manage.service.PriceExpService;
-import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**

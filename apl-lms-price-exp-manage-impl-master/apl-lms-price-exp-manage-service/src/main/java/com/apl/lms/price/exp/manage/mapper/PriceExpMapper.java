@@ -1,6 +1,6 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
+import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpPublishedKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
@@ -76,7 +76,7 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @param priceId
      * @return
      */
-    PriceListForDelBatchBo getInnerOrgIdAndPriceDatId(@Param("id") Long priceId);
+    ExpPriceInfoBo getInnerOrgIdAndPriceDatId(@Param("id") Long priceId);
 
     /**
      * 新增

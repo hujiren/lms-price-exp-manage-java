@@ -21,7 +21,7 @@ import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
 import com.apl.lms.price.exp.manage.mapper.PriceExpMapper;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.manage.util.CheckObjFieldINull;
-import com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo;
+import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.dto.CustomerDto;
 import com.apl.lms.price.exp.pojo.dto.CustomerGroupDto;
@@ -61,6 +61,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         CANNOT_MODIFY_DATA_ORIGINATING_ELSEWHERE("CANNOT_MODIFY_DATA_ORIGINATING_ELSEWHERE", "无法修改源于别处的数据"),
         THE_REFERENCED_DATA_DOES_NOT_EXIST("THE_REFERENCED_DATA_DOES_NOT_EXIST", "被引用的数据不存在"),
         THERE_IS_STILL_DATA_BOUND_TO_THE_PRIMARY_TABLE("THERE_IS_STILL_DATA_BOUND_TO_THE_PRIMARY_TABLE", "仍有其他数据绑定主表"),
+        THE_DATA_FORMAT_MUST_BE_A_TWO_DIMENSIONAL_ARRAY("THE_DATA_FORMAT_MUST_BE_A_TWO_DIMENSIONAL_ARRAY","数据格式必须是二维数组"),
         PARAMETER_ERROR("PARAMETER_ERROR", "参数错误");
 
         private String code;
@@ -301,13 +302,23 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      */
     @Override
     public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) {
-        PriceListForDelBatchBo innerOrgIdAndPriceDatId = baseMapper.getInnerOrgIdAndPriceDatId(id);
+        ExpPriceInfoBo innerOrgIdAndPriceDatId = getInnerOrgIdAndPriceDatId(id);
         if(null == innerOrgIdAndPriceDatId){
             return ResultUtil.APPRESULT(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
                     ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg,null);
         }
         ResultUtil<PriceExpDataVo> resultUtil = priceExpDataService.getPriceExpDataInfoByPriceId(innerOrgIdAndPriceDatId.getPriceDataId());
         return resultUtil;
+    }
+
+    /**
+     * 获取quotePriceId, innerOrgId, priceDataId
+     * @param id
+     * @return
+     */
+    @Override
+    public ExpPriceInfoBo getInnerOrgIdAndPriceDatId(Long id) {
+        return baseMapper.getInnerOrgIdAndPriceDatId(id);
     }
 
     /**
@@ -318,7 +329,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Override
     public ResultUtil<PriceExpDataAxisVo> getPriceExpDataAxis(Long id) {
 
-        PriceListForDelBatchBo innerOrgIdAndPriceDatId = baseMapper.getInnerOrgIdAndPriceDatId(id);
+        ExpPriceInfoBo innerOrgIdAndPriceDatId = baseMapper.getInnerOrgIdAndPriceDatId(id);
 
         if(null == innerOrgIdAndPriceDatId || innerOrgIdAndPriceDatId.getPriceDataId() == 0){
             return  ResultUtil.APPRESULT(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, null);
@@ -339,6 +350,30 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpDataAxisVo.setAxisPortrait(axisInfo.getData().getAxisPortrait());
         priceExpDataAxisVo.setAxisTransverse(axisInfo.getData().getAxisTransverse());
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataAxisVo);
+    }
+
+    /**
+     * 更新表头(横向数据)
+     * @param
+     * @return
+     */
+    @Override
+    public Boolean updAxis(AxisTransverseUpdDto axisTransverse, AxisPortraitUpdDto axisPortrait) {
+        //更新轴数据
+        PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
+        if(null != axisTransverse && axisTransverse.getAxisTransverse().size() > 0 && axisTransverse.getPriceDataId() > 0) {
+            priceExpAxisPo.setAxisTransverse(axisTransverse.getAxisTransverse().toString());
+            priceExpAxisPo.setId(axisTransverse.getPriceDataId());
+        }
+        if(null != axisPortrait && axisPortrait.getAxisPortrait().size() > 0 && axisPortrait.getPriceDataId() > 0) {
+            priceExpAxisPo.setAxisPortrait(axisPortrait.getAxisPortrait().toString());
+            priceExpAxisPo.setId(axisPortrait.getPriceDataId());
+        }
+        Boolean res = priceExpAxisService.updateByMainId(priceExpAxisPo);
+        if (!res) {
+            throw new AplException(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg);
+        }
+        return true;
     }
 
     /**
@@ -444,18 +479,18 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     public ResultUtil<Boolean> updatePriceData(PriceExpDataUpdDto priceExpDataUpdDto) {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
 
-        PriceListForDelBatchBo priceListForDelBatchBo = baseMapper.getInnerOrgIdAndPriceDatId(priceExpDataUpdDto.getId());
+        ExpPriceInfoBo expPriceInfoBo = baseMapper.getInnerOrgIdAndPriceDatId(priceExpDataUpdDto.getId());
 
-        if(null == priceListForDelBatchBo || 0 == priceListForDelBatchBo.getInnerOrgId() || 0 == priceListForDelBatchBo.getPriceDataId()){
+        if(null == expPriceInfoBo || 0 == expPriceInfoBo.getInnerOrgId() || 0 == expPriceInfoBo.getPriceDataId()){
             throw new AplException(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg);
         }
 
-        if (securityUser.getInnerOrgId() == priceListForDelBatchBo.getInnerOrgId()) {
+        if (securityUser.getInnerOrgId() == expPriceInfoBo.getInnerOrgId()) {
 
             //更新价格表数据
             PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
             priceExpDataPo.setPriceData(priceExpDataUpdDto.getPriceData());
-            priceExpDataPo.setId(priceListForDelBatchBo.getPriceDataId());
+            priceExpDataPo.setId(expPriceInfoBo.getPriceDataId());
             Boolean result = priceExpDataService.updById(priceExpDataPo);
             if (!result) {
                 throw new AplException(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg);
@@ -464,7 +499,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
             priceExpAxisPo.setAxisTransverse(priceExpDataUpdDto.getAxisTransverse().toString());
             priceExpAxisPo.setAxisPortrait(priceExpDataUpdDto.getAxisPortrait().toString());
-            priceExpAxisPo.setId(priceListForDelBatchBo.getPriceDataId());
+            priceExpAxisPo.setId(expPriceInfoBo.getPriceDataId());
             Boolean res = priceExpAxisService.updateByMainId(priceExpAxisPo);
             if (!res) {
                 throw new AplException(ExpListServiceCode.ID_IS_NOT_EXITS.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg);
@@ -502,19 +537,19 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         ResultUtil<Long> longResultUtil = addExpPriceBase(priceExpAddDto, 0l, priceDataId);
 
-        //保存价格表数据
-        boolean saveSuccess = priceExpDataService.addPriceExpData(priceDataId,priceExpAddDto);
-        if (!saveSuccess) {
-            throw new AplException(ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.code,
-                    ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.msg, null);
-        }
+            //保存价格表数据
+            Boolean saveSuccess = priceExpDataService.addPriceExpData(priceDataId,priceExpAddDto);
+            if (!saveSuccess) {
+                throw new AplException(ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.code,
+                        ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.msg, null);
+            }
+            //保存价格表轴数据
+            saveSuccess = priceExpAxisService.addPriceExpAxis(priceDataId,priceExpAddDto);
+            if (!saveSuccess) {
+                throw new AplException(ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.code,
+                        ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.msg, null);
+            }
 
-        //保存价格表轴数据
-        saveSuccess = priceExpAxisService.addPriceExpAxis(priceDataId,priceExpAddDto);
-        if (!saveSuccess) {
-            throw new AplException(ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.code,
-                    ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.msg, null);
-        }
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, longResultUtil.getData());
     }
@@ -549,7 +584,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
 
 
-        if(null == priceExpAddDto.getPriceSaleName() || priceExpAddDto.getPriceSaleName().length()<1)
+        if(null == priceExpAddDto.getPriceSaleName() || priceExpAddDto.getPriceSaleName().length()<1 || priceExpAddDto.getPriceSaleName().equals(" "))
             priceExpAddDto.setPriceSaleName(priceExpAddDto.getPriceName());
 
         Long priceId = SnowflakeIdWorker.generateId();
@@ -559,7 +594,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpMainPo.setPriceStatus(1);
         priceExpMainPo.setQuotePriceId(quotePriceId);
         priceExpMainPo.setPriceDataId(priceDataId);
-
         if(priceExpAddDto.getPricePublishedId() == null){
             priceExpMainPo.setPricePublishedId(0L);
         }

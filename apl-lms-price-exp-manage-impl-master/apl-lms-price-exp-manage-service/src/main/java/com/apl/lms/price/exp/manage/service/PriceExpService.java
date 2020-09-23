@@ -2,6 +2,7 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.vo.*;
@@ -96,4 +97,19 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id);
+
+    /**
+     * 获取quotePriceId, innerOrgId, priceDataId组合方法
+     * @param id
+     * @return
+     */
+    ExpPriceInfoBo getInnerOrgIdAndPriceDatId(Long id);
+
+    /**
+     * 更新轴数据
+     * @param axisTransverse
+     * @param axisPortrait
+     * @return
+     */
+    Boolean updAxis(AxisTransverseUpdDto axisTransverse, AxisPortraitUpdDto axisPortrait);
 }

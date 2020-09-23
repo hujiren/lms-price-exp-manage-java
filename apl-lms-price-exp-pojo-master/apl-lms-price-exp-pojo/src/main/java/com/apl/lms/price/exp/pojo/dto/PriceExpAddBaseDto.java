@@ -85,7 +85,6 @@ public class PriceExpAddBaseDto implements Serializable {
     private String priceName;
 
     @ApiModelProperty(name = "priceSaleName" , value = "销售名称")
-    @NotBlank(message = "报价销售名称不能为空")
     private String priceSaleName;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)

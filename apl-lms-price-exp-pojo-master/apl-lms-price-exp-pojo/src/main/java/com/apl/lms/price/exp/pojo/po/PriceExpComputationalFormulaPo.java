@@ -40,12 +40,10 @@ public class PriceExpComputationalFormulaPo extends Model<PriceExpComputationalF
     private String formula;
 
     @ApiModelProperty(name = "zoneNum" , value = "分区号")
-    @NotBlank(message = "分区号不能为空")
     @Length(max = 50, message = "分区号长度不能超过50")
     private String zoneNum;
 
     @ApiModelProperty(name = "country" , value = "国家")
-    @NotBlank(message = "国家不能为空")
     @Length(max = 50, message = "国家长度不能超过50")
     private String country;
 

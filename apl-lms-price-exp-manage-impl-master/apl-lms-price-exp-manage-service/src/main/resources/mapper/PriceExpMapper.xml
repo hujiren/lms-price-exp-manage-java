@@ -57,7 +57,7 @@
         </if>
     </select>
 
-    <!--分页查询成本价格列表  -->
+    <!--分页查询成本价格列表 -->
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
             id ,start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_status,
@@ -163,8 +163,8 @@
      </insert>
 
     <!--获取租户和价格数据表id-->
-    <select id="getInnerOrgIdAndPriceDatId" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
-        select id, quote_price_id, inner_org_id, price_data_id from lms_exp_price where id = #{id}
+    <select id="getInnerOrgIdAndPriceDatId" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
+        select id, quote_price_id, inner_org_id, price_data_id, price_format from lms_exp_price where id = #{id}
     </select>
 
     <!--更新-->

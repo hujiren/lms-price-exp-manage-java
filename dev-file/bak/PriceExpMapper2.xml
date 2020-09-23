@@ -286,7 +286,7 @@
             id = #{po.id}
     </update>
 
-    <select id="getCostPriceListByMainIds" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
+    <select id="getCostPriceListByMainIds" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
         select
             id,
             quote_price_id,
@@ -297,7 +297,7 @@
             price_main_id in (${mainIds})
     </select>
 
-    <select id="getCostPriceList" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
+    <select id="getCostPriceList" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
         select
             id,
             quote_price_id,
@@ -309,7 +309,7 @@
     </select>
 
 
-    <select id="getSalePriceListByMainIds" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
+    <select id="getSalePriceListByMainIds" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
         select
             id,
         quote_price_id,
@@ -320,7 +320,7 @@
             price_main_id in (${mainIds})
     </select>
 
-    <select id="getSalePriceList" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
+    <select id="getSalePriceList" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
         select
             id,
         quote_price_id,

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -37,10 +38,11 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
     @NotNull(message = "id不能为空")
     @Min(value = 0, message = "id不能小于0")
     @TableId(value = "id", type = IdType.INPUT )
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
-    @ApiModelProperty(name = "priceId", value = "快递价格id不不合法")
-    @Min(value = 0, message = "快递价格id不能小于0")
+    @ApiModelProperty(name = "priceId", value = "快递价格id不")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long priceId;
 
     @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
@@ -49,7 +51,6 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
 
     @ApiModelProperty(name = "finalProfit", value = "最终利润", hidden = true)
     private List<PriceExpProfitDto> finalProfit;
-
 
     private static final long serialVersionUID = 1L;
 

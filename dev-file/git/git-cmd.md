@@ -14,7 +14,7 @@
 
 
 从git库拉取代码
-  git pull   origin master
+  git pull  -f origin master
   
   
  

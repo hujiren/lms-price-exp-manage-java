@@ -20,7 +20,7 @@
 
 
     <!--组装批量删除条件集合-->
-    <select id="getPriceListForDel" resultType="com.apl.lms.price.exp.pojo.bo.PriceListForDelBatchBo">
+    <select id="getPriceListForDel" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
         select
             id,
             quote_price_id,
