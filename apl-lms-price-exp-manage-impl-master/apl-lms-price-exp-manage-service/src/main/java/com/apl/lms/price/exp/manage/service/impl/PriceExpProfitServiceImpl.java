@@ -130,6 +130,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             if(innerOrgIdAndPriceDatId.getQuotePriceId() > 0) {
                 quoteProfit = getQuoteProfit(innerOrgIdAndPriceDatId.getQuotePriceId());
             }
+
         }
         if(null == quoteProfit)
             quoteProfit = emptyProfitList;
