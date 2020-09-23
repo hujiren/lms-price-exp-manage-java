@@ -13,15 +13,13 @@
             id,
             price_id,
             increase_profit,
-            final_profit,
-            start_weight
+            final_profit
         )values (
             #{po.id},
             #{po.priceId},
             #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
-            #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
-            #{po.startWeight}
-        )
+            #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
+            )
     </insert>
 
     <!--更新-->

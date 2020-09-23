@@ -71,6 +71,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , list);
     }
 
+
     /**
      * 批量删除
      */
