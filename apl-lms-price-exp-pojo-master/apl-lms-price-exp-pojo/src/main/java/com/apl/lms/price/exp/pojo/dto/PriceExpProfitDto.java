@@ -1,8 +1,9 @@
 package com.apl.lms.price.exp.pojo.dto;
 
+import com.apl.lms.price.exp.pojo.bo.CustomerGroupBo;
+import com.apl.sys.lib.cache.bo.CustomerGroupCacheBo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
@@ -20,7 +21,7 @@ public class PriceExpProfitDto {
 
     @ApiModelProperty(name = "customerGroup" , value = "客户组", required = true)
     @NotBlank(message = "客户组不能为空")
-    private List<Long> customerGroupsId;
+    private List<CustomerGroupBo> customerGroups;
 
     @ApiModelProperty(name = "zoneNum", value = "分区号")
     @Length(max = 100, message = "分区号最大长度为100")
@@ -50,8 +51,8 @@ public class PriceExpProfitDto {
     private Double proportionProfit;
 
     // 客户组,  分区号,  国家简码, 起始重, 截止重, 首重加, 单位重加, 比例加
-    public PriceExpProfitDto(List<Long> customerGroupsId, String zoneNum,  String countryCode, Double startWeight, Double endWeight, Double firstWeightProfit, Double unitWeightProfit, Double proportionProfit) {
-        this.customerGroupsId = customerGroupsId;
+    public PriceExpProfitDto(List<CustomerGroupBo> customerGroups, String zoneNum,  String countryCode, Double startWeight, Double endWeight, Double firstWeightProfit, Double unitWeightProfit, Double proportionProfit) {
+        this.customerGroups = customerGroups;
         this.zoneNum = zoneNum;
         this.countryCode = countryCode;
         this.startWeight = startWeight;
@@ -63,12 +64,12 @@ public class PriceExpProfitDto {
 
     public PriceExpProfitDto(){}
 
-    public List<Long> getCustomerGroupsId() {
-        return customerGroupsId;
+    public List<CustomerGroupBo> getCustomerGroups() {
+        return customerGroups;
     }
 
-    public void setCustomerGroupsId(List<Long> customerGroupsId) {
-        this.customerGroupsId = customerGroupsId;
+    public void setCustomerGroups(List<CustomerGroupBo> customerGroups) {
+        this.customerGroups = customerGroups;
     }
 
     public String getZoneNum() {

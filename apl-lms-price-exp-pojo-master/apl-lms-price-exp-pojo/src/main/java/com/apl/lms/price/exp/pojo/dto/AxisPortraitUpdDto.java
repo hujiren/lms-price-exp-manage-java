@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @author hjr start
- * @Classname AxisTransverseUpdDto
+ * @Classname WeightSectionUpdDto
  * @Date 2020/9/23 15:50
  */
 @Data
@@ -25,5 +25,5 @@ public class AxisPortraitUpdDto {
 
     @ApiModelProperty(name = "axisPortrait" , value = "首列数据", required = true)
     @NotEmpty(message = "首列数据不能为空")
-    private List<Object> axisPortrait;
+    private List<List<String>> axisPortrait;
 }

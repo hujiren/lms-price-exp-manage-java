@@ -1,6 +1,10 @@
+json在线视图查看器
+https://www.bejson.com/jsonviewernew/
+http://www.cjblog.org/json/
+
 
 快递价格管理
-http://192.168.1.105:10003/#/
+http://192.168.1.105:8999/#/price-manage/publishedPrice
 
 弹窗搜索
    弹窗搜索： 客户组

@@ -21,11 +21,8 @@ public class PriceExpDataAxisVo implements Serializable {
     @ApiModelProperty(name = "priceDataId" , value = "价格数据表Id")
     private Long priceDataId;
 
-    @ApiModelProperty(name = "axisTransverse" , value = "x轴数据")
-    private String axisTransverse;
-
-    @ApiModelProperty(name = "axisPortrait" , value = "y轴数据")
-    private String axisPortrait;
+    @ApiModelProperty(name = "axisVo" , value = "数据轴")
+    private PriceExpAxisVo axisVo;
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据")
     private List<Object> priceData;

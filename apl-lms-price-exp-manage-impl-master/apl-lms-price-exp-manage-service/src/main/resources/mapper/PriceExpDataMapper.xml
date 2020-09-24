@@ -17,6 +17,16 @@
             id = #{id}
     </select>
 
+    <!--检测价格表数据是否存在-->
+    <select id="exists" resultType="java.lang.Long">
+        select
+            id
+        from
+            price_exp_data
+        where
+            id = #{id}
+    </select>
+
     <!--新增-->
     <insert id="insertData">
         insert into price_exp_data(id, price_data) values (#{po.id}, #{po.priceData,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler})

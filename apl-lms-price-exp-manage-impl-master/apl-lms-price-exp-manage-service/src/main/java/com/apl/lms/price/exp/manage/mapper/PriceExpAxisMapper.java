@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo;
 import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,6 +14,9 @@ import java.util.List;
  */
 @Repository
 public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
+
+    //检测是否存在
+    Long exists(@Param("id") Long id);
 
     /**
      * 新增
@@ -43,7 +45,7 @@ public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
      * @return
      */
     @SqlParser(filter = true)
-    PriceExpAxisVo getAxisInfoById(@Param("id") Long id);
+    PriceExpAxisPo getAxisInfoById(@Param("id") Long id);
 
     /**
      * 批量删除

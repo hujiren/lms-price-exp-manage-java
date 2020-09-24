@@ -33,11 +33,11 @@ public class PriceExpDataUpdDto implements Serializable {
 
     @ApiModelProperty(name = "axisTransverse" , value = "x轴数据", required = true)
     @NotEmpty(message = "x轴数据不能为空")
-    private List<Object> axisTransverse;
+    private List<List<String>> axisTransverse;
 
     @ApiModelProperty(name = "axisPortrait" , value = "y轴数据", required = true)
     @NotEmpty(message = "y轴数据不能为空")
-    private List<Object> axisPortrait;
+    private List<List<String>> axisPortrait;
 
     @ApiModelProperty(name = "priceFormat" , value = "价格表格式 1横向 2纵向", required = true)
     @NotNull(message = "价格表格式不能为空")

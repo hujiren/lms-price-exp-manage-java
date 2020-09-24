@@ -39,21 +39,16 @@ public class PriceExpProfitController {
 
         Long id = priceExpProfitService.saveProfit(priceExpProfitPo);
 
-
-
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , id);
 
-
     }
 
-
-    @PostMapping(value = "/get-list")
-    @ApiOperation(value = "获取利润数据列表", notes = "获取利润数据列表")
+    @PostMapping(value = "/get")
+    @ApiOperation(value = "获取利润数据", notes = "获取利润数据")
     @ApiImplicitParam(name = "priceId", value = " 价格表id", required = true, paramType = "query")
-    public ResultUtil<List<PriceExpProfitPo>> getList(@NotNull(message = "价格表id不能为空") Long priceId) {
+    public ResultUtil<PriceExpProfitPo> get(@NotNull(message = "价格表id不能为空") Long priceId) throws Exception {
 
-        return priceExpProfitService.getList(priceId);
+        return priceExpProfitService.getProfit(priceId);
     }
-
 
 }

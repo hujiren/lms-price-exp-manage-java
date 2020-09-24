@@ -20,7 +20,7 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
      * @param priceExpRemarkPo
      * @return
      */
-    ResultUtil<Boolean> updateRemark(PriceExpRemarkPo priceExpRemarkPo);
+    Boolean updateRemark(PriceExpRemarkPo priceExpRemarkPo);
 
     /**
      * 获取详情

@@ -274,4 +274,9 @@
         select price_data_id from lms_exp_price where id in (${ids})
     </select>
 
+    <!--通过价格表数据id获取主表id-->
+    <select id="getMainIdByPriceDataId" resultType="java.lang.Long">
+        select id from pgs_lms_exp_price where price_data_id = #{priceDataId}
+    </select>
+
 </mapper>

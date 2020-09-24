@@ -25,6 +25,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
                 "com.apl.lms.common.lib",
                 "com.apl.lms.price.exp.manage",
                 "com.apl.lms.price.exp.lib",
+                "com.apl.sys.lib"
                 },
         exclude = {
             DruidDataSourceAutoConfigure.class
@@ -32,7 +33,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@MapperScan("com.apl.lms.price.exp.manage.mapper")
 @MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc")
 //@MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper2", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc2")
-@EnableFeignClients(basePackages = {"com.apl.lms.common.lib.feign","com.apl.lms.price.exp.lib.feign"})
+@EnableFeignClients(basePackages = {"com.apl.lms.common.lib.feign","com.apl.lms.price.exp.lib.feign","com.apl.sys.lib.feign"})
 @EnableSwagger2
 public class LmsPriceExpManageApplication {
 
@@ -42,7 +43,6 @@ public class LmsPriceExpManageApplication {
         //mybatis-plus.pagination.tenantTableFilter
         //AbstractDataSourceAdapter
         //com.apl.shardingjdbc.config.ShardingDataSourceConfig
-        //com.apl.shardingjdbc.algorithm.TenantShardingTableAlgorithm
         //com.apl.tenant.AplTenantSqlParser
         //com.apl.shardingjdbc.algorithm.TenantShardingTableAlgorithm
 

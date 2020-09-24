@@ -34,16 +34,12 @@ import lombok.Data;
 @ApiModel(value = "快递报价利润-持久化对象", description = "快递报价利润-持久化对象")
 public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
 
-    @ApiModelProperty(name = "id", value = "id", required = true)
-    @NotNull(message = "id不能为空")
-    @Min(value = 0, message = "id不能小于0")
+    @ApiModelProperty(name = "id", value = "价格表id", required = true)
+    @NotNull(message = "价格表id不能为空")
+    @Min(value = 0, message = "价格表id不能小于0")
     @TableId(value = "id", type = IdType.INPUT )
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
-
-    @ApiModelProperty(name = "priceId", value = "快递价格id不")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long priceId;
 
     @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
     @NotEmpty(message = "上调的利润不能为空")

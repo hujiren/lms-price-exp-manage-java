@@ -69,8 +69,15 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      */
     @Override
     public Boolean updById(PriceExpDataPo priceExpDataPo) {
-        Integer integer = baseMapper.updById(priceExpDataPo);
-        return integer > 0 ? true : false;
+
+        Integer saveResult = 0;
+        Long checkId = baseMapper.exists(priceExpDataPo.getId());
+        if(null==checkId || checkId.equals(0))
+            saveResult = baseMapper.insertData(priceExpDataPo);
+        else
+            saveResult = baseMapper.updById(priceExpDataPo);
+
+        return saveResult > 0 ? true : false;
     }
 
     /**

@@ -11,12 +11,10 @@
     <insert id="addProfit">
         insert into price_exp_profit(
             id,
-            price_id,
             increase_profit,
             final_profit
         )values (
             #{po.id},
-            #{po.priceId},
             #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
             #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
             )
@@ -25,9 +23,6 @@
     <!--更新-->
     <update id="updProfit">
         update price_exp_profit set
-            <if test="po.priceId != null">
-                price_id = #{po.priceId},
-            </if>
             <if test="po.increaseProfit != null">
                 increase_profit = #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
             </if>
@@ -40,24 +35,28 @@
     </update>
 
     <!-- 查找列表 2020-09-11-->
-    <select id="getList" resultMap="BaseResultMap">
+    <select id="getProfit" resultMap="BaseResultMap">
         SELECT
            id, 
-           price_id,
            increase_profit
         FROM
            price_exp_profit
         where
-            price_id = #{priceId}
+            id = #{priceId}
     </select>
 
     <!--批量删除-->
     <delete id="delBatch">
-        delete from price_exp_profit where price_id in(${ids})
+        delete from price_exp_profit where id in(${ids})
     </delete>
 
     <!--获取最终利润-->
     <select id="getPriceFinalProfit" resultMap="BaseResultMap">
-        select final_profit from price_exp_profit where price_id = #{priceId}
+        select final_profit from price_exp_profit where id = #{priceId}
+    </select>
+
+    <!--校验id是否存在-->
+    <select id="exists" resultType="java.lang.Long">
+        select id from price_exp_profit where id = #{id}
     </select>
 </mapper>

@@ -1,13 +1,20 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
+import com.apl.cache.AplCacheUtil;
 import com.apl.lib.exception.AplException;
+import com.apl.lib.join.JoinBase;
+import com.apl.lib.join.JoinFieldInfo;
+import com.apl.lib.join.JoinUtil;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
+import com.apl.lms.price.exp.lib.cache.JoinPartner;
 import com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
+import com.apl.sys.lib.cache.JoinCustomerGroup;
+import com.apl.sys.lib.feign.InnerFeign;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +53,13 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     @Autowired
     PriceExpService priceExpService;
 
+    @Autowired
+    InnerFeign innerFeign;
+
+    @Autowired
+    AplCacheUtil aplCacheUtil;
+
+    static JoinFieldInfo joinCustomerGroupFieldInfo = null; //关联 客户组 反射字段缓存
 
     @Override
     public ResultUtil<Boolean> delById(Long id){
@@ -60,15 +74,16 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
 
     @Override
-    public ResultUtil<List<PriceExpProfitPo>> getList(Long priceId){
+    public ResultUtil<PriceExpProfitPo> getProfit(Long priceId) throws Exception {
 
-        List<PriceExpProfitPo> list = baseMapper.getList(priceId);
+        PriceExpProfitPo priceExpProfitPo = baseMapper.getProfit(priceId);
 
-        if(list.size() == 0){
+        if(null == priceExpProfitPo){
             return ResultUtil.APPRESULT(PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.code,
                     PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.msg,null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , list);
+
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , priceExpProfitPo);
     }
 
 
@@ -124,22 +139,24 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         }
 
         List<PriceExpProfitDto> quoteProfit = null;
-        if(priceExpProfitPo.getPriceId() > 0){
+        if(priceExpProfitPo.getId() > 0){
             //根据priceId找到引用价格id
-            ExpPriceInfoBo innerOrgIdAndPriceDatId = priceExpService.getInnerOrgIdAndPriceDatId(priceExpProfitPo.getPriceId());
+            ExpPriceInfoBo innerOrgIdAndPriceDatId = priceExpService.getInnerOrgIdAndPriceDatId(priceExpProfitPo.getId());
             if(innerOrgIdAndPriceDatId.getQuotePriceId() > 0) {
                 quoteProfit = getQuoteProfit(innerOrgIdAndPriceDatId.getQuotePriceId());
             }
-
         }
+
         if(null == quoteProfit)
             quoteProfit = emptyProfitList;
         List<PriceExpProfitDto> finalProfit = mergeProfit(increaseProfit, quoteProfit);
 
         Integer flag = 0;
+        Long checkId = baseMapper.exists(priceExpProfitPo.getId());
+
         priceExpProfitPo.setIncreaseProfit(increaseProfit);
         priceExpProfitPo.setFinalProfit(finalProfit);
-        if(priceExpProfitPo.getId()>0){
+        if(checkId>0){
             flag = baseMapper.updProfit(priceExpProfitPo);
         }
         else {
@@ -223,7 +240,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                     proportionProfit2 = 1.0;
                 newProportionProfit = proportionProfit1 * proportionProfit2;
 
-                newProfitDto.setCustomerGroupsId(profitDto.getCustomerGroupsId());
+                newProfitDto.setCustomerGroups(profitDto.getCustomerGroups());
                 newProfitDto.setZoneNum(profitDto.getZoneNum());
                 newProfitDto.setCountryCode(profitDto.getCountryCode());
                 newProfitDto.setStartWeight(startWeight);

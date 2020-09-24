@@ -11,19 +11,19 @@ import java.util.List;
 
 /**
  * @author hjr start
- * @Classname AxisTransverseUpdDto
+ * @Classname WeightSectionUpdDto
  * @Date 2020/9/23 15:50
  */
 @Data
-@ApiModel(value = "横向重量段-更新对象", description = "横向重量段-更新对象")
-public class AxisTransverseUpdDto {
+@ApiModel(value = "重量段-更新对象", description = "重量段-更新对象")
+public class WeightSectionUpdDto {
 
     @ApiModelProperty(name = "priceDataId", value = "价格表数据Id",required = true)
     @NotNull(message = "价格表数据id不能为空")
     @Min(value = 0, message = "价格表数据id不能小于0")
     private Long priceDataId;
 
-    @ApiModelProperty(name = "axisTransverse" , value = "表头数据", required = true)
-    @NotEmpty(message = "表头数据不能为空")
-    private List<Object> axisTransverse;
+    @ApiModelProperty(name = "weightSection" , value = "重量段", required = true)
+    @NotEmpty(message = "重量段不能为空")
+    private List<WeightSectionDto> weightSection;
 }

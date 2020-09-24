@@ -105,4 +105,11 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     Integer updData(@Param("po") PriceExpMainPo priceExpMainPo);
+
+    /**
+     * 通过价格表数据id获取主表id
+     * @param priceDataId
+     * @return
+     */
+    Long getMainIdByPriceDataId(Long priceDataId);
 }

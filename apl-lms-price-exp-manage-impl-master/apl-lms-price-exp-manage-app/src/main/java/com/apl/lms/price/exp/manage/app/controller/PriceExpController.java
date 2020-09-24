@@ -88,45 +88,6 @@ public class PriceExpController {
         return priceExpService.getPriceExpSaleInfo(id);
     }
 
-    @PostMapping(value = "/get-price-axis")
-    @ApiOperation(value = "获取数据轴", notes = "获取数据轴")
-    @ApiImplicitParam(name = "id", value = "价格表数据id", required = true, paramType = "query")
-    public ResultUtil<PriceExpAxisVo> getPriceExpAxis(@NotNull(message = "价格表数据idId不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
-
-        return priceExpAxisService.getAxisInfoById(id);
-    }
-
-    @PostMapping(value = "/get-price-axis2")
-    @ApiOperation(value = "获取数据轴", notes = "获取数据轴")
-    @ApiImplicitParam(name = "id", value = "价格表id", required = true, paramType = "query")
-    public ResultUtil<PriceExpAxisAVo> getPriceExpAxis2(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
-
-        PriceExpAxisAVo priceAxisInfoById = priceExpAxisService.getPriceAxisInfoById(id);
-        if(null == priceAxisInfoById)
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL, null);
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceAxisInfoById);
-    }
-
-    @PostMapping(value = "/get-price-data")
-    @ApiOperation(value = "获取价格表数据", notes = "获取价格表数据")
-    @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
-        return priceExpService.getPriceExpDataInfoByPriceId(id);
-    }
-
-    @PostMapping(value = "/get-price-data-axis")
-    @ApiOperation(value = "获取价格表数据和轴数据", notes = "获取价格表数据和轴数据")
-    @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpDataAxisVo> getPriceExpDataAxis(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
-        return priceExpService.getPriceExpDataAxis(id);
-    }
-
-    @PostMapping(value = "/get-price-remark")
-    @ApiOperation(value = "获取备注信息", notes = "获取备注信息")
-    @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
-        return priceExpRemarkService.getPriceExpRemark(id);
-    }
 
     @PostMapping(value = "/add-price")
     @ApiOperation(value = "新增快递价格", notes = "新增快递价格", consumes = "application/json")
@@ -135,40 +96,11 @@ public class PriceExpController {
         return priceExpService.addExpPrice(priceExpAddDto);
     }
 
-    @PostMapping(value = "/upd-exp-price")
-    @ApiOperation(value = "更新价格表", notes = "根据Id修改价格表")
-    public ResultUtil<Boolean> updExpPrice(@Validated @RequestBody PriceExpUpdDto priceExpUpdDto) {
-        return priceExpService.updExpPrice(priceExpUpdDto);
-    }
+    @PostMapping(value = "/reference-price")
+    @ApiOperation(value = "引用价格表", notes = "引用价格表")
+    public ResultUtil<Long> referencePrice(@RequestBody @Validated ReferencePriceDto referencePriceDto){
 
-    @PostMapping(value = "/upd-remark")
-    @ApiOperation(value = "更新备注", notes = "根据Id更新备注")
-    public ResultUtil<Boolean> updRemark(@Validated @RequestBody PriceExpRemarkPo priceExpRemarkPo) {
-
-        return priceExpRemarkService.updateRemark(priceExpRemarkPo);
-    }
-
-    @PostMapping(value = "/upd-price-data")
-    @ApiOperation(value = "更新数据表数据", notes = "更新数据表数据")
-    public ResultUtil<Boolean> updatePriceData(@Validated @RequestBody PriceExpDataUpdDto priceExpDataUpdDto){
-        return priceExpService.updatePriceData(priceExpDataUpdDto);
-    }
-
-    @PostMapping(value = "/upd-transverse-weight-section")
-    @ApiOperation(value = "更新横向重量段", notes = "更新横向重量段")
-    public ResultUtil<Boolean> updAxisTransverse(@RequestBody @Validated AxisTransverseUpdDto axisTransverse) {
-        Boolean resBoolean = priceExpService.updAxis(axisTransverse, null);
-
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, resBoolean);
-    }
-
-    @PostMapping(value = "/upd-axis-portrait")
-    @ApiOperation(value = "更新首列", notes = "更新首列")
-    @ApiImplicitParam(name = "id", value = "价格表数据Id", required = true, paramType = "query")
-    public ResultUtil<Boolean> updAxisPortrait(@RequestBody @Validated AxisPortraitUpdDto axisPortrait) {
-        Boolean resBoolean = priceExpService.updAxis(null, axisPortrait);
-
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, resBoolean);
+        return priceExpService.referencePrice(referencePriceDto);
     }
 
     @PostMapping(value = "/delete-price-batch")
@@ -177,11 +109,61 @@ public class PriceExpController {
         return priceExpService.deletePriceBatch(ids);
     }
 
-    @PostMapping(value = "/reference-price")
-    @ApiOperation(value = "引用价格表", notes = "引用价格表")
-    public ResultUtil<Long> referencePrice(@RequestBody @Validated ReferencePriceDto referencePriceDto){
-
-        return priceExpService.referencePrice(referencePriceDto);
+    @PostMapping(value = "/upd-exp-price")
+    @ApiOperation(value = "根据Id修改价格主表", notes = "根据Id修改价格主表")
+    public ResultUtil<Boolean> updExpPrice(@Validated @RequestBody PriceExpUpdDto priceExpUpdDto) {
+        return priceExpService.updExpPrice(priceExpUpdDto);
     }
+
+
+    @PostMapping(value = "/get-price-data")
+    @ApiOperation(value = "获取价格表数据", notes = "获取价格表数据")
+    @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
+    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+        return priceExpService.getPriceExpDataInfoByPriceId(id);
+    }
+
+    @PostMapping(value = "/upd-price-data")
+    @ApiOperation(value = "更新数据表数据", notes = "更新数据表数据")
+    public ResultUtil<Boolean> updatePriceData(@Validated @RequestBody PriceExpDataUpdDto priceExpDataUpdDto){
+        return priceExpService.updatePriceData(priceExpDataUpdDto);
+    }
+
+    @PostMapping(value = "/get-price-axis")
+    @ApiOperation(value = "获取数据轴", notes = "获取数据轴")
+    @ApiImplicitParam(name = "id", value = "价格表id", required = true, paramType = "query")
+    public ResultUtil<PriceExpAxisVo> getPriceExpAxis(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+
+        return priceExpAxisService.getAxisInfoById(id);
+    }
+
+    @PostMapping(value = "/upd-transverse-weight-section")
+    @ApiOperation(value = "更新横向重量段", notes = "更新横向重量段")
+    public ResultUtil<Boolean> updTransverseWeightSection(@RequestBody @Validated WeightSectionUpdDto weightSectionUpdDto) {
+        Boolean resBoolean = priceExpService.updTransverseWeightSection(weightSectionUpdDto);
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, resBoolean);
+    }
+
+
+    @PostMapping(value = "/get-price-remark")
+    @ApiOperation(value = "获取备注信息", notes = "获取备注信息")
+    @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
+    public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+        return priceExpRemarkService.getPriceExpRemark(id);
+    }
+
+    @PostMapping(value = "/upd-remark")
+    @ApiOperation(value = "更新备注", notes = "根据Id更新备注")
+    public ResultUtil<Boolean> updRemark(@Validated @RequestBody PriceExpRemarkPo priceExpRemarkPo) {
+
+        Boolean saveResult = priceExpRemarkService.updateRemark(priceExpRemarkPo);
+
+        if(saveResult)
+            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
+
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
+    }
+
 }
 

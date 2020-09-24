@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.service.impl;
 import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpRemarkMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpRemarkService;
@@ -19,7 +20,8 @@ import java.util.List;
 public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper, PriceExpRemarkPo> implements PriceExpRemarkService {
 
     enum PriceExpRemarkEnum{
-        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA","没有对应数据");
+        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA","没有对应数据"),
+        ID_IS_NOT_EXISTS("ID_IS_NOT_EXISTS", "id不存在");
 
         private String code;
         private String msg;
@@ -50,12 +52,13 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updateRemark(PriceExpRemarkPo priceExpRemarkPo) {
+    public Boolean updateRemark(PriceExpRemarkPo priceExpRemarkPo) {
+        Long checkId = baseMapper.exists(priceExpRemarkPo.getId());
+        if(null == checkId || checkId.equals(0))
+        throw new AplException(PriceExpRemarkEnum.ID_IS_NOT_EXISTS.code, PriceExpRemarkEnum.ID_IS_NOT_EXISTS.msg);
         Integer integer =  baseMapper.updateById(priceExpRemarkPo);
-        if (integer < 1) {
-            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
-        }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
+
+        return  integer>0;
     }
 
     /**

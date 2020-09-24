@@ -16,4 +16,9 @@
     <update id="updById">
         update price_exp_remark set remark = #{po.remark}, sale_remark = #{po.saleRemark} where id = #{po.id}
     </update>
+
+    <!--校验id是否存在-->
+    <select id="exists" resultType="java.lang.Long">
+        select id from price_exp_remark where id = #{id}
+    </select>
 </mapper>

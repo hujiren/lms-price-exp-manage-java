@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper">
+    <resultMap id="BaseResult" type="com.apl.lms.price.exp.pojo.po.PriceExpAxisPo">
+        <result property="axisTransverse" column="axis_transverse" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
+        <result property="axisPortrait" column="axis_portrait" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
+    </resultMap>
+    <!--检测价格表数据是否存在-->
+    <select id="exists" resultType="java.lang.Long">
+        select
+            id
+        from
+            price_exp_axis
+        where
+            id = #{id}
+    </select>
 
     <!--根据主表id批量删除-->
     <delete id="deleteByIds">
@@ -16,8 +29,8 @@
             price_exp_axis(id, axis_transverse, axis_portrait)
         values
             (#{po.id},
-            #{po.axisTransverse},
-            #{po.axisPortrait})
+            #{po.axisTransverse,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+            #{po.axisPortrait,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler})
     </insert>
 
     <!--更新-->
@@ -26,20 +39,20 @@
             price_exp_axis
         set
         <if test="po.axisTransverse != null">
-            axis_transverse = #{po.axisTransverse}
+            axis_transverse = #{po.axisTransverse,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
         </if>
         <if test="po.axisTransverse != null and po.axisPortrait != null">
             ,
         </if>
         <if test="po.axisPortrait != null">
-            axis_portrait = #{po.axisPortrait}
+            axis_portrait = #{po.axisPortrait,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
         </if>
         where
             id = #{po.id}
     </update>
 
     <!--获取详细-->
-    <select id="getAxisInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo">
+    <select id="getAxisInfoById" resultMap="BaseResult">
         select
             id as priceDataId,
             axis_transverse,

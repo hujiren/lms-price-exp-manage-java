@@ -18,11 +18,15 @@ public interface PriceExpDataMapper extends BaseMapper<PriceExpDataPo> {
 
     /**
      * 根据价格表id获取详细数据
-     * @param priceId
+     * @param id
      * @return
      */
     @SqlParser(filter = true)
-    PriceExpDataVo getPriceExpDataInfoById(@Param("id") Long priceId);
+    PriceExpDataVo getPriceExpDataInfoById(@Param("id") Long id);
+
+
+    //检测价格表数据是否存在-
+    Long exists(@Param("id") Long id);
 
     /**
      * 新增

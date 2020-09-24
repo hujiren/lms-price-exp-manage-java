@@ -40,7 +40,7 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      * @Author: ${cfg.author}
      * @Date: 2020-09-11
      */
-    List<PriceExpProfitPo> getList(@Param("priceId") Long priceId);
+    PriceExpProfitPo getProfit(@Param("priceId") Long priceId);
 
     /**
      * 批量删除
@@ -55,4 +55,11 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      * @return
      */
     List<PriceExpProfitDto> getPriceFinalProfit(@Param("priceId") Long priceId);
+
+    /**
+     * 校验id是否存在
+     * @param id
+     * @return
+     */
+    Long exists(Long id);
 }
