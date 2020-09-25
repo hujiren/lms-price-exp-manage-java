@@ -203,11 +203,18 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
         for (PriceExpProfitDto profitDto: list1) {
 
+            if(profitDto.getEndWeight().equals(0.0)){
+                profitDto.setEndWeight(10000.0);
+            }
+
             int i2 = 0;
             boolean firstWeight = true;
             int size2 = list2.size();
             while (i2<size2){
                 PriceExpProfitDto profitDto2 = list2.get(i2);
+                if(profitDto2.getEndWeight().equals(0.0)){
+                    profitDto2.setEndWeight(10000.0);
+                }
 
                 if(!profitDto.getZoneNum().equals(profitDto2.getZoneNum())
                         || !profitDto.getCountryCode().equals(profitDto2.getCountryCode())
