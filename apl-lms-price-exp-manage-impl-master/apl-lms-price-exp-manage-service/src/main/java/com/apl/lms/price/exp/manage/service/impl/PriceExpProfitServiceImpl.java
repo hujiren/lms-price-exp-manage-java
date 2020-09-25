@@ -203,7 +203,8 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
         for (PriceExpProfitDto profitDto: list1) {
 
-            int i2=0;
+            int i2 = 0;
+            boolean firstWeight = true;
             int size2 = list2.size();
             while (i2<size2){
                 PriceExpProfitDto profitDto2 = list2.get(i2);
@@ -218,17 +219,20 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                 if(profitDto2.getStartWeight() >= profitDto.getEndWeight())
                     break;
 
-                if(i2 == 0)
-                    startWeight = profitDto2.getStartWeight();
-                else
+                if(firstWeight) {
+                    if(profitDto2.getStartWeight()>profitDto.getStartWeight())
+                        startWeight = profitDto2.getStartWeight();
+                    else
+                        startWeight = profitDto.getStartWeight();
+                }
+                else {
                     startWeight = priorEndWeight;
+                }
 
                 endWeight = profitDto.getEndWeight();
                 if(endWeight > profitDto2.getEndWeight()) {
                     endWeight = profitDto2.getEndWeight();
                 }
-
-                newProfitDto = new PriceExpProfitDto();
 
                 newFirstWeightProfit = profitDto.getFirstWeightProfit() + profitDto2.getFirstWeightProfit();
                 newUnitWeightProfit = profitDto.getUnitWeightProfit() + profitDto2.getUnitWeightProfit();
@@ -240,6 +244,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                     proportionProfit2 = 1.0;
                 newProportionProfit = proportionProfit1 * proportionProfit2;
 
+                newProfitDto = new PriceExpProfitDto();
                 newProfitDto.setCustomerGroups(profitDto.getCustomerGroups());
                 newProfitDto.setZoneNum(profitDto.getZoneNum());
                 newProfitDto.setCountryCode(profitDto.getCountryCode());
@@ -253,6 +258,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                 //System.out.println(newProfitDto);
 
                 priorEndWeight = endWeight;
+                firstWeight = false;
 
                 i2++;
             }
