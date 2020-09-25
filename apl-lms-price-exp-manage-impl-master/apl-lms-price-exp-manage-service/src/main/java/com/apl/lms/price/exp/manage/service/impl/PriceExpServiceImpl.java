@@ -514,6 +514,12 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             throw new AplException(ExpListServiceCode.PLEASE_FILL_IN_THE_DATA_FIRST.code, ExpListServiceCode.PLEASE_FILL_IN_THE_DATA_FIRST.msg);
         }
 
+        //表格数据第一行拼接
+        StringBuffer sbHeadRow = new StringBuffer();
+        Integer packType0 = 0;
+        Double weightAdd0 = 0.0;
+        Double weightStart;
+
         //更新轴数据
         PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
         List<List<String>> axisPortrait = new ArrayList<>();
@@ -527,10 +533,46 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             weightSectionList.add(String.valueOf(weightSectionDto.getWeightAdd()));
             weightSectionList.add(String.valueOf(weightSectionDto.getWeightFirst()));
             axisPortrait.add(weightSectionList);
+
+            //包裹类型
+            if(weightSectionDto.getPackType().equals(packType0)) {
+                if(weightSectionDto.getPackType().equals(1))
+                    sbHeadRow.append("DOC");
+                else if(weightSectionDto.getPackType().equals(2))
+                    sbHeadRow.append("WPX");
+                else if(weightSectionDto.getPackType().equals(3))
+                    sbHeadRow.append("DOC");
+            }
+
+            //重量区间
+            if(weightSectionDto.getWeightStart()>1){
+                weightStart = weightSectionDto.getWeightStart() + weightAdd0;
+                sbHeadRow.append(String.format("%.2f", weightStart));
+                sbHeadRow.append("-");
+                sbHeadRow.append(String.format("%.2f", weightSectionDto.getWeightEnd()));
+            }
+
+            //首续累加
+            if(weightSectionDto.getChargingWay().equals(1)) {
+                sbHeadRow.append("首");
+                sbHeadRow.append(String.format("%.2f", weightSectionDto.getWeightFirst()));
+            }
+            else if(weightSectionDto.getChargingWay().equals(2)) {
+                sbHeadRow.append("续");
+                sbHeadRow.append(String.format("%.2f", weightSectionDto.getWeightAdd()));
+            }
+            else if(weightSectionDto.getChargingWay().equals(3)) {
+                sbHeadRow.append("累加");
+                sbHeadRow.append(String.format("%.2f", weightSectionDto.getWeightAdd()));
+            }
+
+            packType0 = weightSectionDto.getPackType();
+            weightAdd0 = weightSectionDto.getWeightAdd();
         }
+
+
         priceExpAxisPo.setAxisTransverse(axisPortrait);
         priceExpAxisPo.setId(weightSectionUpdDto.getPriceDataId());
-
         Long checkMainId = baseMapper.getMainIdByPriceDataId(weightSectionUpdDto.getPriceDataId());
 
         if(checkMainId == null || checkMainId.equals(0))
