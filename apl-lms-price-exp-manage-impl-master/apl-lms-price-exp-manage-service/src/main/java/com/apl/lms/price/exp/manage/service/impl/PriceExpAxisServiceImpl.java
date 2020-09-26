@@ -2,13 +2,12 @@ package com.apl.lms.price.exp.manage.service.impl;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper;
+import com.apl.lms.price.exp.manage.mapper2.PriceExpAxisMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.dto.WeightSectionDto;
-import com.apl.lms.price.exp.pojo.dto.WeightSectionUpdDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -143,7 +142,7 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
 
         priceExpAxisVo.setWeightSection(weightSectionDtos);
         priceExpAxisVo.setZoneCountry(zoneCountry);
-
+        priceExpAxisVo.setPriceDataId(expPriceInfoBo.getPriceDataId());
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpAxisVo);
     }
 

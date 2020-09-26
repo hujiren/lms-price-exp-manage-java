@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpMapper">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper2.PriceExpMapper">
 
     <!--分页查询销售价格列表-->
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
@@ -276,7 +276,11 @@
 
     <!--通过价格表数据id获取主表id-->
     <select id="getMainIdByPriceDataId" resultType="java.lang.Long">
-        select id from pgs_lms_exp_price where price_data_id = #{priceDataId}
+        select id from lms_exp_price where price_data_id = #{priceDataId}
     </select>
 
+    <!--更新起始重截止重-->
+    <update id="upd">
+        update lms_exp_price set start_weight = #{po.startWeight}, end_weight = #{po.endWeight} where id = #{po.id}
+    </update>
 </mapper>

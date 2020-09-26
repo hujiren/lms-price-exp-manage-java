@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpAxisMapper">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper2.PriceExpAxisMapper">
     <resultMap id="BaseResult" type="com.apl.lms.price.exp.pojo.po.PriceExpAxisPo">
         <result property="axisTransverse" column="axis_transverse" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
         <result property="axisPortrait" column="axis_portrait" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>

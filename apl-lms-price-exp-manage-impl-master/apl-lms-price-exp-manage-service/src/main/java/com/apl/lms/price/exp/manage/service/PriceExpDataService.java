@@ -2,9 +2,12 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
+import com.apl.lms.price.exp.pojo.dto.WeightSectionUpdDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * @author hjr start
@@ -42,4 +45,10 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      */
     Integer delBatch(String ids);
 
+    /**
+     * 更新表头
+     * @param weightSectionUpdDto
+     * @return
+     */
+    List<String> updHeadCells(WeightSectionUpdDto weightSectionUpdDto,List<String> headCells);
 }

@@ -82,10 +82,10 @@ public class PriceExpController {
     @PostMapping(value = "/get-price-info")
     @ApiOperation(value = "获取价格详情", notes = "获取价格详情")
     @ApiImplicitParam(name = "id", value = "价格表id", required = true, paramType = "query")
-    public ResultUtil<PriceExpPriceInfoVo> getPriceExpSaleInfo(@NotNull(message = "价格表id不能为空")
+    public ResultUtil<PriceExpPriceInfoVo> getPriceExpInfo(@NotNull(message = "价格表id不能为空")
                                                                @Min(value = 1, message = "价格表id不能小于1") Long id) throws Exception {
 
-        return priceExpService.getPriceExpSaleInfo(id);
+        return priceExpService.getPriceExpInfo(id);
     }
 
 
@@ -139,12 +139,11 @@ public class PriceExpController {
 
     @PostMapping(value = "/upd-transverse-weight-section")
     @ApiOperation(value = "更新横向重量段", notes = "更新横向重量段")
-    public ResultUtil<Boolean> updTransverseWeightSection(@RequestBody @Validated WeightSectionUpdDto weightSectionUpdDto) {
-        Boolean resBoolean = priceExpService.updTransverseWeightSection(weightSectionUpdDto);
+    public ResultUtil<List<String> > updTransverseWeightSection(@RequestBody @Validated WeightSectionUpdDto weightSectionUpdDto) {
+        List<String>  headCells = priceExpService.updTransverseWeightSection(weightSectionUpdDto);
 
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, resBoolean);
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, headCells);
     }
-
 
     @PostMapping(value = "/get-price-remark")
     @ApiOperation(value = "获取备注信息", notes = "获取备注信息")

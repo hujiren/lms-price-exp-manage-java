@@ -15,14 +15,19 @@ import java.util.List;
 
 public class CommonJsonbHandler  extends BaseTypeHandler<Object> {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static  ObjectMapper objectMapper = null;
+    {
+        objectMapper = new ObjectMapper();
+        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
+    }
 
     @SneakyThrows
     @Override
     public void setNonNullParameter(PreparedStatement preparedStatement, int i, Object obj, JdbcType jdbcType) throws SQLException {
         PGobject jsonObject = new PGobject();
         jsonObject.setType("json");
-        jsonObject.setValue(objectMapper.writeValueAsString(obj));
+        String val = objectMapper.writeValueAsString(obj);
+        jsonObject.setValue(val);
         preparedStatement.setObject(i, jsonObject);
     }
 

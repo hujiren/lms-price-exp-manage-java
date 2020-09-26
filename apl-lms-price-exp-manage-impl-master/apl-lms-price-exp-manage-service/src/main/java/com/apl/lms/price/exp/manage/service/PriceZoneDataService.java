@@ -27,4 +27,11 @@ public interface PriceZoneDataService extends IService<PriceZoneDataListVo> {
      * @return
      */
     ResultUtil<Boolean> deleteBatch(List<Long> ids);
+
+    /**
+     * 根据分区id批量删除
+     * @param ids
+     * @return
+     */
+    Integer delBatchByZoneId(List<Long> ids);
 }

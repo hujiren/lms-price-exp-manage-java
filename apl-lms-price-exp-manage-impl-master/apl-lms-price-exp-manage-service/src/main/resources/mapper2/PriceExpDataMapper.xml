@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper2.PriceExpDataMapper">
 
     <resultMap id="BaseResultMap" type="com.apl.lms.price.exp.pojo.vo.PriceExpDataVo">
+        <result property="priceData" column="price_data" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
+    </resultMap><resultMap id="BaseResultMap2" type="com.apl.lms.price.exp.pojo.vo.PriceExpDataStringVo">
         <result property="priceData" column="price_data" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
     </resultMap>
 
@@ -41,5 +43,15 @@
     <delete id="delBatch">
         delete from price_exp_data where id in(${ids})
     </delete>
+
+    <!--获取数据-->
+    <select id="getHeadCells" resultMap="BaseResultMap2">
+        select price_data from price_exp_data where id = #{priceDataId}
+    </select>
+
+    <!--更新表头-->
+    <update id="updateData">
+        update price_exp_data set price_data = #{allHeadCell,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler} where id = #{priceDataId}
+    </update>
 
 </mapper>

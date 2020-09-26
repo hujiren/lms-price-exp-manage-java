@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.mapper;
+package com.apl.lms.price.exp.manage.mapper2;
 
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
@@ -26,6 +26,7 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      * @param priceExpProfitPo
      * @return
      */
+
     Integer addProfit(@Param("po") PriceExpProfitPo priceExpProfitPo);
 
     /**

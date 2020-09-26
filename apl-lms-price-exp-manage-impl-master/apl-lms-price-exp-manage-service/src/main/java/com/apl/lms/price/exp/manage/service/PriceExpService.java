@@ -45,7 +45,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param id
      * @return
      */
-    ResultUtil<PriceExpPriceInfoVo> getPriceExpSaleInfo(Long id) throws Exception;
+    ResultUtil<PriceExpPriceInfoVo> getPriceExpInfo(Long id) throws Exception;
 
     /**
      * 更新价格主表
@@ -110,5 +110,5 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param weightSectionUpdDto
      * @return
      */
-    Boolean updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto);
+    List<String> updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto);
 }

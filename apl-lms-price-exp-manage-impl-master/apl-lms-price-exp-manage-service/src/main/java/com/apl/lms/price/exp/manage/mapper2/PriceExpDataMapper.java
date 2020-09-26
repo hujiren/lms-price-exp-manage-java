@@ -1,5 +1,6 @@
-package com.apl.lms.price.exp.manage.mapper;
+package com.apl.lms.price.exp.manage.mapper2;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpDataStringVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -49,4 +50,18 @@ public interface PriceExpDataMapper extends BaseMapper<PriceExpDataPo> {
      */
     Integer delBatch(@Param("ids") String ids);
 
+    /**
+     * 获取数据
+     * @param priceDataId
+     * @return
+     */
+    PriceExpDataStringVo getHeadCells(Long priceDataId);
+
+    /**
+     * 更新表头
+     * @param priceDataId
+     * @param allHeadCell
+     * @return
+     */
+    Integer updateData(@Param("priceDataId") Long priceDataId, @Param("allHeadCell") List<List<String>> allHeadCell);
 }

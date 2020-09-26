@@ -17,9 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         scanBasePackages = {
                 "com.apl.lib", //APL基本工具类
                 "com.apl.tenant", //多租户
-                //"com.apl.abatis", // sqlSession封装
                 "com.apl.db.adb", // adb数据库操作助手
-                //"com.apl.db.dynamicdb", //动态数据源
                 "com.apl.cache", // redis代理
                 "com.apl.shardingjdbc", // 分库
                 "com.apl.lms.common.lib",
@@ -32,7 +30,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         })
 //@MapperScan("com.apl.lms.price.exp.manage.mapper")
 @MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc")
-//@MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper2", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc2")
+@MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper2", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc2")
 @EnableFeignClients(basePackages = {"com.apl.lms.common.lib.feign","com.apl.lms.price.exp.lib.feign","com.apl.sys.lib.feign"})
 @EnableSwagger2
 public class LmsPriceExpManageApplication {

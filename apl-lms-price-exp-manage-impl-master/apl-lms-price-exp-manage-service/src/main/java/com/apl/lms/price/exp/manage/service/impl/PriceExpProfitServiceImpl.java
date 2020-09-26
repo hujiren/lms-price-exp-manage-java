@@ -2,18 +2,14 @@ package com.apl.lms.price.exp.manage.service.impl;
 
 import com.apl.cache.AplCacheUtil;
 import com.apl.lib.exception.AplException;
-import com.apl.lib.join.JoinBase;
 import com.apl.lib.join.JoinFieldInfo;
-import com.apl.lib.join.JoinUtil;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
-import com.apl.lms.price.exp.lib.cache.JoinPartner;
-import com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper;
+import com.apl.lms.price.exp.manage.mapper2.PriceExpProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
-import com.apl.sys.lib.cache.JoinCustomerGroup;
 import com.apl.sys.lib.feign.InnerFeign;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,10 +75,10 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
         PriceExpProfitPo priceExpProfitPo = baseMapper.getProfit(priceId);
 
-        if(null == priceExpProfitPo){
-            return ResultUtil.APPRESULT(PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.code,
-                    PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.msg,null);
-        }
+//        if(null == priceExpProfitPo){
+//            return ResultUtil.APPRESULT(PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.code,
+//                    PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.msg,null);
+//        }
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , priceExpProfitPo);
     }
@@ -156,11 +153,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
         priceExpProfitPo.setIncreaseProfit(increaseProfit);
         priceExpProfitPo.setFinalProfit(finalProfit);
-        if(checkId>0){
+        if(null!=checkId && checkId>0){
             flag = baseMapper.updProfit(priceExpProfitPo);
         }
         else {
-            priceExpProfitPo.setId(SnowflakeIdWorker.generateId());
+            //priceExpProfitPo.setId(SnowflakeIdWorker.generateId());
             flag = baseMapper.addProfit(priceExpProfitPo);
         }
 

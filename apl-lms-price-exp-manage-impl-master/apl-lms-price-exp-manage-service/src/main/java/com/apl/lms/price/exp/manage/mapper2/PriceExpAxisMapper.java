@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.mapper;
+package com.apl.lms.price.exp.manage.mapper2;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

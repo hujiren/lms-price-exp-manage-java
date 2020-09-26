@@ -1,13 +1,19 @@
 package com.apl.lms.price.exp.manage.service.impl;
 import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.manage.mapper.PriceExpDataMapper;
+import com.apl.lms.price.exp.manage.mapper2.PriceExpDataMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
+import com.apl.lms.price.exp.pojo.dto.WeightSectionUpdDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpDataStringVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author hjr start
@@ -18,7 +24,8 @@ import org.springframework.stereotype.Service;
 public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, PriceExpDataPo> implements PriceExpDataService {
 
     enum PriceExpDataServiceCode {
-        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA", "没有对应数据");
+        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA", "没有对应数据"),
+        ID_IS_NOT_EXIST("ID_IS_NOT_EXIST","id不存在");
 
         private String code;
         private String msg;
@@ -88,4 +95,37 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         return baseMapper.delBatch(ids);
     }
 
+    /**
+     * 更新表头
+     * @param weightSectionUpdDto
+     * @return
+     */
+    @Override
+    @Transactional
+    public List<String> updHeadCells(WeightSectionUpdDto weightSectionUpdDto,List<String> headCells) {
+
+//        List<List<String>> allHeadCell = baseMapper.getHeadCells(weightSectionUpdDto.getPriceDataId());
+        PriceExpDataStringVo priceExpDataStringVo = baseMapper.getHeadCells(weightSectionUpdDto.getPriceDataId());
+        List<List<String>> allHeadCell = priceExpDataStringVo.getPriceData();
+        if(null == allHeadCell)
+            throw new AplException(PriceExpDataServiceCode.ID_IS_NOT_EXIST.code, PriceExpDataServiceCode.ID_IS_NOT_EXIST.msg);
+
+        List<String> newHeadCells = new ArrayList<>();
+        //读取之前价格表数据第一行
+        List<String> oldHeadCells = allHeadCell.get(0);//select ...
+        Integer weightCellIndex =  weightSectionUpdDto.getWeightSection().get(0).getIndex();
+        for(int i=0; i<weightCellIndex; i++){
+            newHeadCells.add(oldHeadCells.get(i));
+        }
+        for(int i=0; i<headCells.size(); i++){
+            newHeadCells.add(headCells.get(i));
+        }
+        allHeadCell.remove(0);
+        allHeadCell.add(0, newHeadCells);
+        //更新保存新的表头
+        Integer integer = baseMapper.updateData(weightSectionUpdDto.getPriceDataId(), allHeadCell);
+        if(integer < 1)
+            throw new AplException(CommonStatusCode.SAVE_FAIL,null);
+        return newHeadCells;
+    }
 }

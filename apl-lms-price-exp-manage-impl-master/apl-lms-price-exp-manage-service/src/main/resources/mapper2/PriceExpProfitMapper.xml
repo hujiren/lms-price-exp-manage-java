@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper2.PriceExpProfitMapper">
 
     <resultMap id="BaseResultMap" type="com.apl.lms.price.exp.pojo.po.PriceExpProfitPo">
         <result property="finalProfit" column="final_profit" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
@@ -27,9 +27,8 @@
                 increase_profit = #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
             </if>
             <if test="po.finalProfit != null">
-                final_profit = #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+                final_profit = #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
             </if>
-            start_weight = #{po.startWeight}
         where
             id = #{po.id}
     </update>

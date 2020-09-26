@@ -5,12 +5,15 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceZoneMapper;
+import com.apl.lms.price.exp.manage.service.PriceZoneDataService;
 import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +39,8 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
         }
     }
 
+    @Autowired
+    PriceZoneDataService priceZoneDataService;
     /**
      * 获取分区名称
      * @param id
@@ -75,10 +80,8 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
     @Override
     public ResultUtil<Boolean> delBatchPriceZoneName(List<Long> ids){
 
-        Integer integer = baseMapper.delPriceZoneName(ids);
-        if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, ExpListServiceCode.ID_DOES_NOT_EXITS.msg, false);
-        }
+        baseMapper.delPriceZoneName(ids);
+        priceZoneDataService.delBatchByZoneId(ids);
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 

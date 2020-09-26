@@ -18,7 +18,7 @@ import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.apl.lms.price.exp.lib.cache.JoinPartner;
 import com.apl.lms.price.exp.lib.cache.bo.PartnerCacheBo;
 import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
-import com.apl.lms.price.exp.manage.mapper.PriceExpMapper;
+import com.apl.lms.price.exp.manage.mapper2.PriceExpMapper;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.manage.util.CheckObjFieldINull;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
@@ -196,7 +196,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    public ResultUtil<PriceExpPriceInfoVo> getPriceExpSaleInfo(Long id) throws Exception {
+    public ResultUtil<PriceExpPriceInfoVo> getPriceExpInfo(Long id) throws Exception {
 
         //查询客户信息
         PriceExpSaleVo priceExpSaleVo = baseMapper.getCustomerInfo(id);
@@ -508,18 +508,22 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    public Boolean updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto) {
+    @Transactional
+    public List<String> updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto) {
 
         if(null == weightSectionUpdDto || weightSectionUpdDto.getWeightSection().size() == 0){
             throw new AplException(ExpListServiceCode.PLEASE_FILL_IN_THE_DATA_FIRST.code, ExpListServiceCode.PLEASE_FILL_IN_THE_DATA_FIRST.msg);
         }
 
         //表格数据第一行拼接
-        StringBuffer sbHeadRow = new StringBuffer();
+        StringBuffer sbHeadCellVal = new StringBuffer();
+        List<String> headCells = new ArrayList<>();
         Integer packType0 = 0;
         Double weightAdd0 = 0.0;
         Double weightStart;
 
+        Double startWeight = 0.0;
+        Double endWeight = 0.0;
         //更新轴数据
         PriceExpAxisPo priceExpAxisPo = new PriceExpAxisPo();
         List<List<String>> axisPortrait = new ArrayList<>();
@@ -533,43 +537,58 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             weightSectionList.add(String.valueOf(weightSectionDto.getWeightAdd()));
             weightSectionList.add(String.valueOf(weightSectionDto.getWeightFirst()));
             axisPortrait.add(weightSectionList);
+            sbHeadCellVal.setLength(0);
 
             //包裹类型
-            if(weightSectionDto.getPackType().equals(packType0)) {
+            if(!weightSectionDto.getPackType().equals(packType0)) {
                 if(weightSectionDto.getPackType().equals(1))
-                    sbHeadRow.append("DOC");
+                    sbHeadCellVal.append("DOC");
                 else if(weightSectionDto.getPackType().equals(2))
-                    sbHeadRow.append("WPX");
+                    sbHeadCellVal.append("WPX");
                 else if(weightSectionDto.getPackType().equals(3))
-                    sbHeadRow.append("DOC");
+                    sbHeadCellVal.append("DOC");
             }
 
             //重量区间
             if(weightSectionDto.getWeightStart()>1){
                 weightStart = weightSectionDto.getWeightStart() + weightAdd0;
-                sbHeadRow.append(String.format("%.2f", weightStart));
-                sbHeadRow.append("-");
-                sbHeadRow.append(String.format("%.2f", weightSectionDto.getWeightEnd()));
+                sbHeadCellVal.append(String.format("%.2f", weightStart));
+                if(weightSectionDto.getChargingWay().equals(4)) {
+                    if(weightSectionDto.getWeightEnd()<10000.0){
+                        sbHeadCellVal.append("-");
+                        sbHeadCellVal.append(String.format("%.2f", weightSectionDto.getWeightEnd()));
+                    }
+                }
+
+                //单位重和计算好, 加上KG
+                if(weightSectionDto.getChargingWay().equals(4) || weightSectionDto.getChargingWay().equals(5)) {
+                    sbHeadCellVal.append("KG");
+                    if(weightSectionDto.getWeightEnd()>=10000.0)
+                        sbHeadCellVal.append("+");
+                }
             }
 
             //首续累加
             if(weightSectionDto.getChargingWay().equals(1)) {
-                sbHeadRow.append("首");
-                sbHeadRow.append(String.format("%.2f", weightSectionDto.getWeightFirst()));
+                sbHeadCellVal.append("首");
+                sbHeadCellVal.append(String.format("%.2f", weightSectionDto.getWeightFirst()));
             }
             else if(weightSectionDto.getChargingWay().equals(2)) {
-                sbHeadRow.append("续");
-                sbHeadRow.append(String.format("%.2f", weightSectionDto.getWeightAdd()));
+                sbHeadCellVal.append("续");
+                sbHeadCellVal.append(String.format("%.2f", weightSectionDto.getWeightAdd()));
             }
             else if(weightSectionDto.getChargingWay().equals(3)) {
-                sbHeadRow.append("累加");
-                sbHeadRow.append(String.format("%.2f", weightSectionDto.getWeightAdd()));
+                sbHeadCellVal.append("累加");
+                sbHeadCellVal.append(String.format("%.2f", weightSectionDto.getWeightAdd()));
             }
+            headCells.add(sbHeadCellVal.toString()
+                    .replace(".50", ".5")
+                    .replace(".00", "")
+                    .replace(".0", ""));
 
             packType0 = weightSectionDto.getPackType();
             weightAdd0 = weightSectionDto.getWeightAdd();
         }
-
 
         priceExpAxisPo.setAxisTransverse(axisPortrait);
         priceExpAxisPo.setId(weightSectionUpdDto.getPriceDataId());
@@ -578,14 +597,29 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         if(checkMainId == null || checkMainId.equals(0))
             throw new AplException(ExpListServiceCode.THE_MAIN_TABLE_DOES_NOT_EXIST_AND_CANNOT_BE_UPDATED.code,
                     ExpListServiceCode.THE_MAIN_TABLE_DOES_NOT_EXIST_AND_CANNOT_BE_UPDATED.msg);
+
+        //更新主表的
+        startWeight = weightSectionUpdDto.getWeightSection().get(0).getWeightStart();
+        endWeight = weightSectionUpdDto.getWeightSection().get(weightSectionUpdDto.getWeightSection().size()-1).getWeightEnd();
+
         PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
         priceExpMainPo.setId(checkMainId);
+        priceExpMainPo.setStartWeight(startWeight);
+        priceExpMainPo.setEndWeight(endWeight);
+        Integer resInteger = baseMapper.upd(priceExpMainPo);
+
+        if(resInteger < 1)
+            throw new AplException(CommonStatusCode.SAVE_FAIL,null);
+        //构建新的表头
+        List<String> newHeadCells = priceExpDataService.updHeadCells(weightSectionUpdDto,headCells);
+        if(newHeadCells.size() < 1)
+            throw new AplException(CommonStatusCode.SAVE_FAIL, null);
 
         Boolean result = priceExpAxisService.updateByMainId(priceExpAxisPo);
         if (!result) {
             throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
         }
-        return true;
+        return newHeadCells;
     }
 
     /**
@@ -747,7 +781,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpRemarkPo.setId(priceId);
             priceExpRemarkPo.setRemark(priceExpAddDto.getRemark());
             priceExpRemarkPo.setSaleRemark(priceExpAddDto.getSaleRemark());
-            Boolean saveSuccess = priceExpRemarkPo.insert();
+            Boolean saveSuccess = priceExpRemarkService.updateRemark(priceExpRemarkPo);
             if (!saveSuccess) {
                 throw new AplException(ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.code,
                         ExpListServiceCode.price_exp_remark_SAVE_DATA_FAILED.msg, null);

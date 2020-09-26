@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.mapper;
+package com.apl.lms.price.exp.manage.mapper2;
 
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostKeyDto;
@@ -112,4 +112,11 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     Long getMainIdByPriceDataId(Long priceDataId);
+
+    /**
+     * 更新
+     * @param priceExpMainPo
+     * @return
+     */
+    Integer upd(@Param("po") PriceExpMainPo priceExpMainPo);
 }

@@ -56,7 +56,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
     public ResultUtil<List<PriceZoneDataListVo>> getList(Long id) throws Exception {
         List<PriceZoneDataListVo> priceZoneDataListVo = baseMapper.getList(id);
         if(priceZoneDataListVo.size() == 0){
-            return ResultUtil.APPRESULT(PriceZoneDataServiceCode.ID_DOES_NOT_EXITS.code, PriceZoneDataServiceCode.ID_DOES_NOT_EXITS.msg, null);
+            return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneDataListVo);
         }
 
         List<JoinBase> joinTabs = new ArrayList<>();
@@ -83,9 +83,16 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
     @Override
     public ResultUtil<Boolean> deleteBatch(List<Long> ids) {
         Integer resInteger = baseMapper.deleteByZoneId(ids);
-        if(resInteger < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, PriceZoneDataServiceCode.ID_DOES_NOT_EXITS.msg, null);
-        }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, resInteger);
+    }
+
+    /**
+     * 根据分区表id批量删除
+     * @param ids
+     * @return
+     */
+    @Override
+    public Integer delBatchByZoneId(List<Long> ids) {
+        return baseMapper.delBatchByZoneId(ids);
     }
 }
