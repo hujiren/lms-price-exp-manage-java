@@ -25,5 +25,5 @@ public class PriceExpDataAxisVo implements Serializable {
     private PriceExpAxisVo axisVo;
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据")
-    private List<Object> priceData;
+    private List<List<String>> priceData;
 }

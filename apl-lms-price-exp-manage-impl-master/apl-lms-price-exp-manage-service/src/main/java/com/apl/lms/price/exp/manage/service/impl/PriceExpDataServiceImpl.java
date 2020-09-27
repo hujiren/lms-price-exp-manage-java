@@ -4,7 +4,9 @@ import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpDataMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
+import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
+import com.apl.lms.price.exp.pojo.dto.WeightSectionDto;
 import com.apl.lms.price.exp.pojo.dto.WeightSectionUpdDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataStringVo;
@@ -127,5 +129,83 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         if(integer < 1)
             throw new AplException(CommonStatusCode.SAVE_FAIL,null);
         return newHeadCells;
+    }
+
+    /**
+     * 合并利润
+     * @param priceVal
+     * @param zoneAndCountry
+     * @param weightSectionDto
+     * @param finalProfitBoList
+     * @return
+     */
+    @Override
+    public Double priceMergeProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> finalProfitBoList){
+
+        if(null==priceVal || priceVal.equals(0)){
+            return  priceVal;
+        }
+
+        int countryStartIndex = 0;
+        String zone = null;
+        if(zoneAndCountry.get(0).matches("^\\d")){
+            zone = zoneAndCountry.get(0);
+            countryStartIndex = 1;
+        }
+
+        Double startWeight = weightSectionDto.getWeightStart();
+        Double priceValResult = priceVal;
+        PriceExpProfitMergeBo findProfitMergeBo = null;
+
+        //查找利润
+        boolean isFind = false;
+        for (PriceExpProfitMergeBo profitMergeBo : finalProfitBoList) {
+
+            if(!(profitMergeBo.getStartWeight()< startWeight && startWeight<=profitMergeBo.getEndWeight()))
+                continue;
+
+            if (null != zone && zone.length() > 0) {
+                if (profitMergeBo.getZoneNumList().size() == 0 || profitMergeBo.getZoneNumList().contains(zone))
+                    isFind = true;
+            }
+
+            if (!isFind) {
+                if (profitMergeBo.getCountryCodeList().size() == 0)
+                    isFind = true;
+                else {
+                    for (int i = countryStartIndex; i < zoneAndCountry.size(); i++) {
+                        String countryCode = zoneAndCountry.get(i);
+                        if (profitMergeBo.getCountryCodeList().contains(countryCode)) {
+                            isFind = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (isFind) {
+                findProfitMergeBo = profitMergeBo;
+                break;
+            }
+        }
+
+        if(null!=findProfitMergeBo){
+            //找到利润，相加
+            if(weightSectionDto.getChargingWay()==1){
+                //首重加
+                priceValResult += findProfitMergeBo.getFirstWeightProfit();
+
+            } else if(weightSectionDto.getChargingWay()==2 || weightSectionDto.getChargingWay()==3 || weightSectionDto.getChargingWay()==4){
+                // 单位重加
+                priceValResult += findProfitMergeBo.getUnitWeightProfit();
+            }
+
+            if(findProfitMergeBo.getProportionProfit()>0) {
+                //比例加
+                priceValResult *= findProfitMergeBo.getProportionProfit();
+            }
+        }
+
+        return priceValResult;
     }
 }

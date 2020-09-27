@@ -35,14 +35,11 @@ import lombok.Data;
 public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
 
     @ApiModelProperty(name = "id", value = "价格表id", required = true)
-    @NotNull(message = "价格表id不能为空")
-    @Min(value = 0, message = "价格表id不能小于0")
     @TableId(value = "id", type = IdType.INPUT )
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
-    @NotEmpty(message = "上调的利润不能为空")
     private List<PriceExpProfitDto> increaseProfit;
 
     @ApiModelProperty(name = "finalProfit", value = "最终利润", hidden = true)

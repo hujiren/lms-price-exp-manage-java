@@ -75,11 +75,6 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
         PriceExpProfitPo priceExpProfitPo = baseMapper.getProfit(priceId);
 
-//        if(null == priceExpProfitPo){
-//            return ResultUtil.APPRESULT(PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.code,
-//                    PriceExpProfitServiceCode.NO_CORRESPONDING_DATA.msg,null);
-//        }
-
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , priceExpProfitPo);
     }
 

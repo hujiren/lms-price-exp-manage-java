@@ -22,6 +22,7 @@ import com.apl.lms.price.exp.manage.mapper2.PriceExpMapper;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.manage.util.CheckObjFieldINull;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
+import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.dto.CustomerDto;
 import com.apl.lms.price.exp.pojo.dto.CustomerGroupDto;
@@ -108,6 +109,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
     @Autowired
     PriceExpFeign priceExpFeign;
+
+
     /**
      * 分页查询销售价格列表
      *
@@ -151,18 +154,18 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         List<PriceExpCostListVo> priceExpListVoCostList = baseMapper.getPriceExpCostList(page, keyDto);
         page.setRecords(priceExpListVoCostList);
 
-        JoinPartner joinPartner = new JoinPartner(1, priceExpFeign, aplCacheUtil);
-        List<JoinBase> joinTabs = new ArrayList<>();
-        //关联服务商
-        if (null != joinPartnerFieldInfo) {
-            joinPartner.setJoinFieldInfo(joinPartnerFieldInfo);
-        } else {
-            joinPartner.addField("partnerId", Long.class, "partnerShortName", "partnerName", String.class);
-            joinPartnerFieldInfo = joinPartner.getJoinFieldInfo();
-        }
-        joinTabs.add(joinPartner);
-        //执行跨项目跨库关联
-        JoinUtil.join(priceExpListVoCostList, joinTabs);
+//        JoinPartner joinPartner = new JoinPartner(1, priceExpFeign, aplCacheUtil);
+//        List<JoinBase> joinTabs = new ArrayList<>();
+//        //关联服务商
+//        if (null != joinPartnerFieldInfo) {
+//            joinPartner.setJoinFieldInfo(joinPartnerFieldInfo);
+//        } else {
+//            joinPartner.addField("partnerId", Long.class, "partnerShortName", "partnerName", String.class);
+//            joinPartnerFieldInfo = joinPartner.getJoinFieldInfo();
+//        }
+//        joinTabs.add(joinPartner);
+//        //执行跨项目跨库关联
+//        JoinUtil.join(priceExpListVoCostList, joinTabs);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
@@ -202,16 +205,11 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         PriceExpSaleVo priceExpSaleVo = baseMapper.getCustomerInfo(id);
 
         //查询价格表
-        PriceExpPriceInfoVo priceExpPriceInfoVo = baseMapper.getPriceExpSaleInfoById(id);
-
-        //组装服务商名称
-        if(priceExpPriceInfoVo.getPartnerId()>0) {
-            JoinPartner joinPartner = new JoinPartner(1, priceExpFeign, aplCacheUtil);
-            PartnerCacheBo partnerCacheBo = joinPartner.getEntity(priceExpPriceInfoVo.getPartnerId());
-            if(null!=partnerCacheBo)
-                priceExpPriceInfoVo.setPartnerName(partnerCacheBo.getPartnerShortName());
+        PriceExpPriceInfoVo priceExpPriceInfoVo = baseMapper.getPriceExpInfoById(id);
+        Integer isNull = 0;
+        if(null == priceExpPriceInfoVo.getCustomer() && null == priceExpPriceInfoVo.getCustomerGroup()){
+            isNull = 1;
         }
-
         if (priceExpPriceInfoVo == null) {
             throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg, null);
         }
@@ -292,8 +290,12 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
             priceExpPriceInfoVo.setSpecialCommodity(specialCommodityList);
             priceExpPriceInfoVo.setSpecialCommodityStr(null);
-        }
 
+        }
+        if(isNull == 1){
+            priceExpPriceInfoVo.setCustomer(null);
+            priceExpPriceInfoVo.setCustomerGroup(null);
+        }
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpPriceInfoVo);
     }
 
@@ -303,15 +305,96 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) {
+    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) throws Exception {
         ExpPriceInfoBo innerOrgIdAndPriceDatId = getInnerOrgIdAndPriceDatId(id);
         if(null == innerOrgIdAndPriceDatId){
             return ResultUtil.APPRESULT(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
                     ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg,null);
         }
+        //获取价格表数据
         ResultUtil<PriceExpDataVo> resultUtil = priceExpDataService.getPriceExpDataInfoByPriceId(innerOrgIdAndPriceDatId.getPriceDataId());
+        //获取数据轴
+        ResultUtil<PriceExpAxisVo> axisInfoVo = priceExpAxisService.getAxisInfoById(id);
+
+        List<List<String>> priceData = resultUtil.getData().getPriceData();
+        List<WeightSectionDto> weightSections = axisInfoVo.getData().getWeightSection();
+        List<List<String>> zoneAndCountrys  = axisInfoVo.getData().getZoneCountry();
+        int priceFormat  = innerOrgIdAndPriceDatId.getPriceFormat();
+        int rowIndex=0;
+        int colIndex=0;
+        int startWeightColIndex = weightSections.get(0).getIndex();
+
+        //获取增加的利润
+        List<PriceExpProfitDto> finalProfit  = priceExpProfitService.getProfit(id).getData().getIncreaseProfit();
+
+        List<PriceExpProfitMergeBo> finalProfitBoList = new ArrayList<>();
+        for (PriceExpProfitDto priceExpProfitDto : finalProfit) {
+            PriceExpProfitMergeBo priceExpProfitMergeBo = new PriceExpProfitMergeBo();
+            BeanUtil.copyProperties(priceExpProfitDto, priceExpProfitMergeBo);
+
+            String[] countryCodeArray = priceExpProfitMergeBo.getCountryCode().split(",");
+            //将国家简码组装成List
+            List<String> countryCodeList = strArrayToList(countryCodeArray);
+            priceExpProfitMergeBo.setCountryCodeList( countryCodeList);
+
+            String[] zoneArray = priceExpProfitMergeBo.getZoneNum().split(",");
+            List<String> zoneArrayList = strArrayToList(zoneArray);
+            priceExpProfitMergeBo.setZoneNumList( zoneArrayList);
+
+            if(null == priceExpProfitMergeBo.getStartWeight())
+                priceExpProfitMergeBo.setStartWeight(0.0);
+
+            if(null == priceExpProfitMergeBo.getEndWeight() || priceExpProfitMergeBo.getEndWeight().equals(0.0))
+                priceExpProfitMergeBo.setStartWeight(10000.0);
+
+            finalProfitBoList.add(priceExpProfitMergeBo);
+        }
+
+        List<String> zoneAndCountry = null;
+        WeightSectionDto weightSectionDto = null;
+        rowIndex = 1;
+        while (rowIndex < priceData.size()) {
+
+            if(priceFormat==1)
+                zoneAndCountry = zoneAndCountrys.get(rowIndex - 1);
+            else if(priceFormat==2)
+                weightSectionDto = weightSections.get(rowIndex -1);
+
+            List<String> cells = priceData.get(rowIndex);
+
+            colIndex = startWeightColIndex;
+            while (colIndex < cells.size()) {
+
+                if(priceFormat==1)
+                    weightSectionDto = weightSections.get(colIndex - 1);
+                else  if(priceFormat==2)
+                    zoneAndCountry = zoneAndCountrys.get(colIndex - 1);
+
+                String priceStr = priceData.get(rowIndex).get(colIndex);
+                if(null!=priceStr && priceStr.length()>0) {
+                    Double priceVal = Double.parseDouble(priceStr);
+                    priceVal = priceExpDataService.priceMergeProfit(priceVal, zoneAndCountry, weightSectionDto, finalProfitBoList);
+                    priceData.get(rowIndex).set(colIndex, priceVal.toString());
+                }
+
+                colIndex++;
+            }
+
+            rowIndex++;
+        }
+
         return resultUtil;
     }
+
+    List<String> strArrayToList(String[] array){
+
+        List<String> list = new ArrayList<>();
+        for (String s : array) {
+            list.add(s);
+        }
+        return list;
+    }
+
 
     /**
      * 获取quotePriceId, innerOrgId, priceDataId
@@ -682,7 +765,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                     ExpListServiceCode.PARTNER_CUSTOMER_GROUP_CUSTOMER_PLEASE_FILL_IN_AT_LEAST_ONE_GROUP.msg);
         }
 
-
         if(null == priceExpAddDto.getPriceSaleName() || priceExpAddDto.getPriceSaleName().length()<1 || priceExpAddDto.getPriceSaleName().equals(" "))
             priceExpAddDto.setPriceSaleName(priceExpAddDto.getPriceName());
 
@@ -698,6 +780,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
         if(priceExpAddDto.getPartnerId() == null){
             priceExpMainPo.setPartnerId(0L);
+            priceExpMainPo.setPartnerName("");
         }
 
         //处理特殊物品
@@ -721,6 +804,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpMainPo.setCustomerName("");
 
             priceExpMainPo.setPartnerId(0l);
+            priceExpMainPo.setPartnerName("");
         }
         else {
             //处理客户组

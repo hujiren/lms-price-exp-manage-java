@@ -61,7 +61,7 @@
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
             id ,start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_status,
-            price_code, price_name, channel_category, partner_id
+            price_code, price_name, channel_category, partner_id, partner_name
         from
         lms_exp_price
         where
@@ -116,6 +116,9 @@
         <if test="key.priceStatus != null and key.priceStatus > 0">
             and price_status = #{key.priceStatus}
         </if>
+        <if test="key.accountType != null">
+            and account_type = #{key.accountType}
+        </if>
         <if test="key.channelCategory != null">
             and channel_category = #{key.channelCategory}
         </if>
@@ -131,7 +134,7 @@
              id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
              price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name,
              price_sale_name, channel_category,
-             price_status, quote_price_id, partner_id, customer_groups_id, customer_groups_name, customer_ids, customer_name)
+             price_status, quote_price_id, partner_id, partner_name, customer_groups_id, customer_groups_name, customer_ids, customer_name)
          values
              (#{po.id},
              #{po.startDate},
@@ -156,6 +159,7 @@
              #{po.priceStatus},
              #{po.quotePriceId},
              #{po.partnerId},
+             #{po.partnerName},
              #{po.customerGroupsId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
              #{po.customerGroupsName},
              #{po.customerIds,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
@@ -228,13 +232,14 @@
     </delete>
 
     <!--根据主表id获取销售价格表Id-->
-    <select id="getPriceExpSaleInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpPriceInfoVo">
+    <select id="getPriceExpInfoById" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpPriceInfoVo">
         select
             id,
             price_code,
             price_sale_name,
             price_name,
             partner_id,
+            partner_name,
             price_status,
             channel_category,
             start_date,

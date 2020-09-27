@@ -96,7 +96,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param id
      * @return
      */
-    ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id);
+    ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) throws Exception;
 
     /**
      * 获取quotePriceId, innerOrgId, priceDataId组合方法

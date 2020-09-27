@@ -56,6 +56,7 @@ public class PriceExpController {
         return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleListKeyDto);
     }
 
+
     @PostMapping(value = "/get-customer-list")
     @ApiOperation(value = "分页查询客户价格列表", notes = "分页查询客户价格列表")
     public ResultUtil<Page<PriceExpSaleListVo>> getCustomerList(PageDto pageDto, @Validated PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
@@ -65,6 +66,7 @@ public class PriceExpController {
         return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleListKeyDto);
     }
 
+
     @PostMapping(value = "/get-cost-list")
     @ApiOperation(value = "分页查询成本价格列表", notes = "分页查询成本价格列表")
     public ResultUtil<Page<PriceExpCostListVo>> getCostList(PageDto pageDto, @Validated PriceExpCostKeyDto priceExpCostListKeyDto) throws Exception {
@@ -72,12 +74,14 @@ public class PriceExpController {
         return priceExpService.getPriceExpCostList(pageDto, priceExpCostListKeyDto);
     }
 
+
     @PostMapping(value = "/get-published-price-list")
     @ApiOperation(value = "分页查询公布价列表", notes = "分页查询公布价列表")
     public ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, @Validated PriceExpPublishedKeyDto keyDto) {
 
         return priceExpService.getPublishedPriceList(pageDto, keyDto);
     }
+
 
     @PostMapping(value = "/get-price-info")
     @ApiOperation(value = "获取价格详情", notes = "获取价格详情")
@@ -96,6 +100,7 @@ public class PriceExpController {
         return priceExpService.addExpPrice(priceExpAddDto);
     }
 
+
     @PostMapping(value = "/reference-price")
     @ApiOperation(value = "引用价格表", notes = "引用价格表")
     public ResultUtil<Long> referencePrice(@RequestBody @Validated ReferencePriceDto referencePriceDto){
@@ -103,11 +108,13 @@ public class PriceExpController {
         return priceExpService.referencePrice(referencePriceDto);
     }
 
+
     @PostMapping(value = "/delete-price-batch")
     @ApiOperation(value = "批量删除价格表", notes = "根据Id批量删除价格表")
     public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "价格表id不能为空") @RequestBody List<Long> ids){
         return priceExpService.deletePriceBatch(ids);
     }
+
 
     @PostMapping(value = "/upd-exp-price")
     @ApiOperation(value = "根据Id修改价格主表", notes = "根据Id修改价格主表")
@@ -119,15 +126,17 @@ public class PriceExpController {
     @PostMapping(value = "/get-price-data")
     @ApiOperation(value = "获取价格表数据", notes = "获取价格表数据")
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
+    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
         return priceExpService.getPriceExpDataInfoByPriceId(id);
     }
+
 
     @PostMapping(value = "/upd-price-data")
     @ApiOperation(value = "更新数据表数据", notes = "更新数据表数据")
     public ResultUtil<Boolean> updatePriceData(@Validated @RequestBody PriceExpDataUpdDto priceExpDataUpdDto){
         return priceExpService.updatePriceData(priceExpDataUpdDto);
     }
+
 
     @PostMapping(value = "/get-price-axis")
     @ApiOperation(value = "获取数据轴", notes = "获取数据轴")
@@ -137,6 +146,7 @@ public class PriceExpController {
         return priceExpAxisService.getAxisInfoById(id);
     }
 
+
     @PostMapping(value = "/upd-transverse-weight-section")
     @ApiOperation(value = "更新横向重量段", notes = "更新横向重量段")
     public ResultUtil<List<String> > updTransverseWeightSection(@RequestBody @Validated WeightSectionUpdDto weightSectionUpdDto) {
@@ -145,12 +155,14 @@ public class PriceExpController {
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, headCells);
     }
 
+
     @PostMapping(value = "/get-price-remark")
     @ApiOperation(value = "获取备注信息", notes = "获取备注信息")
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
     public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
         return priceExpRemarkService.getPriceExpRemark(id);
     }
+
 
     @PostMapping(value = "/upd-remark")
     @ApiOperation(value = "更新备注", notes = "根据Id更新备注")

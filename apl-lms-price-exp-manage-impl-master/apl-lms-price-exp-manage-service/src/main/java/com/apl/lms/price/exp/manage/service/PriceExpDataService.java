@@ -1,7 +1,9 @@
 package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
+import com.apl.lms.price.exp.pojo.dto.WeightSectionDto;
 import com.apl.lms.price.exp.pojo.dto.WeightSectionUpdDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
@@ -51,4 +53,14 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      * @return
      */
     List<String> updHeadCells(WeightSectionUpdDto weightSectionUpdDto,List<String> headCells);
+
+    /**
+     * 合并利润
+     * @param priceVal
+     * @param zoneAndCountry
+     * @param weightSectionDto
+     * @param finalProfitBoList
+     * @return
+     */
+    Double priceMergeProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> finalProfitBoList);
 }

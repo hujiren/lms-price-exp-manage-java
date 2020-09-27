@@ -55,7 +55,7 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @param id
      * @return
      */
-    PriceExpPriceInfoVo getPriceExpSaleInfoById(@Param("id") Long id);
+    PriceExpPriceInfoVo getPriceExpInfoById(@Param("id") Long id);
 
     /**
      * 获取客户信息并组装

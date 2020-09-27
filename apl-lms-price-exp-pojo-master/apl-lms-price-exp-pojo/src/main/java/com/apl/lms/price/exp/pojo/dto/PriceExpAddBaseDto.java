@@ -94,6 +94,9 @@ public class PriceExpAddBaseDto implements Serializable {
     @ApiModelProperty(name = "partnerId" , value = "服务商id")
     private Long partnerId;
 
+    @ApiModelProperty(name = "partnerName" , value = "服务商名称")
+    private String partnerName;
+
     @ApiModelProperty(name = "customerGroup" , value = "客户组")
     private List<CustomerGroupDto> customerGroup;
 

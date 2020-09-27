@@ -21,5 +21,5 @@ public class PriceExpDataVo implements Serializable {
     private Long priceDataId;
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据")
-    private List<Object> priceData;
+    private List<List<String>> priceData;
 }

@@ -25,8 +25,14 @@ public class PriceExpPublishedKeyDto {
     @ApiModelProperty(name = "channelCategory", value = "成本价渠道类型")
     private String channelCategory;
 
+    @ApiModelProperty(name = "accountType", value = "账号类型 1代理账号 2贸易账号 3第三方账号")
+    @TypeValidator(value = {"0","1","2","3"} , message = "账号类型错误")
+    @Min(value = 0, message = "账号类型不能小于0")
+    private Integer accountType;
+
     @ApiModelProperty(name = "keyword", value = "关键词: 按价格表名称")
     private String keyword;
+
 
     public String getKeyword() {
         if (keyword != null && keyword.trim().equals(""))
