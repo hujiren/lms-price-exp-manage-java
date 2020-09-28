@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.apl.cache.AplCacheUtil;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
@@ -15,9 +16,8 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
-import com.apl.lms.price.exp.lib.cache.JoinPartner;
-import com.apl.lms.price.exp.lib.cache.bo.PartnerCacheBo;
 import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
+import com.apl.lms.price.exp.manage.dao.PriceExpDao;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpMapper;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.manage.util.CheckObjFieldINull;
@@ -84,7 +84,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
     static JoinFieldInfo joinSpecialCommodityFieldInfo = null; //跨项目跨库关联 特殊物品 反射字段缓存
 
-    static JoinFieldInfo joinPartnerFieldInfo = null; //关联 服务商 反射字段缓存
 
     @Autowired
     PriceExpDataService priceExpDataService;
@@ -110,6 +109,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Autowired
     PriceExpFeign priceExpFeign;
 
+
+    @Autowired
+    PriceExpDao priceExpDao;
 
     /**
      * 分页查询销售价格列表
@@ -206,9 +208,13 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         //查询价格表
         PriceExpPriceInfoVo priceExpPriceInfoVo = baseMapper.getPriceExpInfoById(id);
-        Integer isNull = 0;
-        if(null == priceExpPriceInfoVo.getCustomer() && null == priceExpPriceInfoVo.getCustomerGroup()){
-            isNull = 1;
+        Integer customerIsNull = 0;
+        Integer customerGroupIsNull = 0;
+        if(null == priceExpSaleVo.getCustomerIds() || priceExpSaleVo.getCustomerIds().equals("[]")) {
+            customerIsNull = 1;
+        }
+        if(null == priceExpSaleVo.getCustomerGroupsId() || priceExpSaleVo.getCustomerGroupsId().equals("[]")){
+            customerGroupIsNull = 1;
         }
         if (priceExpPriceInfoVo == null) {
             throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg, null);
@@ -292,8 +298,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpPriceInfoVo.setSpecialCommodityStr(null);
 
         }
-        if(isNull == 1){
+        if(customerIsNull == 1){
             priceExpPriceInfoVo.setCustomer(null);
+        }
+        if(customerGroupIsNull == 1){
             priceExpPriceInfoVo.setCustomerGroup(null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpPriceInfoVo);
@@ -327,8 +335,11 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         //获取增加的利润
         List<PriceExpProfitDto> finalProfit  = priceExpProfitService.getProfit(id).getData().getIncreaseProfit();
 
+        String str = (String) JSONObject.toJSON(finalProfit);
+        List<PriceExpProfitDto> finalProfit1 = JSONObject.parseArray(str, PriceExpProfitDto.class);
+
         List<PriceExpProfitMergeBo> finalProfitBoList = new ArrayList<>();
-        for (PriceExpProfitDto priceExpProfitDto : finalProfit) {
+        for (PriceExpProfitDto priceExpProfitDto : finalProfit1) {
             PriceExpProfitMergeBo priceExpProfitMergeBo = new PriceExpProfitMergeBo();
             BeanUtil.copyProperties(priceExpProfitDto, priceExpProfitMergeBo);
 
@@ -719,18 +730,18 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         ResultUtil<Long> longResultUtil = addExpPriceBase(priceExpAddDto, 0l, priceDataId);
 
-            //保存价格表数据
-            Boolean saveSuccess = priceExpDataService.addPriceExpData(priceDataId,priceExpAddDto);
-            if (!saveSuccess) {
-                throw new AplException(ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.code,
-                        ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.msg, null);
-            }
-            //保存价格表轴数据
-            saveSuccess = priceExpAxisService.addPriceExpAxis(priceDataId,priceExpAddDto);
-            if (!saveSuccess) {
-                throw new AplException(ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.code,
-                        ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.msg, null);
-            }
+        //保存价格表数据
+        Boolean saveSuccess = priceExpDataService.addPriceExpData(priceDataId,priceExpAddDto);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_DATA_SAVE_DATA_FAILED.msg, null);
+        }
+        //保存价格表轴数据
+        saveSuccess = priceExpAxisService.addPriceExpAxis(priceDataId,priceExpAddDto);
+        if (!saveSuccess) {
+            throw new AplException(ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.code,
+                    ExpListServiceCode.PRICE_EXP_AXIS_SAVE_DATA_FAILED.msg, null);
+        }
 
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, longResultUtil.getData());
@@ -841,6 +852,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 priceExpMainPo.setCustomerName("");
             }
         }
+
+        //创建租户真实表
+        priceExpDao.createRealTable();
 
         Integer saveResult = baseMapper.addExpPrice(priceExpMainPo);
         if (saveResult < 1) {

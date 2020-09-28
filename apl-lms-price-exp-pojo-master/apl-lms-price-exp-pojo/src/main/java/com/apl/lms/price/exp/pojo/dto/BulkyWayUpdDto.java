@@ -19,9 +19,9 @@ import javax.validation.constraints.NotNull;
  * @date 2020/8/8 - 9:17
  */
 @Data
-@TableName("weight_way")
+@TableName("bulky_way")
 @ApiModel(value = "计泡方式-修改对象", description = "计泡方式-修改对象")
-public class WeightWayUpdDto {
+public class BulkyWayUpdDto {
 
     @ApiModelProperty(name = "id", value = "计泡方式Id", required = true)
     @TableId(value = "id", type = IdType.INPUT)
@@ -29,7 +29,7 @@ public class WeightWayUpdDto {
     @NotNull(message = "计泡方式Id不能为空")
     @Min(value = 0, message = "id不能小于0")
     private Long id;
-    
+
     @ApiModelProperty(name = "computingFormula", value = "计算公式", required = true)
     @NotBlank(message = "计算公式不能为空")
     @Length(max = 50, message = "计算公式长度不能超过50")

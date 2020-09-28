@@ -4,11 +4,11 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
-import com.apl.lms.price.exp.manage.mapper.WeightWayMapper;
-import com.apl.lms.price.exp.manage.service.WeightWayService;
-import com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto;
-import com.apl.lms.price.exp.pojo.po.WeightWayPo;
-import com.apl.lms.price.exp.pojo.dto.WeightWayKeyDto;
+import com.apl.lms.price.exp.manage.mapper.BulkyWayMapper;
+import com.apl.lms.price.exp.manage.service.BulkyWayService;
+import com.apl.lms.price.exp.pojo.dto.BulkyWayUpdDto;
+import com.apl.lms.price.exp.pojo.po.BulkyWayPo;
+import com.apl.lms.price.exp.pojo.dto.BulkyWayKeyDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWayUpdDto> implements WeightWayService {
+public class BulkyWayServiceImpl extends ServiceImpl<BulkyWayMapper, BulkyWayUpdDto> implements BulkyWayService {
 
     enum WeightWayServiceCode {
         ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在");
@@ -40,21 +40,21 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
 
     /**
      * 分页查找附加费
-     * @param weightWayKeyDto
+     * @param bulkyWayKeyDto
      * @return
      */
     @Override
-    public ResultUtil<Page<WeightWayUpdDto>> getList(PageDto pageDto, WeightWayKeyDto weightWayKeyDto) {
+    public ResultUtil<Page<BulkyWayUpdDto>> getList(PageDto pageDto, BulkyWayKeyDto bulkyWayKeyDto) {
 
-        Page<WeightWayUpdDto> page = new Page();
+        Page<BulkyWayUpdDto> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
         page.setSize(pageDto.getPageSize());
-        if(null == weightWayKeyDto.getCode() || weightWayKeyDto.getCode() < 0){
-            weightWayKeyDto.setCode(0);
+        if(null == bulkyWayKeyDto.getCode() || bulkyWayKeyDto.getCode() < 0){
+            bulkyWayKeyDto.setCode(0);
         }
-        List<WeightWayUpdDto> weightWayUpdDtoList = baseMapper.getList(page, weightWayKeyDto);
+        List<BulkyWayUpdDto> bulkyWayUpdDtoList = baseMapper.getList(page, bulkyWayKeyDto);
 
-        page.setRecords(weightWayUpdDtoList);
+        page.setRecords(bulkyWayUpdDtoList);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
@@ -64,7 +64,7 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
      * @return
      */
     @Override
-    public ResultUtil<Boolean> delWeightWay(Long id) {
+    public ResultUtil<Boolean> del(Long id) {
         Integer integer = baseMapper.deleteById(id);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, WeightWayServiceCode.ID_DOES_NOT_EXITS.msg, false);
@@ -74,13 +74,13 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
 
     /**
      * 更新附加费
-     * @param weightWayUpdDto
+     * @param bulkyWayUpdDto
      * @return
      */
     @Override
-    public ResultUtil<Boolean>  updWeightWay(WeightWayUpdDto weightWayUpdDto) {
+    public ResultUtil<Boolean> upd(BulkyWayUpdDto bulkyWayUpdDto) {
 
-        Integer integer = baseMapper.updateById(weightWayUpdDto);
+        Integer integer = baseMapper.updateById(bulkyWayUpdDto);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -89,18 +89,18 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
 
     /**
      * 批量添加附加费
-     * @param weightWayPoList
+     * @param bulkyWayPoList
      * @return
      */
     @Override
-    public ResultUtil<Integer> addWeightWay(List<WeightWayPo> weightWayPoList) {
+    public ResultUtil<Integer> add(List<BulkyWayPo> bulkyWayPoList) {
 
-        for (WeightWayPo weightWayDto : weightWayPoList) {
+        for (BulkyWayPo weightWayDto : bulkyWayPoList) {
 
             weightWayDto.setId(SnowflakeIdWorker.generateId());
         }
 
-        Integer integer = baseMapper.addWeightWay(weightWayPoList);
+        Integer integer = baseMapper.add(bulkyWayPoList);
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
@@ -113,11 +113,11 @@ public class WeightWayServiceImpl extends ServiceImpl<WeightWayMapper, WeightWay
      * @return
      */
     @Override
-    public ResultUtil<WeightWayUpdDto> getWeightWay(Long id) {
-        WeightWayUpdDto weightWayUpdDto = baseMapper.getWeightWay(id);
-        if(weightWayUpdDto == null){
+    public ResultUtil<BulkyWayUpdDto> get(Long id) {
+        BulkyWayUpdDto bulkyWayUpdDto = baseMapper.get(id);
+        if(bulkyWayUpdDto == null){
             return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, weightWayUpdDto);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, bulkyWayUpdDto);
     }
 }

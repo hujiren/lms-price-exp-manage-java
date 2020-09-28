@@ -16,21 +16,21 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value = "计泡方式-插入对象", description = "计泡方式-插入对象")
-@TableName("weight_way")
-public class WeightWayPo extends Model<WeightWayPo> {
+@TableName("bulky_way")
+public class BulkyWayPo extends Model<BulkyWayPo> {
 
     @ApiModelProperty(name = "id", value = "计泡方式Id", hidden = true)
     private Long id;
 
-    @ApiModelProperty(name = "weightWayName", value = "计泡方式名称", required = true)
+    @ApiModelProperty(name = "bulkyWayName", value = "计泡方式名称", required = true)
     @NotBlank(message = "计泡方式名称不能为空")
     @Length(max = 50, message = "计泡方式名称能长度不能超过50")
-    private String weightWayName;
+    private String bulkyWayName;
 
-    @ApiModelProperty(name = "weightWayNameEn", value = "计泡方式英文名称", required = true)
+    @ApiModelProperty(name = "bulkyWayNameEn", value = "计泡方式英文名称", required = true)
     @NotBlank(message = "计泡方式英文名称不能为空")
     @Length(max = 50, message = "计泡方式名称能长度不能超过50")
-    private String weightWayNameEn;
+    private String bulkyWayNameEn;
 
     @ApiModelProperty(name = "computingFormula", value = "计算公式", required = true)
     @NotBlank(message = "计算公式不能为空")

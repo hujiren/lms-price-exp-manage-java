@@ -1,8 +1,8 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.price.exp.pojo.dto.WeightWayUpdDto;
-import com.apl.lms.price.exp.pojo.po.WeightWayPo;
-import com.apl.lms.price.exp.pojo.dto.WeightWayKeyDto;
+import com.apl.lms.price.exp.pojo.dto.BulkyWayUpdDto;
+import com.apl.lms.price.exp.pojo.po.BulkyWayPo;
+import com.apl.lms.price.exp.pojo.dto.BulkyWayKeyDto;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,26 +21,26 @@ import java.util.List;
  */
 @Mapper
 @Repository
-public interface WeightWayMapper extends BaseMapper<WeightWayUpdDto> {
+public interface BulkyWayMapper extends BaseMapper<BulkyWayUpdDto> {
 
     /**
      * @Desc: 查找计泡方式列表
      * @Author:
      * @Date: 2020-08-08
      */
-    List<WeightWayUpdDto> getList(Page page, @Param("key") WeightWayKeyDto weightWayKeyDto);
+    List<BulkyWayUpdDto> getList(Page page, @Param("key") BulkyWayKeyDto bulkyWayKeyDto);
 
     /**
      * 批量新增计泡方式
-     * @param weightWayPoList
+     * @param bulkyWayPoList
      * @return
      */
-    Integer addWeightWay(@Param("po") List<WeightWayPo> weightWayPoList);
+    Integer add(@Param("po") List<BulkyWayPo> bulkyWayPoList);
 
     /**
      * 获取计泡方式详情
      * @param id
      * @return
      */
-    WeightWayUpdDto getWeightWay(@Param("id") Long id);
+    BulkyWayUpdDto get(@Param("id") Long id);
 }

@@ -9,7 +9,6 @@
             charge_name,
             charge_name_en,
             computing_formula,
-            currency,
             code
         FROM
             price_surcharge
@@ -29,21 +28,21 @@
     <insert id="addSurcharge">
 
             insert into
-                price_surcharge(id, charge_name, charge_name_en, computing_formula, currency, code)
+                price_surcharge(id, charge_name, charge_name_en, computing_formula, code)
             values
 
         <foreach collection="po" index="" separator="," item="row" open="" close="">
-            (#{row.id}, #{row.chargeName}, #{row.chargeNameEn}, #{row.computingFormula}, #{row.currency}, #{row.code})
+            (#{row.id}, #{row.chargeName}, #{row.chargeNameEn}, #{row.computingFormula}, #{row.code})
         </foreach>
 
     </insert>
 
     <update id="updById">
-        update price_surcharge set computing_formula = #{po.computingFormula}, currency = #{po.currency} where id = #{po.id}
+        update price_surcharge set computing_formula = #{po.computingFormula} where id = #{po.id}
     </update>
 
     <select id="getById" resultType="com.apl.lms.price.exp.pojo.po.SurchargePo">
-        select charge_name, computing_formula, currency, code, charge_name_en from price_surcharge where id = #{id}
+        select charge_name, computing_formula, code, charge_name_en from price_surcharge where id = #{id}
     </select>
 
     <delete id="delById">

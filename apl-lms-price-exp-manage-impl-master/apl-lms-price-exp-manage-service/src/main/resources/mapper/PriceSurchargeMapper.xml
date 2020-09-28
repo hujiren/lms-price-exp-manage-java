@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceSurchargeMapper">
+
+    <!--查找详情-->
+    <select id="getByPriceId" resultType="com.apl.lms.price.exp.pojo.po.PriceSurchargePo">
+        SELECT
+          id,
+          price_id,
+          charge_name,
+          charge_way,
+          weight_way,
+          special_commodity,
+          formula,
+          remark,
+          over_weight,
+          over_length,
+          over_declared_value,
+          currency
+        FROM
+          price_surcharge
+        where
+          price_id = #{priceId}
+    </select>
+
+
+</mapper>

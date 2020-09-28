@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "附加费-修改对象", description = "附加费-修改对象")
 public class SurchargeUpdDto {
 
-    @ApiModelProperty(name = "id", value = "附加费Id", required = true)
+    @ApiModelProperty(name = "  id", value = "附加费Id", required = true)
     @TableId(value = "id", type = IdType.INPUT)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @NotNull(message = "附加费Id不能为空")
@@ -33,9 +33,4 @@ public class SurchargeUpdDto {
     @NotBlank(message = "计算公式不能为空")
     @Length(max = 50, message = "计算公式长度不能超过50")
     private String computingFormula;
-
-    @ApiModelProperty(name = "currency", value = "币制", required = true)
-    @NotBlank(message = "币制不能为空")
-    @Length(max = 50, message = "币制长度不能超过50")
-    private String currency;
 }

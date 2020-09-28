@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,8 +18,8 @@ import java.util.List;
  * @Date 2020/9/11 11:14
  */
 @ApiModel(value = "快递销售价格利润-组装对象", description = "快递销售价格利润-组装对象")
-public class PriceExpProfitDto {
-
+public class PriceExpProfitDto implements Serializable {
+    private static final long serialVersionUID = 4625197501272032171L;
     @ApiModelProperty(name = "customerGroup" , value = "客户组", required = true)
     @NotBlank(message = "客户组不能为空")
     private List<CustomerGroupBo> customerGroups;

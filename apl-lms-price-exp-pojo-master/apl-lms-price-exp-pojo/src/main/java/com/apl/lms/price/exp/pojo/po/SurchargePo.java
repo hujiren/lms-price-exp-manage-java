@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  * @date 2020/8/8 - 9:17
  */
 @Data
-@TableName("price_surcharge")
+@TableName("surcharge")
 @ApiModel(value = "附加费-持久化对象", description = "附加费-持久化对象")
 public class SurchargePo extends Model<SurchargePo> {
 
@@ -40,11 +40,6 @@ public class SurchargePo extends Model<SurchargePo> {
     @NotBlank(message = "计算公式不能为空")
     @Length(max = 50, message = "计算公式长度不能超过50")
     private String computingFormula;
-
-    @ApiModelProperty(name = "currency", value = "币制", required = true)
-    @NotBlank(message = "币制不能为空")
-    @Length(max = 50, message = "币制长度不能超过50")
-    private String currency;
 
     @ApiModelProperty(name = "code", value = "代码", required = true)
     @NotNull(message = "code不能为空")

@@ -35,10 +35,10 @@ public class ChannelCategoryPo extends Model<ChannelCategoryPo> {
     @Length(max = 20, message = "渠道类型长度不能超过20")
     private String channelCategory;
 
-    @ApiModelProperty(name = "weightWay" , value = "计泡方式" , required = true)
+    @ApiModelProperty(name = "bulkyWay" , value = "计泡方式" , required = true)
     @NotBlank(message = "计泡方式不能为空")
     @Length(max = 20, message = "计泡方式长度不能超过20")
-    private String weightWay;
+    private String bulkyWay;
 
     @ApiModelProperty(name = "volumeWeightWay" , value = "材积计重方式 1按多件 2按单件及进位 3按单件不进位" , required = true)
     @TypeValidator(value = {"0","1","2","3"} , message = "材积计重值错误")

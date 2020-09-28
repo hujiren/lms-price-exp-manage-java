@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.BulkyWayMapper">
+
+    <!-- 查找计泡方式列表-->
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.dto.BulkyWayUpdDto">
+        SELECT
+            id,
+            computing_formula
+        FROM
+            bulky_way
+        where
+            1=1
+        <if test="key.code > 0">
+            and code = #{key.code}
+        </if>
+        <if test="key.keyword != null">
+            and bulky_way_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            or bulky_way_name_en LIKE CONCAT( '%' , #{key.keyword} , '%' )
+        </if>
+        order by code
+    </select>
+
+    <!--批量插入附加费-->
+    <insert id="add">
+            insert into bulky_way (id, bulky_way_name, bulky_way_name_en, computing_formula, code) values
+        <foreach collection="po" close="" open="" item="row" separator="," index="">
+            (#{row.id}, #{row.bulkyWayName}, #{row.bulkyWayNameEn}, #{row.computingFormula}, #{row.code})
+        </foreach>
+
+    </insert>
+
+    <!--获取计泡方式详情-->
+    <select id="get" resultType="com.apl.lms.price.exp.pojo.dto.BulkyWayUpdDto">
+        select id, computing_formula from bulky_way where id = #{id}
+    </select>
+</mapper>
