@@ -48,7 +48,10 @@ public class PriceSurchargeVo implements Serializable {
     private Integer weightWay;
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private List<SpecialCommodityDto> specialCommodity;
+    private Integer specialCommodity;
+
+    @ApiModelProperty(name = "specialCommodityName" , value = "特殊物品")
+    private String specialCommodityName;
 
     @ApiModelProperty(name = "formula", value = "公式", required = true)
     @NotBlank(message = "价公式不能为空")

@@ -64,9 +64,9 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     static JoinFieldInfo joinSpecialCommodityFieldInfo = null; //跨项目跨库关联 特殊物品 反射字段缓存
 
     @Override
-    public ResultUtil<Boolean> save( List<PriceSurchargePo> priceSurchargePos) throws Exception {
+    public ResultUtil<Boolean> save(List<PriceSurchargePo> priceSurchargePos) throws Exception {
 
-        adbHelper.saveBatch(priceSurchargePos,  "price_surcharge", "id", true);
+        adbHelper.saveBatch(priceSurchargePos, "price_surcharge", "id", true);
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
@@ -84,38 +84,23 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     @Override
     public ResultUtil<List<PriceSurchargeVo>> selectById(Long priceId) throws Exception {
 
-        List<PriceSurchargePo> priceSurchargeList = baseMapper.getByPriceId(priceId);
-        List<PriceSurchargeVo> priceSurchargeVoList = new ArrayList<>();
+        List<PriceSurchargeVo> priceSurchargeList = baseMapper.getByPriceId(priceId);
 
+        //组装特殊物品
+        JoinSpecialCommodity joinSpecialCommodity = new JoinSpecialCommodity(1, lmsCommonFeign, aplCacheUtil);
 
-        for (PriceSurchargePo priceSurchargePo : priceSurchargeList) {
-            List<SpecialCommodityDto> specialCommodityDtoList = new ArrayList<>();
-            PriceSurchargeVo priceSurchargeVo = new PriceSurchargeVo();
-            BeanUtil.copyProperties(priceSurchargePo,priceSurchargeVo);
-
-            SpecialCommodityDto specialCommodityDto = new SpecialCommodityDto();
-            specialCommodityDto.setCode(priceSurchargePo.getSpecialCommodity());
-            specialCommodityDtoList.add(specialCommodityDto);
-
-            //组装特殊物品
-            JoinSpecialCommodity joinSpecialCommodity = new JoinSpecialCommodity(1, lmsCommonFeign, aplCacheUtil);
-
-            List<JoinBase> joinTabs = new ArrayList<>();
-            //关联特殊物品字段信息
-            if (null != joinSpecialCommodityFieldInfo) {
-                joinSpecialCommodity.setJoinFieldInfo(joinSpecialCommodityFieldInfo);
-            } else {
-                joinSpecialCommodity.addField("code", Integer.class, "specialCommodityName", String.class);
-                joinSpecialCommodity.addField("specialCommodityNameEn", String.class);
-                joinSpecialCommodityFieldInfo = joinSpecialCommodity.getJoinFieldInfo();
-            }
-            joinTabs.add(joinSpecialCommodity);
-            //执行跨项目跨库关联
-            JoinUtil.join(specialCommodityDtoList, joinTabs);
-            priceSurchargeVo.setSpecialCommodity(specialCommodityDtoList);
-            priceSurchargeVoList.add(priceSurchargeVo);
+        List<JoinBase> joinTabs = new ArrayList<>();
+        //关联特殊物品字段信息
+        if (null != joinSpecialCommodityFieldInfo) {
+            joinSpecialCommodity.setJoinFieldInfo(joinSpecialCommodityFieldInfo);
+        } else {
+            joinSpecialCommodity.addField("specialCommodity", Integer.class, "specialCommodityName", String.class);
+            joinSpecialCommodityFieldInfo = joinSpecialCommodity.getJoinFieldInfo();
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS,priceSurchargeVoList);
-}
+        joinTabs.add(joinSpecialCommodity);
+        //执行跨项目跨库关联
+        JoinUtil.join(priceSurchargeList, joinTabs);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceSurchargeList);
+    }
 
 }

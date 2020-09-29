@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceSurchargeMapper">
 
     <!--查找详情-->
-    <select id="getByPriceId" resultType="com.apl.lms.price.exp.pojo.po.PriceSurchargePo">
+    <select id="getByPriceId" resultType="com.apl.lms.price.exp.pojo.vo.PriceSurchargeVo">
         SELECT
           id,
           price_id,

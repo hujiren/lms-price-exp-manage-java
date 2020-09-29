@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.po.PriceSurchargePo;
+import com.apl.lms.price.exp.pojo.vo.PriceSurchargeVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import java.util.List;
 import org.springframework.stereotype.Repository;
@@ -21,5 +22,5 @@ public interface PriceSurchargeMapper extends BaseMapper<PriceSurchargePo> {
      * @param priceId
      * @return
      */
-    List<PriceSurchargePo> getByPriceId(Long priceId);
+    List<PriceSurchargeVo> getByPriceId(Long priceId);
 }
