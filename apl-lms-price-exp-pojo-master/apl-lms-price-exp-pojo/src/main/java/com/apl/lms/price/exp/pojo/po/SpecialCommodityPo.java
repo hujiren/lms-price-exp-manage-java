@@ -37,8 +37,7 @@ public class SpecialCommodityPo extends Model<SpecialCommodityPo> implements Ser
     @Length(max = 50, message = "特殊物品名称长度不能超过50")
     private String specialCommodityName;
 
-    @ApiModelProperty(name = "specialCommodityNameEn", value = "特殊物品英文名称", required = true)
-    @NotBlank(message = "特殊物品英文名称不能为空")
+    @ApiModelProperty(name = "specialCommodityNameEn", value = "特殊物品英文名称")
     @Length(max = 50, message = "特殊物品英文名称长度不能超过50")
     private String specialCommodityNameEn;
 

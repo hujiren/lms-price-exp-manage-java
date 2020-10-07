@@ -5,16 +5,9 @@
     <!--分页查询渠道类型-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.po.ChannelCategoryPo">
         select
-            id, channel_category, bulky_way, volume_weight_way, carrier, cargo_type, volume_divisor
+            id, channel_category, bulky_way, volume_weight_way, carrier, cargo_type, volume_divisor, remote_charge_formula
         from
             channel_category
-        where
-            1=1
-        <if test="key.keyword != null">
-            and channel_category LIKE CONCAT( '%' , upper(#{key.keyword}) , '%' )
-            or carrier LIKE CONCAT( '%' , #{key.keyword} , '%' )
-        </if>
-
     </select>
 
     <!--根据id删除渠道类型-->
@@ -28,7 +21,7 @@
             channel_category
         set
             channel_category = #{po.channelCategory}, bulky_way = #{po.bulkyWay}, volume_weight_way = #{po.volumeWeightWay},
-            carrier = #{po.carrier}, cargo_type = #{po.cargoType}, volume_divisor = #{po.volumeDivisor}
+            carrier = #{po.carrier}, cargo_type = #{po.cargoType}, volume_divisor = #{po.volumeDivisor}, remote_charge_formula = #{po.remoteChargeFormula}
         where
             id = #{po.id}
     </update>
@@ -36,15 +29,9 @@
     <!--新增渠道类型-->
     <insert id="addChannelCategory">
         insert into
-            channel_category(id, channel_category, bulky_way, volume_weight_way, carrier, cargo_type, volume_divisor)
+            channel_category(id, channel_category, bulky_way, volume_weight_way, carrier, cargo_type, volume_divisor, remote_charge_formula)
         values
-            (#{po.id}, #{po.channelCategory}, #{po.bulkyWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeDivisor})
+            (#{po.id}, #{po.channelCategory}, #{po.bulkyWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeDivisor}, #{po.remoteChargeFormula})
     </insert>
 
-    <select id="getChannelCateGory" resultType="com.apl.lms.price.exp.pojo.po.ChannelCategoryPo">
-        select
-            id, channel_category, bulky_way, volume_weight_way, carrier, cargo_type, volume_divisor
-        from
-            channel_category where id = #{id}
-    </select>
 </mapper>

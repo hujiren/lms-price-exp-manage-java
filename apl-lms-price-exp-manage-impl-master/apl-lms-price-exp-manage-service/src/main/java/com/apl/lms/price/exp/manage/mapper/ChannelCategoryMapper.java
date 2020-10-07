@@ -1,8 +1,6 @@
 package com.apl.lms.price.exp.manage.mapper;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,12 +17,11 @@ public interface ChannelCategoryMapper extends BaseMapper<ChannelCategoryPo> {
 
     /**
      * 获取渠道类型分页信息列表
-     * @param page
-     * @param channelCateGoryKeyDto
+     * @param
      * @return
      */
 
-    List<ChannelCategoryPo> getList(Page<ChannelCategoryPo> page, @Param("key") ChannelCategoryKeyDto channelCateGoryKeyDto);
+    List<ChannelCategoryPo> getList();
 
     /**
      * 根据Id删除渠道类型数据
@@ -47,10 +44,4 @@ public interface ChannelCategoryMapper extends BaseMapper<ChannelCategoryPo> {
      */
     Integer addChannelCategory(@Param("po") ChannelCategoryPo channelCateGoryPo);
 
-    /**
-     * 根据id查询对应列表
-     * @param id
-     * @return
-     */
-    ChannelCategoryPo getChannelCateGory(@Param("id") Long id);
 }

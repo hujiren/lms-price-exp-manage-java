@@ -8,11 +8,7 @@
             id, start_date, end_date, fuel_charge, channel_category
         from
             fuel_charge
-        where
-            1=1
-            <if test="key.channelCategory != null">
-                and channel_category like CONCAT('%',#{key.channelCategory},'%')
-            </if>
+
     </select>
 
     <!--根据id删除燃油费-->
@@ -38,8 +34,4 @@
             (#{po.id}, #{po.startDate}, #{po.endDate}, #{po.fuelCharge}, #{po.channelCategory})
     </insert>
 
-    <!--获取燃油费详细-->
-    <select id="getFuelCharge" resultType="com.apl.lms.price.exp.pojo.vo.FuelChargeVo">
-        select id, start_date, end_date, fuel_charge, channel_category from fuel_charge where id = #{id}
-    </select>
 </mapper>

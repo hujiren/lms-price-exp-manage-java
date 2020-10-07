@@ -12,6 +12,7 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
+import com.apl.lms.price.exp.manage.dao.PriceZoneDao;
 import com.apl.lms.price.exp.manage.mapper.PriceSurchargeMapper;
 import com.apl.lms.price.exp.manage.service.PriceSurchargeService;
 import com.apl.lms.price.exp.pojo.po.PriceSurchargePo;
@@ -19,8 +20,8 @@ import com.apl.lms.price.exp.pojo.vo.PriceSurchargeVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,7 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     static JoinFieldInfo joinSpecialCommodityFieldInfo = null; //跨项目跨库关联 特殊物品 反射字段缓存
 
     @Override
+    @Transactional
     public ResultUtil<Boolean> save(List<PriceSurchargePo> priceSurchargePos) throws Exception {
 
         adbHelper.saveBatch(priceSurchargePos, "price_surcharge", "id", true);
@@ -85,7 +87,6 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     public ResultUtil<List<PriceSurchargeVo>> selectById(Long priceId) throws Exception {
 
         List<PriceSurchargeVo> priceSurchargeList = baseMapper.getByPriceId(priceId);
-
         //组装特殊物品
         JoinSpecialCommodity joinSpecialCommodity = new JoinSpecialCommodity(1, lmsCommonFeign, aplCacheUtil);
 
@@ -94,7 +95,7 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
         if (null != joinSpecialCommodityFieldInfo) {
             joinSpecialCommodity.setJoinFieldInfo(joinSpecialCommodityFieldInfo);
         } else {
-            joinSpecialCommodity.addField("specialCommodity", Integer.class, "specialCommodityName", String.class);
+            joinSpecialCommodity.addField("specialCommodityCode", Integer.class, "specialCommodityName", String.class);
             joinSpecialCommodityFieldInfo = joinSpecialCommodity.getJoinFieldInfo();
         }
         joinTabs.add(joinSpecialCommodity);

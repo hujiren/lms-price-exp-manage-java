@@ -5,7 +5,6 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.common.lib.cache.bo.WeightWayCacheBo;
 import com.apl.lms.price.exp.lib.cache.bo.PartnerCacheBo;
 import com.apl.lms.price.exp.manage.mapper.CacheMapper;
 import com.apl.lms.price.exp.manage.service.CacheService;

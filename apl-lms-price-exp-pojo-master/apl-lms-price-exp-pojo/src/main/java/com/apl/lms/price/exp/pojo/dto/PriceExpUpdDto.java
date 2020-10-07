@@ -2,6 +2,7 @@ package com.apl.lms.price.exp.pojo.dto;
 
 import com.apl.lib.validate.TypeValidator;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
+import com.apl.lms.common.query.manage.po.SpecialCommodityPo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;

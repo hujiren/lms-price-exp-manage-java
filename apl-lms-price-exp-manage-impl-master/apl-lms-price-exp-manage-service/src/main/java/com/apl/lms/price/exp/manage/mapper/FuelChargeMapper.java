@@ -1,16 +1,11 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-
-import com.apl.lms.price.exp.pojo.dto.FuelChargeKeyDto;
 import com.apl.lms.price.exp.pojo.po.FuelChargePo;
 import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -23,10 +18,10 @@ public interface FuelChargeMapper extends BaseMapper<FuelChargePo> {
 
     /**
      * 获取燃油费分页信息列表
-     * @param page
+     * @param
      * @return
      */
-    List<FuelChargeVo> getList(Page<FuelChargeVo> page,  @Param("key") FuelChargeKeyDto expListKeyDt);
+    List<FuelChargeVo> getList();
 
     /**
      * 根据Id删除燃油费
@@ -49,10 +44,4 @@ public interface FuelChargeMapper extends BaseMapper<FuelChargePo> {
      */
     Integer insertFuelCharge(@Param("po") FuelChargePo fuelChargePo);
 
-    /**
-     * 获取燃油费详细
-     * @param id
-     * @return
-     */
-    FuelChargeVo getFuelCharge(@Param("id") Long id);
 }

@@ -56,8 +56,8 @@ public class PriceSurchargePo implements Serializable {
     @ApiModelProperty(name = "overDeclaredValue", value = "超值")
     private Double overDeclaredValue;
 
-    @ApiModelProperty(name = "specialCommodity", value = "特殊物品")
-    private Integer specialCommodity;
+    @ApiModelProperty(name = "specialCommodityCode", value = "特殊物品")
+    private Integer specialCommodityCode;
 
     @ApiModelProperty(name = "formula", value = "公式", required = true)
     @NotBlank(message = "公式不能为空")

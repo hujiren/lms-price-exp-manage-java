@@ -1,16 +1,13 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import com.apl.lib.constants.CommonStatusCode;
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.FuelChargeMapper;
 import com.apl.lms.price.exp.manage.service.FuelChargeService;
-import com.apl.lms.price.exp.pojo.dto.FuelChargeKeyDto;
 import com.apl.lms.price.exp.pojo.dto.FuelChargeAddDto;
 import com.apl.lms.price.exp.pojo.po.FuelChargePo;
 import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,23 +38,17 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
 
     /**
      * 分页查询快递价格
-     * @param pageDto
+     * @param
      * @param
      * @return
      */
     @Override
-    public ResultUtil<Page<FuelChargeVo>> getList(PageDto pageDto, FuelChargeKeyDto fuelChargeKeyDto) {
+    public ResultUtil<List<FuelChargeVo>> getList() {
 
-        Page<FuelChargeVo> page = new Page();
-        page.setCurrent(pageDto.getPageIndex());
-        page.setSize(pageDto.getPageSize());
 
-        if(null != fuelChargeKeyDto.getChannelCategory())
-        fuelChargeKeyDto.setChannelCategory(fuelChargeKeyDto.getChannelCategory().toUpperCase());
-        List<FuelChargeVo> fuelChargeVoList = baseMapper.getList(page, fuelChargeKeyDto);
+        List<FuelChargeVo> fuelChargeVoList = baseMapper.getList();
 
-        page.setRecords(fuelChargeVoList);
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, fuelChargeVoList);
     }
 
     /**
@@ -119,18 +110,4 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, fuelChargePo.getId().toString());
     }
 
-    /**
-     * 获取燃油费详细
-     * @param id
-     * @return
-     */
-    @Override
-    public ResultUtil<FuelChargeVo> getFuelCharge(Long id) {
-
-        FuelChargeVo fuelChargeVo = baseMapper.getFuelCharge(id);
-        if(fuelChargeVo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
-        }
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, fuelChargeVo);
-    }
 }

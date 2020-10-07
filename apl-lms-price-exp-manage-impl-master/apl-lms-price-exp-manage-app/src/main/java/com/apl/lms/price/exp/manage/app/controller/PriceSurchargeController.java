@@ -47,7 +47,6 @@ public class PriceSurchargeController {
         return priceSurchargeService.delById(id);
     }
 
-
     @PostMapping(value = "/get")
     @ApiOperation(value =  "获取详细" , notes = "获取详细")
     @ApiImplicitParam(name = "priceId",value = "价格表id",required = true  , paramType = "query")

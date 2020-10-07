@@ -1,16 +1,12 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.apl.lib.constants.CommonStatusCode;
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.SurchargeMapper;
 import com.apl.lms.price.exp.manage.service.SurchargeService;
-import com.apl.lms.price.exp.pojo.dto.SurchargeUpdDto;
 import com.apl.lms.price.exp.pojo.po.SurchargePo;
 import com.apl.lms.price.exp.pojo.dto.SurchargeKeyDto;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +20,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, SurchargeUpdDto> implements SurchargeService {
+public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, SurchargePo> implements SurchargeService {
 
     enum SurchargeServiceCode {
         ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在");
@@ -45,18 +41,13 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
      * @return
      */
     @Override
-    public ResultUtil<Page<SurchargePo>> getList(PageDto pageDto, SurchargeKeyDto surchargeKeyDto) {
-
-        Page<SurchargePo> page = new Page();
-        page.setCurrent(pageDto.getPageIndex());
-        page.setSize(pageDto.getPageSize());
+    public ResultUtil<List<SurchargePo>> getList(SurchargeKeyDto surchargeKeyDto) {
         if(null == surchargeKeyDto.getCode() || surchargeKeyDto.getCode() < 0){
             surchargeKeyDto.setCode(0);
         }
-        List<SurchargePo> surchargeUpdDtoList = baseMapper.getList(page, surchargeKeyDto);
+        List<SurchargePo> surchargeUpdDtoList = baseMapper.getList(surchargeKeyDto);
 
-        page.setRecords(surchargeUpdDtoList);
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, surchargeUpdDtoList);
     }
 
     /**
@@ -71,20 +62,6 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, SurchargeServiceCode.ID_DOES_NOT_EXITS.msg, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
-    }
-
-    /**
-     * 更新附加费
-     * @param surchargeUpdDto
-     * @return
-     */
-    @Override
-    public ResultUtil<Boolean> updSurcharge(SurchargeUpdDto surchargeUpdDto) {
-        Integer integer = baseMapper.updById(surchargeUpdDto);
-        if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
-        }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
 
     /**
@@ -107,19 +84,4 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
     }
 
-    /**
-     * 获取附加费详细
-     * @param id
-     * @return
-     */
-    @Override
-    public ResultUtil<SurchargePo> getSurcharge(Long id) {
-
-        SurchargePo surchargePo = baseMapper.getById(id);
-        if(surchargePo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
-        }
-
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, surchargePo);
-    }
 }

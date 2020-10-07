@@ -13,18 +13,18 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class PriceExpDao {
+public class PriceListDao {
 
     AdbHelper adbHelpeReal;
 
-    public PriceExpDao(){
+    public PriceListDao(){
         // 创建真实数据源JDBC
         adbHelpeReal = new AdbHelper("pricelist");
     }
 
     public void createRealTable() {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
-        String sql = "CREATE TABLE  IF NOT EXISTS \"public\".\"" + securityUser.getInnerOrgCode() + "_exp_price\" (\n" +
+        String sql = "CREATE TABLE  IF NOT EXISTS \"public\".\"" + securityUser.getInnerOrgCode() + "_lms_exp_price\" (\n" +
                 "  \"id\" int8 NOT NULL,\n" +
                 "  \"start_date\" timestamp(6) NOT NULL,\n" +
                 "  \"end_date\" timestamp(6) NOT NULL,\n" +
@@ -54,12 +54,15 @@ public class PriceExpDao {
                 "  \"customer_name\" varchar(255) COLLATE \"pg_catalog\".\"default\",\n"+
                 "  \"inner_org_id\" int8 NOT NULL DEFAULT 0,\n"+
                 "  \"price_name\" varchar(50) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n"+
-                "  \"partner_name\" varchar(50) COLLATE \"pg_catalog\".\"default\",\n"+
+                "  \"partner_name\" varchar(50) COLLATE \"pg_catalog\".\"default\" "+
                 ")";
 
         //创建租户price_exp_main物理表
         adbHelpeReal.execut(sql);
+
+//        adbHelpeReal.saveBatch() 公式/附加费批量更新用这个
     }
+
 
 
 

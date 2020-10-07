@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.price.exp.pojo.dto.SpecialCommodityKeyDto;
 import com.apl.lms.price.exp.pojo.po.SpecialCommodityPo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,7 +27,7 @@ public interface SpecialCommodityMapper extends BaseMapper<SpecialCommodityPo> {
      * @Author:
      * @Date: 2020-08-08
      */
-    List<SpecialCommodityPo> getList(Page page, @Param("key") SpecialCommodityKeyDto specialCommodityKeyDto);
+    List<SpecialCommodityPo> getList();
 
     /**
      * 批量插入特殊物品

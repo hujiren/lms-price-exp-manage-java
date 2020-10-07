@@ -1,14 +1,11 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import com.apl.lib.constants.CommonStatusCode;
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.SpecialCommodityMapper;
 import com.apl.lms.price.exp.manage.service.SpecialCommodityService;
-import com.apl.lms.price.exp.pojo.dto.SpecialCommodityKeyDto;
 import com.apl.lms.price.exp.pojo.po.SpecialCommodityPo;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +22,8 @@ import java.util.List;
 public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMapper, SpecialCommodityPo> implements SpecialCommodityService {
 
     enum SpecialCommodityServiceCode {
-        ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在");
+        ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在"),
+        THE_DATA_ALREADY_EXISTS("THE_DATA_ALREADY_EXISTS", "该数据已经存在:");
         ;
 
         private String code;
@@ -39,22 +37,14 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
 
     /**
      * 分页查找
-     * @param specialCommodityKeyDto
      * @return
      */
     @Override
-    public ResultUtil<Page<SpecialCommodityPo>> getList(PageDto pageDto, SpecialCommodityKeyDto specialCommodityKeyDto) {
+    public List<SpecialCommodityPo> getList() {
 
-        Page<SpecialCommodityPo> page = new Page();
-        page.setCurrent(pageDto.getPageIndex());
-        page.setSize(pageDto.getPageSize());
-        if(null == specialCommodityKeyDto.getCode() || specialCommodityKeyDto.getCode() < 0){
-            specialCommodityKeyDto.setCode(0);
-        }
-        List<SpecialCommodityPo> specialCommodityVoList = baseMapper.getList(page, specialCommodityKeyDto);
+        List<SpecialCommodityPo> specialCommodityVoList = baseMapper.getList();
 
-        page.setRecords(specialCommodityVoList);
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
+        return specialCommodityVoList;
     }
 
     /**
@@ -79,9 +69,19 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
     @Override
     public ResultUtil<Integer> addSpecialCommodity(List<SpecialCommodityPo> specialCommodityPoList) {
 
-        for (SpecialCommodityPo specialCommodityPo : specialCommodityPoList) {
+        List<SpecialCommodityPo> resultList = getList();
+
+            for (SpecialCommodityPo specialCommodityPo : specialCommodityPoList) {
+                if(null != resultList && resultList.size() > 0) {
+                    for (SpecialCommodityPo commodityPo : resultList) {
+                        if (specialCommodityPo.getCode().equals(commodityPo.getCode())) {
+                            return ResultUtil.APPRESULT(SpecialCommodityServiceCode.THE_DATA_ALREADY_EXISTS.code,
+                                    SpecialCommodityServiceCode.THE_DATA_ALREADY_EXISTS.msg + specialCommodityPo.getCode().toString(), null);
+                        }
+                    }
+                }
             specialCommodityPo.setId(SnowflakeIdWorker.generateId());
-        }
+            }
 
         Integer integer = baseMapper.addSpecialCommodity(specialCommodityPoList);
         if(integer < 1){
@@ -90,18 +90,4 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
     }
 
-    /**
-     * 获取特殊物品详细
-     * @param id
-     * @return
-     */
-    @Override
-    public ResultUtil<SpecialCommodityPo> getSpecialCommodity(Long id) {
-
-        SpecialCommodityPo specialCommodityPo = baseMapper.getSpecialCommodity(id);
-        if(specialCommodityPo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
-        }
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, specialCommodityPo);
-    }
 }

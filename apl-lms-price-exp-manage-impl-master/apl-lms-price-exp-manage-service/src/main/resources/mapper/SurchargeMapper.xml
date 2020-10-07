@@ -8,7 +8,6 @@
             id,
             charge_name,
             charge_name_en,
-            computing_formula,
             code
         FROM
             price_surcharge
@@ -26,24 +25,15 @@
 
     <!--批量插入附加费-->
     <insert id="addSurcharge">
-
             insert into
-                price_surcharge(id, charge_name, charge_name_en, computing_formula, code)
+                price_surcharge(id, charge_name, charge_name_en, code)
             values
 
         <foreach collection="po" index="" separator="," item="row" open="" close="">
-            (#{row.id}, #{row.chargeName}, #{row.chargeNameEn}, #{row.computingFormula}, #{row.code})
+            (#{row.id}, #{row.chargeName}, #{row.chargeNameEn}, #{row.code})
         </foreach>
 
     </insert>
-
-    <update id="updById">
-        update price_surcharge set computing_formula = #{po.computingFormula} where id = #{po.id}
-    </update>
-
-    <select id="getById" resultType="com.apl.lms.price.exp.pojo.po.SurchargePo">
-        select charge_name, computing_formula, code, charge_name_en from price_surcharge where id = #{id}
-    </select>
 
     <delete id="delById">
         delete from price_surcharge where id = #{id}

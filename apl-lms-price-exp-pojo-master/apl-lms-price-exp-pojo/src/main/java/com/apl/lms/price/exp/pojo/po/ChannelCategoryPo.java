@@ -45,12 +45,10 @@ public class ChannelCategoryPo extends Model<ChannelCategoryPo> {
     @NotNull(message = "材积计重方式不能为空")
     private Integer volumeWeightWay;
 
-    @ApiModelProperty(name = "carrier" , value = "承运商" , required = true)
-    @NotBlank(message = "承运商不能为空")
-    @Length(max = 50, message = "承运商长度不能超过50")
+    @ApiModelProperty(name = "carrier" , value = "运输方")
     private String carrier;
 
-    @ApiModelProperty(name = "cargoType" , value = "运件类型 1国际快递 2国际空运 3国际海运 4国际小巴 5空派 6海派" , required = true)
+    @ApiModelProperty(name = "cargoType" , value = "运件类型 1国际快递 2国际空运 3国际海运 4国际小包 5空派 6海派" , required = true)
     @TypeValidator(value = {"1","2","3","4","5","6"} , message = "运件类型错误")
     @NotNull(message = "运件类型不能为空")
     private Integer cargoType;
@@ -59,4 +57,14 @@ public class ChannelCategoryPo extends Model<ChannelCategoryPo> {
     @Range(min = 5000, max = 9999, message = "体重基数取值范围5000-9999")
     @NotNull(message = "体积基数不能为空")
     private Integer volumeDivisor;
+
+    @ApiModelProperty(name = "remoteChargeFormula" , value = "偏远费公式")
+    @Length(max = 50, message = "偏远费公式长度不能超过50")
+    private String remoteChargeFormula;
+
+    public String getChannelCategory() {
+        if(channelCategory != null)
+            channelCategory = channelCategory.toUpperCase();
+        return channelCategory;
+    }
 }

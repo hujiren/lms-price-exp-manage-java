@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.CarrierMapper">
+
+    <!-- 查找列表 2020-10-07-->
+    <select id="getList" resultType="com.apl.lms.common.query.manage.po.CommonCarrierPo">
+        SELECT
+           id, 
+           carrier_name
+        FROM
+           carrier
+    </select>
+
+    <!--查找列表-->
+    <select id="getListByInnerOrgId" resultType="com.apl.lms.common.query.manage.po.CommonCarrierPo">
+        SELECT
+           id,
+           carrier_name
+        FROM
+           carrier
+        where
+            inner_org_id = #{innerOrgId}
+    </select>
+
+
+</mapper>

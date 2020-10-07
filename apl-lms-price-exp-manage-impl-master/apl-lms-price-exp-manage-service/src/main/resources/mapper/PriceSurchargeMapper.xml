@@ -10,7 +10,7 @@
           charge_name,
           charge_way,
           weight_way,
-          special_commodity,
+          special_commodity_code,
           formula,
           remark,
           over_weight,

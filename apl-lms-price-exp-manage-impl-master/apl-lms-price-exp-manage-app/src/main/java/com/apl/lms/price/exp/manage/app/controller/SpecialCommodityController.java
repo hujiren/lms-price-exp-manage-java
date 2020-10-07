@@ -1,10 +1,8 @@
 package com.apl.lms.price.exp.manage.app.controller;
-import com.apl.lib.pojo.dto.PageDto;
+import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.SpecialCommodityService;
-import com.apl.lms.price.exp.pojo.dto.SpecialCommodityKeyDto;
 import com.apl.lms.price.exp.pojo.po.SpecialCommodityPo;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -33,10 +29,10 @@ public class SpecialCommodityController {
     SpecialCommodityService specialCommodityService;
 
     @PostMapping(value = "/get-list")
-    @ApiOperation(value =  "分页获取特殊物品列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<SpecialCommodityPo>> getList(PageDto pageDto ,
-                                                        @Validated SpecialCommodityKeyDto specialCommodityKeyDto){
-        return specialCommodityService.getList(pageDto, specialCommodityKeyDto);
+    @ApiOperation(value =  "获取特殊物品列表" , notes = "获取特殊物品列表")
+    public ResultUtil<List<SpecialCommodityPo>> getList(){
+        List<SpecialCommodityPo> list = specialCommodityService.getList();
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, list);
     }
 
     @PostMapping(value = "/delete")
@@ -54,11 +50,4 @@ public class SpecialCommodityController {
         return specialCommodityService.addSpecialCommodity(specialCommodityPoList);
     }
 
-    @PostMapping(value = "/get")
-    @ApiOperation(value =  "获取特殊物品详细" , notes = "获取特殊物品详细")
-    @ApiImplicitParam(name = "id", value = "特殊物品Id", required = true, paramType = "query")
-    public ResultUtil<SpecialCommodityPo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
-
-        return specialCommodityService.getSpecialCommodity(id);
-    }
 }

@@ -1,19 +1,14 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import com.apl.lib.constants.CommonStatusCode;
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-
 import java.util.List;
 
 /**
@@ -39,21 +34,16 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
 
     /**
      * 分页查询
-     * @param pageDto
-     * @param channelCateGoryKeyDto
+     * @param
      * @return
      */
     @Override
-    public ResultUtil<Page<ChannelCategoryPo>> getList(PageDto pageDto, ChannelCategoryKeyDto channelCateGoryKeyDto) {
+    public ResultUtil<List<ChannelCategoryPo>> getList() {
 
-        Page<ChannelCategoryPo> page = new Page();
-        page.setCurrent(pageDto.getPageIndex());
-        page.setSize(pageDto.getPageSize());
 
-        List<ChannelCategoryPo> channelCategoryVoList = baseMapper.getList(page, channelCateGoryKeyDto);
+        List<ChannelCategoryPo> channelCategoryVoList = baseMapper.getList();
 
-        page.setRecords(channelCategoryVoList);
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, channelCategoryVoList);
     }
 
 
@@ -102,20 +92,4 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, channelCategoryPo.getId().toString());
     }
 
-    /**
-     * 获取渠道类型详细
-     * @param id
-     * @return
-     */
-    @Override
-    public ResultUtil<ChannelCategoryPo> getChannelCategory(Long id) {
-
-        ChannelCategoryPo channelCategoryPo = baseMapper.getChannelCateGory(id);
-
-        if(channelCategoryPo == null){
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_FAIL.getCode(), "id不正确", null);
-        }
-
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, channelCategoryPo);
-    }
 }

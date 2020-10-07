@@ -1,10 +1,7 @@
 package com.apl.lms.price.exp.manage.service;
 
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.SpecialCommodityKeyDto;
 import com.apl.lms.price.exp.pojo.po.SpecialCommodityPo;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -24,7 +21,7 @@ public interface SpecialCommodityService extends IService<SpecialCommodityPo> {
      * @author hjr
      * @since 2020-08-08
      */
-    ResultUtil<Page<SpecialCommodityPo>> getList(PageDto pageDto, SpecialCommodityKeyDto specialCommodityKeyDto);
+    List<SpecialCommodityPo> getList();
 
     /**
      * @Desc: 根据Id删除特殊物品
@@ -39,10 +36,4 @@ public interface SpecialCommodityService extends IService<SpecialCommodityPo> {
      * @since 2020-08-08
      */
     ResultUtil<Integer> addSpecialCommodity(List<SpecialCommodityPo> specialCommodityPoList);
-
-    /**获取特殊物品详情
-     * @param id
-     * @return
-     */
-    ResultUtil<SpecialCommodityPo> getSpecialCommodity(Long id);
 }

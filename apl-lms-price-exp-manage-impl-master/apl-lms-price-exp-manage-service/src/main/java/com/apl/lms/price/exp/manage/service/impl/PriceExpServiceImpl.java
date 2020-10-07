@@ -17,7 +17,7 @@ import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
-import com.apl.lms.price.exp.manage.dao.PriceExpDao;
+import com.apl.lms.price.exp.manage.dao.PriceListDao;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpMapper;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.manage.util.CheckObjFieldINull;
@@ -111,7 +111,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
 
     @Autowired
-    PriceExpDao priceExpDao;
+    PriceListDao priceListDao;
 
     /**
      * 分页查询销售价格列表
@@ -854,7 +854,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
 
         //创建租户真实表
-        priceExpDao.createRealTable();
+        priceListDao.createRealTable();
 
         Integer saveResult = baseMapper.addExpPrice(priceExpMainPo);
         if (saveResult < 1) {
@@ -897,7 +897,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    @Transactional
     public ResultUtil<Boolean> deletePriceBatch(List<Long> priceIdList) {
 
         StringBuffer sbPriceIds = new StringBuffer();

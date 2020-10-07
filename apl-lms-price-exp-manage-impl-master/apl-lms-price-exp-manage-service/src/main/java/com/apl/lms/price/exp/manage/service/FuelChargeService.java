@@ -1,13 +1,12 @@
 package com.apl.lms.price.exp.manage.service;
 
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.FuelChargeKeyDto;
 import com.apl.lms.price.exp.pojo.dto.FuelChargeAddDto;
 import com.apl.lms.price.exp.pojo.po.FuelChargePo;
 import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * @author hjr start
@@ -17,11 +16,10 @@ public interface FuelChargeService extends IService<FuelChargePo> {
 
     /**
      * 分页查询燃油费列表
-     * @param pageDto
-     * @param fuelChargeKeyDto
+     * @param
      * @return
      */
-    ResultUtil<Page<FuelChargeVo>> getList(PageDto pageDto, FuelChargeKeyDto fuelChargeKeyDto);
+    ResultUtil<List<FuelChargeVo>> getList();
 
     /**
      * 删除燃油费
@@ -43,11 +41,4 @@ public interface FuelChargeService extends IService<FuelChargePo> {
      * @return
      */
     ResultUtil<String> addFulCharge(FuelChargeAddDto fuelChargeAddDto);
-
-    /**
-     * 获取燃油费详情
-     * @param id
-     * @return
-     */
-    ResultUtil<FuelChargeVo> getFuelCharge(Long id);
 }

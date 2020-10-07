@@ -36,11 +36,6 @@ public class SurchargePo extends Model<SurchargePo> {
     @Length(max = 50, message = "附加费英文名称长度不能超过50")
     private String chargeNameEn;
 
-    @ApiModelProperty(name = "computingFormula", value = "计算公式", required = true)
-    @NotBlank(message = "计算公式不能为空")
-    @Length(max = 50, message = "计算公式长度不能超过50")
-    private String computingFormula;
-
     @ApiModelProperty(name = "code", value = "代码", required = true)
     @NotNull(message = "code不能为空")
     @Min(value = 0, message = "计算公式简码不能小于0")

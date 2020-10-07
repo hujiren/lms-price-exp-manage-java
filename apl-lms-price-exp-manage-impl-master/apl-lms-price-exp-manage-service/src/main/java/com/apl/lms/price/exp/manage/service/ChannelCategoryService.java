@@ -1,11 +1,11 @@
 package com.apl.lms.price.exp.manage.service;
 
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.ChannelCategoryKeyDto;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * @author hjr start
@@ -15,11 +15,11 @@ public interface ChannelCategoryService extends IService<ChannelCategoryPo> {
 
     /**
      * 分页查询渠道类型列表
-     * @param pageDto
+     * @param
      * @param
      * @return
      */
-    ResultUtil<Page<ChannelCategoryPo>> getList(PageDto pageDto, ChannelCategoryKeyDto channelCateGoryKeyDto);
+    ResultUtil<List<ChannelCategoryPo>> getList();
 
     /**
      * 删除
@@ -42,10 +42,4 @@ public interface ChannelCategoryService extends IService<ChannelCategoryPo> {
      */
     ResultUtil<String> addChannelCategory(ChannelCategoryPo channelCategoryPo);
 
-    /**
-     * 获取渠道类型详细
-     * @param id
-     * @return
-     */
-    ResultUtil<ChannelCategoryPo> getChannelCategory(Long id);
 }
