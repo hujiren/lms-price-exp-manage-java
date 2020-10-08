@@ -105,6 +105,20 @@ public class PriceExpPriceInfoVo {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long pricePublishedId;
 
+    @ApiModelProperty(name = "innerOrgId" , value = "租户Id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long innerOrgId;
+
+    @ApiModelProperty(name = "quoteOrgId" , value = "引用租户Id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long quoteOrgId;
+
+    @ApiModelProperty(name = "updTime" , value = "更新时间")
+    private Timestamp updTime;
+
+    @ApiModelProperty(name = "quotePriceUpdTime" , value = "引用价格更新时间")
+    private Timestamp quotePriceUpdTime;
+
 
 
 

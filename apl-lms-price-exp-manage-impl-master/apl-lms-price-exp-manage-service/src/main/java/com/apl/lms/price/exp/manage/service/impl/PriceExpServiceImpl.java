@@ -34,6 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +67,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         THE_DATA_FORMAT_MUST_BE_A_TWO_DIMENSIONAL_ARRAY("THE_DATA_FORMAT_MUST_BE_A_TWO_DIMENSIONAL_ARRAY","数据格式必须是二维数组"),
         PARAMETER_ERROR("PARAMETER_ERROR", "参数错误"),
         PLEASE_FILL_IN_THE_DATA_FIRST("PLEASE_FILL_IN_THE_DATA_FIRST", "请先填写数据"),
-        THE_MAIN_TABLE_DOES_NOT_EXIST_AND_CANNOT_BE_UPDATED("THE_MAIN_TABLE_DOES_NOT_EXIST_AND_CANNOT_BE_UPDATED","主表不存在,无法更新");
+        THE_MAIN_TABLE_DOES_NOT_EXIST_AND_CANNOT_BE_UPDATED("THE_MAIN_TABLE_DOES_NOT_EXIST_AND_CANNOT_BE_UPDATED","主表不存在,无法更新"),
+        NO_TENANT_DETAILS_WERE_OBTAINED("NO_TENANT_DETAILS_WERE_OBTAINED", "同步失败, 无法获取到租户详细信息");
 
         private String code;
         private String msg;
@@ -113,6 +116,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Autowired
     PriceListDao priceListDao;
 
+    @Autowired
+    SysInnerOrgService sysInnerOrgService;
     /**
      * 分页查询销售价格列表
      *
@@ -529,7 +534,12 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             }
         }
 
-
+        priceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
+        if(priceExpMainPo.getQuotePriceId() > 0){
+            SysInnerOrgPo sysInnerOrgInfo = sysInnerOrgService.getSysInnerOrgInfo(priceExpUpdDto.getQuoteOrgId());
+            if(null != sysInnerOrgInfo && sysInnerOrgInfo.getOrgCode() != null)
+            priceListDao.getRealUpdTime(priceExpMainPo.getQuotePriceId(), sysInnerOrgInfo.getOrgCode());
+        }
         //更新价格表
         Integer integer = baseMapper.updById(priceExpMainPo);
         if (integer < 1) {
@@ -565,6 +575,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpMainPo.setStartWeight(priceExpDataUpdDto.getStartWeight());
             priceExpMainPo.setEndWeight(priceExpDataUpdDto.getEndWeight());
             priceExpMainPo.setPriceFormat(priceExpDataUpdDto.getPriceFormat());
+            priceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
             Integer resInt = baseMapper.updData(priceExpMainPo);
             if (resInt < 1) {
                 throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
@@ -728,7 +739,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         Long priceDataId = SnowflakeIdWorker.generateId();
 
-        ResultUtil<Long> longResultUtil = addExpPriceBase(priceExpAddDto, 0l, priceDataId);
+        ResultUtil<Long> longResultUtil = addExpPriceBase(priceExpAddDto, 0l, priceDataId, 0L);
 
         //保存价格表数据
         Boolean saveSuccess = priceExpDataService.addPriceExpData(priceDataId,priceExpAddDto);
@@ -747,6 +758,49 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, longResultUtil.getData());
     }
 
+    /**
+     * 同步价格表
+     * @param priceIds
+     * @return
+     */
+    @Override
+    public ResultUtil<Boolean> syncPrice(List<Long> priceIds) {
+
+        //根据ids获取将要更新的主表列表 id, quote_price_id, inner_org_id, quote_price_upd_time, upd_time, inner_org_id
+        List<PriceExpMainPo> priceExpMainList = baseMapper.getList(priceIds);
+
+        if(null != priceExpMainList && priceExpMainList.size() > 0){
+
+            for (PriceExpMainPo priceExpMainPo : priceExpMainList) {
+                //获取引用价格的org_code 和 inner_org_id
+                SysInnerOrgPo sysInnerOrgInfo = sysInnerOrgService.getSysInnerOrgInfo(priceExpMainPo.getQuoteOrgId());
+                if(null == sysInnerOrgInfo || sysInnerOrgInfo.getOrgCode() == null)
+                    return ResultUtil.APPRESULT(ExpListServiceCode.NO_TENANT_DETAILS_WERE_OBTAINED.code,
+                            ExpListServiceCode.NO_TENANT_DETAILS_WERE_OBTAINED.msg, false);
+
+                //获取主表信息
+                PriceExpMainPo realPriceInfo = priceListDao.getRealPriceInfo(priceExpMainPo.getQuotePriceId(), sysInnerOrgInfo.getOrgCode());
+
+                //组装新的主表并执行更新
+                PriceExpMainPo newPriceExpMainPo = new PriceExpMainPo();
+                BeanUtil.copyProperties(realPriceInfo, newPriceExpMainPo);
+                newPriceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
+                newPriceExpMainPo.setQuotePriceUpdTime(realPriceInfo.getUpdTime());
+
+                baseMapper.updById(newPriceExpMainPo);
+            }
+        }
+
+
+
+
+        //获取及更新主表信息
+
+        return null;
+
+
+
+    }
 
     /**
      * 引用价格表
@@ -758,13 +812,16 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Transactional
     public ResultUtil<Long> referencePrice(ReferencePriceDto referencePriceDto) {
 
-        ResultUtil<Long> longResultUtil = addExpPriceBase(referencePriceDto, referencePriceDto.getQuotePriceId(), referencePriceDto.getPriceDataId());
+        ResultUtil<Long> longResultUtil = addExpPriceBase(referencePriceDto,
+                                                          referencePriceDto.getQuotePriceId(),
+                                                          referencePriceDto.getPriceDataId(),
+                                                          referencePriceDto.getInnerOrgId());
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, longResultUtil.getData());
     }
 
 
-    ResultUtil<Long> addExpPriceBase(PriceExpAddBaseDto priceExpAddDto, Long quotePriceId, Long priceDataId) {
+    ResultUtil<Long> addExpPriceBase(PriceExpAddBaseDto priceExpAddDto, Long quotePriceId, Long priceDataId, Long innerOrgId) {
 
         //不是公布价且不是成本价且不是销售价, 有服务商即成本价, 允许既是公布价又是成本价
         if (priceExpAddDto.getIsPublishedPrice().equals(2)
@@ -855,7 +912,20 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         //创建租户真实表
         priceListDao.createRealTable();
-
+        if(priceExpMainPo.getQuotePriceId() > 0){
+            //添加引用租户id 引用价格更新时间
+            if(innerOrgId > 0) {
+                //获取 inner_org_code
+                SysInnerOrgPo sysInnerOrgInfo = sysInnerOrgService.getSysInnerOrgInfo(innerOrgId);
+                if (null != sysInnerOrgInfo && sysInnerOrgInfo.getOrgCode() != null) {
+                    //通过 inner_org_code 和引用价格id查询真实表中的引用价格数据
+                    PriceExpMainPo resultPo = priceListDao.getRealUpdTime(priceExpMainPo.getQuotePriceId(), sysInnerOrgInfo.getOrgCode());
+                    priceExpMainPo.setQuotePriceUpdTime(resultPo.getUpdTime());
+                }
+                priceExpMainPo.setQuoteOrgId(innerOrgId);
+            }
+        }
+        priceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
         Integer saveResult = baseMapper.addExpPrice(priceExpMainPo);
         if (saveResult < 1) {
             throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,

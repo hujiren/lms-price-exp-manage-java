@@ -66,8 +66,8 @@ public class CarrierController {
         return carrierService.getList();
     }
 
-    @PostMapping(value = "/get-list-for-admin")
-    @ApiOperation(value =  "查找列表-管理员通道" , notes = "查找列表-管理员通道")
+    @PostMapping(value = "/get-list-selector")
+    @ApiOperation(value =  "查找列表-选择器" , notes = "查找列表-选择器")
     @ApiImplicitParam(name = "innerOrgId",value = " 租户id",required = true  , paramType = "query")
     public ResultUtil<List<CommonCarrierPo>> getList(Long innerOrgId) {
 

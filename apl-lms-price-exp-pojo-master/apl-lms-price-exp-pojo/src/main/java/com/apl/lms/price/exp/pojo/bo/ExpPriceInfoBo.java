@@ -4,13 +4,15 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 /**
  * @author hjr start
  * @Classname ExpPriceInfoBo
  * @Date 2020/9/15 11:37
  */
 @Data
-@ApiModel(value = "快递价格批量删除-组装对象", description = "快递价格批量删除-组装对象")
+@ApiModel(value = "快递价格批量关联属性对象", description = "快递价格批量关联属性对象")
 public class ExpPriceInfoBo {
 
     @ApiModelProperty(name = "id", value = "价格表id")
@@ -27,4 +29,10 @@ public class ExpPriceInfoBo {
 
     @ApiModelProperty(name = "priceFormat", value = "价格表格式")
     private Integer priceFormat;
+
+    @ApiModelProperty(name = "updTime", value = "更新时间")
+    private Timestamp updTime;
+
+    @ApiModelProperty(name = "quotePriceUpdTime", value = "引用价格更新时间")
+    private Timestamp quotePriceUpdTime;
 }

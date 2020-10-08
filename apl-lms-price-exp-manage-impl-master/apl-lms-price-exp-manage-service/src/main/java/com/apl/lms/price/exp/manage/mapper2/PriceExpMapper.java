@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -119,4 +120,18 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     Integer upd(@Param("po") PriceExpMainPo priceExpMainPo);
+
+    /**
+     * 获取同步价格属性
+     * @param priceIds
+     * @return
+     */
+    List<ExpPriceInfoBo> getSyncPriceAttribute(List<Long> priceIds);
+
+    /**
+     * 查询列表
+     * @param priceIds
+     * @return
+     */
+    List<PriceExpMainPo> getList(@Param("ids") List<Long> priceIds);
 }

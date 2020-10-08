@@ -108,6 +108,18 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "customerName" , value = "客户名称")
     private String customerName;
 
+    @ApiModelProperty(name = "updTime" , value = "更新时间")
+    private Timestamp updTime;
+
+    @ApiModelProperty(name = "quotePriceUpdTime" , value = "引用价格更新时间")
+    private Timestamp quotePriceUpdTime;
+
+    @ApiModelProperty(name = "innerOrgId" , value = "租户id")
+    private Long innerOrgId;
+
+    @ApiModelProperty(name = "quoteOrgId" , value = "引用租户id")
+    private Long quoteOrgId;
+
     public String getAccountNo() {
         if(null == accountNo){
             accountNo = "";

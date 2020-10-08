@@ -100,6 +100,12 @@ public class PriceExpController {
         return priceExpService.addExpPrice(priceExpAddDto);
     }
 
+    @PostMapping(value = "/sync-price")
+    @ApiOperation(value = "同步价格表", notes = "同步价格表")
+    public ResultUtil<Boolean> syncPrice(@NotEmpty(message = "价格表id不能为空") @RequestBody List<Long> priceIds){
+
+        return priceExpService.syncPrice(priceIds);
+    }
 
     @PostMapping(value = "/reference-price")
     @ApiOperation(value = "引用价格表", notes = "引用价格表")
@@ -107,7 +113,6 @@ public class PriceExpController {
 
         return priceExpService.referencePrice(referencePriceDto);
     }
-
 
     @PostMapping(value = "/delete-price-batch")
     @ApiOperation(value = "批量删除价格表", notes = "根据Id批量删除价格表")
@@ -117,7 +122,7 @@ public class PriceExpController {
 
 
     @PostMapping(value = "/upd-exp-price")
-    @ApiOperation(value = "根据Id修改价格主表", notes = "根据Id修改价格主表")
+    @ApiOperation(value = "修改价格主表", notes = "修改价格主表")
     public ResultUtil<Boolean> updExpPrice(@Validated @RequestBody PriceExpUpdDto priceExpUpdDto) {
         return priceExpService.updExpPrice(priceExpUpdDto);
     }

@@ -133,8 +133,8 @@
              lms_exp_price(
              id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
              price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name,
-             price_sale_name, channel_category,
-             price_status, quote_price_id, partner_id, partner_name, customer_groups_id, customer_groups_name, customer_ids, customer_name)
+             price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_groups_id,
+             customer_groups_name, customer_ids, customer_name, upd_time, quote_price_upd_time)
          values
              (#{po.id},
              #{po.startDate},
@@ -163,13 +163,10 @@
              #{po.customerGroupsId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
              #{po.customerGroupsName},
              #{po.customerIds,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
-             #{po.customerName})
+             #{po.customerName},
+             #{po.updTime},
+             #{po.quotePriceUpdTime})
      </insert>
-
-    <!--获取租户和价格数据表id-->
-    <select id="getInnerOrgIdAndPriceDatId" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
-        select id, quote_price_id, inner_org_id, price_data_id, price_format from lms_exp_price where id = #{id}
-    </select>
 
     <!--更新-->
     <update id="updById">
@@ -213,6 +210,15 @@
         <if test="po.priceSaleName != null">
             price_sale_name = #{po.priceSaleName},
         </if>
+        <if test="po.updTime != null">
+            upd_time = #{po.updTime},
+        </if>
+        <if test="po.quotePriceUpdTime != null">
+            quote_price_upd_time = #{po.quotePriceUpdTime},
+        </if>
+        <if test="po.quoteOrgId != null">
+            quote_org_id = #{po.quoteOrgId},
+        </if>
             price_name = #{po.priceName},
             channel_category = #{po.channelCategory},
             start_date = #{po.startDate}, end_date = #{po.endDate}, currency = #{po.currency}, account_type = #{po.accountType},
@@ -222,7 +228,7 @@
     </update>
 
     <update id="updData">
-        update lms_exp_price set start_weight = #{po.startWeight}, end_Weight = #{po.endWeight}, price_format = #{po.priceFormat}
+        update lms_exp_price set start_weight = #{po.startWeight}, end_Weight = #{po.endWeight}, price_format = #{po.priceFormat}, upd_time = #{po.updTime}
         where id = #{po.id}
     </update>
 
@@ -256,7 +262,11 @@
             end_weight,
             aging,
             price_published_id,
-            price_data_id
+            price_data_id,
+            inner_org_id,
+            quote_org_id,
+            upd_time,
+            quote_price_upd_time
         from
             lms_exp_price
         where
@@ -288,4 +298,44 @@
     <update id="upd">
         update lms_exp_price set start_weight = #{po.startWeight}, end_weight = #{po.endWeight} where id = #{po.id}
     </update>
+
+    <!--获取租户和价格数据表id-->
+    <select id="getInnerOrgIdAndPriceDatId" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
+        select id, quote_price_id, inner_org_id, price_data_id, price_format, upd_time, quote_price_upd_time from lms_exp_price where id = #{id}
+    </select>
+
+    <!--获取同步价格属性-->
+    <select id="getSyncPriceAttribute" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
+        select
+            id,
+            quote_price_id,
+            inner_org_id,
+            price_data_id,
+            price_format,
+            quote_price_upd_time
+        from
+            lms_exp_price
+        where
+            id in
+            <foreach collection="priceIds" item="row" open="(" close=")" separator=",">
+                #{row}
+            </foreach>
+    </select>
+
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.po.PriceExpMainPo">
+        select
+            id,
+            quote_price_id,
+            inner_org_id,
+            upd_time,
+            quote_price_upd_time,
+            quote_org_id
+        from
+            lms_exp_price
+        where
+            id in
+            <foreach collection="ids" item="row" separator="," open="(" close=")">
+                #{row}
+            </foreach>
+    </select>
 </mapper>

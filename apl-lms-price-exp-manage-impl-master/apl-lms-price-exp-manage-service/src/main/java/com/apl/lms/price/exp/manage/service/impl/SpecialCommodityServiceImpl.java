@@ -78,6 +78,10 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
                             return ResultUtil.APPRESULT(SpecialCommodityServiceCode.THE_DATA_ALREADY_EXISTS.code,
                                     SpecialCommodityServiceCode.THE_DATA_ALREADY_EXISTS.msg + specialCommodityPo.getCode().toString(), null);
                         }
+                        if (specialCommodityPo.getSpecialCommodityName().equals(commodityPo.getSpecialCommodityName())) {
+                            return ResultUtil.APPRESULT(SpecialCommodityServiceCode.THE_DATA_ALREADY_EXISTS.code,
+                                    SpecialCommodityServiceCode.THE_DATA_ALREADY_EXISTS.msg + specialCommodityPo.getSpecialCommodityName(), null);
+                        }
                     }
                 }
             specialCommodityPo.setId(SnowflakeIdWorker.generateId());

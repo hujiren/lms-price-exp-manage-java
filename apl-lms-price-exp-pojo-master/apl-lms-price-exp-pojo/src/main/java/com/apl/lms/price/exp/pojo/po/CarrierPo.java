@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Min;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -13,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * <p>
@@ -29,11 +32,15 @@ import lombok.EqualsAndHashCode;
 public class CarrierPo extends Model<CarrierPo> {
 
 
-    @TableId(value = "id", type = IdType.UUID)
+    @TableId(value = "id", type = IdType.INPUT)
+    @ApiModelProperty(name = "id" , value = "id" , required = true)
+    @NotNull(message = "id不能为空")
+    @Min(value = 0, message = "id不能小于0")
     private Long id;
 
     @ApiModelProperty(name = "carrierName" , value = "运输方名称" , required = true)
-    @NotEmpty(message = "运输方名称不能为空")
+    @NotBlank(message = "运输方名称不能为空")
+    @Length(max = 50, message = "运输方名称长度不能超过50")
     private String carrierName;
 
 

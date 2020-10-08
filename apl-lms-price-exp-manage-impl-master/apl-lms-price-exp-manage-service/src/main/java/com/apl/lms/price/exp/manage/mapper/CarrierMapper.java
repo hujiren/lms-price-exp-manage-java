@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CarrierMapper extends BaseMapper<CarrierPo> {
 
-
+    
     /**
      * @Desc: 查找列表
      * @Author: ${cfg.author}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.SysInnerOrgMapper">
+
+    <select id="getSysInnerOrgInfo" resultType="com.apl.lms.price.exp.pojo.po.SysInnerOrgPo">
+        select
+            id,
+            org_code
+        from
+            sys_inner_org
+        where
+            id = #{innerOrgId}
+    </select>
+</mapper>

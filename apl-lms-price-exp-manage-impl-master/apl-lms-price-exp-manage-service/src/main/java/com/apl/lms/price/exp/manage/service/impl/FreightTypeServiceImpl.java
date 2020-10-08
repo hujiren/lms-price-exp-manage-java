@@ -50,6 +50,10 @@ public class FreightTypeServiceImpl extends ServiceImpl<FreightTypeMapper, Freig
                         return ResultUtil.APPRESULT(FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.code,
                                 FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.msg + " " +typePo.getFreightTypeName(), null);
                     }
+                    if(freightTypePo.getCode().equals(typePo.getCode())){
+                        return ResultUtil.APPRESULT(FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.code,
+                                FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.msg + " " +typePo.getCode(), null);
+                    }
                 }
             }
             typePo.setId(SnowflakeIdWorker.generateId());

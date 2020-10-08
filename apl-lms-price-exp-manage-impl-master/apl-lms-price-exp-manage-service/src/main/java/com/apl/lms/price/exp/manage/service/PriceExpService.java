@@ -68,6 +68,12 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     ResultUtil<Long> addExpPrice(PriceExpAddDto priceExpAddDto);
 
+    /**
+     * 同步价格表
+     * @param priceIds
+     * @return
+     */
+    ResultUtil<Boolean> syncPrice(List<Long> priceIds);
 
     /**
      * 根据id批量删除价格数据
@@ -111,4 +117,5 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     List<String> updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto);
+
 }
