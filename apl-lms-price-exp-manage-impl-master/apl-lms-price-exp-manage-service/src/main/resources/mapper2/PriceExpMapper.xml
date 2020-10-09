@@ -12,6 +12,9 @@
         where
         inner_org_id = #{key.innerOrgId} and
         is_published_price=2 and
+        <if test="key.isQuote > 0">
+            and is_quote = #{key.isQuote}
+        </if>
         <if test="key.priceType == 1">
             customer_groups_name != ''
         </if>
@@ -68,6 +71,9 @@
         inner_org_id = #{key.innerOrgId}
         and is_published_price = 2
         and partner_id>0
+        <if test="key.isQuote > 0">
+            and is_quote = #{key.isQuote}
+        </if>
         <if test="key.volumeDivisor != null">
             and volume_divisor = #{key.volumeDivisor}
         </if>
@@ -113,6 +119,9 @@
         lms_exp_price
         where
             is_published_price = 1 and end_date>now()
+        <if test="key.isQuote > 0">
+            and is_quote = #{key.isQuote}
+        </if>
         <if test="key.priceStatus != null and key.priceStatus > 0">
             and price_status = #{key.priceStatus}
         </if>
@@ -134,7 +143,7 @@
              id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
              price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name,
              price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_groups_id,
-             customer_groups_name, customer_ids, customer_name, upd_time, quote_price_upd_time)
+             customer_groups_name, customer_ids, customer_name, upd_time, quote_price_upd_time, quote_org_id, is_quote)
          values
              (#{po.id},
              #{po.startDate},
@@ -165,23 +174,19 @@
              #{po.customerIds,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
              #{po.customerName},
              #{po.updTime},
-             #{po.quotePriceUpdTime})
+             #{po.quotePriceUpdTime},
+             #{po.quoteOrgId},
+             #{po.isQuote})
      </insert>
 
     <!--更新-->
     <update id="updById">
         update lms_exp_price set
-        <if test="po.zoneId != null">
-            zone_id = #{po.zoneId},
-        </if>
         <if test="po.accountNo != null">
             account_no = #{po.accountNo},
         </if>
         <if test="po.specialCommodity != null">
             special_commodity = #{po.specialCommodity, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
-        </if>
-        <if test="po.aging != null">
-            aging = #{po.aging},
         </if>
         <if test="po.isPublishedPrice != null">
             is_published_price = #{po.isPublishedPrice},
@@ -189,8 +194,20 @@
         <if test="po.pricePublishedId != null">
             price_published_id = #{po.pricePublishedId},
         </if>
+        <if test="po.aging != null">
+            aging = #{po.aging},
+        </if>
+        <if test="po.zoneId != null">
+            zone_id = #{po.zoneId},
+        </if>
         <if test="po.priceCode != null">
             price_code = #{po.priceCode},
+        </if>
+        <if test="po.priceSaleName != null">
+            price_sale_name = #{po.priceSaleName},
+        </if>
+        <if test="po.priceStatus != null">
+            price_status = #{po.priceStatus},
         </if>
         <if test="po.customerGroupsId != null">
             customer_groups_id = #{po.customerGroupsId, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
@@ -204,12 +221,6 @@
         <if test="po.customerName != null">
             customer_name = #{po.customerName},
         </if>
-        <if test="po.priceStatus != null">
-            price_status = #{po.priceStatus},
-        </if>
-        <if test="po.priceSaleName != null">
-            price_sale_name = #{po.priceSaleName},
-        </if>
         <if test="po.updTime != null">
             upd_time = #{po.updTime},
         </if>
@@ -218,6 +229,15 @@
         </if>
         <if test="po.quoteOrgId != null">
             quote_org_id = #{po.quoteOrgId},
+        </if>
+        <if test="po.isQuote != null">
+            is_quote = #{po.is_quote},
+        </if>
+        <if test="po.partnerId != null">
+            partner_id = #{po.partnerId},
+        </if>
+        <if test="po.partnerName != null">
+            partner_name = #{po.partnerName},
         </if>
             price_name = #{po.priceName},
             channel_category = #{po.channelCategory},

@@ -84,7 +84,7 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
 
 
     @Override
-    public ResultUtil<List<PriceSurchargeVo>> selectById(Long priceId) throws Exception {
+    public List<PriceSurchargeVo> selectById(Long priceId) throws Exception {
 
         List<PriceSurchargeVo> priceSurchargeList = baseMapper.getByPriceId(priceId);
         //组装特殊物品
@@ -101,7 +101,8 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
         joinTabs.add(joinSpecialCommodity);
         //执行跨项目跨库关联
         JoinUtil.join(priceSurchargeList, joinTabs);
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceSurchargeList);
+
+        return priceSurchargeList;
     }
 
 }

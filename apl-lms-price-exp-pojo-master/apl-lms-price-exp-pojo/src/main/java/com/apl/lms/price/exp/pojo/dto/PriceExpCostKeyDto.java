@@ -32,9 +32,9 @@ public class PriceExpCostKeyDto {
     @Min(value = 0, message = "服务商id不能小于0")
     private Long partnerId;
 
-    @ApiModelProperty(name = "priceStatus", value = "销售价格表状态 1正常 2计账 3无效 4未过期 5即将过期 6已过期")
+    @ApiModelProperty(name = "priceStatus", value = "价格表状态 1正常 2计账 3无效 4未过期 5即将过期 6已过期")
     @TypeValidator(value = {"0","1","2","3","4","5","6"} , message = "销售价格表状态错误")
-    @Min(value = 0, message = "销售价格表状态不能小于0")
+    @Min(value = 0, message = "价格表状态不能小于0")
     private Integer priceStatus;
 
     @ApiModelProperty(name = "channelCategory", value = "成本价渠道类型")
@@ -42,6 +42,9 @@ public class PriceExpCostKeyDto {
 
     @ApiModelProperty(name = "keyword", value = "关键词: 按价格表名称")
     private String keyword;
+
+    @ApiModelProperty(name = "isQuote" , value = "是否引用 0全部 1是 2否")
+    private Integer isQuote;
 
     @ApiModelProperty(name = "innerOrgId", value = "租户", hidden = true)
     private Long innerOrgId;

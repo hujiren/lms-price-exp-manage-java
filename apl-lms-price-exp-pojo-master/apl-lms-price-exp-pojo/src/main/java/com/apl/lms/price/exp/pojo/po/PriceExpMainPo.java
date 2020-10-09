@@ -120,6 +120,9 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "quoteOrgId" , value = "引用租户id")
     private Long quoteOrgId;
 
+    @ApiModelProperty(name = "isQuote" , value = "是否引用 0全部 1是 2否")
+    private Integer isQuote;
+
     public String getAccountNo() {
         if(null == accountNo){
             accountNo = "";

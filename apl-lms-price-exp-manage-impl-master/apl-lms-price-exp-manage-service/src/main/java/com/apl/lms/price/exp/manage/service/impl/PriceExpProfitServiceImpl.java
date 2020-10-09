@@ -1,10 +1,10 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.apl.cache.AplCacheUtil;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.join.JoinFieldInfo;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
@@ -12,13 +12,13 @@ import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.sys.lib.feign.InnerFeign;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
-
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,11 +71,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
 
     @Override
-    public ResultUtil<PriceExpProfitPo> getProfit(Long priceId) throws Exception {
+    public PriceExpProfitPo getProfit(Long priceId) throws Exception {
 
         PriceExpProfitPo priceExpProfitPo = baseMapper.getProfit(priceId);
 
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , priceExpProfitPo);
+        return priceExpProfitPo;
     }
 
 
@@ -100,10 +100,15 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         if(null == priceExpProfitPo.getIncreaseProfit()){
             priceExpProfitPo.setIncreaseProfit(emptyProfitList);
         }
-
-        List<PriceExpProfitDto> increaseProfit = priceExpProfitPo.getIncreaseProfit();
+        //上调的利润
+        List<PriceExpProfitDto> increaseProfit2 = priceExpProfitPo.getIncreaseProfit();
+//        List<PriceExpProfitDto> increaseProfit = new Gson().fromJson(new Gson().toJson(increaseProfit2), new TypeToken<List<PriceExpProfitDto>>(){}.getType());
+        String s = (String) JSON.toJSON(increaseProfit2);
+        List<PriceExpProfitDto> increaseProfit = JSON.parseArray(s, PriceExpProfitDto.class);
         if(increaseProfit.size() >0){
+            //遍历上调的利润
             for (PriceExpProfitDto priceExpSaleProfitDto : increaseProfit) {
+                //将空属性设为默认值
                 if(null != priceExpSaleProfitDto.getCountryCode()){
                     priceExpSaleProfitDto.setCountryCode(priceExpSaleProfitDto.getCountryCode().toUpperCase());
                 }else{
@@ -135,12 +140,16 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             //根据priceId找到引用价格id
             ExpPriceInfoBo innerOrgIdAndPriceDatId = priceExpService.getInnerOrgIdAndPriceDatId(priceExpProfitPo.getId());
             if(innerOrgIdAndPriceDatId.getQuotePriceId() > 0) {
+                //如果引用价格id大于0, 则根据引用价格id获取 <最终利润>
                 quoteProfit = getQuoteProfit(innerOrgIdAndPriceDatId.getQuotePriceId());
             }
         }
-
-        if(null == quoteProfit)
-            quoteProfit = emptyProfitList;
+            
+        if(null == quoteProfit)//表示没有引用价格id 或没有引用价格对应的利润
+            quoteProfit = emptyProfitList;//设置为空
+//        if(null != quoteProfit && quoteProfit.size() > 0)
+//            quoteProfit = new Gson().fromJson(new Gson().toJson(quoteProfit), new TypeToken<List<PriceExpProfitDto>>(){}.getType());
+        //合并
         List<PriceExpProfitDto> finalProfit = mergeProfit(increaseProfit, quoteProfit);
 
         Integer flag = 0;
@@ -149,10 +158,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         priceExpProfitPo.setIncreaseProfit(increaseProfit);
         priceExpProfitPo.setFinalProfit(finalProfit);
         if(null!=checkId && checkId>0){
+            //如果有相同id则更新
             flag = baseMapper.updProfit(priceExpProfitPo);
         }
         else {
-            //priceExpProfitPo.setId(SnowflakeIdWorker.generateId());
+            //如果没有相同id则是添加 id采用价格表id
             flag = baseMapper.addProfit(priceExpProfitPo);
         }
 
@@ -253,8 +263,6 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                 newProfitDto.setUnitWeightProfit(newUnitWeightProfit);
                 newProfitDto.setProportionProfit(newProportionProfit);
                 newList.add(newProfitDto);
-
-                //System.out.println(newProfitDto);
 
                 priorEndWeight = endWeight;
                 firstWeight = false;

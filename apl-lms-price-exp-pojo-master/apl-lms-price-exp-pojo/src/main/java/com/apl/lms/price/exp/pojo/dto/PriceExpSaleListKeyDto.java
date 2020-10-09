@@ -52,6 +52,9 @@ public class  PriceExpSaleListKeyDto {
     @ApiModelProperty(name = "keyword", value = "关键词: 报价名称")
     private String keyword;
 
+    @ApiModelProperty(name = "isQuote" , value = "是否引用 0全部 1是 2否")
+    private Integer isQuote;
+
     @ApiModelProperty(name = "innerOrgId", value = "租户id", hidden = true)
     private Long innerOrgId;
 

@@ -27,7 +27,7 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
      * @param id
      * @return
      */
-    ResultUtil<PriceExpRemarkPo> getPriceExpRemark(Long id);
+    PriceExpRemarkPo getPriceExpRemark(Long id);
 
     /**
      * 批量删除

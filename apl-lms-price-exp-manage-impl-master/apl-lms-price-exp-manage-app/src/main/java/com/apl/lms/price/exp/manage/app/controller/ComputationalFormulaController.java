@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
+import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.ComputationalFormulaService;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
@@ -33,8 +34,8 @@ public class ComputationalFormulaController {
     @ApiOperation(value =  "获取报价计算公式列表" , notes = "")
     @ApiImplicitParam(name = "priceId",value = "价格表id",required = true  , paramType = "query")
     public ResultUtil<List<PriceExpComputationalFormulaPo>> getList(@NotNull @Min(value = 1, message = "id不能小于1") Long priceId){
-
-        return computationalFormulaService.getList(priceId);
+        List<PriceExpComputationalFormulaPo> list = computationalFormulaService.getList(priceId);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, list);
     }
 
     @PostMapping(value = "/del")

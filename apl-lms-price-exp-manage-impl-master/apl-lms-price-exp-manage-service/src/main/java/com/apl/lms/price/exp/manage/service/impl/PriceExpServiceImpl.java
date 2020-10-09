@@ -17,6 +17,7 @@ import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
+import com.apl.lms.price.exp.manage.dao.Develop2Dao;
 import com.apl.lms.price.exp.manage.dao.PriceListDao;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpMapper;
 import com.apl.lms.price.exp.manage.service.*;
@@ -68,8 +69,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         PARAMETER_ERROR("PARAMETER_ERROR", "参数错误"),
         PLEASE_FILL_IN_THE_DATA_FIRST("PLEASE_FILL_IN_THE_DATA_FIRST", "请先填写数据"),
         THE_MAIN_TABLE_DOES_NOT_EXIST_AND_CANNOT_BE_UPDATED("THE_MAIN_TABLE_DOES_NOT_EXIST_AND_CANNOT_BE_UPDATED","主表不存在,无法更新"),
-        NO_TENANT_DETAILS_WERE_OBTAINED("NO_TENANT_DETAILS_WERE_OBTAINED", "同步失败, 无法获取到租户详细信息");
-
+        NO_REFERENCE_PRICE_INFORMATION_WAS_FOUND("NO_REFERENCE_PRICE_INFORMATION_WAS_FOUND", "同步失败, 无法找到引用价格信息"),
+        THIS_PRICE_LIST_DOES_NOT_REFER_TO_OTHER_PRICE_LISTS("THIS_PRICE_LIST_DOES_NOT_REFER_TO_OTHER_PRICE_LISTS", "该价格表没有引用其他价格表"),
+        SYNCHRONOUS_SUCCESS("SYNCHRONOUS_SUCCESS", "同步成功");
         private String code;
         private String msg;
 
@@ -84,9 +86,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
     @Autowired
     AplCacheUtil aplCacheUtil;
-
-    static JoinFieldInfo joinSpecialCommodityFieldInfo = null; //跨项目跨库关联 特殊物品 反射字段缓存
-
 
     @Autowired
     PriceExpDataService priceExpDataService;
@@ -112,12 +111,20 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Autowired
     PriceExpFeign priceExpFeign;
 
-
     @Autowired
     PriceListDao priceListDao;
 
     @Autowired
     SysInnerOrgService sysInnerOrgService;
+
+    @Autowired
+    PriceSurchargeService priceSurchargeService;
+
+    @Autowired
+    Develop2Dao develop2Dao;
+
+    static JoinFieldInfo joinSpecialCommodityFieldInfo = null; //跨项目跨库关联 特殊物品 反射字段缓存
+
     /**
      * 分页查询销售价格列表
      *
@@ -161,18 +168,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         List<PriceExpCostListVo> priceExpListVoCostList = baseMapper.getPriceExpCostList(page, keyDto);
         page.setRecords(priceExpListVoCostList);
 
-//        JoinPartner joinPartner = new JoinPartner(1, priceExpFeign, aplCacheUtil);
-//        List<JoinBase> joinTabs = new ArrayList<>();
-//        //关联服务商
-//        if (null != joinPartnerFieldInfo) {
-//            joinPartner.setJoinFieldInfo(joinPartnerFieldInfo);
-//        } else {
-//            joinPartner.addField("partnerId", Long.class, "partnerShortName", "partnerName", String.class);
-//            joinPartnerFieldInfo = joinPartner.getJoinFieldInfo();
-//        }
-//        joinTabs.add(joinPartner);
-//        //执行跨项目跨库关联
-//        JoinUtil.join(priceExpListVoCostList, joinTabs);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
@@ -338,7 +333,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         int startWeightColIndex = weightSections.get(0).getIndex();
 
         //获取增加的利润
-        List<PriceExpProfitDto> finalProfit  = priceExpProfitService.getProfit(id).getData().getIncreaseProfit();
+        List<PriceExpProfitDto> finalProfit  = priceExpProfitService.getProfit(id).getIncreaseProfit();
 
         String str = (String) JSONObject.toJSON(finalProfit);
         List<PriceExpProfitDto> finalProfit1 = JSONObject.parseArray(str, PriceExpProfitDto.class);
@@ -764,7 +759,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    public ResultUtil<Boolean> syncPrice(List<Long> priceIds) {
+    @Transactional
+    public ResultUtil<Boolean> syncPrice(List<Long> priceIds) throws Exception {
 
         //根据ids获取将要更新的主表列表 id, quote_price_id, inner_org_id, quote_price_upd_time, upd_time, inner_org_id
         List<PriceExpMainPo> priceExpMainList = baseMapper.getList(priceIds);
@@ -772,34 +768,58 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         if(null != priceExpMainList && priceExpMainList.size() > 0){
 
             for (PriceExpMainPo priceExpMainPo : priceExpMainList) {
+
+                if(priceExpMainPo.getQuotePriceId() < 1){
+                    continue;
+                }
                 //获取引用价格的org_code 和 inner_org_id
                 SysInnerOrgPo sysInnerOrgInfo = sysInnerOrgService.getSysInnerOrgInfo(priceExpMainPo.getQuoteOrgId());
                 if(null == sysInnerOrgInfo || sysInnerOrgInfo.getOrgCode() == null)
-                    return ResultUtil.APPRESULT(ExpListServiceCode.NO_TENANT_DETAILS_WERE_OBTAINED.code,
-                            ExpListServiceCode.NO_TENANT_DETAILS_WERE_OBTAINED.msg, false);
+                    return ResultUtil.APPRESULT(ExpListServiceCode.NO_REFERENCE_PRICE_INFORMATION_WAS_FOUND.code,
+                            ExpListServiceCode.NO_REFERENCE_PRICE_INFORMATION_WAS_FOUND.msg, false);
 
                 //获取主表信息
-                PriceExpMainPo realPriceInfo = priceListDao.getRealPriceInfo(priceExpMainPo.getQuotePriceId(), sysInnerOrgInfo.getOrgCode());
+                PriceExpMainPo quotePriceInfo = priceListDao.getRealPriceInfo(priceExpMainPo.getQuotePriceId(), sysInnerOrgInfo.getOrgCode());
+                if(quotePriceInfo.getUpdTime().equals(priceExpMainPo.getQuotePriceUpdTime()))
+                    continue;
 
                 //组装新的主表并执行更新
-                PriceExpMainPo newPriceExpMainPo = new PriceExpMainPo();
-                BeanUtil.copyProperties(realPriceInfo, newPriceExpMainPo);
-                newPriceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
-                newPriceExpMainPo.setQuotePriceUpdTime(realPriceInfo.getUpdTime());
+                PriceExpMainPo myPriceExpMainPo = new PriceExpMainPo();
+                BeanUtil.copyProperties(quotePriceInfo, myPriceExpMainPo);
+                myPriceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
+                myPriceExpMainPo.setQuotePriceUpdTime(quotePriceInfo.getUpdTime());
+                baseMapper.updById(myPriceExpMainPo);
 
-                baseMapper.updById(newPriceExpMainPo);
+                //将引用价格的销售备注改为本价格服务商备注
+                PriceExpRemarkPo quotePriceExpRemark = priceExpRemarkService.getPriceExpRemark(quotePriceInfo.getId());
+                PriceExpRemarkPo myPriceRemarkPo = new PriceExpRemarkPo();
+                myPriceRemarkPo.setId(myPriceExpMainPo.getId());
+                myPriceRemarkPo.setRemark(quotePriceExpRemark.getSaleRemark());
+                priceExpRemarkService.updateRemark(myPriceRemarkPo);
+
+                //获取及更新附加费:多行
+                List<PriceSurchargeVo> quotePriceSurchargeList = priceSurchargeService.selectById(quotePriceInfo.getId());
+                for (PriceSurchargeVo priceSurchargeVo : quotePriceSurchargeList) {
+                    priceSurchargeVo.setSpecialCommodityName(null);
+                }
+                List<PriceSurchargeVo> myPriceSurchargeList = priceSurchargeService.selectById(myPriceExpMainPo.getId());
+                for (PriceSurchargeVo priceSurchargeVo : myPriceSurchargeList) {
+                    priceSurchargeVo.setSpecialCommodityName(null);
+                }
+                develop2Dao.updSurcharge(quotePriceSurchargeList, myPriceSurchargeList);
+
+                //获取及更新公式:多行
+                List<PriceExpComputationalFormulaPo> quoteComputationList = computationalFormulaService.getList(quotePriceInfo.getId());
+                List<PriceExpComputationalFormulaPo> myComputationList = computationalFormulaService.getList(myPriceExpMainPo.getId());
+                develop2Dao.updComputation(quoteComputationList, myComputationList);
+
+                //重新生成最终利润表
+                PriceExpProfitPo profit = priceExpProfitService.getProfit(priceExpMainPo.getId());
+                priceExpProfitService.saveProfit(profit);
             }
+
         }
-
-
-
-
-        //获取及更新主表信息
-
-        return null;
-
-
-
+        return ResultUtil.APPRESULT(ExpListServiceCode.SYNCHRONOUS_SUCCESS.code, ExpListServiceCode.SYNCHRONOUS_SUCCESS.msg, true);
     }
 
     /**
@@ -815,13 +835,13 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         ResultUtil<Long> longResultUtil = addExpPriceBase(referencePriceDto,
                                                           referencePriceDto.getQuotePriceId(),
                                                           referencePriceDto.getPriceDataId(),
-                                                          referencePriceDto.getInnerOrgId());
+                                                          referencePriceDto.getQuoteOrgId());
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, longResultUtil.getData());
     }
 
 
-    ResultUtil<Long> addExpPriceBase(PriceExpAddBaseDto priceExpAddDto, Long quotePriceId, Long priceDataId, Long innerOrgId) {
+    ResultUtil<Long> addExpPriceBase(PriceExpAddBaseDto priceExpAddDto, Long quotePriceId, Long priceDataId, Long quoteOrgId) {
 
         //不是公布价且不是成本价且不是销售价, 有服务商即成本价, 允许既是公布价又是成本价
         if (priceExpAddDto.getIsPublishedPrice().equals(2)
@@ -843,6 +863,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpMainPo.setPriceStatus(1);
         priceExpMainPo.setQuotePriceId(quotePriceId);
         priceExpMainPo.setPriceDataId(priceDataId);
+        priceExpMainPo.setIsQuote(2);
         if(priceExpAddDto.getPricePublishedId() == null){
             priceExpMainPo.setPricePublishedId(0L);
         }
@@ -914,16 +935,17 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceListDao.createRealTable();
         if(priceExpMainPo.getQuotePriceId() > 0){
             //添加引用租户id 引用价格更新时间
-            if(innerOrgId > 0) {
+            if(quoteOrgId > 0) {
                 //获取 inner_org_code
-                SysInnerOrgPo sysInnerOrgInfo = sysInnerOrgService.getSysInnerOrgInfo(innerOrgId);
+                SysInnerOrgPo sysInnerOrgInfo = sysInnerOrgService.getSysInnerOrgInfo(quoteOrgId);
                 if (null != sysInnerOrgInfo && sysInnerOrgInfo.getOrgCode() != null) {
                     //通过 inner_org_code 和引用价格id查询真实表中的引用价格数据
                     PriceExpMainPo resultPo = priceListDao.getRealUpdTime(priceExpMainPo.getQuotePriceId(), sysInnerOrgInfo.getOrgCode());
                     priceExpMainPo.setQuotePriceUpdTime(resultPo.getUpdTime());
                 }
-                priceExpMainPo.setQuoteOrgId(innerOrgId);
+                priceExpMainPo.setQuoteOrgId(quoteOrgId);
             }
+            priceExpMainPo.setIsQuote(1);
         }
         priceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
         Integer saveResult = baseMapper.addExpPrice(priceExpMainPo);

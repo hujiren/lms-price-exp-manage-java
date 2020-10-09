@@ -47,8 +47,8 @@ public class PriceExpProfitController {
     @ApiOperation(value = "获取利润数据", notes = "获取利润数据")
     @ApiImplicitParam(name = "priceId", value = " 价格表id", required = true, paramType = "query")
     public ResultUtil<PriceExpProfitPo> get(@NotNull(message = "价格表id不能为空") Long priceId) throws Exception {
-
-        return priceExpProfitService.getProfit(priceId);
+        PriceExpProfitPo profit = priceExpProfitService.getProfit(priceId);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS ,profit);
     }
 
 }

@@ -6,8 +6,11 @@ import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
+import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
+import com.apl.lms.price.exp.pojo.vo.PriceSurchargeVo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +19,11 @@ import java.util.List;
 @Component
 public class PriceListDao {
 
-    AdbHelper adbHelpeReal;
+    AdbHelper adbHelperReal;
 
     public PriceListDao(){
         // 创建真实数据源JDBC
-        adbHelpeReal = new AdbHelper("pricelist");
+        adbHelperReal = new AdbHelper("pricelist");
     }
 
     public void createRealTable() {
@@ -59,51 +62,55 @@ public class PriceListDao {
                 ")";
 
         //创建租户price_exp_main物理表
-        adbHelpeReal.execut(sql);
+        adbHelperReal.execut(sql);
 
-//        adbHelpeReal.saveBatch() 公式/附加费批量更新用这个
     }
+
     public PriceExpMainPo getRealUpdTime(Long id, String orgCode){
-        String sql = "select inner_org_id, upd_time from" + orgCode + "_lms_exp_price where id = #{id}";
-//        adbHelpeReal.execut(sql);
-        PriceExpMainPo priceExpMainPo = adbHelpeReal.queryObj(sql, id, PriceExpMainPo.class);
+        adbHelperReal.setTenantValue(null);
+        String sql = "select inner_org_id, upd_time from" + " " + orgCode + "_lms_exp_price where id = " + id;
+        PriceExpMainPo priceExpMainPo = adbHelperReal.queryObj(sql, id, PriceExpMainPo.class);
+        //        adbHelpeReal.execut(sql);
         return priceExpMainPo;
     }
 
     public PriceExpMainPo getRealPriceInfo(Long id, String orgCode){
         String sql = "select\n" +
                 "            id,\n" +
-                "            price_code,\n" +
-                "            price_sale_name,\n" +
-                "            price_name,\n" +
-                "            partner_id,\n" +
-                "            partner_name,\n" +
-                "            price_status,\n" +
-                "            channel_category,\n" +
                 "            start_date,\n" +
                 "            end_date,\n" +
                 "            currency,\n" +
-                "            zone_id,\n" +
-                "            volume_divisor,\n" +
                 "            account_type,\n" +
                 "            account_no,\n" +
                 "            special_commodity,\n" +
-                "            is_published_price,\n" +
                 "            price_format,\n" +
                 "            start_weight,\n" +
                 "            end_weight,\n" +
-                "            aging,\n" +
                 "            price_published_id,\n" +
+                "            is_published_price,\n" +
+                "            aging,\n" +
+                "            volume_divisor,\n" +
+                "            zone_id,\n" +
                 "            price_data_id,\n" +
+                "            price_code,\n" +
+                "            price_sale_name,\n" +
+                "            channel_category,\n" +
+                "            price_status,\n" +
+                "            partner_id,\n" +
+                "            customer_groups_id,\n"+
+                "            customer_groups_name,\n"+
+                "            customer_ids,\n"+
+                "            customer_name,\n"+
+                "            price_name,\n" +
+                "            partner_name,\n" +
                 "            upd_time\n"+
-                "        from\n" + orgCode +
-                "            _lms_exp_price\n" +
+                "            from\n" +
+                            orgCode + "_lms_exp_price\n" +
                 "        where\n" +
-                "            id = #{id}";
-        PriceExpMainPo priceExpMainPo = adbHelpeReal.queryObj(sql, id, PriceExpMainPo.class);
+                "            id = " + id;
+        adbHelperReal.setTenantValue(null);
+        PriceExpMainPo priceExpMainPo = adbHelperReal.queryObj(sql, id, PriceExpMainPo.class);
         return priceExpMainPo;
     }
-
-
 
 }

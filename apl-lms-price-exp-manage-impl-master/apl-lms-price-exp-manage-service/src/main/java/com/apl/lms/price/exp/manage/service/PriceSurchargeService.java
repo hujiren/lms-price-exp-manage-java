@@ -2,6 +2,7 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lms.price.exp.pojo.po.PriceSurchargePo;
 import com.apl.lms.price.exp.pojo.vo.PriceSurchargeVo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.apl.lib.utils.ResultUtil;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +35,7 @@ public interface PriceSurchargeService extends IService<PriceSurchargePo> {
          * @author hjr
          * @since 2020-09-28
          */
-        ResultUtil<List<PriceSurchargeVo>> selectById(Long priceId) throws Exception;
+        @SqlParser(filter = true)
+        List<PriceSurchargeVo> selectById(Long priceId) throws Exception;
 
 }

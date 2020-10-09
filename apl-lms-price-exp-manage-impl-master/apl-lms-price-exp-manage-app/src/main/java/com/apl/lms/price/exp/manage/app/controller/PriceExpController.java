@@ -100,12 +100,14 @@ public class PriceExpController {
         return priceExpService.addExpPrice(priceExpAddDto);
     }
 
+
     @PostMapping(value = "/sync-price")
     @ApiOperation(value = "同步价格表", notes = "同步价格表")
-    public ResultUtil<Boolean> syncPrice(@NotEmpty(message = "价格表id不能为空") @RequestBody List<Long> priceIds){
+    public ResultUtil<Boolean> syncPrice(@NotEmpty(message = "价格表id不能为空") @RequestBody List<Long> priceIds) throws Exception {
 
         return priceExpService.syncPrice(priceIds);
     }
+
 
     @PostMapping(value = "/reference-price")
     @ApiOperation(value = "引用价格表", notes = "引用价格表")
@@ -113,6 +115,7 @@ public class PriceExpController {
 
         return priceExpService.referencePrice(referencePriceDto);
     }
+
 
     @PostMapping(value = "/delete-price-batch")
     @ApiOperation(value = "批量删除价格表", notes = "根据Id批量删除价格表")
@@ -165,7 +168,8 @@ public class PriceExpController {
     @ApiOperation(value = "获取备注信息", notes = "获取备注信息")
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
     public ResultUtil<PriceExpRemarkPo> getPriceExpRemark(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) {
-        return priceExpRemarkService.getPriceExpRemark(id);
+        PriceExpRemarkPo priceExpRemark = priceExpRemarkService.getPriceExpRemark(id);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpRemark);
     }
 
 

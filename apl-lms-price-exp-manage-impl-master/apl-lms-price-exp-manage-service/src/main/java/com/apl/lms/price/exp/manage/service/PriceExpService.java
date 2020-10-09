@@ -73,7 +73,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param priceIds
      * @return
      */
-    ResultUtil<Boolean> syncPrice(List<Long> priceIds);
+    ResultUtil<Boolean> syncPrice(List<Long> priceIds) throws Exception;
 
     /**
      * 根据id批量删除价格数据

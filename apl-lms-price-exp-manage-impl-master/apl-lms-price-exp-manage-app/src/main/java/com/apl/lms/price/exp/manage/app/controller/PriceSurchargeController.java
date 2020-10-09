@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
+import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.manage.service.PriceSurchargeService;
@@ -51,8 +52,8 @@ public class PriceSurchargeController {
     @ApiOperation(value =  "获取详细" , notes = "获取详细")
     @ApiImplicitParam(name = "priceId",value = "价格表id",required = true  , paramType = "query")
     public ResultUtil<List<PriceSurchargeVo>> selectById(@NotNull(message = "价格表id不能为空") @Min(value = 1 , message = "id不能小于1") Long priceId) throws Exception {
-
-        return priceSurchargeService.selectById(priceId);
+        List<PriceSurchargeVo> priceSurchargeVoList = priceSurchargeService.selectById(priceId);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceSurchargeVoList);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.po.SysInnerOrgPo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
@@ -17,5 +18,6 @@ public interface SysInnerOrgMapper extends BaseMapper<SysInnerOrgPo> {
      * @param innerOrgId
      * @return
      */
+    @SqlParser(filter = true)
     SysInnerOrgPo getSysInnerOrgInfo(Long innerOrgId);
 }

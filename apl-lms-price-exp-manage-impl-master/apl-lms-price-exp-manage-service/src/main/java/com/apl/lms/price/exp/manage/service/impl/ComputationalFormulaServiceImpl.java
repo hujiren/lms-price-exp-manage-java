@@ -39,11 +39,11 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
      * @return
      */
     @Override
-    public ResultUtil<List<PriceExpComputationalFormulaPo>> getList(Long priceId) {
+    public List<PriceExpComputationalFormulaPo> getList(Long priceId) {
 
         List<PriceExpComputationalFormulaPo> computationalFormulaVoList = baseMapper.getList(priceId);
 
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, computationalFormulaVoList);
+        return computationalFormulaVoList;
     }
 
     /**

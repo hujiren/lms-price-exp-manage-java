@@ -38,7 +38,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @author hjr
      * @since 2020-09-11
      */
-    ResultUtil<PriceExpProfitPo> getProfit(Long priceId) throws Exception;
+    PriceExpProfitPo getProfit(Long priceId) throws Exception;
 
     /**
      * 批量删除

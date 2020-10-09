@@ -3,6 +3,7 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
@@ -17,7 +18,8 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @param priceId
      * @return
      */
-    ResultUtil<List<PriceExpComputationalFormulaPo>> getList(Long priceId);
+    @SqlParser(filter = true)
+    List<PriceExpComputationalFormulaPo> getList(Long priceId);
 
     /**
      * 删除计算公式
