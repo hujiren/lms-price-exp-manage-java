@@ -48,4 +48,12 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @return
      */
     Integer delBatch(String ids);
+
+    /**
+     * 根据价格表Id获取计算公式id
+     * @param priceId
+     * @return
+     */
+    @SqlParser(filter = true)
+    List<Long> getIdBatch(Long priceId);
 }

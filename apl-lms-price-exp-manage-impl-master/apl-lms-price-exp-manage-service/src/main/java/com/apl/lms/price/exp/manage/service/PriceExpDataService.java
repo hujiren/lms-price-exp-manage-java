@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.manage.service;
 
-import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.dto.WeightSectionDto;
@@ -24,7 +23,7 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      * @param id
      * @return
      */
-    ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id);
+    PriceExpDataVo getPriceExpDataInfoByPriceId(Long id);
 
     /**
      * 保存价格表数据

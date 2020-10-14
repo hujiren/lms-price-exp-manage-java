@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.pojo.po;
 
 import com.apl.lib.validate.TypeValidator;
-import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,7 +11,6 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author hjr start
@@ -69,5 +67,6 @@ public class PriceSurchargePo implements Serializable {
 
     @ApiModelProperty(name = "remark", value = "说明")
     private String remark;
+
 
 }

@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.apl.cache.AplCacheUtil;
 import com.apl.db.adb.AdbHelper;
 import com.apl.lib.constants.CommonStatusCode;
@@ -8,11 +7,8 @@ import com.apl.lib.join.JoinBase;
 import com.apl.lib.join.JoinFieldInfo;
 import com.apl.lib.join.JoinUtil;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
-import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
-import com.apl.lms.price.exp.manage.dao.PriceZoneDao;
 import com.apl.lms.price.exp.manage.mapper.PriceSurchargeMapper;
 import com.apl.lms.price.exp.manage.service.PriceSurchargeService;
 import com.apl.lms.price.exp.pojo.po.PriceSurchargePo;
@@ -67,7 +63,6 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     @Override
     @Transactional
     public ResultUtil<Boolean> save(List<PriceSurchargePo> priceSurchargePos) throws Exception {
-
         adbHelper.saveBatch(priceSurchargePos, "price_surcharge", "id", true);
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
@@ -105,4 +100,21 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
         return priceSurchargeList;
     }
 
+    @Override
+    public List<PriceSurchargePo> getById(Long priceId) {
+        List<PriceSurchargePo> priceSurchargeList = baseMapper.selectByPriceId(priceId);
+        return priceSurchargeList;
+    }
+
+    @Override
+    public List<Long> getIdBatch(Long priceId) {
+        List<Long> surchargeIds = baseMapper.getIdBatchByPriceId(priceId);
+        return surchargeIds;
+    }
+
+    @Override
+    public Integer delBatch(String ids) {
+        Integer res = baseMapper.delBatch(ids);
+        return res;
+    }
 }

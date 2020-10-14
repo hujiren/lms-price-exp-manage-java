@@ -56,4 +56,7 @@ public class PriceExpCostListVo {
     @ApiModelProperty(name = "priceStatus" , value = "成本价格状态")
     private Integer priceStatus;
 
+    @ApiModelProperty(name = "synStatus" , value = "同步状态 1同步成功 2同步异常 3被引用价格已删除")
+    private Integer synStatus;
+
 }

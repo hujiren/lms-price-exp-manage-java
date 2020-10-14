@@ -58,6 +58,8 @@ public class  PriceExpSaleListKeyDto {
     @ApiModelProperty(name = "innerOrgId", value = "租户id", hidden = true)
     private Long innerOrgId;
 
+    @ApiModelProperty(name = "synStatus" , value = "同步状态 0未同步 1同步成功 2同步异常 3引用价格表已被删除 4全部")
+    private Integer synStatus;
 
     public String getKeyword() {
         if (keyword != null && keyword.trim().equals(""))

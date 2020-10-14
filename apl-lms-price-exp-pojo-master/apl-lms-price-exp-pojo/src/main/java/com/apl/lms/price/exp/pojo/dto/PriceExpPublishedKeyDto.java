@@ -4,7 +4,6 @@ import com.apl.lib.validate.TypeValidator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
 
@@ -33,8 +32,8 @@ public class PriceExpPublishedKeyDto {
     @ApiModelProperty(name = "keyword", value = "关键词: 按价格表名称")
     private String keyword;
 
-    @ApiModelProperty(name = "isQuote" , value = "是否引用 0全部 1是 2否")
-    private Integer isQuote;
+//    @ApiModelProperty(name = "isQuote" , value = "是否引用 0全部 1是 2否")
+//    private Integer isQuote;
 
     public String getKeyword() {
         if (keyword != null && keyword.trim().equals(""))

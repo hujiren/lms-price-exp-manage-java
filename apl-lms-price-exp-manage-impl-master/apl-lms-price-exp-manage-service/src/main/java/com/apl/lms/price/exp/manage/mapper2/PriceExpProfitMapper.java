@@ -55,7 +55,7 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      * @param priceId
      * @return
      */
-    List<PriceExpProfitDto> getPriceFinalProfit(@Param("priceId") Long priceId);
+    PriceExpProfitPo getPriceFinalProfit(@Param("priceId") Long priceId);
 
     /**
      * 校验id是否存在

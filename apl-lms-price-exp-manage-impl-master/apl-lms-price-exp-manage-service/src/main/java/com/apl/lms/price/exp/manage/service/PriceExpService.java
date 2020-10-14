@@ -90,12 +90,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     ResultUtil<Long> referencePrice(ReferencePriceDto referencePriceDto);
 
-    /**
-     * 获取价格表数据和轴数据
-     * @param id
-     * @return
-     */
-    ResultUtil<PriceExpDataAxisVo> getPriceExpDataAxis(Long id);
 
     /**
      * 获取价格表数据

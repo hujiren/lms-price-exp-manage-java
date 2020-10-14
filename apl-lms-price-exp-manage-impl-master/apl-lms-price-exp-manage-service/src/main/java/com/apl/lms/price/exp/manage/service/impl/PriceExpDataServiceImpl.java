@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.manage.service.impl;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
-import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpDataMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
 import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
@@ -14,6 +13,7 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,15 +44,15 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      * @return
      */
     @Override
-    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) {
+    public PriceExpDataVo getPriceExpDataInfoByPriceId(Long id) {
 
         PriceExpDataVo priceExpDataVo = baseMapper.getPriceExpDataInfoById(id);
 
         if (null == priceExpDataVo || null == priceExpDataVo.getPriceDataId()) {
-            return ResultUtil.APPRESULT(PriceExpDataServiceCode.NO_CORRESPONDING_DATA.code,
+            throw new AplException(PriceExpDataServiceCode.NO_CORRESPONDING_DATA.code,
                     PriceExpDataServiceCode.NO_CORRESPONDING_DATA.msg, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataVo);
+        return priceExpDataVo;
     }
 
 
@@ -154,6 +154,7 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         }
 
         Double startWeight = weightSectionDto.getWeightStart();
+        Double endWeight = weightSectionDto.getWeightEnd();
         Double priceValResult = priceVal;
         PriceExpProfitMergeBo findProfitMergeBo = null;
 
@@ -161,16 +162,21 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         boolean isFind = false;
         for (PriceExpProfitMergeBo profitMergeBo : finalProfitBoList) {
 
-            if(!(profitMergeBo.getStartWeight()< startWeight && startWeight<=profitMergeBo.getEndWeight()))
-                continue;
+            if(profitMergeBo.getEndWeight()>0) {
+                if (endWeight <= profitMergeBo.getStartWeight()  ||  startWeight>=profitMergeBo.getEndWeight())
+                    continue;
+
+                if (profitMergeBo.getStartWeight()>startWeight)
+                    break;
+            }
 
             if (null != zone && zone.length() > 0) {
-                if (profitMergeBo.getZoneNumList().size() == 0 || profitMergeBo.getZoneNumList().contains(zone))
+                if (profitMergeBo.getZoneNumList().size() == 0 || profitMergeBo.getZoneNumList().get(0).equals("") || profitMergeBo.getZoneNumList().contains(zone))
                     isFind = true;
             }
 
             if (!isFind) {
-                if (profitMergeBo.getCountryCodeList().size() == 0)
+                if (profitMergeBo.getCountryCodeList().size() == 0 || profitMergeBo.getCountryCodeList().get(0).equals(""))
                     isFind = true;
                 else {
                     for (int i = countryStartIndex; i < zoneAndCountry.size(); i++) {

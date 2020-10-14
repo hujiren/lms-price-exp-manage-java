@@ -1,20 +1,10 @@
 package com.apl.lms.price.exp.manage.dao;
 
 import com.apl.db.adb.AdbHelper;
-import com.apl.db.adb.AdbPageVo;
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
-import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
-import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
-import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
-import com.apl.lms.price.exp.pojo.vo.PriceSurchargeVo;
-import com.baomidou.mybatisplus.annotation.SqlParser;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class PriceListDao {
@@ -67,10 +57,9 @@ public class PriceListDao {
     }
 
     public PriceExpMainPo getRealUpdTime(Long id, String orgCode){
-        adbHelperReal.setTenantValue(null);
+        adbHelperReal.setEnableTenant(false);
         String sql = "select inner_org_id, upd_time from" + " " + orgCode + "_lms_exp_price where id = " + id;
         PriceExpMainPo priceExpMainPo = adbHelperReal.queryObj(sql, id, PriceExpMainPo.class);
-        //        adbHelpeReal.execut(sql);
         return priceExpMainPo;
     }
 

@@ -4,13 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -117,11 +115,14 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "innerOrgId" , value = "租户id")
     private Long innerOrgId;
 
-    @ApiModelProperty(name = "quoteOrgId" , value = "引用租户id")
-    private Long quoteOrgId;
+    @ApiModelProperty(name = "quoteTenantCode" , value = "引用租户code")
+    private String quoteTenantCode;
 
     @ApiModelProperty(name = "isQuote" , value = "是否引用 0全部 1是 2否")
     private Integer isQuote;
+
+    @ApiModelProperty(name = "synStatus" , value = "同步状态 0未同步 1同步成功 2同步异常 3引用价格表已被删除")
+    private Integer synStatus;
 
     public String getAccountNo() {
         if(null == accountNo){

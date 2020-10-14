@@ -6,20 +6,23 @@
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
             id, start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_code,
-            price_sale_name as price_name, customer_groups_name, customer_name, channel_category, price_status
+            price_sale_name as price_name, customer_groups_name, customer_name, channel_category, price_status, syn_status
         from
             lms_exp_price
         where
-        inner_org_id = #{key.innerOrgId} and
-        is_published_price=2 and
+        inner_org_id = #{key.innerOrgId}
+        AND is_published_price=2
+        <if test="key.synStatus &lt; 4 and key.synStatus != null">
+            and syn_status = #{key.synStatus}
+        </if>
         <if test="key.isQuote > 0">
             and is_quote = #{key.isQuote}
         </if>
         <if test="key.priceType == 1">
-            customer_groups_name != ''
+            and customer_groups_name != ''
         </if>
         <if test="key.priceType == 2">
-            customer_name != ''
+            and customer_name != ''
         </if>
         <if test="key.volumeDivisor != null">
             and volume_divisor = #{key.volumeDivisor}
@@ -64,13 +67,16 @@
     <select id="getPriceExpCostList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo">
         select
             id ,start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_status,
-            price_code, price_name, channel_category, partner_id, partner_name
+            price_code, price_name, channel_category, partner_id, partner_name, syn_status
         from
         lms_exp_price
         where
         inner_org_id = #{key.innerOrgId}
         and is_published_price = 2
         and partner_id>0
+        <if test="key.synStatus &lt; 4 and key.synStatus != null">
+            and syn_status = #{key.synStatus}
+        </if>
         <if test="key.isQuote > 0">
             and is_quote = #{key.isQuote}
         </if>
@@ -119,9 +125,9 @@
         lms_exp_price
         where
             is_published_price = 1 and end_date>now()
-        <if test="key.isQuote > 0">
+        <!--<if test="key.isQuote > 0">
             and is_quote = #{key.isQuote}
-        </if>
+        </if>-->
         <if test="key.priceStatus != null and key.priceStatus > 0">
             and price_status = #{key.priceStatus}
         </if>
@@ -143,7 +149,7 @@
              id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
              price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name,
              price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_groups_id,
-             customer_groups_name, customer_ids, customer_name, upd_time, quote_price_upd_time, quote_org_id, is_quote)
+             customer_groups_name, customer_ids, customer_name, upd_time, quote_price_upd_time, is_quote, syn_status, quote_tenant_code)
          values
              (#{po.id},
              #{po.startDate},
@@ -175,8 +181,9 @@
              #{po.customerName},
              #{po.updTime},
              #{po.quotePriceUpdTime},
-             #{po.quoteOrgId},
-             #{po.isQuote})
+             #{po.isQuote},
+             #{po.synStatus},
+             #{po.quoteTenantCode})
      </insert>
 
     <!--更新-->
@@ -227,9 +234,6 @@
         <if test="po.quotePriceUpdTime != null">
             quote_price_upd_time = #{po.quotePriceUpdTime},
         </if>
-        <if test="po.quoteOrgId != null">
-            quote_org_id = #{po.quoteOrgId},
-        </if>
         <if test="po.isQuote != null">
             is_quote = #{po.is_quote},
         </if>
@@ -238,6 +242,12 @@
         </if>
         <if test="po.partnerName != null">
             partner_name = #{po.partnerName},
+        </if>
+        <if test="po.synStatus != null">
+            syn_status = #{po.synStatus},
+        </if>
+        <if test="po.quoteTenantCode != null">
+            quote_tenant_code = #{po.quoteTenantCode},
         </if>
             price_name = #{po.priceName},
             channel_category = #{po.channelCategory},
@@ -283,10 +293,11 @@
             aging,
             price_published_id,
             price_data_id,
-            inner_org_id,
-            quote_org_id,
+            quote_tenant_code,
             upd_time,
-            quote_price_upd_time
+            quote_price_upd_time,
+            inner_org_id,
+            syn_status
         from
             lms_exp_price
         where
@@ -349,7 +360,7 @@
             inner_org_id,
             upd_time,
             quote_price_upd_time,
-            quote_org_id
+            quote_tenant_code
         from
             lms_exp_price
         where

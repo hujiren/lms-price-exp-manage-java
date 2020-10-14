@@ -2,10 +2,8 @@ package com.apl.lms.price.exp.pojo.dto;
 
 import com.apl.lib.validate.TypeValidator;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
-import com.apl.lms.common.query.manage.po.SpecialCommodityPo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
@@ -105,8 +103,8 @@ public class PriceExpUpdDto implements Serializable {
     @Min(value = 0, message = "服务商Id不能小于0")
     private Long partnerId;
 
-    @ApiModelProperty(name = "quoteOrgId" , value = "引用租户id", required = true)
-    @NotNull(message = "引用租户id不能为空")
-    @Min(value = 0, message = "引用租户Id不能小于0")
-    private Long quoteOrgId;
+    @ApiModelProperty(name = "quoteTenantCode" , value = "引用租户code")
+    private String quoteTenantCode;
+
+
 }

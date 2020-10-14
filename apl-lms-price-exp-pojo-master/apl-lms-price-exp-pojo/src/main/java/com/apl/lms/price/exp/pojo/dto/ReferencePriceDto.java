@@ -3,11 +3,10 @@ package com.apl.lms.price.exp.pojo.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.Range;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author hjr start
@@ -28,8 +27,7 @@ public class ReferencePriceDto extends PriceExpAddBaseDto{
     @NotNull( message = "引用价格表id不能为空")
     private Long quotePriceId;
 
-    @ApiModelProperty(name = "quoteOrgId" , value = "引用租户id", required = true)
-    @Min(value = 0, message = "引用租户id不能小于0")
-    @NotNull( message = "引用租户id不能为空")
-    private Long quoteOrgId;
+    @ApiModelProperty(name = "orgCode" , value = "引用租户code", required = true)
+    @NotBlank( message = "引用租户code不能为空")
+    private String orgCode;
 }

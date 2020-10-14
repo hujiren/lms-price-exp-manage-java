@@ -54,4 +54,7 @@ public class PriceExpSaleListVo {
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
     private String specialCommodity;
 
+    @ApiModelProperty(name = "synStatus" , value = "同步状态 1同步成功 2同步异常 3引用价格已删除")
+    private Integer synStatus;
+
 }

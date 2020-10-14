@@ -16,4 +16,9 @@
     <delete id="delBatch">
         delete from price_computational_formula where price_id in(${ids})
     </delete>
+
+    <!--根据价格表id批量获取计算公式ids-->
+    <select id="getIdBatchByPriceId" resultType="java.lang.Long">
+        select id from price_computational_formula where price_id = #{priceId}
+    </select>
 </mapper>

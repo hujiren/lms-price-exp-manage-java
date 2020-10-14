@@ -2,7 +2,6 @@ package com.apl.lms.price.exp.pojo.vo;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.apl.lms.price.exp.pojo.dto.CustomerDto;
 import com.apl.lms.price.exp.pojo.dto.CustomerGroupDto;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -105,19 +104,26 @@ public class PriceExpPriceInfoVo {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long pricePublishedId;
 
-    @ApiModelProperty(name = "innerOrgId" , value = "租户Id")
+    @ApiModelProperty(name = "innerOrgId" , value = "租户id")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long innerOrgId;
 
-    @ApiModelProperty(name = "quoteOrgId" , value = "引用租户Id")
+    @ApiModelProperty(name = "quoteTenantCode" , value = "引用租户code")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long quoteOrgId;
+    private String quoteTenantCode;
+
+    @ApiModelProperty(name = "orgCode" , value = "租户code")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private String orgCode;
 
     @ApiModelProperty(name = "updTime" , value = "更新时间")
     private Timestamp updTime;
 
     @ApiModelProperty(name = "quotePriceUpdTime" , value = "引用价格更新时间")
     private Timestamp quotePriceUpdTime;
+
+    @ApiModelProperty(name = "synStatus" , value = "同步状态 1同步成功 2同步异常 3引用价格已删除")
+    private Integer synStatus;
 
 
 

@@ -1,10 +1,9 @@
 package com.apl.lms.price.exp.manage.service;
 
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.apl.lib.utils.ResultUtil;
-
-import java.util.List;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * <p>
@@ -22,7 +21,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @author hjr
      * @since 2020-09-11
      */
-    Long saveProfit(PriceExpProfitPo priceExpProfitPo);
+    Long saveProfit(PriceExpProfitPo priceExpProfitPo) throws JsonProcessingException;
 
 
     /**

@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.manage.service;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
-import com.apl.lms.price.exp.pojo.dto.WeightSectionUpdDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo;
 import com.baomidou.mybatisplus.extension.service.IService;

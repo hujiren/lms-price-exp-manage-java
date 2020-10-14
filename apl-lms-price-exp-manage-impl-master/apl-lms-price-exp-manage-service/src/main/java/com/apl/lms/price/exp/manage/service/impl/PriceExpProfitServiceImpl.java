@@ -1,7 +1,9 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.apl.cache.AplCacheUtil;
+import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.join.JoinFieldInfo;
 import com.apl.lib.utils.ResultUtil;
@@ -10,15 +12,15 @@ import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
+import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 import com.apl.sys.lib.feign.InnerFeign;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.apl.lib.constants.CommonStatusCode;
-import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,21 +92,23 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
     /**
      * 保存利润
-     * @param priceExpProfitPo
+     * @param priceExpProfitPo1
      * @return
      */
     @Override
-    public Long saveProfit(PriceExpProfitPo priceExpProfitPo){
+    public Long saveProfit(PriceExpProfitPo priceExpProfitPo1) throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(priceExpProfitPo1);
+        PriceExpProfitPo priceExpProfitPo = objectMapper.readValue(json, PriceExpProfitPo.class);
 
         List<PriceExpProfitDto> emptyProfitList = new ArrayList<>();
         if(null == priceExpProfitPo.getIncreaseProfit()){
             priceExpProfitPo.setIncreaseProfit(emptyProfitList);
         }
         //上调的利润
-        List<PriceExpProfitDto> increaseProfit2 = priceExpProfitPo.getIncreaseProfit();
-//        List<PriceExpProfitDto> increaseProfit = new Gson().fromJson(new Gson().toJson(increaseProfit2), new TypeToken<List<PriceExpProfitDto>>(){}.getType());
-        String s = (String) JSON.toJSON(increaseProfit2);
-        List<PriceExpProfitDto> increaseProfit = JSON.parseArray(s, PriceExpProfitDto.class);
+        List<PriceExpProfitDto> increaseProfit = priceExpProfitPo.getIncreaseProfit();
+
         if(increaseProfit.size() >0){
             //遍历上调的利润
             for (PriceExpProfitDto priceExpSaleProfitDto : increaseProfit) {
@@ -142,13 +146,16 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             if(innerOrgIdAndPriceDatId.getQuotePriceId() > 0) {
                 //如果引用价格id大于0, 则根据引用价格id获取 <最终利润>
                 quoteProfit = getQuoteProfit(innerOrgIdAndPriceDatId.getQuotePriceId());
+
             }
         }
             
         if(null == quoteProfit)//表示没有引用价格id 或没有引用价格对应的利润
             quoteProfit = emptyProfitList;//设置为空
-//        if(null != quoteProfit && quoteProfit.size() > 0)
-//            quoteProfit = new Gson().fromJson(new Gson().toJson(quoteProfit), new TypeToken<List<PriceExpProfitDto>>(){}.getType());
+        if(null != quoteProfit && quoteProfit.size() > 0){
+            String str = JSON.toJSONString(quoteProfit);
+            quoteProfit = JSONObject.parseArray(str, PriceExpProfitDto.class);
+        }
         //合并
         List<PriceExpProfitDto> finalProfit = mergeProfit(increaseProfit, quoteProfit);
 
@@ -172,10 +179,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
         return priceExpProfitPo.getId();
     }
-
+    
     private List<PriceExpProfitDto> getQuoteProfit(Long priceId){
-        List<PriceExpProfitDto> priceFinalProfit = baseMapper.getPriceFinalProfit(priceId);
-        return priceFinalProfit;
+        PriceExpProfitPo priceFinalProfit = baseMapper.getPriceFinalProfit(priceId);
+        List<PriceExpProfitDto> finalProfit = priceFinalProfit.getFinalProfit();
+        return finalProfit;
     }
 
     //合并利润
@@ -289,6 +297,8 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         list2.add(priceExpProfitDto2);
 
         mergeProfit(list1, list2);
+
+
     }
 
 

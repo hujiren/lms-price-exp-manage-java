@@ -115,4 +115,15 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
         Integer res = baseMapper.delBatch(ids);
         return res;
     }
+
+    /**
+     * 根据价格表Id获取计算公式id
+     * @param priceId
+     * @return
+     */
+    @Override
+    public List<Long> getIdBatch(Long priceId) {
+        List<Long> computationIds = baseMapper.getIdBatchByPriceId(priceId);
+        return computationIds;
+    }
 }
