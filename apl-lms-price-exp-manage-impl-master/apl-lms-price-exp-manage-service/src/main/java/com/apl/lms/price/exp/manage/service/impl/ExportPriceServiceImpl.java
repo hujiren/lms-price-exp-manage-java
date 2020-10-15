@@ -31,9 +31,9 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
     enum ExportPriceEnum{
 
-        EXPORT_SUCCESS("EXPORT_SUCCESS", "导出成功"),
-        EXPORT_FAILED("EXPORT_FAILED", "导出失败"),
-        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA", "没有对应数据");
+        EXPORT_SUCCESS("EXPORT_SUCCESS", "EXPORT SUCCESS! 导出成功!"),
+        EXPORT_FAILED("EXPORT_FAILED", "EXPORT_FAILED! 导出失败!"),
+        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA", "NO_CORRESPONDING_DATA! 没有对应数据!");
 
        private String code;
        private String msg;
@@ -47,26 +47,22 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     @Autowired
     PriceExpService priceExpService;
 
+    String templateFileName = "G:/temp/template.xlsx";
+    String outFileName = "export-exp-price.xlsx";
+
     @Override
     public void exportPrice(HttpServletResponse response, Long id) throws IOException {
 
+        // 注意 使用swagger 会导致各种问题，请直接用浏览器或者用postman
+        //response.setCharacterEncoding("utf-8");
         ExcelWriter excelWriter = null;
 
         try {
 
-            String templateFileName = "G:/temp/template.xlsx";
-
-            // 注意 使用swagger 会导致各种问题，请直接用浏览器或者用postman
-            response.setContentType("application/vnd.ms-excel");
-            response.setCharacterEncoding("utf-8");
-            // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-            String outFileName = URLEncoder.encode("快递价格表.xlsx", "UTF-8").replaceAll("\\+", "%20");
-            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + outFileName);
-
             PriceExpDataObjVo priceExpDataInfo = priceExpService.getPriceExpDataInfoByPriceId(id);
             List<List<Object>> priceDataList = priceExpDataInfo.getPriceData();
             if(null == priceDataList || priceDataList.size() < 1) {
-                response.getWriter().write(ExportPriceEnum.NO_CORRESPONDING_DATA.msg);
+                response.getWriter().write(URLEncoder.encode(ExportPriceEnum.NO_CORRESPONDING_DATA.msg, "UTF-8"));
                 return;
             }
             excelWriter = EasyExcel.write(response.getOutputStream()).withTemplate(templateFileName).build();
@@ -86,16 +82,20 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 excelWriter.fill(writeDataList, fillConfig, writeSheet);
             }
 
+            response.setContentType("application/vnd.ms-excel");
+            // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+            outFileName = URLEncoder.encode(outFileName, "UTF-8").replaceAll("\\+", "%20");
+            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + outFileName);
+
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().write(ExportPriceEnum.EXPORT_FAILED.msg);
+            response.getWriter().write(URLEncoder.encode(ExportPriceEnum.EXPORT_FAILED.msg, "UTF-8"));
         } finally {
+            //关闭excel
             if(null!=excelWriter) {
                 excelWriter.finish();
             }
         }
-
-
     }
 
     //构造快递价格表数据
