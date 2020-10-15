@@ -34,6 +34,9 @@ public class DatasourceAop {
         Object proceed = null;
         try {
             String token = CommonContextHolder.getHeader(CommonAplConstants.TOKEN_FLAG);
+            if(null==token || token.length()==0){
+                token = CommonContextHolder.getRequest().getParameter("token");
+            }
 
             // 安全用户上下文
             SecurityUser securityUser = CommonContextHolder.getSecurityUser(aplCacheUtil, token);

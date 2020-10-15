@@ -3,10 +3,7 @@ package com.apl.lms.price.exp.manage.app.controller;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
-import com.apl.lms.price.exp.manage.service.PriceExpDataService;
-import com.apl.lms.price.exp.manage.service.PriceExpRemarkService;
-import com.apl.lms.price.exp.manage.service.PriceExpService;
+import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.apl.lms.price.exp.pojo.vo.*;
@@ -20,9 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -46,6 +46,9 @@ public class PriceExpController {
 
     @Autowired
     PriceExpRemarkService priceExpRemarkService;
+
+    @Autowired
+    ExportPriceService exportPricePrice;
 
     @PostMapping(value = "/get-sale-list")
     @ApiOperation(value = "分页查询销售价格列表", notes = "分页查询销售价格列表")
@@ -134,8 +137,9 @@ public class PriceExpController {
     @PostMapping(value = "/get-price-data")
     @ApiOperation(value = "获取价格表数据", notes = "获取价格表数据")
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpDataVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
-        return priceExpService.getPriceExpDataInfoByPriceId(id);
+    public ResultUtil<PriceExpDataObjVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
+        PriceExpDataObjVo priceExpDataInfo = priceExpService.getPriceExpDataInfoByPriceId(id);
+        return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, priceExpDataInfo);
     }
 
 
@@ -183,6 +187,15 @@ public class PriceExpController {
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
+    }
+
+
+    @PostMapping(value = "/export-price")
+    @ApiOperation(value = "导出快递价格", notes = "导出快递价格")
+    @ApiImplicitParam(name = "id", value = "价格表id", required = true, paramType = "query")
+    public void exportPrice(HttpServletResponse response, @NotNull(message = "价格表id不能为空") @Min(value = 0, message = "价格表id不能小于0") Long id) throws IOException {
+
+        exportPricePrice.exportPrice(response, id);
     }
 
 }

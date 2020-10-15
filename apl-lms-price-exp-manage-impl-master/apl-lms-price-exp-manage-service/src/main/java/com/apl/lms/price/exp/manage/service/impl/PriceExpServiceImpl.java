@@ -318,10 +318,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    public ResultUtil<PriceExpDataVo> getPriceExpDataInfoByPriceId(Long id) throws Exception {
+    public PriceExpDataObjVo getPriceExpDataInfoByPriceId(Long id) throws Exception {
         ExpPriceInfoBo innerOrgIdAndPriceDatId = getInnerOrgIdAndPriceDatId(id);
         if(null == innerOrgIdAndPriceDatId){
-            return ResultUtil.APPRESULT(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
+            throw new AplException(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
                     ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg,null);
         }
 
@@ -367,6 +367,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         //价格表数据
         List<List<String>> priceData = priceExpDataInfo.getPriceData();
 
+        List<List<Object>> priceData2 = new ArrayList<>();
+
         //获取数据轴
         ResultUtil<PriceExpAxisVo> axisInfoVo = priceExpAxisService.getAxisInfoById(id);
         //轴: 重量段
@@ -385,6 +387,13 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         List<String> zoneAndCountry = null;
         WeightSectionDto weightSectionDto = null;
+        List<String> strList = priceData.get(0);
+        List<Object> objectList = new ArrayList<>();
+        for (String s1 : strList) {
+            objectList.add(s1);
+        }
+        priceData2.add(objectList);
+
         for (int rowIndex=0; rowIndex < priceData.size() - 1; rowIndex++) {
 
             if(priceFormat == 1){
@@ -398,7 +407,12 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
             //除首行以外的行
             List<String> cells = priceData.get(rowIndex + 1);
+            List<Object> cells2 = new ArrayList<>();
 
+            for (int colIndex = 0; colIndex < startColIndex; colIndex++) {
+                Object priceStr = cells.get(colIndex);
+                cells2.add(priceStr);
+            }
             //代表着重量段中的index属性
             for (int colIndex = startColIndex; colIndex < cells.size(); colIndex++) {
 
@@ -420,16 +434,20 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 }
 
                 String priceStr = cells.get(colIndex);
-                if(null!=priceStr && priceStr.length()>0) {
+                if(null!=priceStr && priceStr.length() > 0) {
                     Double priceVal = Double.parseDouble(priceStr);
                     priceVal = priceExpDataService.priceMergeProfit(priceVal, zoneAndCountry, weightSectionDto, finalProfitBoList);
                     String format = df.format(priceVal);
                     priceData.get(rowIndex + 1).set(colIndex, format);
+                    cells2.add(priceVal);
                 }
             }
+            priceData2.add(cells2);
         }
-
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataInfo);
+        PriceExpDataObjVo objVo = new PriceExpDataObjVo();
+        objVo.setPriceDataId(priceExpDataInfo.getPriceDataId());
+        objVo.setPriceData(priceData2);
+        return objVo;
     }
 
     List<String> strArrayToList(String[] array){
