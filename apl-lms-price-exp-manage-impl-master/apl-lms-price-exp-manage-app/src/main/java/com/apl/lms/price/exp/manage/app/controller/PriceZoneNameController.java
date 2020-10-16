@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
+import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
@@ -33,8 +34,8 @@ public class PriceZoneNameController {
     @PostMapping(value = "/get-zone-name")
     @ApiOperation(value =  "获取快递分区名称" , notes = "获取快递分区名称")
     public ResultUtil<String> getZoneName(Long id){
-
-        return priceZoneService.getPriceZoneName(id);
+        String priceZoneName = priceZoneService.getPriceZoneName(id);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneName);
     }
 
     @PostMapping(value = "/get-zone-name-list")

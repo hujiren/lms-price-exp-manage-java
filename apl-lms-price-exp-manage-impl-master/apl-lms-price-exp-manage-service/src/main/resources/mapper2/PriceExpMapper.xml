@@ -331,8 +331,10 @@
     </update>
 
     <!--获取租户和价格数据表id-->
-    <select id="getInnerOrgIdAndPriceDatId" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
-        select id, quote_price_id, inner_org_id, price_data_id, price_format, upd_time, quote_price_upd_time from lms_exp_price where id = #{id}
+    <select id="getPriceInfo" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
+        select
+            id, quote_price_id, inner_org_id, price_data_id, price_format, upd_time, quote_price_upd_time, channel_category, zone_id, end_date, price_name
+         from lms_exp_price where id = #{id}
     </select>
 
     <!--获取同步价格属性-->

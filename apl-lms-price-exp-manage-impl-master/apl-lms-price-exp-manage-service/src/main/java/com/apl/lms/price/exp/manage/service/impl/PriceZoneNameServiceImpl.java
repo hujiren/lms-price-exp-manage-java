@@ -7,11 +7,10 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.PriceZoneMapper;
 import com.apl.lms.price.exp.manage.service.PriceZoneDataService;
 import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
-import com.apl.lms.price.exp.pojo.dto.*;
+import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,10 +45,10 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
      * @param id
      * @return
      */
-    public ResultUtil<String> getPriceZoneName(Long id){
+    public String getPriceZoneName(Long id){
         String zoneName = baseMapper.getPriceZoneName(id);
 
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, zoneName);
+        return zoneName;
     }
 
     /**

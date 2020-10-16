@@ -22,7 +22,7 @@ public interface PriceZoneNameService extends IService<PriceZoneNamePo> {
      * @return
      */
     @SqlParser(filter = true)
-    ResultUtil<String> getPriceZoneName(Long id);
+    String getPriceZoneName(Long id);
 
     /**
      * 分页查询快递分区名称列表

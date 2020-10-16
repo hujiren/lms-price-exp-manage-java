@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.exception.AplException;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.*;
@@ -23,6 +24,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -192,9 +194,18 @@ public class PriceExpController {
 
     @PostMapping(value = "/export-exp-price")
     @ApiOperation(value = "导出快递价格", notes = "导出快递价格")
-    public void exportExpPrice(HttpServletResponse response, @RequestBody List<Long> ids) throws IOException {
-
-        exportPricePrice.exportExpPrice(response, ids);
+    public void exportExpPrice(HttpServletResponse response, String ids) throws IOException {
+        String[] split = ids.split(",");
+        List<Long> idList = new ArrayList<>();
+        for (String s : split) {
+            boolean matches = s.matches(".*[A-Z]+.*");
+            boolean matches2 = s.matches(".*[a-z]+.*");
+            if(matches || matches2)
+                throw new AplException(CommonStatusCode.PARAM_IS_NOT_LEGAL, null);
+            Long numId = Long.parseLong(s);
+            idList.add(numId);
+        }
+        exportPricePrice.exportExpPrice(response, idList);
     }
 
 }

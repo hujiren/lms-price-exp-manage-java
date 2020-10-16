@@ -86,7 +86,7 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
      */
     @Override
     public ResultUtil<PriceExpAxisVo> getAxisInfoById(Long priceId) {
-        ExpPriceInfoBo expPriceInfoBo = priceExpService.getInnerOrgIdAndPriceDatId(priceId);
+        ExpPriceInfoBo expPriceInfoBo = priceExpService.getPriceInfo(priceId);
         if (null==expPriceInfoBo) {
             throw new AplException(PriceExpAxisServiceCode.NO_CORRESPONDING_DATA.code,
                     PriceExpAxisServiceCode.NO_CORRESPONDING_DATA.msg, null);

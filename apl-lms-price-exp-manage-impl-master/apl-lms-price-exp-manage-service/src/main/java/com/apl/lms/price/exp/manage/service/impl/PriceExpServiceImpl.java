@@ -226,9 +226,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
 
         //组装分区名称
-        ResultUtil<String> priceZoneNameResult = priceZoneNameService.getPriceZoneName(priceExpPriceInfoVo.getZoneId());
-        if(null != priceZoneNameResult && null != priceZoneNameResult.getData()) {
-            priceExpPriceInfoVo.setZoneName(priceZoneNameResult.getData());
+        String priceZoneName = priceZoneNameService.getPriceZoneName(priceExpPriceInfoVo.getZoneId());
+        if(null != priceZoneName) {
+            priceExpPriceInfoVo.setZoneName(priceZoneName);
         }
 
         //组装客户List (客户id, 客户名称)
@@ -319,7 +319,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      */
     @Override
     public PriceExpDataObjVo getPriceExpDataInfoByPriceId(Long id) throws Exception {
-        ExpPriceInfoBo innerOrgIdAndPriceDatId = getInnerOrgIdAndPriceDatId(id);
+        ExpPriceInfoBo innerOrgIdAndPriceDatId = getPriceInfo(id);
         if(null == innerOrgIdAndPriceDatId){
             throw new AplException(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
                     ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg,null);
@@ -477,8 +477,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    public ExpPriceInfoBo getInnerOrgIdAndPriceDatId(Long id) {
-        return baseMapper.getInnerOrgIdAndPriceDatId(id);
+    public ExpPriceInfoBo getPriceInfo(Long id) {
+        return baseMapper.getPriceInfo(id);
     }
 
 
@@ -589,7 +589,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     public ResultUtil<Boolean> updatePriceData(PriceExpDataUpdDto priceExpDataUpdDto) {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
 
-        ExpPriceInfoBo expPriceInfoBo = baseMapper.getInnerOrgIdAndPriceDatId(priceExpDataUpdDto.getId());
+        ExpPriceInfoBo expPriceInfoBo = baseMapper.getPriceInfo(priceExpDataUpdDto.getId());
 
         if(null == expPriceInfoBo || 0 == expPriceInfoBo.getInnerOrgId() || 0 == expPriceInfoBo.getPriceDataId()){
             throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);

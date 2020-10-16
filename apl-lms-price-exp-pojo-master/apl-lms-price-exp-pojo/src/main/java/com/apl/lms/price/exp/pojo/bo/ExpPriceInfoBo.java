@@ -35,4 +35,19 @@ public class ExpPriceInfoBo {
 
     @ApiModelProperty(name = "quotePriceUpdTime", value = "引用价格更新时间")
     private Timestamp quotePriceUpdTime;
+
+    @ApiModelProperty(name = "channelCategory", value = "渠道类型")
+    private String channelCategory;
+
+    @ApiModelProperty(name = "zoneId", value = "分区id")
+    private Long zoneId;
+
+    @ApiModelProperty(name = "zoneName", value = "分区表名称")
+    private String zoneName;
+
+    @ApiModelProperty(name = "endDate", value = "截止日期")
+    private Timestamp endDate;
+
+    @ApiModelProperty(name = "priceName", value = "价格表名称")
+    private String priceName;
 }

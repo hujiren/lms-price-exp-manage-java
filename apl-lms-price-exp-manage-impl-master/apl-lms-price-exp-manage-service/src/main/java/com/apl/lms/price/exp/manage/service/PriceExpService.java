@@ -103,7 +103,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param id
      * @return
      */
-    ExpPriceInfoBo getInnerOrgIdAndPriceDatId(Long id);
+    ExpPriceInfoBo getPriceInfo(Long id);
 
     /**
      * 更新轴数据

@@ -5,7 +5,10 @@ import com.apl.lms.price.exp.pojo.dto.PriceExpCostKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpPublishedKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
-import com.apl.lms.price.exp.pojo.vo.*;
+import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpPriceInfoVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo;
 import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,7 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -77,7 +79,7 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @param priceId
      * @return
      */
-    ExpPriceInfoBo getInnerOrgIdAndPriceDatId(@Param("id") Long priceId);
+    ExpPriceInfoBo getPriceInfo(@Param("id") Long priceId);
 
     /**
      * 新增

@@ -5,7 +5,12 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.apl.lms.price.exp.manage.service.ExportPriceService;
+import com.apl.lms.price.exp.manage.service.PriceExpRemarkService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
+import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
+import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
+import com.apl.lms.price.exp.pojo.bo.PriceExportExcelBo;
+import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataObjVo;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -44,6 +49,12 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     @Autowired
     PriceExpService priceExpService;
 
+    @Autowired
+    PriceZoneNameService priceZoneNameService;
+
+    @Autowired
+    PriceExpRemarkService priceExpRemarkService;
+
     String templateFileName = "G:/temp/template2.xlsx";
     String outFileName = "export-exp-price.xlsx";
 
@@ -59,56 +70,77 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             excelWriter = EasyExcel.write(response.getOutputStream()).withTemplate(templateFileName).build();
             //excelWriter = EasyExcel.write(outFileName).withTemplate(templateFileName).build();
 
+            Map<Long, PriceExportExcelBo> priceExpDataMap = new HashMap<>();
+
+            for (Long id : ids) {
+                PriceExportExcelBo priceExportExcelBo = new PriceExportExcelBo();
+                PriceExpDataObjVo priceExpDataInfo =  priceExpService.getPriceExpDataInfoByPriceId(id);
+                ExpPriceInfoBo expPriceInfoBo = priceExpService.getPriceInfo(id);
+                PriceExpRemarkPo priceExpRemark = priceExpRemarkService.getPriceExpRemark(id);
+                if(null != priceExpDataInfo && null != expPriceInfoBo){
+                    priceExportExcelBo.setPriceDataId(priceExpDataInfo.getPriceDataId());
+                    priceExportExcelBo.setPriceData(priceExpDataInfo.getPriceData());
+                    priceExportExcelBo.setChannelCategory(expPriceInfoBo.getChannelCategory());
+                    priceExportExcelBo.setEndDate(expPriceInfoBo.getEndDate());
+                    priceExportExcelBo.setZoneId(expPriceInfoBo.getZoneId());
+                    priceExportExcelBo.setPriceName(expPriceInfoBo.getPriceName());
+                }else{
+                    continue;
+                }
+                if(null != priceExpRemark){}
+                priceExportExcelBo.setRemark(priceExpRemark.getSaleRemark());
+                String priceZoneName = priceZoneNameService.getPriceZoneName(expPriceInfoBo.getZoneId());
+                priceExportExcelBo.setZoneName(priceZoneName);
+                priceExpDataMap.put(id, priceExportExcelBo);
+            }
+
             List priceList = null;
-            Map<Long, PriceExpDataObjVo> priceExpDataMap = null;
+
 
             //模板Sheet
             Sheet templateSheet = null;
             Cell priceListFistCell = null;
-            List<String> sheetNames = new ArrayList<>();
+//            List<String> sheetNames = new ArrayList<>();
             Iterator<Sheet> iterator = excelWriter.writeContext().getWorkbook().sheetIterator();
 
-            int sheetStartIndex=0;
-            while(iterator.hasNext()) {
-                sheetNames.add(iterator.next().getSheetName());
-                sheetStartIndex++;
-            }
+//            int sheetStartIndex=0;
+//            while(iterator.hasNext()) {
+//                sheetNames.add(iterator.next().getSheetName());
+//                sheetStartIndex++;
+//            }
 
-            for(int priceIndex=0; priceIndex<1; priceIndex++) {
-
-                PriceExpDataObjVo priceExpDataInfo =  priceExpService.getPriceExpDataInfoByPriceId(475964008374132737l);
-                List<List<Object>> priceDataList = priceExpDataInfo.getPriceData();
+            int priceIndex = 0;
+            for (Map.Entry<Long, PriceExportExcelBo> Entry : priceExpDataMap.entrySet()) {
+                PriceExportExcelBo priceExportExcelBo = Entry.getValue();
+                List<List<Object>> priceDataList = priceExportExcelBo.getPriceData();
                 if(null == priceDataList || priceDataList.size() < 1) {
                     continue;
                 }
 
-                String priceName = "香港UPS红单B价";
-                // 渠道类型 priceDataId, 分区表id 分区表名称  截止日期
-                String remark = "1、 “电池标签”每一件货物都需要规范粘贴\t\n";
-                sheetNames.add(priceName);
-
                 //创建新的工作表
-                WriteSheet writeSheet = EasyExcel.writerSheet().build();
+                WriteSheet writeSheet = EasyExcel.writerSheet().sheetNo(priceIndex).sheetName(priceExportExcelBo.getPriceName()).build();
 
-                //填写报价格信息内容
-                filePriceInfo(excelWriter, writeSheet, priceName, remark);
+//                价格表名称,渠道类型 priceDataId, 分区表id 分区表名称  截止日期
+//                String priceName = priceExportExcelBo.getPriceName();
+//                sheetNames.add(priceName);
+
+                //填充报价格信息内容
+                filePriceInfo(excelWriter, writeSheet, priceExportExcelBo);
 
                 if(priceIndex==0) {
                     templateSheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
                     //查找priceList单元格
                     priceListFistCell = findPriceListFirstCell(templateSheet);
-                    if (null == priceListFistCell) {
-                        //return "没有找到priceList单元格";
-                    }
                 }
 
                 //填写新的工作表内容
                 fillNewShell(excelWriter, writeSheet, priceListFistCell, priceDataList, priceIndex);
+                priceIndex++;
             }
 
-            for(int sheetIndex=sheetStartIndex; sheetIndex<sheetNames.size(); sheetIndex++){
-                excelWriter.writeContext().getWorkbook().setSheetName(sheetIndex-sheetStartIndex, sheetNames.get(sheetIndex));
-            }
+//            for(int sheetIndex=sheetStartIndex; sheetIndex<sheetNames.size(); sheetIndex++){
+//                excelWriter.writeContext().getWorkbook().setSheetName(sheetIndex-sheetStartIndex, sheetNames.get(sheetIndex));
+//            }
 
             response.setContentType("application/vnd.ms-excel");
             // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
@@ -128,16 +160,29 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             }
 
             e.printStackTrace();
-           //response.getWriter().write(URLEncoder.encode(ExportPriceEnum.EXPORT_FAILED.msg, "UTF-8"));
+           response.getWriter().write(URLEncoder.encode(ExportPriceEnum.EXPORT_FAILED.msg, "UTF-8"));
         }
     }
 
-    //填写报价格信息内容
-    void filePriceInfo(ExcelWriter excelWriter, WriteSheet writeSheet,  String priceName, String remark){
+    //填充报价格信息内容
+    void filePriceInfo(ExcelWriter excelWriter, WriteSheet writeSheet,  PriceExportExcelBo priceExportExcelBo){
         Map<String, Object> map = new HashMap<>();
-        map.put("priceName", priceName);
-        map.put("remark", remark);
+        map.put("priceName", priceExportExcelBo.getPriceName());
+        map.put("remark", priceExportExcelBo.getRemark());
+        if(null != priceExportExcelBo.getChannelCategory())
+            map.put("channelCategory", "渠道类型: " + priceExportExcelBo.getChannelCategory());
+        else
+            map.put("channelCategory", "渠道类型: 无");
+        if(null != priceExportExcelBo.getZoneName())
+            map.put("zoneName", "分区名称: " + priceExportExcelBo.getZoneName());
+        else
+            map.put("zoneName", "分区名称: 无");
+        if(null != priceExportExcelBo.getEndDate())
+            map.put("endData", "截止日期: " + priceExportExcelBo.getEndDate());
+        else
+            map.put("endData", "截止日期: 无");
         excelWriter.fill(map, writeSheet);
+
     }
 
     //填写报价格信息内容

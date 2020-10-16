@@ -142,7 +142,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         List<PriceExpProfitDto> quoteProfit = null;
         if(priceExpProfitPo.getId() > 0){
             //根据priceId找到引用价格id
-            ExpPriceInfoBo innerOrgIdAndPriceDatId = priceExpService.getInnerOrgIdAndPriceDatId(priceExpProfitPo.getId());
+            ExpPriceInfoBo innerOrgIdAndPriceDatId = priceExpService.getPriceInfo(priceExpProfitPo.getId());
             if(innerOrgIdAndPriceDatId.getQuotePriceId() > 0) {
                 //如果引用价格id大于0, 则根据引用价格id获取 <最终利润>
                 quoteProfit = getQuoteProfit(innerOrgIdAndPriceDatId.getQuotePriceId());
