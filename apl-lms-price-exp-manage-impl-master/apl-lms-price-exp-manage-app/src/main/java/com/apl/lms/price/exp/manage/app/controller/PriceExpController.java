@@ -190,12 +190,11 @@ public class PriceExpController {
     }
 
 
-    @PostMapping(value = "/export-price")
+    @PostMapping(value = "/export-exp-price")
     @ApiOperation(value = "导出快递价格", notes = "导出快递价格")
-    @ApiImplicitParam(name = "id", value = "价格表id", required = true, paramType = "query")
-    public void exportPrice(HttpServletResponse response, @NotNull(message = "价格表id不能为空") @Min(value = 0, message = "价格表id不能小于0") Long id) throws IOException {
+    public void exportExpPrice(HttpServletResponse response, @RequestBody List<Long> ids) throws IOException {
 
-        exportPricePrice.exportPrice(response, id);
+        exportPricePrice.exportExpPrice(response, ids);
     }
 
 }

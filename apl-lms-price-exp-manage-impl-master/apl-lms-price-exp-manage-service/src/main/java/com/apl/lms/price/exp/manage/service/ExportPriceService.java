@@ -2,6 +2,7 @@ package com.apl.lms.price.exp.manage.service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author hjr start
@@ -10,5 +11,5 @@ import java.io.IOException;
  */
 public interface ExportPriceService {
 
-    void exportPrice(HttpServletResponse response, Long id) throws IOException;
+    void exportExpPrice(HttpServletResponse response, List<Long> ids) throws IOException;
 }

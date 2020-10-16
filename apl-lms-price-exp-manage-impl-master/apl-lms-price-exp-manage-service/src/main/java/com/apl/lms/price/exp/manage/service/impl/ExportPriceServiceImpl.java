@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author hjr start
@@ -47,39 +44,70 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     @Autowired
     PriceExpService priceExpService;
 
-    String templateFileName = "G:/temp/template.xlsx";
+    String templateFileName = "G:/temp/template2.xlsx";
     String outFileName = "export-exp-price.xlsx";
 
     @Override
-    public void exportPrice(HttpServletResponse response, Long id) throws IOException {
+    public void exportExpPrice(HttpServletResponse response, List<Long> ids) throws IOException {
 
         // 注意 使用swagger 会导致各种问题，请直接用浏览器或者用postman
-        //response.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
         ExcelWriter excelWriter = null;
 
         try {
 
-            PriceExpDataObjVo priceExpDataInfo = priceExpService.getPriceExpDataInfoByPriceId(id);
-            List<List<Object>> priceDataList = priceExpDataInfo.getPriceData();
-            if(null == priceDataList || priceDataList.size() < 1) {
-                response.getWriter().write(URLEncoder.encode(ExportPriceEnum.NO_CORRESPONDING_DATA.msg, "UTF-8"));
-                return;
-            }
             excelWriter = EasyExcel.write(response.getOutputStream()).withTemplate(templateFileName).build();
-            WriteSheet writeSheet = EasyExcel.writerSheet().build();
+            //excelWriter = EasyExcel.write(outFileName).withTemplate(templateFileName).build();
 
-            //填写报价格表名和备注
-            Map<String, Object> map = new HashMap<>();
-            map.put("priceName", "香港UPS红单B价");
-            map.put("remark", "1、 “电池标签”每一件货物都需要规范粘贴\t\n");
-            excelWriter.fill(map, writeSheet);
+            List priceList = null;
+            Map<Long, PriceExpDataObjVo> priceExpDataMap = null;
 
-            //构造表格数据
-            List<Map<String, Object>> writeDataList = buildFieldAndDataMap(excelWriter, priceDataList);
-            if(null!=writeDataList) {
-                //填写表格数据
-                FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
-                excelWriter.fill(writeDataList, fillConfig, writeSheet);
+            //模板Sheet
+            Sheet templateSheet = null;
+            Cell priceListFistCell = null;
+            List<String> sheetNames = new ArrayList<>();
+            Iterator<Sheet> iterator = excelWriter.writeContext().getWorkbook().sheetIterator();
+
+            int sheetStartIndex=0;
+            while(iterator.hasNext()) {
+                sheetNames.add(iterator.next().getSheetName());
+                sheetStartIndex++;
+            }
+
+            for(int priceIndex=0; priceIndex<1; priceIndex++) {
+
+                PriceExpDataObjVo priceExpDataInfo =  priceExpService.getPriceExpDataInfoByPriceId(475964008374132737l);
+                List<List<Object>> priceDataList = priceExpDataInfo.getPriceData();
+                if(null == priceDataList || priceDataList.size() < 1) {
+                    continue;
+                }
+
+                String priceName = "香港UPS红单B价";
+                // 渠道类型 priceDataId, 分区表id 分区表名称  截止日期
+                String remark = "1、 “电池标签”每一件货物都需要规范粘贴\t\n";
+                sheetNames.add(priceName);
+
+                //创建新的工作表
+                WriteSheet writeSheet = EasyExcel.writerSheet().build();
+
+                //填写报价格信息内容
+                filePriceInfo(excelWriter, writeSheet, priceName, remark);
+
+                if(priceIndex==0) {
+                    templateSheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
+                    //查找priceList单元格
+                    priceListFistCell = findPriceListFirstCell(templateSheet);
+                    if (null == priceListFistCell) {
+                        //return "没有找到priceList单元格";
+                    }
+                }
+
+                //填写新的工作表内容
+                fillNewShell(excelWriter, writeSheet, priceListFistCell, priceDataList, priceIndex);
+            }
+
+            for(int sheetIndex=sheetStartIndex; sheetIndex<sheetNames.size(); sheetIndex++){
+                excelWriter.writeContext().getWorkbook().setSheetName(sheetIndex-sheetStartIndex, sheetNames.get(sheetIndex));
             }
 
             response.setContentType("application/vnd.ms-excel");
@@ -87,35 +115,39 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             outFileName = URLEncoder.encode(outFileName, "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + outFileName);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.getWriter().write(URLEncoder.encode(ExportPriceEnum.EXPORT_FAILED.msg, "UTF-8"));
-        } finally {
             //关闭excel
             if(null!=excelWriter) {
                 excelWriter.finish();
             }
+
+        } catch (Exception e) {
+
+            //关闭excel
+            if(null!=excelWriter) {
+                excelWriter.finish();
+            }
+
+            e.printStackTrace();
+           //response.getWriter().write(URLEncoder.encode(ExportPriceEnum.EXPORT_FAILED.msg, "UTF-8"));
         }
     }
 
-    //构造快递价格表数据
-    List<Map<String, Object>>  buildFieldAndDataMap(ExcelWriter excelWriter, List<List<Object>> priceDataList){
+    //填写报价格信息内容
+    void filePriceInfo(ExcelWriter excelWriter, WriteSheet writeSheet,  String priceName, String remark){
+        Map<String, Object> map = new HashMap<>();
+        map.put("priceName", priceName);
+        map.put("remark", remark);
+        excelWriter.fill(map, writeSheet);
+    }
 
-        //模板Sheet
-        Sheet templateSheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
+    //填写报价格信息内容
+    void fillNewShell(ExcelWriter excelWriter, WriteSheet writeSheet,Cell priceListFistCell, List<List<Object>> priceDataList, int priceIndex){
 
-        //查找priceList单元格
-        Cell priceListFistCell = findPriceListFirstCell(templateSheet);
-        if(null == priceListFistCell) {
-            //没有找到priceList单元格
-            return null;
-        }
-
-        Cell cell;
         Row fieldRow = priceListFistCell.getRow();
         int priceColIndex = priceListFistCell.getColumnIndex();
 
-        //构建字段和List<Map>
+        // 构建表格数据，行为Map类型
+        // 和填写模板sheet字段( {c1}, {c2}, {c3}...)
         int colLen;
         String colName;
         Map rowMap;
@@ -128,14 +160,18 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 colName = "c"+colIndex.toString();
                 rowMap.put(colName, objectList.get(colIndex));
 
-                cell = fieldRow.createCell(colIndex);
-                cell.setCellValue("{."+colName+"}");
+                if(priceIndex==0) {
+                    Cell cell = fieldRow.createCell(colIndex);
+                    cell.setCellValue("{." + colName + "}");
+                }
             }
 
             priceDataListNew.add(rowMap);
         }
 
-        return priceDataListNew;
+        //填写表格数据
+        FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
+        excelWriter.fill(priceDataListNew, fillConfig, writeSheet);
     }
 
     //查找priceList单元格
@@ -162,8 +198,6 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         //没有找到priceList单元格
         return null;
     }
-
-
 
 
 }
