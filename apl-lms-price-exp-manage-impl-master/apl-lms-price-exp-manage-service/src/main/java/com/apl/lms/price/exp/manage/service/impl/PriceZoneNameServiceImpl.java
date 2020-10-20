@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hjr start
@@ -117,5 +118,13 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceZoneNamePo.getId());
     }
 
-
+    /**
+     * 批量获取分区名称
+     * @param zoneIds
+     * @return
+     */
+    @Override
+    public Map<Long, PriceZoneNamePo> getPriceZoneNameBatch(List<Long> zoneIds) {
+        return baseMapper.getPriceZoneNameBatch(zoneIds);
+    }
 }

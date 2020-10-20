@@ -5,10 +5,13 @@ import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hjr start
@@ -55,4 +58,11 @@ public interface PriceZoneMapper extends BaseMapper<PriceZoneNamePo> {
      */
     Integer addPriceZoneName(@Param("po") PriceZoneNamePo priceZonePo);
 
+    /**
+     * 批量获取分区名称
+     * @param zoneIds
+     * @return
+     */
+    @MapKey("mapKey")
+    Map<Long, PriceZoneNamePo> getPriceZoneNameBatch(@Param("ids") List<Long> zoneIds);
 }

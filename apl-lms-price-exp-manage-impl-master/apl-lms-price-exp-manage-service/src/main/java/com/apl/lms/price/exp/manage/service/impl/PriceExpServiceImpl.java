@@ -1067,4 +1067,13 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
+    /**
+     * 批量获取价格表信息
+     * @param ids
+     * @return
+     */
+    @Override
+    public List<ExpPriceInfoBo> getPriceInfoByIds(List<Long> ids) {
+        return baseMapper.getPriceInfoByIds(ids);
+    }
 }

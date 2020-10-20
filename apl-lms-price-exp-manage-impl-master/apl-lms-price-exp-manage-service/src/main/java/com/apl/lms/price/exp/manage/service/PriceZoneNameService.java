@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hjr start
@@ -53,5 +54,10 @@ public interface PriceZoneNameService extends IService<PriceZoneNamePo> {
      */
     ResultUtil<Long> addPriceZoneName(PriceZoneNamePo priceZoneNamePo);
 
-
+    /**
+     * 批量获取分区名称
+     * @param zoneIds
+     * @return
+     */
+    Map<Long, PriceZoneNamePo> getPriceZoneNameBatch(List<Long> zoneIds);
 }

@@ -2,8 +2,12 @@ package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author hjr start
@@ -39,4 +43,12 @@ public interface PriceExpRemarkMapper extends BaseMapper<PriceExpRemarkPo> {
      * @return
      */
     Long exists(Long id);
+
+    /**
+     * 批量获取
+     * @param ids
+     * @return
+     */
+    @MapKey(value = "mapKey")
+    Map<Long, PriceExpRemarkPo> selectBatch(@Param("ids") List<Long> ids);
 }

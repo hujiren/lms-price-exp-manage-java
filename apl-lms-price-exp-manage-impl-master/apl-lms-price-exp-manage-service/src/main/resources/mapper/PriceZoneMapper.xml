@@ -17,6 +17,7 @@
             and zone_name LIKE CONCAT( '%' , #{dto.keyword} , '%' )
         </if>
     </select>
+
     <select id="getPriceZoneName" resultType="java.lang.String">
         select
         zone_name
@@ -25,7 +26,6 @@
         where
          id=#{id}
     </select>
-
 
     <!--根据id删除快递分区-->
     <delete id="delPriceZoneName">
@@ -45,4 +45,15 @@
         insert into price_zone(id, channel_category, zone_name) values (#{po.id}, #{po.channelCategory}, #{po.zoneName})
     </insert>
 
+    <!--批量获取分区名称-->
+    <select id="getPriceZoneNameBatch" resultType="java.util.Map">
+         select
+            id as map_key, channel_category, zone_name
+        from
+            price_zone
+        where id in
+        <foreach collection="ids" close=")" item="row" open="(" separator=",">
+            #{row}
+        </foreach>
+    </select>
 </mapper>

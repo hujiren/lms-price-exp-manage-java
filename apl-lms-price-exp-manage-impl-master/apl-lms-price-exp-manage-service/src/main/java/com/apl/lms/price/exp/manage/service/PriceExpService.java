@@ -112,4 +112,10 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     List<String> updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto);
 
+    /**
+     * 批量获取价格表信息
+     * @param ids
+     * @return
+     */
+    List<ExpPriceInfoBo> getPriceInfoByIds(List<Long> ids);
 }

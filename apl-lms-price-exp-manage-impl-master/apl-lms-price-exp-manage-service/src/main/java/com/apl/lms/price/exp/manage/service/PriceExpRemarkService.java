@@ -1,10 +1,10 @@
 package com.apl.lms.price.exp.manage.service;
 
-import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hjr start
@@ -35,4 +35,11 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
      * @return
      */
     Integer delBatch(String ids);
+
+    /**
+     * 批量获取
+     * @param ids
+     * @return
+     */
+    Map<Long, PriceExpRemarkPo> getPriceExpRemarkBatch(List<Long> ids);
 }

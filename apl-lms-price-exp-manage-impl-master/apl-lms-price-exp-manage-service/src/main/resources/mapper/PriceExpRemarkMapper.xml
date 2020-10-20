@@ -21,4 +21,12 @@
     <select id="exists" resultType="java.lang.Long">
         select id from price_exp_remark where id = #{id}
     </select>
+
+    <!--批量获取-->
+    <select id="selectBatch" resultType="java.util.Map">
+        select id as map_key, remark, sale_remark from price_exp_remark where id in
+        <foreach collection="ids" separator="," open="(" item="row" close=")">
+            #{row}
+        </foreach>
+    </select>
 </mapper>

@@ -1,15 +1,13 @@
 package com.apl.lms.price.exp.manage.service.impl;
-import com.apl.lib.constants.CommonStatusCode;
-import com.apl.lib.exception.AplException;
-import com.apl.lib.utils.ResultUtil;
+
 import com.apl.lms.price.exp.manage.mapper.PriceExpRemarkMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpRemarkService;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.core.SpringVersion;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hjr start
@@ -71,5 +69,15 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
     public Integer delBatch(String ids) {
         Integer res = baseMapper.delBatch(ids);
         return res;
+    }
+
+    /**
+     * 批量获取
+     * @param ids
+     * @return
+     */
+    @Override
+    public Map<Long, PriceExpRemarkPo> getPriceExpRemarkBatch(List<Long> ids) {
+        return baseMapper.selectBatch(ids);
     }
 }
