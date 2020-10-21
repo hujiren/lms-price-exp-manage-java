@@ -46,9 +46,9 @@
     </insert>
 
     <!--批量获取分区名称-->
-    <select id="getPriceZoneNameBatch" resultType="java.util.Map">
+    <select id="getPriceZoneNameBatch" resultType="com.apl.lms.price.exp.pojo.po.PriceZoneNamePo">
          select
-            id as map_key, channel_category, zone_name
+            id, channel_category, zone_name
         from
             price_zone
         where id in

@@ -49,6 +49,6 @@ public interface PriceExpRemarkMapper extends BaseMapper<PriceExpRemarkPo> {
      * @param ids
      * @return
      */
-    @MapKey(value = "mapKey")
+    @MapKey(value = "id")
     Map<Long, PriceExpRemarkPo> selectBatch(@Param("ids") List<Long> ids);
 }
