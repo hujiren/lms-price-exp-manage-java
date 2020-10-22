@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Date 2020/8/19 10:35
  */
 @Component
-@FeignClient(value = "apl-lms-price-exp-manage-app" , fallback = PriceExpFeignImpl.class)
+@FeignClient(name = "apl-lms-price-exp-manage-app" , path = "lms-price-exp-manage", fallback = PriceExpFeignImpl.class)
 public interface PriceExpFeign {
 
     /**

@@ -34,7 +34,6 @@ public interface PriceZoneMapper extends BaseMapper<PriceZoneNamePo> {
      * @param page
      * @return
      */
-    @SqlParser(filter = true)
     List<PriceZoneNamePo> getPriceZoneNameList(Page<PriceZoneNamePo> page, @Param("dto") PriceZoneNameKeyDto priceZoneNameKeyDto);
 
     /**

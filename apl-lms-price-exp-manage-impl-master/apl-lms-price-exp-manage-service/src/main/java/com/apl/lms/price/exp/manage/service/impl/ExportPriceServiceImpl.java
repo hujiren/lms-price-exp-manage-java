@@ -17,7 +17,6 @@ import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataObjVo;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -127,6 +126,8 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             FileInputStream fs = new FileInputStream(templateFileNameByTenant);
             XSSFWorkbook wb = new XSSFWorkbook(fs);
             Sheet templateSheet =  wb.getSheetAt(0);
+
+            //如果只有一个价格表需要导出则不需要继续创建Sheet
             for (int sheetNo = 1; sheetNo < expPriceInfoList.size(); sheetNo++) {
                 Sheet newSheet =  wb.createSheet();
                 wb.setSheetName(sheetNo, expPriceInfoList.get(sheetNo).getPriceName());
@@ -202,7 +203,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                    ExpPriceInfoBo expPriceInfo,
                    PriceExpRemarkPo priceExpRemarkPo,
                    PriceZoneNamePo priceZoneNamePo,
-                   List<List<Object>> priceDataList){
+                   List<List<Object>> priceDataList) {
 
 
         //填充报价格信息内容
@@ -218,32 +219,24 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             saleRemarkList.add(s);
         }
         fillPriceRemark(excelWriter, writeSheet,saleRemarkList);
+
     }
 
     //填写备注信息内容
     void fillPriceRemark(ExcelWriter excelWriter, WriteSheet writeSheet, List<String> saleRemarkList) {
 
-        Sheet sheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
-
-        //查找priceList单元格
-        Cell priceListFistCell = findPriceListFirstCell(sheet, "remark");
-
-        Row fieldRow = priceListFistCell.getRow();
-//        int priceColIndex = priceListFistCell.getColumnIndex();
-
         // 构建表格数据，行为Map类型
         // 和填写模板sheet字段( {c1}, {c2}, {c3}...)
         Map<String, String> rowMap;
-        String colName;
         List<Map<String, String>> priceDataListNew = new ArrayList<>();
         for (int index = 0; index < saleRemarkList.size(); index++) {
             rowMap = new HashMap<>();
-            colName = "c" + index;
-            rowMap.put(colName, saleRemarkList.get(index));
-            Cell cell = fieldRow.createCell(index);
-            cell.setCellValue("{." + colName + "}");
-            priceDataListNew.add(rowMap);
+            rowMap.put("remark", saleRemarkList.get(index));
         }
+
+
+
+
         //填写表格数据
         FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
         excelWriter.fill(priceDataListNew, fillConfig, writeSheet);
@@ -285,7 +278,6 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     void fillPriceData(ExcelWriter excelWriter, WriteSheet writeSheet, List<List<Object>> priceDataList) {
 
         Sheet sheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
-
         //查找priceList单元格
         Cell priceListFistCell = findPriceListFirstCell(sheet, "priceList");
 
@@ -293,22 +285,26 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         int priceColIndex = priceListFistCell.getColumnIndex();
 
         // 构建表格数据，行为Map类型
-        // 和填写模板sheet字段( {c1}, {c2}, {c3}...)
+        // 和填写模板sheet字段( {p1}, {p2}, {p3}...)
         int colLen;
         String colName;
         Map rowMap;
         List<Map<String, Object>> priceDataListNew = new ArrayList<>();
         for (List<Object> objectList : priceDataList) {
             rowMap = new HashMap<>();
+
             colLen = objectList.size();
             for (Integer colIndex = priceColIndex; colIndex < colLen; colIndex++) {
 
-                colName = "c" + colIndex.toString();
+                colName = "p" + colIndex.toString();
                 rowMap.put(colName, objectList.get(colIndex));
 
-                Cell cell = fieldRow.createCell(colIndex);
-                cell.setCellValue("{." + colName + "}");
+                if(null!=fieldRow) {
+                    Cell cell = fieldRow.createCell(colIndex);
+                    cell.setCellValue("{." + colName + "}");
+                }
             }
+            fieldRow = null;
 
             priceDataListNew.add(rowMap);
         }
@@ -319,8 +315,9 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     }
 
 
+
     //查找单元格
-    Cell findPriceListFirstCell(Sheet templateSheet, String cellInfo) {
+    Cell findPriceListFirstCell(Sheet templateSheet, String str) {
 
         Cell cell;
         String strVal;
@@ -330,10 +327,9 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             if (null != fieldRow) {
                 for (int colIndex = 0; colIndex < 4; colIndex++) {
                     cell = fieldRow.getCell(colIndex);
-                    cell.setCellType(CellType.STRING);
                     if (null != cell) {
                         strVal = cell.getStringCellValue();
-                        if (null != strVal && strVal.trim().equals(cellInfo)) {
+                        if (null != strVal && strVal.trim().equals(str)) {
                             //找到单元格
                             return cell;
                         }

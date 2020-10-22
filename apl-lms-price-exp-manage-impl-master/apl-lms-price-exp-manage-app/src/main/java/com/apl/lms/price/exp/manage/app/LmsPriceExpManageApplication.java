@@ -1,8 +1,6 @@
 package com.apl.lms.price.exp.manage.app;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
-import com.apl.lib.security.SecurityUser;
-import com.apl.lib.utils.CommonContextHolder;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,7 +42,6 @@ public class LmsPriceExpManageApplication {
         //com.apl.tenant.AplTenantSqlParser
         //com.apl.shardingjdbc.algorithm.TenantShardingTableAlgorithm
         //com.apl.db.adb.AdbHelper
-
         SpringApplication.run(LmsPriceExpManageApplication.class , args);
     }
 }
