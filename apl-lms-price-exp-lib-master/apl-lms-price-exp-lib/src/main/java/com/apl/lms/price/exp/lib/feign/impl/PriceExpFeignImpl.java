@@ -3,6 +3,7 @@ package com.apl.lms.price.exp.lib.feign.impl;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Classname PriceExpFeignImpl
  * @Date 2020/8/19 10:36
  */
+@Component
 public class PriceExpFeignImpl implements PriceExpFeign {
 
     @Override

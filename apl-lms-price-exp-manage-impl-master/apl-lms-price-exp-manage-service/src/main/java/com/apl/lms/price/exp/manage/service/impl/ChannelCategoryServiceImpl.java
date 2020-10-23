@@ -6,9 +6,11 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.ChannelCategoryMapper;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
+import com.apl.lms.price.exp.pojo.vo.ChannelCategoryListVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**
@@ -38,10 +40,10 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      * @return
      */
     @Override
-    public ResultUtil<List<ChannelCategoryPo>> getList() {
+    public ResultUtil<List<ChannelCategoryListVo>> getList() {
 
 
-        List<ChannelCategoryPo> channelCategoryVoList = baseMapper.getList();
+        List<ChannelCategoryListVo> channelCategoryVoList = baseMapper.getList();
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, channelCategoryVoList);
     }

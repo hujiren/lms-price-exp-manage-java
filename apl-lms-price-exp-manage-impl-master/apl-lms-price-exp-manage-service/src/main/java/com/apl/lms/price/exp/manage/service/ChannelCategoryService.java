@@ -2,7 +2,7 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.apl.lms.price.exp.pojo.vo.ChannelCategoryListVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public interface ChannelCategoryService extends IService<ChannelCategoryPo> {
      * @param
      * @return
      */
-    ResultUtil<List<ChannelCategoryPo>> getList();
+    ResultUtil<List<ChannelCategoryListVo>> getList();
 
     /**
      * 删除

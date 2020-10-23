@@ -5,7 +5,7 @@
     <!--查询列表-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo">
         select
-            id, zone_num, country_code
+            id, zone_num, rearmk, country_code
         from
             price_zone_data
         where

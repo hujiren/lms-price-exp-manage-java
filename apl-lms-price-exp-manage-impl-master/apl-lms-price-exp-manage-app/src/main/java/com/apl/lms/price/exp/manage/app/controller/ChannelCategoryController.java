@@ -1,8 +1,9 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
 import com.apl.lms.price.exp.manage.service.ChannelCategoryService;
+import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
+import com.apl.lms.price.exp.pojo.vo.ChannelCategoryListVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -30,7 +32,7 @@ public class  ChannelCategoryController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "获取渠道类型列表" , notes = "获取渠道类型列表")
-    public ResultUtil<List<ChannelCategoryPo>> getList(){
+    public ResultUtil<List<ChannelCategoryListVo>> getList(){
 
         return channelCategoryService.getList();
     }

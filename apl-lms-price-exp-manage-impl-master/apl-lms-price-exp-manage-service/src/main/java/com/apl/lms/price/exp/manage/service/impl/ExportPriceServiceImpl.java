@@ -5,6 +5,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
+import com.alibaba.excel.write.metadata.fill.FillWrapper;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
@@ -44,7 +45,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
         EXPORT_SUCCESS("EXPORT_SUCCESS", "EXPORT SUCCESS! 导出成功!"),
         EXPORT_FAILED("EXPORT_FAILED", "EXPORT_FAILED! 导出失败!"),
-        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA", "NO_CORRESPONDING_DATA! 没有对应数据!"),
+        NO_CORRESPONDING_PRICE("NO_CORRESPONDING_PRICE", "没有对应价格!"),
         NO_VALID_FILE_WAS_FOUND("NO_VALID_FILE_WAS_FOUND", "没有找到有效文件"),
         TEMPLATE_DOES_NOT_EXIST("Template does not exist", "模板不存在");
 
@@ -85,21 +86,23 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         response.setCharacterEncoding("utf-8");
         ExcelWriter excelWriter = null;
         String newTempFileName = null;
+        boolean IS_NO_CORRESPONDING_PRICE = false;
 
         try {
 
+            //价格表内容
+            List<ExpPriceInfoBo> expPriceInfoList = priceExpService.getPriceInfoByIds(ids);
+            if(null ==expPriceInfoList || expPriceInfoList.size()<1){
+                IS_NO_CORRESPONDING_PRICE = true;
+                throw new AplException(ExportPriceEnum.NO_CORRESPONDING_PRICE.code, ExportPriceEnum.NO_CORRESPONDING_PRICE.msg, null);
+            }
+
             //价格表数据
             Map<Long, PriceExpDataObjVo> priceDataMap = new HashMap<>();
-
             for (Long id : ids) {
                 PriceExpDataObjVo priceExpDataInfo = priceExpService.getPriceExpDataInfoByPriceId(id);
                 priceDataMap.put(id, priceExpDataInfo);
             }
-            //价格表内容
-            List<ExpPriceInfoBo> expPriceInfoList = priceExpService.getPriceInfoByIds(ids);
-
-            //备注
-            Map<Long, PriceExpRemarkPo> priceExpRemarkMap = priceExpRemarkService.getPriceExpRemarkBatch(ids);
 
             //分区
             List<Long> zoneIds = new ArrayList<>();
@@ -108,36 +111,11 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             }
             Map<Long, PriceZoneNamePo> priceZoneNameMap = priceZoneNameService.getPriceZoneNameBatch(zoneIds);
 
+            //备注
+            Map<Long, PriceExpRemarkPo> priceExpRemarkMap = priceExpRemarkService.getPriceExpRemarkBatch(ids);
+
             //创建新的模板文件，并复制模板Sheet
-            SecurityUser securityUser = CommonContextHolder.getSecurityUser();
-            String templateFileNameByTenant = templateFileName.replace("-tenant", "-"+securityUser.getInnerOrgCode());
-            File templateFile = new File(templateFileNameByTenant);
-            if(!templateFile.exists()) {
-                templateFileNameByTenant = templateFileName.replace("-tenant", "-common");
-                templateFile = new File(templateFileName);
-            }
-
-            if(!templateFile.exists()) {
-                throw new AplException(ExportPriceEnum.TEMPLATE_DOES_NOT_EXIST.code, ExportPriceEnum.TEMPLATE_DOES_NOT_EXIST.msg, null);
-            }
-            //返回上一级目录, 即不带文件名的全路径, 构建临时文件全路径
-            newTempFileName = templateFile.getParent() + "/export-exp-price-temp-" + UUID.randomUUID() + ".xlsx";
-
-            FileInputStream fs = new FileInputStream(templateFileNameByTenant);
-            XSSFWorkbook wb = new XSSFWorkbook(fs);
-            Sheet templateSheet =  wb.getSheetAt(0);
-
-            //如果只有一个价格表需要导出则不需要继续创建Sheet
-            for (int sheetNo = 1; sheetNo < expPriceInfoList.size(); sheetNo++) {
-                Sheet newSheet =  wb.createSheet();
-                wb.setSheetName(sheetNo, expPriceInfoList.get(sheetNo).getPriceName());
-                CopySheet(templateSheet, newSheet);
-            }
-            wb.setSheetName(0, expPriceInfoList.get(0).getPriceName());
-            //输出临时模板文件
-            FileOutputStream fileOut = new FileOutputStream(newTempFileName);
-            wb.write(fileOut);
-            fileOut.close();
+            newTempFileName = copyTemplateFile(expPriceInfoList);
 
             //按新的模板文件创建excelWriter对象
             excelWriter = EasyExcel.write(response.getOutputStream()).withTemplate(newTempFileName).build();
@@ -169,20 +147,14 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             outFileName = URLEncoder.encode(outFileName, "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + outFileName);
 
-            //关闭excel
-            if (null != excelWriter) {
-                excelWriter.finish();
-            }
-
         } catch (Exception e) {
-
-            //关闭excel
-            if (null != excelWriter) {
-                excelWriter.finish();
-            }
 
             e.printStackTrace();
             StaticLog.error(e);
+            if(IS_NO_CORRESPONDING_PRICE)
+                throw new AplException(ExportPriceEnum.NO_CORRESPONDING_PRICE.code, ExportPriceEnum.NO_CORRESPONDING_PRICE.msg, null);
+            else
+                throw new AplException(ExportPriceEnum.EXPORT_FAILED.code, ExportPriceEnum.EXPORT_FAILED.msg, null);
         }
         finally {
             try {
@@ -194,10 +166,51 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 e.printStackTrace();
                 StaticLog.error(e);
             }
+
+            //关闭excel
+            if (null != excelWriter) {
+                excelWriter.finish();
+            }
         }
 
     }
 
+    //创建新的模板文件，并复制模板Sheet
+    String copyTemplateFile(List<ExpPriceInfoBo> expPriceInfoList) throws IOException {
+        SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+        String templateFileNameByTenant = templateFileName.replace("-tenant", "-"+securityUser.getInnerOrgCode());
+        File templateFile = new File(templateFileNameByTenant);
+        if(!templateFile.exists()) {
+            templateFileNameByTenant = templateFileName.replace("-tenant", "-common");
+            templateFile = new File(templateFileName);
+        }
+
+        if(!templateFile.exists()) {
+            throw new AplException(ExportPriceEnum.TEMPLATE_DOES_NOT_EXIST.code, ExportPriceEnum.TEMPLATE_DOES_NOT_EXIST.msg, null);
+        }
+        //返回上一级目录, 即不带文件名的全路径, 构建临时文件全路径
+        String newTempFileName = templateFile.getParent() + "/export-exp-price-temp-" + UUID.randomUUID() + ".xlsx";
+
+        FileInputStream fs = new FileInputStream(templateFileNameByTenant);
+        XSSFWorkbook wb = new XSSFWorkbook(fs);
+        Sheet templateSheet =  wb.getSheetAt(0);
+
+        //如果只有一个价格表需要导出则不需要继续创建Sheet
+        for (int sheetNo = 1; sheetNo < expPriceInfoList.size(); sheetNo++) {
+            Sheet newSheet =  wb.createSheet();
+            wb.setSheetName(sheetNo, expPriceInfoList.get(sheetNo).getPriceName());
+            copySheet(templateSheet, newSheet);
+        }
+        wb.setSheetName(0, expPriceInfoList.get(0).getPriceName());
+        //输出临时模板文件
+        FileOutputStream fileOut = new FileOutputStream(newTempFileName);
+        wb.write(fileOut);
+        fileOut.close();
+
+        return newTempFileName;
+    }
+
+    //填写工作表
     void fillShell(ExcelWriter excelWriter,
                    WriteSheet writeSheet,
                    ExpPriceInfoBo expPriceInfo,
@@ -222,39 +235,6 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
     }
 
-    //填写备注信息内容
-    void fillPriceRemark(ExcelWriter excelWriter, WriteSheet writeSheet, List<String> saleRemarkList) {
-
-        // 构建表格数据，行为Map类型
-        // 和填写模板sheet字段( {c1}, {c2}, {c3}...)
-        Map<String, String> rowMap;
-        List<Map<String, String>> priceDataListNew = new ArrayList<>();
-        for (int index = 0; index < saleRemarkList.size(); index++) {
-            rowMap = new HashMap<>();
-            rowMap.put("remark", saleRemarkList.get(index));
-        }
-
-
-
-
-        //填写表格数据
-        FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
-        excelWriter.fill(priceDataListNew, fillConfig, writeSheet);
-    }
-
-    //填充报价格信息内容
-//    Sheet getTempSheet(ExcelWriter excelWriter, WriteSheet writeSheet) {
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("priceName", "{priceName}");
-//        map.put("endData", "{endData}");
-//        map.put("remark", "{remark}");
-//        map.put("channelCategory", "{channelCategory}");
-//        map.put("zoneName", "{zoneName}");
-//        excelWriter.fill(map, writeSheet);
-//        Sheet templateSheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
-//
-//        return templateSheet;
-//    }
 
     //填充报价格信息内容
     void filePriceInfo(ExcelWriter excelWriter, WriteSheet writeSheet, ExpPriceInfoBo expPriceInfo, PriceExpRemarkPo priceExpRemarkPo, PriceZoneNamePo priceZoneNamePo) {
@@ -262,12 +242,9 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         if(null != expPriceInfo) {
             map.put("priceName", expPriceInfo.getPriceName());
             map.put("endData", expPriceInfo.getEndDate());
+            map.put("channelCategory", expPriceInfo.getChannelCategory());
         }
-//        if(null != priceExpRemarkPo) {
-//            map.put("remark", priceExpRemarkPo.getSaleRemark());
-//        }
         if(null != priceZoneNamePo) {
-            map.put("channelCategory", priceZoneNamePo.getChannelCategory());
             map.put("zoneName", priceZoneNamePo.getZoneName());
         }
 
@@ -292,7 +269,6 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         List<Map<String, Object>> priceDataListNew = new ArrayList<>();
         for (List<Object> objectList : priceDataList) {
             rowMap = new HashMap<>();
-
             colLen = objectList.size();
             for (Integer colIndex = priceColIndex; colIndex < colLen; colIndex++) {
 
@@ -301,20 +277,35 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
                 if(null!=fieldRow) {
                     Cell cell = fieldRow.createCell(colIndex);
-                    cell.setCellValue("{." + colName + "}");
+                    cell.setCellValue("{p." + colName + "}");
                 }
             }
-            fieldRow = null;
-
             priceDataListNew.add(rowMap);
+            fieldRow = null;
         }
 
         //填写表格数据
         FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
-        excelWriter.fill(priceDataListNew, fillConfig, writeSheet);
+        excelWriter.fill(new FillWrapper("p", priceDataListNew), fillConfig, writeSheet);
     }
 
 
+    //填写备注信息内容
+    void fillPriceRemark(ExcelWriter excelWriter, WriteSheet writeSheet, List<String> saleRemarkList) {
+
+        // 构建表格数据，行为Map类型
+        Map<String, String> rowMap;
+        List<Map<String, String>> remarkList = new ArrayList<>();
+        for (int index = 0; index < saleRemarkList.size(); index++) {
+            rowMap = new HashMap<>();
+            rowMap.put("remark", saleRemarkList.get(index));
+            remarkList.add(rowMap);
+        }
+
+        //填写表格数据
+        FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
+        excelWriter.fill(new FillWrapper("r", remarkList), fillConfig, writeSheet);
+    }
 
     //查找单元格
     Cell findPriceListFirstCell(Sheet templateSheet, String str) {
@@ -344,7 +335,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
 
     //复制单元格
-    void CopySheet(Sheet sourceSheet, Sheet targetSheet) {
+    void copySheet(Sheet sourceSheet, Sheet targetSheet) {
         //getLastRowNum 获取有数据的最后一行的行号  getLastCellNum获取有数据的最后一列的列号
         int rowLastRowNum = sourceSheet.getLastRowNum();
 
@@ -370,16 +361,11 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                     //为单元格赋值
                     targetCell.setCellValue(sourceCellVal);
                     //为单元格设置样式
-//                    CellStyle cellStyle = sourceCell.getCellStyle();
-//                    cellStyle.cloneStyleFrom(cellStyle);
-//                    cellStyle.setAlignment();
-//                    targetCell.setCellStyle(cellStyle);
                     targetCell.setCellStyle(sourceCell.getCellStyle());
+
 
                 }
             }
         }
     }
-
-
 }

@@ -1,5 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
+
 import com.apl.lms.price.exp.pojo.po.ChannelCategoryPo;
+import com.apl.lms.price.exp.pojo.vo.ChannelCategoryListVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,7 +23,7 @@ public interface ChannelCategoryMapper extends BaseMapper<ChannelCategoryPo> {
      * @return
      */
 
-    List<ChannelCategoryPo> getList();
+    List<ChannelCategoryListVo> getList();
 
     /**
      * 根据Id删除渠道类型数据
