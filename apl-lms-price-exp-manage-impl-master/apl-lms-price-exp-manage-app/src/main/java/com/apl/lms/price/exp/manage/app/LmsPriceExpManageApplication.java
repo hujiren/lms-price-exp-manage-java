@@ -35,7 +35,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class LmsPriceExpManageApplication {
 
     public static void main(String[] args) {
-        //com.apl.shardingjdbc.ShardingDataSourceConfig
+        //com.apl.shardingjdbc.config.ShardingDataSourceConfig
         //com.apl.shardingjdbc.mybatis.ShardingJdbcMybatisConfig
         //mybatis-plus.pagination.tenantTableFilter
         //AbstractDataSourceAdapter

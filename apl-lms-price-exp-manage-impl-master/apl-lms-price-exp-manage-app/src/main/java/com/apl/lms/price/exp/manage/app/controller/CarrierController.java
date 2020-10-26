@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
-import com.apl.lms.common.query.manage.po.CommonCarrierPo;
 import com.apl.lms.price.exp.manage.service.CarrierService;
 import com.apl.lms.price.exp.pojo.po.CarrierPo;
 import io.swagger.annotations.Api;
@@ -33,11 +32,11 @@ public class CarrierController {
     @Autowired
     public CarrierService carrierService;
 
-
     @PostMapping(value = "/add")
     @ApiOperation(value =  "添加", notes ="添加")
     public ResultUtil<Long> add(@Validated CarrierPo carrierPo) {
         ApiParamValidate.validate(carrierPo);
+
 
         return carrierService.add(carrierPo);
     }
@@ -61,7 +60,7 @@ public class CarrierController {
 
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "查找列表" , notes = "查找列表")
-    public ResultUtil<List<CommonCarrierPo>> getList() {
+    public ResultUtil<List<CarrierPo>> getList() {
 
         return carrierService.getList();
     }
@@ -69,7 +68,7 @@ public class CarrierController {
     @PostMapping(value = "/get-list-selector")
     @ApiOperation(value =  "查找列表-选择器" , notes = "查找列表-选择器")
     @ApiImplicitParam(name = "innerOrgId",value = " 租户id",required = true  , paramType = "query")
-    public ResultUtil<List<CommonCarrierPo>> getList(Long innerOrgId) {
+    public ResultUtil<List<CarrierPo>> getList(Long innerOrgId) {
 
         return carrierService.getListByInnerOrgId(innerOrgId);
     }

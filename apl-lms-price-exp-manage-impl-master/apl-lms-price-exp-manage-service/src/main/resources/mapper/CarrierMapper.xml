@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.CarrierMapper">
 
     <!-- 查找列表 2020-10-07-->
-    <select id="getList" resultType="com.apl.lms.common.query.manage.po.CommonCarrierPo">
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.po.CarrierPo">
         SELECT
            id, 
            carrier_name
@@ -12,7 +12,7 @@
     </select>
 
     <!--查找列表-->
-    <select id="getListByInnerOrgId" resultType="com.apl.lms.common.query.manage.po.CommonCarrierPo">
+    <select id="getListByInnerOrgId" resultType="com.apl.lms.price.exp.pojo.po.CarrierPo">
         SELECT
            id,
            carrier_name

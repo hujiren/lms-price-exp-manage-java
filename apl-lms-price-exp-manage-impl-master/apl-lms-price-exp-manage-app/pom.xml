@@ -26,6 +26,12 @@
 
         <dependency>
             <groupId>com.apl</groupId>
+            <artifactId>apl-lms-net</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.apl</groupId>
             <artifactId>apl-lms-price-exp-manage-service</artifactId>
             <version>1.0.0</version>
         </dependency>

@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.manage.mapper;
 
-import com.apl.lms.common.query.manage.po.CommonCarrierPo;
 import com.apl.lms.price.exp.pojo.po.CarrierPo;
 import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -24,7 +23,7 @@ public interface CarrierMapper extends BaseMapper<CarrierPo> {
      * @Author: ${cfg.author}
      * @Date: 2020-10-07
      */
-    List<CommonCarrierPo> getList();
+    List<CarrierPo> getList();
 
     /**
      * 查询列表
@@ -32,5 +31,5 @@ public interface CarrierMapper extends BaseMapper<CarrierPo> {
      * @return
      */
     @SqlParser(filter = true)
-    List<CommonCarrierPo> getListByInnerOrgId(Long innerOrgId);
+    List<CarrierPo> getListByInnerOrgId(Long innerOrgId);
 }

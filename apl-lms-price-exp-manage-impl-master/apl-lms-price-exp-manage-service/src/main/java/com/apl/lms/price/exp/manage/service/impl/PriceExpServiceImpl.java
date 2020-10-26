@@ -282,6 +282,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             String specialCommodityStr = priceExpPriceInfoVo.getSpecialCommodityStr().replace("[", "").replace("]", "").replaceAll(" ", "");
 
             List<SpecialCommodityDto> specialCommodityList = new ArrayList<>();
+            //JoinCustomer
             String[] specialCommodityArr = specialCommodityStr.replace("{", "").replace("}", "").split(",");
 
             for (int i = 0; i < specialCommodityArr.length; i++) {

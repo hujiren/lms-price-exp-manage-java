@@ -1,9 +1,7 @@
 package com.apl.lms.price.exp.manage.service;
 
-import com.apl.lms.common.query.manage.po.CommonCarrierPo;
 import com.apl.lms.price.exp.pojo.po.CarrierPo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 
 import java.util.List;
@@ -47,12 +45,12 @@ public interface CarrierService extends IService<CarrierPo> {
          * @author hjr
          * @since 2020-10-07
          */
-        ResultUtil<List<CommonCarrierPo>>getList();
+        ResultUtil<List<CarrierPo>>getList();
 
         /**
          * 查询列表
          * @param innerOrgId
          * @return
          */
-        ResultUtil<List<CommonCarrierPo>> getListByInnerOrgId(Long innerOrgId);
+        ResultUtil<List<CarrierPo>> getListByInnerOrgId(Long innerOrgId);
 }

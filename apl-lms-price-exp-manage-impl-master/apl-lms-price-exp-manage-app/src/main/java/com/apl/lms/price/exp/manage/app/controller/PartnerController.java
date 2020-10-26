@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.app.controller;
 
 import com.apl.lib.pojo.dto.PageDto;
+import com.apl.lib.utils.CookieUtil;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.PartnerService;
 import com.apl.lms.price.exp.pojo.dto.*;
@@ -17,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * @author hjr start
@@ -67,5 +73,37 @@ public class PartnerController {
     public ResultUtil<PartnerPo> get(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 
         return partnerService.getPartner(id);
+    }
+
+    @PostMapping(value = "/test")
+    @ApiOperation(value =  "test" , notes = "test")
+    public Integer test() throws IOException {
+
+        String aspSessionId = CookieUtil.getCookie("ASP.NET_SessionId");
+        Integer customerGroupId = 0;
+
+        String strUrl = "";
+        URL url = new URL(strUrl);
+        HttpURLConnection con = (HttpURLConnection)url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.104 Safari/537.36");
+        con.setRequestProperty("Cookie", "ASP.NET_SessionId=" + aspSessionId);
+        con.connect();
+        if (con.getResponseCode() == 200) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+
+            String line;
+            while((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+            br.close();
+            if (sb.length() > 10) {
+                customerGroupId = Integer.valueOf(sb.toString());
+            }
+        }
+
+        return  customerGroupId;
     }
 }

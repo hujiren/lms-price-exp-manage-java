@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
      * 合并利润
      * @param list1
@@ -80,3 +81,5 @@
 
         return  newList;
     }
+=======
+>>>>>>> c58d08048c95a869cd1b27d798a8dba581a2a41d
