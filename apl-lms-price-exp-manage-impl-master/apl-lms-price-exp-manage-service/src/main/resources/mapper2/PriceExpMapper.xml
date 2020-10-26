@@ -6,11 +6,11 @@
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
             id, start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_code,
-            price_sale_name as price_name, customer_groups_name, customer_name, channel_category, price_status, syn_status
+            price_sale_name as price_name, customer_group_name, customer_name, channel_category, price_status, syn_status
         from
             lms_exp_price
         where
-        inner_org_id = #{key.innerOrgId}
+        inner_org_id = ${key.innerOrgId}
         AND is_published_price=2
         <if test="key.synStatus &lt; 4 and key.synStatus != null">
             and syn_status = #{key.synStatus}
@@ -19,7 +19,7 @@
             and is_quote = #{key.isQuote}
         </if>
         <if test="key.priceType == 1">
-            and customer_groups_name != ''
+            and customer_group_name != ''
         </if>
         <if test="key.priceType == 2">
             and customer_name != ''
@@ -48,8 +48,8 @@
         <if test="key.specialCommodity > 0">
             and special_commodity @> '[${key.specialCommodity}]'::jsonb
         </if>
-        <if test="key.customerGroupsId != null">
-            and customer_groups_id @> '${key.customerGroupsId}'
+        <if test="key.customerGroupId != null">
+            and customer_group_id @> '${key.customerGroupId}'
         </if>
         <if test="key.customerId != null">
             and customer_ids @> '${key.customerId}'
@@ -148,8 +148,8 @@
              lms_exp_price(
              id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
              price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name,
-             price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_groups_id,
-             customer_groups_name, customer_ids, customer_name, upd_time, quote_price_upd_time, is_quote, syn_status, quote_tenant_code)
+             price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_group_id,
+             customer_group_name, customer_ids, customer_name, upd_time, quote_price_upd_time, is_quote, syn_status, quote_tenant_code)
          values
              (#{po.id},
              #{po.startDate},
@@ -175,8 +175,8 @@
              #{po.quotePriceId},
              #{po.partnerId},
              #{po.partnerName},
-             #{po.customerGroupsId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
-             #{po.customerGroupsName},
+             #{po.customerGroupId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+             #{po.customerGroupName},
              #{po.customerIds,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
              #{po.customerName},
              #{po.updTime},
@@ -216,11 +216,11 @@
         <if test="po.priceStatus != null">
             price_status = #{po.priceStatus},
         </if>
-        <if test="po.customerGroupsId != null">
-            customer_groups_id = #{po.customerGroupsId, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+        <if test="po.customerGroupId != null">
+            customer_group_id = #{po.customerGroupId, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
         </if>
-        <if test="po.customerGroupsName != null">
-            customer_groups_name = #{po.customerGroupsName},
+        <if test="po.customerGroupName != null">
+            customer_group_name = #{po.customerGroupName},
         </if>
         <if test="po.customerIds">
             customer_ids = #{po.customerIds, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
@@ -306,8 +306,8 @@
 
     <select id="getCustomerInfo" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo">
         select
-            customer_groups_id,
-            customer_groups_name,
+            customer_group_id,
+            customer_group_name,
             customer_ids,
             customer_name
         from

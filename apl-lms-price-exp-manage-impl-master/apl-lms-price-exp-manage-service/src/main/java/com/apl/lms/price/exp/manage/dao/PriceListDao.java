@@ -42,13 +42,18 @@ public class PriceListDao {
                 "  \"price_status\" int2 NOT NULL,\n"+
                 "  \"quote_price_id\" int8 NOT NULL DEFAULT 0,\n"+
                 "  \"partner_id\" int8 NOT NULL DEFAULT 0,\n"+
-                "  \"customer_groups_id\" jsonb,\n"+
-                "  \"customer_groups_name\" varchar(100) COLLATE \"pg_catalog\".\"default\",\n"+
+                "  \"customer_group_id\" jsonb,\n"+
+                "  \"customer_group_name\" varchar(100) COLLATE \"pg_catalog\".\"default\",\n"+
                 "  \"customer_ids\" jsonb,\n"+
                 "  \"customer_name\" varchar(255) COLLATE \"pg_catalog\".\"default\",\n"+
                 "  \"inner_org_id\" int8 NOT NULL DEFAULT 0,\n"+
                 "  \"price_name\" varchar(50) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n"+
-                "  \"partner_name\" varchar(50) COLLATE \"pg_catalog\".\"default\" "+
+                "  \"partner_name\" varchar(50) COLLATE \"pg_catalog\".\"default\",\n"+
+                "  \"upd_time\" timestamp(6),\n"+
+                "  \"quote_price_upd_time\" timestamp(6),\n"+
+                "  \"quote_tenant_code\" varchar(20) COLLATE \"pg_catalog\".\"default\",\n"+
+                "  \"is_quote\" int2 NOT NULL,\n"+
+                "  \"syn_status\" int2 DEFAULT 0\n"+
                 ")";
 
         //创建租户price_exp_main物理表
@@ -86,8 +91,8 @@ public class PriceListDao {
                 "            channel_category,\n" +
                 "            price_status,\n" +
                 "            partner_id,\n" +
-                "            customer_groups_id,\n"+
-                "            customer_groups_name,\n"+
+                "            customer_group_id,\n"+
+                "            customer_group_name,\n"+
                 "            customer_ids,\n"+
                 "            customer_name,\n"+
                 "            price_name,\n" +

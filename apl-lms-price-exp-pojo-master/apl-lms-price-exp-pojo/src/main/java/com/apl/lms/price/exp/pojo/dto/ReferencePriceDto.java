@@ -27,7 +27,8 @@ public class ReferencePriceDto extends PriceExpAddBaseDto{
     @NotNull( message = "引用价格表id不能为空")
     private Long quotePriceId;
 
-    @ApiModelProperty(name = "orgCode" , value = "引用租户code", required = true)
+    @ApiModelProperty(name = "quoteTenantCode" , value = "引用租户code", required = true)
     @NotBlank( message = "引用租户code不能为空")
-    private String orgCode;
+    private String quoteTenantCode;
+
 }

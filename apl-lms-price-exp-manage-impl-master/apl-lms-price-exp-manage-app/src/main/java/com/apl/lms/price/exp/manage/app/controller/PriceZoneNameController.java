@@ -4,7 +4,7 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
-import com.apl.lms.price.exp.pojo.dto.*;
+import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -40,8 +40,7 @@ public class PriceZoneNameController {
 
     @PostMapping(value = "/get-zone-name-list")
     @ApiOperation(value =  "分页获取快递分区名称列表" , notes = "根据关键字来查询")
-    public ResultUtil<Page<PriceZoneNamePo>> getList(PageDto pageDto ,
-                                                     @Validated PriceZoneNameKeyDto priceZoneNameKeyDto){
+    public ResultUtil<Page<PriceZoneNamePo>> getList(PageDto pageDto , @Validated PriceZoneNameKeyDto priceZoneNameKeyDto) {
 
         return priceZoneService.getPriceZoneNameList(pageDto, priceZoneNameKeyDto);
     }
@@ -57,7 +56,7 @@ public class PriceZoneNameController {
     @ApiOperation(value =  "添加分区表名称" , notes = "添加分区表名称")
     public ResultUtil<Long> add( @Validated PriceZoneNamePo priceZoneAddDto){
 
-        return priceZoneService.addPriceZoneName(priceZoneAddDto);
+              return priceZoneService.addPriceZoneName(priceZoneAddDto);
     }
 
     @PostMapping(value = "/upd-zone-name")

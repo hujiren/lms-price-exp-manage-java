@@ -30,7 +30,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
     JoinFieldInfo joinCountryFieldInfo = null;
 
     @Autowired
-    AplCacheUtil redisTemplate;
+    AplCacheUtil aplCacheUtil;
 
     @Autowired
     LmsCommonFeign lmsCommonFeign;
@@ -60,7 +60,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
         }
 
         List<JoinBase> joinTabs = new ArrayList<>();
-        JoinCountry joinCountry = new JoinCountry(1, lmsCommonFeign, redisTemplate);
+        JoinCountry joinCountry = new JoinCountry(1, lmsCommonFeign, aplCacheUtil);
 
         if(null!=joinCountryFieldInfo) {
             //已经缓存国家反射字段
@@ -74,7 +74,6 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
         }
 
         joinTabs.add(joinCountry);
-
         JoinUtil.join(priceZoneDataListVo, joinTabs);
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneDataListVo);

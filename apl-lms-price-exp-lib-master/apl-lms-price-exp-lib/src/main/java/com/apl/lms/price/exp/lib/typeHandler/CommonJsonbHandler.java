@@ -46,9 +46,9 @@ public class CommonJsonbHandler  extends BaseTypeHandler<Object> {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);//忽略未知属性
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);//驼峰映射
 
-        List customerGroupsIdList = objectMapper.readValue(data, List.class);
+        List customerGroupIdList = objectMapper.readValue(data, List.class);
 
-        return customerGroupsIdList;
+        return customerGroupIdList;
     }
 
 

@@ -94,11 +94,11 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "partnerName" , value = "服务商名称")
     private String partnerName;
 
-    @ApiModelProperty(name = "customerGroupsId" , value = "客户组id")
-    private List<Long> customerGroupsId;
+    @ApiModelProperty(name = "customerGroupId" , value = "客户组id")
+    private List<Long> customerGroupId;
 
-    @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称")
-    private String customerGroupsName;
+    @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
+    private String customerGroupName;
 
     @ApiModelProperty(name = "customerIds" , value = "客户ids")
     private List<Long> customerIds;
@@ -123,6 +123,9 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
 
     @ApiModelProperty(name = "synStatus" , value = "同步状态 0未同步 1同步成功 2同步异常 3引用价格表已被删除")
     private Integer synStatus;
+
+    @ApiModelProperty(name = "quotePriceCustomerGroupId" , value = "引用价格客户组id")
+    private Long quotePriceCustomerGroupId;
 
     public String getAccountNo() {
         if(null == accountNo){

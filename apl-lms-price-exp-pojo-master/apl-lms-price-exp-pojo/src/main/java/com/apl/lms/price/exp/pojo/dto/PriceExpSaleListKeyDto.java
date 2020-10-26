@@ -32,8 +32,8 @@ public class  PriceExpSaleListKeyDto {
     @TypeValidator(value = {"0","1","2"} , message = "公布价错误")
     private Integer isPublishedPrice;
 
-    @ApiModelProperty(name = "customerGroupsId", value = "客户组id")
-    private Long customerGroupsId;
+    @ApiModelProperty(name = "customerGroupId", value = "客户组id")
+    private Long customerGroupId;
 
     @ApiModelProperty(name = "specialCommodity", value = "特殊物品code")
     private Integer specialCommodity;

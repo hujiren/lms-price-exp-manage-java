@@ -157,7 +157,8 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             quoteProfit = JSONObject.parseArray(str, PriceExpProfitDto.class);
         }
         //合并
-        List<PriceExpProfitDto> finalProfit = mergeProfit(increaseProfit, quoteProfit);
+        Long customerGroupId =0l;//
+        List<PriceExpProfitDto> finalProfit = mergeProfit(increaseProfit, quoteProfit, customerGroupId);
 
         Integer flag = 0;
         Long checkId = baseMapper.exists(priceExpProfitPo.getId());
@@ -187,7 +188,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     }
 
     //合并利润
-    static List<PriceExpProfitDto> mergeProfit(List<PriceExpProfitDto> list1, List<PriceExpProfitDto> list2){
+    static List<PriceExpProfitDto> mergeProfit(List<PriceExpProfitDto> list1, List<PriceExpProfitDto> list2, Long customerGroupId){
         if(list1.size()<1 && list2.size()<1){
             List<PriceExpProfitDto> emptyList = new ArrayList<>();
             return emptyList;
@@ -296,7 +297,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         priceExpProfitDto2 = new PriceExpProfitDto(null, "",  "", 1.0, 5.0, 0.0, 1.09, 0.0);
         list2.add(priceExpProfitDto2);
 
-        mergeProfit(list1, list2);
+//        mergeProfit(list1, list2);
 
 
     }

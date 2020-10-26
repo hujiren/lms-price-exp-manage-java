@@ -24,10 +24,10 @@ public class CustomerGroupsVoTypeHandler extends BaseTypeHandler<List> {
 
 
     @Override
-    public void setNonNullParameter(PreparedStatement preparedStatement, int i, List customerGroupsIdList, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement preparedStatement, int i, List customerGroupIdList, JdbcType jdbcType) throws SQLException {
         PGobject jsonObject = new PGobject();
         jsonObject.setType("json");
-        jsonObject.setValue(customerGroupsIdList.toString());
+        jsonObject.setValue(customerGroupIdList.toString());
         preparedStatement.setObject(i, jsonObject);
     }
 
@@ -35,8 +35,8 @@ public class CustomerGroupsVoTypeHandler extends BaseTypeHandler<List> {
     @Override
     public List getNullableResult(ResultSet rs, String columnName) throws SQLException {
 
-//        String ids = rs.getString("customer_groups_id");
-//        String names = rs.getString("customer_groups_name");
+//        String ids = rs.getString("customer_group_id");
+//        String names = rs.getString("customer_group_name");
 //
 //        List<CustomerGroupDto> list = new ArrayList<>();
 //
@@ -44,8 +44,8 @@ public class CustomerGroupsVoTypeHandler extends BaseTypeHandler<List> {
 //        String[] nameArr = names.split(",");
 //        for (int i = 0; i < idArr.length; i++) {
 //            CustomerGroupDto customerGroupDto = new CustomerGroupDto();
-//            customerGroupDto.setCustomerGroupsId(Long.parseLong(idArr[i]));
-//            customerGroupDto.setCustomerGroupsName(nameArr[i]);
+//            customerGroupDto.setCustomerGroupId(Long.parseLong(idArr[i]));
+//            customerGroupDto.setCustomerGroupName(nameArr[i]);
 //            list.add(customerGroupDto);
 //        }
 //
@@ -64,23 +64,23 @@ public class CustomerGroupsVoTypeHandler extends BaseTypeHandler<List> {
     }
 
     class CustomerGroupInfo{
-        Long customerGroupsId;
-        String customerGroupsName;
+        Long customerGroupId;
+        String customerGroupName;
 
-        public Long getCustomerGroupsId() {
-            return customerGroupsId;
+        public Long getCustomerGroupId() {
+            return customerGroupId;
         }
 
-        public void setCustomerGroupsId(Long customerGroupsId) {
-            this.customerGroupsId = customerGroupsId;
+        public void setCustomerGroupId(Long customerGroupId) {
+            this.customerGroupId = customerGroupId;
         }
 
-        public String getCustomerGroupsName() {
-            return customerGroupsName;
+        public String getCustomerGroupName() {
+            return customerGroupName;
         }
 
-        public void setCustomerGroupsName(String customerGroupsName) {
-            this.customerGroupsName = customerGroupsName;
+        public void setCustomerGroupName(String customerGroupName) {
+            this.customerGroupName = customerGroupName;
         }
     }
 

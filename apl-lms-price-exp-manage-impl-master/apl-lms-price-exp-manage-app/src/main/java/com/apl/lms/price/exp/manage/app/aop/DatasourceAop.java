@@ -4,7 +4,7 @@ import com.apl.cache.AplCacheUtil;
 import com.apl.lib.constants.CommonAplConstants;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
-import com.apl.lib.utils.NetUtil;
+import com.apl.lms.net.NetUtil;
 import com.apl.tenant.AplTenantConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,15 +32,16 @@ public class DatasourceAop {
 
         //MyAppContext.dbCacheUtil = aplCacheUtil;
 
-        Object proceed = null;
+        Object proceed = null; //com.apl.lib.interceptor.FeignHeaderInterceptor
         try {
+            // 安全用户上下文
+            //SecurityUser securityUser = NetUtil.getSecurityUser(aplCacheUtil);
+            SecurityUser securityUser = null;
             String token = CommonContextHolder.getHeader(CommonAplConstants.TOKEN_FLAG);
             if(null==token || token.length()==0){
                 token = CommonContextHolder.getRequest().getParameter("token");
             }
 
-            // 安全用户上下文
-            SecurityUser securityUser =null;
             if(null!=token && token.length()>0)
                 securityUser = CommonContextHolder.getSecurityUser(aplCacheUtil, token);
             else

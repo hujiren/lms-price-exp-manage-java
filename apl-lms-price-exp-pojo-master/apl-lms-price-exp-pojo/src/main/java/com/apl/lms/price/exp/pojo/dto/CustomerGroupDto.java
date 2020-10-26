@@ -11,7 +11,7 @@ import lombok.Data;
 public class CustomerGroupDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long customerGroupsId;
+    private Long customerGroupId;
 
-    private String customerGroupsName;
+    private String customerGroupName;
 }

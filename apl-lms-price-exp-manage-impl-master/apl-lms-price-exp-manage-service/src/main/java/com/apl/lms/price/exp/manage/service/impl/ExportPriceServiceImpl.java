@@ -20,6 +20,9 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpDataObjVo;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,7 +79,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     String outFileName;
 
     @Override
-    public void exportExpPrice(HttpServletResponse response, List<Long> ids) throws IOException {
+    public void exportExpPrice(HttpServletResponse response, List<Long> ids) throws Exception {
 
         if(null==templateFileName || templateFileName.length()<2){
             throw new AplException(ExportPriceEnum.NO_VALID_FILE_WAS_FOUND.code, ExportPriceEnum.NO_VALID_FILE_WAS_FOUND.msg, null);
@@ -147,14 +150,13 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             outFileName = URLEncoder.encode(outFileName, "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + outFileName);
 
-        } catch (Exception e) {
+        } catch (Exception exception) {
 
-            e.printStackTrace();
-            StaticLog.error(e);
+            StaticLog.error(exception);
             if(IS_NO_CORRESPONDING_PRICE)
                 throw new AplException(ExportPriceEnum.NO_CORRESPONDING_PRICE.code, ExportPriceEnum.NO_CORRESPONDING_PRICE.msg, null);
             else
-                throw new AplException(ExportPriceEnum.EXPORT_FAILED.code, ExportPriceEnum.EXPORT_FAILED.msg, null);
+                throw exception;
         }
         finally {
             try {
@@ -163,7 +165,6 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                     delFile.delete();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 StaticLog.error(e);
             }
 
@@ -182,7 +183,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         File templateFile = new File(templateFileNameByTenant);
         if(!templateFile.exists()) {
             templateFileNameByTenant = templateFileName.replace("-tenant", "-common");
-            templateFile = new File(templateFileName);
+            templateFile = new File(templateFileNameByTenant);
         }
 
         if(!templateFile.exists()) {
@@ -193,11 +194,11 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
         FileInputStream fs = new FileInputStream(templateFileNameByTenant);
         XSSFWorkbook wb = new XSSFWorkbook(fs);
-        Sheet templateSheet =  wb.getSheetAt(0);
+        XSSFSheet templateSheet =  wb.getSheetAt(0);
 
         //如果只有一个价格表需要导出则不需要继续创建Sheet
         for (int sheetNo = 1; sheetNo < expPriceInfoList.size(); sheetNo++) {
-            Sheet newSheet =  wb.createSheet();
+            XSSFSheet newSheet =  wb.createSheet();
             wb.setSheetName(sheetNo, expPriceInfoList.get(sheetNo).getPriceName());
             copySheet(templateSheet, newSheet);
         }
@@ -335,7 +336,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
 
     //复制单元格
-    void copySheet(Sheet sourceSheet, Sheet targetSheet) {
+    void copySheet(XSSFSheet sourceSheet, XSSFSheet targetSheet) {
         //getLastRowNum 获取有数据的最后一行的行号  getLastCellNum获取有数据的最后一列的列号
         int rowLastRowNum = sourceSheet.getLastRowNum();
 
@@ -343,16 +344,16 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         for(int rowIndex=0; rowIndex<=rowLastRowNum; rowIndex++){
 
             //获取第<rowIndex>行
-            Row sourceRow = sourceSheet.getRow(rowIndex);
+            XSSFRow sourceRow = sourceSheet.getRow(rowIndex);
             //获取当前行的最后一列列号
             int lastCellNum = sourceRow.getLastCellNum();
             //创建第<rowIndex>行
-            Row targetRow = targetSheet.createRow(rowIndex);
+            XSSFRow targetRow = targetSheet.createRow(rowIndex);
 
             //遍历列
             for (int colIndex = 0; colIndex <lastCellNum; colIndex++) {
                 //在当前行中取第<colIndex>个单元格
-                Cell sourceCell = sourceRow.getCell(colIndex);
+                XSSFCell sourceCell = sourceRow.getCell(colIndex);
                 if(null!=sourceCell) {
                     //获取单元格中的值
                     String sourceCellVal = sourceCell.getStringCellValue();
@@ -362,7 +363,6 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                     targetCell.setCellValue(sourceCellVal);
                     //为单元格设置样式
                     targetCell.setCellStyle(sourceCell.getCellStyle());
-
 
                 }
             }

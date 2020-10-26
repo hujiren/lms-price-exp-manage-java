@@ -27,7 +27,7 @@
             while (i2<size2){
                 PriceExpProfitDto profitDto2 = list2.get(i2);
 
-                if(!profitDto.getCustomerGroupsId().toString().equals(profitDto2.getCustomerGroupsId().toString())
+                if(!profitDto.getCustomerGroupId().toString().equals(profitDto2.getCustomerGroupId().toString())
                  || !profitDto.getZoneNum().equals(profitDto2.getZoneNum())
                  || !profitDto.getCountryCode().equals(profitDto2.getCountryCode())  ) {
                     i2++;
@@ -64,7 +64,7 @@
                 else
                     newProportionProfit = 0.0;
 
-                newProfitDto.setCustomerGroupsId(profitDto.getCustomerGroupsId());
+                newProfitDto.setCustomerGroupId(profitDto.getCustomerGroupId());
                 newProfitDto.setZoneNum(profitDto.getZoneNum());
                 newProfitDto.setCountryCode(profitDto.getCountryCode());
                 newProfitDto.setStartWeight(startWeight);

@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface ExportPriceService {
 
-    void exportExpPrice(HttpServletResponse response, List<Long> ids) throws IOException;
+    void exportExpPrice(HttpServletResponse response, List<Long> ids) throws Exception;
 }

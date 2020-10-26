@@ -4,6 +4,7 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.StringUtil;
+import com.apl.lms.price.exp.manage.dao.PriceListDao;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
@@ -23,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -51,10 +51,13 @@ public class PriceExpController {
     @Autowired
     ExportPriceService exportPricePrice;
 
+    @Autowired
+    PriceListDao priceListDao;
+
     @PostMapping(value = "/get-sale-list")
     @ApiOperation(value = "分页查询销售价格列表", notes = "分页查询销售价格列表")
     public ResultUtil<Page<PriceExpSaleListVo>> getSaleList(PageDto pageDto, @Validated PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
-
+        priceListDao.createRealTable();
         priceExpSaleListKeyDto.setPriceType(1);
 
         return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleListKeyDto);
@@ -64,7 +67,7 @@ public class PriceExpController {
     @PostMapping(value = "/get-customer-list")
     @ApiOperation(value = "分页查询客户价格列表", notes = "分页查询客户价格列表")
     public ResultUtil<Page<PriceExpSaleListVo>> getCustomerList(PageDto pageDto, @Validated PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
-
+        priceListDao.createRealTable();
         priceExpSaleListKeyDto.setPriceType(2);
 
         return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleListKeyDto);
@@ -74,7 +77,7 @@ public class PriceExpController {
     @PostMapping(value = "/get-cost-list")
     @ApiOperation(value = "分页查询成本价格列表", notes = "分页查询成本价格列表")
     public ResultUtil<Page<PriceExpCostListVo>> getCostList(PageDto pageDto, @Validated PriceExpCostKeyDto priceExpCostListKeyDto) throws Exception {
-
+        priceListDao.createRealTable();
         return priceExpService.getPriceExpCostList(pageDto, priceExpCostListKeyDto);
     }
 
@@ -82,7 +85,7 @@ public class PriceExpController {
     @PostMapping(value = "/get-published-price-list")
     @ApiOperation(value = "分页查询公布价列表", notes = "分页查询公布价列表")
     public ResultUtil<Page<PriceExpCostListVo>> getPublishedPriceList(PageDto pageDto, @Validated PriceExpPublishedKeyDto keyDto) {
-
+        priceListDao.createRealTable();
         return priceExpService.getPublishedPriceList(pageDto, keyDto);
     }
 
@@ -99,7 +102,7 @@ public class PriceExpController {
 
     @PostMapping(value = "/add-price")
     @ApiOperation(value = "新增快递价格", notes = "新增快递价格", consumes = "application/json")
-    public ResultUtil<Long> addPrice(@Validated @RequestBody PriceExpAddDto priceExpAddDto){
+    public ResultUtil<Long> addPrice(@Validated @RequestBody PriceExpAddDto priceExpAddDto) throws Exception {
 
         return priceExpService.addExpPrice(priceExpAddDto);
     }
@@ -115,7 +118,7 @@ public class PriceExpController {
 
     @PostMapping(value = "/reference-price")
     @ApiOperation(value = "引用价格表", notes = "引用价格表")
-    public ResultUtil<Long> referencePrice(@RequestBody @Validated ReferencePriceDto referencePriceDto){
+    public ResultUtil<Long> referencePrice(@RequestBody @Validated ReferencePriceDto referencePriceDto) throws Exception {
 
         return priceExpService.referencePrice(referencePriceDto);
     }
@@ -140,7 +143,7 @@ public class PriceExpController {
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
     public ResultUtil<PriceExpDataObjVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
         PriceExpDataObjVo priceExpDataInfo = priceExpService.getPriceExpDataInfoByPriceId(id);
-        return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, priceExpDataInfo);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataInfo);
     }
 
 
@@ -191,9 +194,9 @@ public class PriceExpController {
     }
 
 
-    @PostMapping(value = "/export-exp-price")
+    @RequestMapping(value = "/export-exp-price")
     @ApiOperation(value = "导出快递价格", notes = "导出快递价格")
-    public void exportExpPrice(HttpServletResponse response, String ids) throws IOException {
+    public void exportExpPrice(HttpServletResponse response, String ids) throws Exception {
 
         List<Long> idList =  StringUtil.stringToLongList(ids);
 

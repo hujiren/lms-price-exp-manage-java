@@ -24,7 +24,6 @@ public class JoinPartner extends JoinBase<PartnerCacheBo> {
         this.cacheUtil = cacheUtil;
         this.tabName = "partner";
         this.joinStyle = joinStyle;
-
         this.innerOrgId = AplTenantConfig.tenantIdContextHolder.get();
         this.cacheKeyNamePrefix = "JOIN_CACHE:"+this.tabName+"_"+this.innerOrgId.toString()+"_";
     }

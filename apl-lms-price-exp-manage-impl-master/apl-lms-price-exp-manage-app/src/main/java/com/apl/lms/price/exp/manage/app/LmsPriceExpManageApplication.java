@@ -21,6 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
                 "com.apl.lms.common.lib",
                 "com.apl.lms.price.exp.manage",
                 "com.apl.lms.price.exp.lib",
+                "com.apl.lms.net",
                 "com.apl.sys.lib"
                 },
         exclude = {

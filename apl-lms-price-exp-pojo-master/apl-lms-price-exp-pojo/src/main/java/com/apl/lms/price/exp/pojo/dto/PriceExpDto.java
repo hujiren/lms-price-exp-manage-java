@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.pojo.dto;
 
 import com.apl.lib.validate.TypeValidator;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -96,11 +94,11 @@ public class PriceExpDto implements Serializable {
     @ApiModelProperty(name = "partnerRemark", value = "服务商备注")
     private String partnerRemark;
 
-    @ApiModelProperty(name = "customerGroupsId" , value = "客户组id")
-    private List<Long> customerGroupsId;
+    @ApiModelProperty(name = "customerGroupId" , value = "客户组id")
+    private List<Long> customerGroupId;
 
-    @ApiModelProperty(name = "customerGroupsName" , value = "客户组名称")
-    private String customerGroupsName;
+    @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
+    private String customerGroupName;
 
     @ApiModelProperty(name = "customerIds" , value = "客户ids")
     private List<Long> customerIds;
