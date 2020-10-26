@@ -5,7 +5,6 @@ import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
-import com.apl.lms.common.query.manage.po.CommonCarrierPo;
 import com.apl.lms.price.exp.manage.mapper.CarrierMapper;
 import com.apl.lms.price.exp.manage.service.CarrierService;
 import lombok.extern.slf4j.Slf4j;
@@ -91,20 +90,20 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
 
 
     @Override
-    public ResultUtil<List<CommonCarrierPo>> getList(){
+    public ResultUtil<List<CarrierPo>> getList(){
 
-        List<CommonCarrierPo> carrierPoList = baseMapper.getList();
+        List<CarrierPo> carrierPoList = baseMapper.getList();
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , carrierPoList);
     }
 
     @Override
-    public ResultUtil<List<CommonCarrierPo>> getListByInnerOrgId(Long innerOrgId) {
+    public ResultUtil<List<CarrierPo>> getListByInnerOrgId(Long innerOrgId) {
 
-        List<CommonCarrierPo> carrierCacheList = getCommonCarrier();
-        List<CommonCarrierPo> carrierPoList = baseMapper.getListByInnerOrgId(innerOrgId);
+        List<CarrierPo> carrierCacheList = getCommonCarrier();
+        List<CarrierPo> carrierPoList = baseMapper.getListByInnerOrgId(innerOrgId);
         if(null != carrierPoList && carrierPoList.size() > 0){
-            for (CommonCarrierPo commonCarrierPo : carrierPoList) {
+            for (CarrierPo commonCarrierPo : carrierPoList) {
                 carrierCacheList.add(commonCarrierPo);
             }
         }
@@ -112,12 +111,12 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , carrierCacheList);
     }
 
-    public List<CommonCarrierPo> getCommonCarrier(){
-        List<CommonCarrierPo> carrierCacheList = (List<CommonCarrierPo>) aplCacheUtil.opsForValue().get(CACHE_KEY);
-        if(null == carrierCacheList || carrierCacheList.size() < 1){
-            ResultUtil<List<CommonCarrierPo>> resultList = lmsCommonFeign.getList();
-            carrierCacheList = resultList.getData();
-        }
+    public List<CarrierPo> getCommonCarrier(){
+        List<CarrierPo> carrierCacheList = (List<CarrierPo>) aplCacheUtil.opsForValue().get(CACHE_KEY);
+//        if(null == carrierCacheList || carrierCacheList.size() < 1){
+//            ResultUtil<List<CarrierPo>> resultList = lmsCommonFeign.getList();
+//            carrierCacheList = resultList.getData();
+//        }
         return carrierCacheList;
     }
 }
