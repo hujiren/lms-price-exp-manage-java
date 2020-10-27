@@ -103,6 +103,10 @@ public class PriceExpUpdDto implements Serializable {
     @Min(value = 0, message = "服务商Id不能小于0")
     private Long partnerId;
 
+    @ApiModelProperty(name = "partnerName" , value = "服务商名称", required = true)
+    @NotBlank(message = "服务商名称不能为空")
+    private String partnerName;
+
     @ApiModelProperty(name = "quoteTenantCode" , value = "引用租户code")
     private String quoteTenantCode;
 

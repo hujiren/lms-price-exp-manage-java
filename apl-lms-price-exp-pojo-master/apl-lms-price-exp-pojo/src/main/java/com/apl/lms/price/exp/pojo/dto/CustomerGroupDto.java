@@ -1,6 +1,5 @@
 package com.apl.lms.price.exp.pojo.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -10,7 +9,6 @@ import lombok.Data;
 @Data
 public class CustomerGroupDto {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long customerGroupId;
 
     private String customerGroupName;

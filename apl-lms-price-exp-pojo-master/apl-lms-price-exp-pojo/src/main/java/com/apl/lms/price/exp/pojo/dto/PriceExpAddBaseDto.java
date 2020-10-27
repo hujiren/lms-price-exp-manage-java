@@ -49,8 +49,8 @@ public class PriceExpAddBaseDto implements Serializable {
     private Integer priceFormat;
 
     @ApiModelProperty(name = "startWeight" , value = "起始重", required = true)
-    @Min(value = 0, message = "起始重量最小值为0")
     @NotNull(message = "起始重量不能为空")
+    @Min(value = -1, message = "起始重不能小于0")
     private Double startWeight;
 
     @ApiModelProperty(name = "endWeight" , value = "截止重", required = true)

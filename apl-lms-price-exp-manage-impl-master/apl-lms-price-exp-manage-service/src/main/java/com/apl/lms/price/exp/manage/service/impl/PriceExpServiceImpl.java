@@ -40,7 +40,6 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -238,7 +237,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
 
         //组装客户List (客户id, 客户名称)
-        if (null != priceExpSaleVo && priceExpSaleVo.getCustomerIds() != null && priceExpSaleVo.getCustomerName() != null) {
+        if (null != priceExpSaleVo && !priceExpSaleVo.getCustomerIds().equals("null") && priceExpSaleVo.getCustomerIds() != null && priceExpSaleVo.getCustomerName() != null) {
             String customerIds = priceExpSaleVo.getCustomerIds().replace("[", "").replace("]", "").replaceAll(" ", "");
             String customerNames = priceExpSaleVo.getCustomerName().replace("[", "").replace("]", "").replaceAll(" ", "");
 
@@ -258,7 +257,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
 
         //组装客户组List(客户组id, 客户组名称)
-        if (priceExpSaleVo.getCustomerGroupId() != null && priceExpSaleVo.getCustomerGroupName() != null) {
+        if (priceExpSaleVo.getCustomerGroupId() != null && !priceExpSaleVo.getCustomerGroupName().equals("null") && priceExpSaleVo.getCustomerGroupName() != null) {
             String customerGroupIds = priceExpSaleVo.getCustomerGroupId().replace("[", "").replace("]", "").replaceAll(" ", "");
             String customerGroupName = priceExpSaleVo.getCustomerGroupName().replace("[", "").replace("]", "").replaceAll(" ", "");
 
@@ -278,7 +277,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
 
         //组装特殊物品List
-        if(priceExpPriceInfoVo.getSpecialCommodityStr()!=null && !priceExpPriceInfoVo.getSpecialCommodityStr().equals("[]")) {
+        if(priceExpPriceInfoVo.getSpecialCommodityStr()!=null && !priceExpPriceInfoVo.getSpecialCommodityStr().equals("[]") && !priceExpPriceInfoVo.getSpecialCommodityStr().equals("null")) {
             String specialCommodityStr = priceExpPriceInfoVo.getSpecialCommodityStr().replace("[", "").replace("]", "").replaceAll(" ", "");
 
             List<SpecialCommodityDto> specialCommodityList = new ArrayList<>();
@@ -445,8 +444,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                     Double priceVal = Double.parseDouble(priceStr);
                     priceVal = priceExpDataService.priceMergeProfit(priceVal, zoneAndCountry, weightSectionDto, finalProfitBoList);
                     String format = df.format(priceVal);
+                    Double format1 = Double.parseDouble(format);
                     priceData.get(rowIndex + 1).set(colIndex, format);
-                    cells2.add(format);
+                    cells2.add(format1);
                 }
             }
             priceData2.add(cells2);
@@ -540,19 +540,24 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpMainPo.setCustomerName("");
 
             priceExpMainPo.setPartnerId(0l);
+            priceExpMainPo.setPartnerName("");
         } else {
             //处理客户组
             if (null != priceExpUpdDto.getCustomerGroup() && priceExpUpdDto.getCustomerGroup().size() > 0) {
                 List<Long> customerGroupId = new ArrayList<>();
                 StringBuffer customerGroupName = new StringBuffer();
                 for (CustomerGroupDto customerGroupDto : priceExpUpdDto.getCustomerGroup()) {
-                    customerGroupId.add(customerGroupDto.getCustomerGroupId());
+                    if(customerGroupDto.getCustomerGroupId() != null)
+                        customerGroupId.add(customerGroupDto.getCustomerGroupId());
                     if (customerGroupName.length() > 0)
                         customerGroupName.append(", ");
                     customerGroupName.append(customerGroupDto.getCustomerGroupName());
                 }
                 priceExpMainPo.setCustomerGroupId(customerGroupId);
                 priceExpMainPo.setCustomerGroupName(customerGroupName.toString());
+            }else{
+                priceExpMainPo.setCustomerGroupId(emptyList);
+                priceExpMainPo.setCustomerGroupName("");
             }
 
             //处理客户
@@ -560,13 +565,17 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 List<Long> customerIds = new ArrayList<>();
                 StringBuffer customerName = new StringBuffer();
                 for (CustomerDto customerDto : priceExpUpdDto.getCustomer()) {
-                    customerIds.add(customerDto.getCustomerId());
+                    if(customerDto.getCustomerId() != null)
+                        customerIds.add(customerDto.getCustomerId());
                     if (customerName.length() > 0)
                         customerName.append(", ");
                     customerName.append(customerDto.getCustomerName());
                 }
                 priceExpMainPo.setCustomerIds(customerIds);
                 priceExpMainPo.setCustomerName(customerName.toString());
+            }else{
+                priceExpMainPo.setCustomerIds(emptyList);
+                priceExpMainPo.setCustomerName("");
             }
         }
 
@@ -602,7 +611,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
         }
 
-        if (securityUser.getInnerOrgId() == expPriceInfoBo.getInnerOrgId()) {
+        if (securityUser.getInnerOrgId().equals(expPriceInfoBo.getInnerOrgId())) {
 
             //更新主表
             PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
@@ -681,31 +690,45 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
             //包裹类型
             if(!weightSectionDto.getPackType().equals(packType0)) {
-                if(weightSectionDto.getPackType().equals(1))
-                    sbHeadCellVal.append("DOC");
-                else if(weightSectionDto.getPackType().equals(2))
-                    sbHeadCellVal.append("WPX");
-                else if(weightSectionDto.getPackType().equals(3))
-                    sbHeadCellVal.append("DOC");
-            }
-
-            //重量区间
-            if(weightSectionDto.getWeightStart()>1){
-                weightStart = weightSectionDto.getWeightStart() + weightAdd0;
-                sbHeadCellVal.append(String.format("%.2f", weightStart));
-                if(weightSectionDto.getChargingWay().equals(4)) {
-                    if(weightSectionDto.getWeightEnd()<10000.0){
-                        sbHeadCellVal.append("-");
-                        sbHeadCellVal.append(String.format("%.2f", weightSectionDto.getWeightEnd()));
+                if(weightSectionDto.getPackType().equals(1)) {
+                    sbHeadCellVal.append("DOC ");
+                }
+                else if(weightSectionDto.getPackType().equals(2)) {
+                    if(packType0>0) {
+                        sbHeadCellVal.append("WPX ");
                     }
                 }
-
-                //单位重和计算好, 加上KG
-                if(weightSectionDto.getChargingWay().equals(4) || weightSectionDto.getChargingWay().equals(5)) {
-                    sbHeadCellVal.append("KG");
-                    if(weightSectionDto.getWeightEnd()>=10000.0)
-                        sbHeadCellVal.append("+");
+                else if(weightSectionDto.getPackType().equals(3)) {
+                    sbHeadCellVal.append("PAK ");
                 }
+
+                weightAdd0 = 0.0;
+            }
+
+            //重量区间　chargingWay 1首重 2续重  3累加  4单位重  5计算好
+            if(weightSectionDto.getWeightStart()>0.5 || weightSectionDto.getChargingWay().equals(4)) {
+                if(weightAdd0.equals(0.0)){
+                    if(weightSectionDto.getChargingWay().equals(2) || weightSectionDto.getChargingWay().equals(3))
+                        weightAdd0 = 0.5;
+                    else if(weightSectionDto.getChargingWay().equals(4))
+                        weightAdd0 = 1.0;
+                }
+                weightStart = weightSectionDto.getWeightStart() + weightAdd0;
+                sbHeadCellVal.append(String.format("%.2f", weightStart));
+            }
+
+            if(weightSectionDto.getChargingWay().equals(4)) {
+                if(weightSectionDto.getWeightEnd()<10000.0){
+                    sbHeadCellVal.append("-");
+                    sbHeadCellVal.append(String.format("%.2f", weightSectionDto.getWeightEnd()));
+                }
+            }
+
+            //单位重和计算好, 加上KG
+            if(weightSectionDto.getChargingWay().equals(4) || weightSectionDto.getChargingWay().equals(5)) {
+                sbHeadCellVal.append("KG");
+                if(weightSectionDto.getWeightEnd()>=10000.0)
+                    sbHeadCellVal.append("+");
             }
 
             //首续累加
@@ -727,7 +750,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                     .replace(".0", ""));
 
             packType0 = weightSectionDto.getPackType();
-            weightAdd0 = weightSectionDto.getWeightAdd();
+
+            if(weightSectionDto.getWeightAdd()>0)
+                weightAdd0 = weightSectionDto.getWeightAdd();
         }
 
         priceExpAxisPo.setAxisTransverse(axisPortrait);
@@ -937,20 +962,24 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
         priceExpMainPo.setSpecialCommodity(specialCommodityCodeList);
 
+        List<Long> emptyList = new ArrayList<>();
+
         if (priceExpAddDto.getIsPublishedPrice().equals(1)){
             // 公布价, 客户、 客户组、服务商设为空
-            priceExpMainPo.setCustomerGroupId(Collections.emptyList());
+            priceExpMainPo.setCustomerGroupId(emptyList);
             priceExpMainPo.setCustomerGroupName("");
 
-            priceExpMainPo.setCustomerIds(Collections.emptyList());
+            priceExpMainPo.setCustomerIds(emptyList);
             priceExpMainPo.setCustomerName("");
 
             priceExpMainPo.setPartnerId(0l);
             priceExpMainPo.setPartnerName("");
-        }
-        else {
+        } else {
             //处理客户组
-            if (null != priceExpAddDto.getCustomerGroup() && priceExpAddDto.getCustomerGroup().size() > 0) {
+            if (null != priceExpAddDto.getCustomerGroup()
+                    && priceExpAddDto.getCustomerGroup().size()>0
+                    && null != priceExpAddDto.getCustomerGroup().get(0).getCustomerGroupId()
+                    && null != priceExpAddDto.getCustomerGroup().get(0).getCustomerGroupName()){
                 List<Long> customerGroupId = new ArrayList<>();
                 StringBuffer customerGroupName = new StringBuffer();
                 for (CustomerGroupDto customerGroupDto : priceExpAddDto.getCustomerGroup()) {
@@ -962,12 +991,15 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 priceExpMainPo.setCustomerGroupId(customerGroupId);
                 priceExpMainPo.setCustomerGroupName(customerGroupName.toString());
             } else {
-                priceExpMainPo.setCustomerGroupId(Collections.emptyList());
+                priceExpMainPo.setCustomerGroupId(emptyList);
                 priceExpMainPo.setCustomerGroupName("");
             }
 
             //处理客户
-            if (null != priceExpAddDto.getCustomer() && priceExpAddDto.getCustomer().size() > 0) {
+            if (null != priceExpAddDto.getCustomer()
+                    && priceExpAddDto.getCustomer().size() > 0
+                    && null != priceExpAddDto.getCustomer().get(0).getCustomerId()
+                    && null != priceExpAddDto.getCustomer().get(0).getCustomerName()) {
                 List<Long> customerIds = new ArrayList<>();
                 StringBuffer customerName = new StringBuffer();
                 for (CustomerDto customerDto : priceExpAddDto.getCustomer()) {
@@ -979,7 +1011,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 priceExpMainPo.setCustomerIds(customerIds);
                 priceExpMainPo.setCustomerName(customerName.toString());
             } else {
-                priceExpMainPo.setCustomerIds(Collections.emptyList());
+                priceExpMainPo.setCustomerIds(emptyList);
                 priceExpMainPo.setCustomerName("");
             }
         }
