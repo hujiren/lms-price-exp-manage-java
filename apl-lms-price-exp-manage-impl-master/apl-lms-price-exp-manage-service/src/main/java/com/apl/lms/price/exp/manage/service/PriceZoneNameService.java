@@ -60,4 +60,5 @@ public interface PriceZoneNameService extends IService<PriceZoneNamePo> {
      * @return
      */
     Map<Long, PriceZoneNamePo> getPriceZoneNameBatch(List<Long> zoneIds);
+
 }

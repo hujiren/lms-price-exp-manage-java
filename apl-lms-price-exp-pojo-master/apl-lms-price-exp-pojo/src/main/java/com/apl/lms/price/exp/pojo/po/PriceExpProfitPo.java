@@ -2,24 +2,16 @@ package com.apl.lms.price.exp.pojo.po;
 
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Min;
-
-import com.baomidou.mybatisplus.annotation.TableName;
-
-import javax.validation.constraints.NotNull;
-import java.util.List;
-
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -51,7 +43,6 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
     protected Serializable pkVal() {
         return this.id;
     }
-
 
 
 }

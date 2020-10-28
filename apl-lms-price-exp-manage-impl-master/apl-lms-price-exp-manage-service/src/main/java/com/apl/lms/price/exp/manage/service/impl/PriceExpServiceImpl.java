@@ -41,6 +41,7 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -330,6 +331,35 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             throw new AplException(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
                     ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg,null);
         }
+        DecimalFormat df = new DecimalFormat("#.0");
+        //获取价格表数据返回对象
+        PriceExpDataVo priceExpDataInfo = priceExpDataService.getPriceExpDataInfoByPriceId(innerOrgIdAndPriceDatId.getPriceDataId());
+        //价格表数据
+        List<List<String>> priceData = priceExpDataInfo.getPriceData();
+        Pattern pattern = Pattern.compile("^(\\-|\\+)?\\d+(\\.\\d+)?$");
+        List<List<Object>> priceDataVo = new ArrayList<>();
+        //如果没有引用价格, 则不合并利润直接输出价格表数据
+        if(innerOrgIdAndPriceDatId.getQuotePriceId() < 1 || null == innerOrgIdAndPriceDatId.getQuotePriceId()){
+            PriceExpDataObjVo expDataObjVo = new PriceExpDataObjVo();
+            for (List<String> priceDatum : priceData) {
+                List<Object> priceDataObj = new ArrayList<>();
+                for (String str : priceDatum) {
+                    Matcher isNum = pattern.matcher(str);
+                    if(isNum.matches()) {
+                        Double var1 = Double.parseDouble(str);
+                        String format = df.format(var1);
+                        Double element = Double.parseDouble(format);
+                        priceDataObj.add(element);
+                    }else {
+                        priceDataObj.add(str);
+                    }
+                }
+                priceDataVo.add(priceDataObj);
+            }
+            expDataObjVo.setPriceData(priceDataVo);
+            expDataObjVo.setPriceDataId(priceExpDataInfo.getPriceDataId());
+            return expDataObjVo;
+        }
 
         //获取增加的利润
         PriceExpProfitPo profit = priceExpProfitService.getProfit(id);
@@ -366,12 +396,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
             finalProfitBoList.add(priceExpProfitMergeBo);
         }
-
-        DecimalFormat df = new DecimalFormat("#.0");
-        //获取价格表数据返回对象
-        PriceExpDataVo priceExpDataInfo = priceExpDataService.getPriceExpDataInfoByPriceId(innerOrgIdAndPriceDatId.getPriceDataId());
-        //价格表数据
-        List<List<String>> priceData = priceExpDataInfo.getPriceData();
 
         List<List<Object>> priceData2 = new ArrayList<>();
 
@@ -520,7 +544,13 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         //构建主表持久化对象
         PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
         BeanUtil.copyProperties(priceExpUpdDto, priceExpMainPo);
-
+        if(null == priceExpMainPo.getPartnerId()
+                || priceExpMainPo.getPartnerId() < 1
+                || null == priceExpMainPo.getPartnerName()
+                || priceExpMainPo.getPartnerName().equals("")){
+            priceExpMainPo.setPartnerId(0L);
+            priceExpMainPo.setPartnerName("");
+        }
         //处理特殊物品
         List<Integer> specialCommodityCodeList = new ArrayList<>();
         if (null != priceExpUpdDto.getSpecialCommodity() && priceExpUpdDto.getSpecialCommodity().size() > 0) {
@@ -938,10 +968,14 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpMainPo.setQuotePriceId(quotePriceId);
         priceExpMainPo.setPriceDataId(priceDataId);
         priceExpMainPo.setIsQuote(2);
+        if(priceExpMainPo.getStartWeight() < 0){
+            priceExpMainPo.setStartWeight(0d);
+        }
         if(priceExpAddDto.getPricePublishedId() == null){
             priceExpMainPo.setPricePublishedId(0L);
         }
-        if(priceExpAddDto.getPartnerId() == null){
+        if(null == priceExpAddDto.getPartnerId() || priceExpAddDto.getPartnerId() < 1
+                || null == priceExpAddDto.getPartnerName() || priceExpAddDto.getPartnerName().equals("")){
             priceExpMainPo.setPartnerId(0L);
             priceExpMainPo.setPartnerName("");
         }
@@ -1124,6 +1158,22 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      */
     @Override
     public List<ExpPriceInfoBo> getPriceInfoByIds(List<Long> ids) {
-        return baseMapper.getPriceInfoByIds(ids);
+        List<ExpPriceInfoBo> priceInfoByIds = baseMapper.getPriceInfoByIds(ids);
+        List<Long> zoneIds = new ArrayList<>();
+        for (ExpPriceInfoBo priceInfo : priceInfoByIds) {
+            if(null != priceInfo.getZoneId() && priceInfo.getZoneId() > 0)
+                zoneIds.add(priceInfo.getZoneId());
+        }
+        if(zoneIds.size() > 0) {
+            Map<Long, PriceZoneNamePo> priceZoneMap = priceZoneNameService.getPriceZoneNameBatch(zoneIds);
+
+                for (Map.Entry<Long, PriceZoneNamePo> PriceZoneNamePoEntry : priceZoneMap.entrySet()) {
+                    for (ExpPriceInfoBo priceInfo : priceInfoByIds) {
+                        if(PriceZoneNamePoEntry.getKey().equals(priceInfo.getZoneId()))
+                            priceInfo.setZoneName(PriceZoneNamePoEntry.getValue().getZoneName());
+                    }
+                }
+            }
+        return priceInfoByIds;
     }
 }

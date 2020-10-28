@@ -50,4 +50,7 @@ public class ExpPriceInfoBo {
 
     @ApiModelProperty(name = "priceName", value = "价格表名称")
     private String priceName;
+
+    @ApiModelProperty(name = "currency", value = "币制")
+    private String currency;
 }
