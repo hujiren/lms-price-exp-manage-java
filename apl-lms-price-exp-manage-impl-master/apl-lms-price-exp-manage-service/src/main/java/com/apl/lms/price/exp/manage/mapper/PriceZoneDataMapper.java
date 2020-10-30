@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -37,4 +38,11 @@ public interface PriceZoneDataMapper extends BaseMapper<PriceZoneDataListVo> {
      * @return
      */
     Integer delBatchByZoneId(@Param("ids") List<Long> ids);
+
+    /**
+     * 根据zoneId批量查询数据
+     * @param ids
+     * @return
+     */
+    List<PriceZoneDataListVo> getListByZoneIds(@Param("ids")HashSet<Long> ids);
 }

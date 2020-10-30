@@ -19,6 +19,7 @@
             #{row}
         </foreach>
     </delete>
+
     <!--根据分区表id批量删除-->
     <delete id="delBatchByZoneId">
         delete from price_zone_data where zone_id in
@@ -26,4 +27,12 @@
             #{row}
         </foreach>
     </delete>
+
+    <!--获取分区数据Map-->
+    <select id="getListByZoneIds" parameterType="java.util.HashSet" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo">
+        select id, zone_id, zone_num, country_code from price_zone_data where zone_id in
+        <foreach collection="ids" separator="," open="(" item="row" close=")">
+            #{row}
+        </foreach>
+    </select>
 </mapper>

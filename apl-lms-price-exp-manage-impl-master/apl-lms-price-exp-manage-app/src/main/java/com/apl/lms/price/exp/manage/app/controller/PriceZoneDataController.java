@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hjr start
@@ -41,5 +42,12 @@ public class PriceZoneDataController {
     @ApiOperation(value =  "批量删除" , notes = "批量删除")
     public ResultUtil<Boolean> deleteBatch(@NotEmpty(message = "id不能为空") @RequestBody List<Long> ids){
         return priceZoneDataService.deleteBatch(ids);
+    }
+
+    @PostMapping(value = "/get")
+    @ApiOperation(value =  "获取" , notes = "获取")
+    public ResultUtil<Map<Long, List<PriceZoneDataListVo>>> assemblingZoneData(@NotEmpty(message = "id不能为空") @RequestBody List<Long> ids) throws Exception {
+        Map<Long, List<PriceZoneDataListVo>> longListMap = priceZoneDataService.assemblingZoneData(ids);
+        return ResultUtil.APPRESULT("","",longListMap);
     }
 }

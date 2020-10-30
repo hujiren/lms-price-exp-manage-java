@@ -10,8 +10,12 @@ import lombok.Data;
 public class PriceZoneDataListVo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "价格主表id")
+    @ApiModelProperty(name = "id" , value = "id")
     private Long id;
+
+    @ApiModelProperty(name = "zoneId" , value = "zoneId")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long zoneId;
 
     @ApiModelProperty(name = "zoneNum" , value = "分区号")
     private String zoneNum;

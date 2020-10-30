@@ -544,6 +544,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         //构建主表持久化对象
         PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
         BeanUtil.copyProperties(priceExpUpdDto, priceExpMainPo);
+        if(null == priceExpMainPo.getPriceCode())
+            priceExpMainPo.setPriceCode("");
         if(null == priceExpMainPo.getPartnerId()
                 || priceExpMainPo.getPartnerId() < 1
                 || null == priceExpMainPo.getPartnerName()
@@ -968,6 +970,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpMainPo.setQuotePriceId(quotePriceId);
         priceExpMainPo.setPriceDataId(priceDataId);
         priceExpMainPo.setIsQuote(2);
+        if(null == priceExpMainPo.getPriceCode())
+            priceExpMainPo.setPriceCode("");
         if(priceExpMainPo.getStartWeight() < 0){
             priceExpMainPo.setStartWeight(0d);
         }

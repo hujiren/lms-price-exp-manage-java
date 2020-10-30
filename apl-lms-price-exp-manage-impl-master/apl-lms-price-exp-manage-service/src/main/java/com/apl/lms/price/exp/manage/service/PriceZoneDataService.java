@@ -1,11 +1,11 @@
 package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hjr start
@@ -34,4 +34,9 @@ public interface PriceZoneDataService extends IService<PriceZoneDataListVo> {
      * @return
      */
     Integer delBatchByZoneId(List<Long> ids);
+
+    /**
+     * 组装分区数据
+     */
+    Map<Long, List<PriceZoneDataListVo>> assemblingZoneData(List<Long> ids) throws Exception;
 }
