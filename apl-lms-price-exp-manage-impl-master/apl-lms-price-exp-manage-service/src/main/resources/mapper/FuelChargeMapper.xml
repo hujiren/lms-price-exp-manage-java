@@ -8,7 +8,7 @@
             id, start_date, end_date, fuel_charge, channel_category
         from
             fuel_charge
-
+        order by channel_category
     </select>
 
     <!--根据id删除燃油费-->

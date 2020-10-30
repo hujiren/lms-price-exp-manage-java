@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author hjr start
@@ -78,9 +76,9 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
         joinTabs.add(joinCountry);
         JoinUtil.join(priceZoneDataListVo, joinTabs);
 
-        List<PriceZoneDataListVo> newZoneDataList = sortForList(priceZoneDataListVo);
+        sortForList(priceZoneDataListVo);
 
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, newZoneDataList);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneDataListVo);
     }
 
     @Override
@@ -130,7 +128,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
         JoinUtil.join(allZoneDataList, joinTabs);
 
         Map<Long, List<PriceZoneDataListVo>> zoneTabMaps = new HashMap<>();
-        List oneZoneDataList;
+        List<PriceZoneDataListVo> oneZoneDataList;
 
         //遍历所有数据
         for (PriceZoneDataListVo priceZoneDataVo : allZoneDataList) {
@@ -143,75 +141,80 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
             }
             oneZoneDataList.add(priceZoneDataVo);
         }
-        Map<String, PriceZoneDataListVo> temporaryZoneMap;
-        List<PriceZoneDataListVo> zoneDataListVo;
-        List<PriceZoneDataListVo> zoneDataFromMapList;
-        List<PriceZoneDataListVo> zoneDataListVos = null;
+        List<PriceZoneDataListVo> sourceZoneDataList;
+        List<PriceZoneDataListVo> newZoneDataList;
+
+        StringBuilder sbNameCn = new StringBuilder();
+        StringBuilder sbNameEn = new StringBuilder();
+
         //遍历map,每一个map代表一个分区id对应的所有分区数据
-        for (Map.Entry<Long, List<PriceZoneDataListVo>> longListEntry : zoneTabMaps.entrySet()) {
+        for (Map.Entry<Long, List<PriceZoneDataListVo>> zoneTabEntry : zoneTabMaps.entrySet()) {
 
-            zoneDataFromMapList = longListEntry.getValue();//存储map的value的list集合
-            zoneDataListVo = new ArrayList<>();//中转对象
-            temporaryZoneMap = new HashMap<>();//用于做数据中转的临时对象
-            String zoneNum;
+            sourceZoneDataList = zoneTabEntry.getValue();//存储map的value的list集合
+            sortForList(sourceZoneDataList);
 
+            newZoneDataList = new ArrayList<>();
             //将分区号相同的对象合并到新的map中,并将国家的中英文名用逗号拼接组装成新的属性
-            for (PriceZoneDataListVo vo : zoneDataFromMapList) {
+            String zoneNum ="";
+            String zoneNum0 = "";
+            for (PriceZoneDataListVo vo : sourceZoneDataList) {
                 zoneNum = vo.getZoneNum();
-                if(temporaryZoneMap.containsKey(zoneNum)){
-                    PriceZoneDataListVo zoneData = temporaryZoneMap.get(zoneNum);
-                    zoneData.setCountryNameCn(zoneData.getCountryNameCn() + "," + vo.getCountryNameCn());
-                    zoneData.setCountryNameEn(zoneData.getCountryNameEn() + "," + vo.getCountryNameEn());
-                    temporaryZoneMap.put(zoneNum, zoneData);
-                }else{
-                    temporaryZoneMap.put(zoneNum, vo);
+                if(!zoneNum0.equals(zoneNum))  {
+                    if(sbNameCn.length()>0){
+                        PriceZoneDataListVo  priceZoneDataListVo = new  PriceZoneDataListVo();
+                        newZoneDataList.add(priceZoneDataListVo);
+                        priceZoneDataListVo.setZoneNum(zoneNum0);
+                        priceZoneDataListVo.setCountryNameCn(sbNameCn.toString());
+                        priceZoneDataListVo.setCountryNameEn(sbNameEn.toString());
+                    }
+                    sbNameCn.setLength(0);
+                    sbNameEn.setLength(0);
                 }
+
+                if(sbNameCn.length()>0){
+                    sbNameCn.append(", ");
+                    sbNameEn.append(", ");
+                }
+                sbNameCn.append(vo.getCountryNameCn());
+                sbNameEn.append(vo.getCountryNameEn());
+
+                zoneNum0 = zoneNum;
             }
 
-            //将中转map中的数据按分区号进行升序排序,得到新的List
-            for (Map.Entry<String, PriceZoneDataListVo> entry : temporaryZoneMap.entrySet()) {
-                zoneDataListVo.add(entry.getValue());
-                zoneDataListVos = sortForList(zoneDataListVo);
+            if(sbNameCn.length()>0){
+                PriceZoneDataListVo  priceZoneDataListVo = new  PriceZoneDataListVo();
+                newZoneDataList.add(priceZoneDataListVo);
+                priceZoneDataListVo.setZoneNum(zoneNum);
+                priceZoneDataListVo.setCountryNameCn(sbNameCn.toString());
+                priceZoneDataListVo.setCountryNameEn(sbNameEn.toString());
             }
-            //最后将主map的分区id对应的list数据集替换为全新组装好的list数据集
-            longListEntry.setValue(zoneDataListVos);
+
+            zoneTabEntry.setValue(newZoneDataList);
+
+            sbNameCn.setLength(0);
+            sbNameEn.setLength(0);
         }
 
         return zoneTabMaps;
     }
 
-    public List<PriceZoneDataListVo> sortForList(List<PriceZoneDataListVo> list){
-        Pattern pattern = Pattern.compile("^-?\\d+(\\.\\d+)?$");//判断是否是数字
-        List<PriceZoneDataListVo> finalNumList = new ArrayList<>();
-        List<PriceZoneDataListVo> finalStrList = new ArrayList<>();
-        for (PriceZoneDataListVo zoneDataListVo : list) {
-            Matcher isNum = pattern.matcher(zoneDataListVo.getZoneNum());
-            if(isNum.matches()){
-                finalNumList.add(zoneDataListVo);
-            }
-            else
-                finalStrList.add(zoneDataListVo);
-        }
+    //Pattern pattern = Pattern.compile("^-?\\d+(\\.\\d+)?$");//判断是否是数字
+    String numPattern = "^-?\\d+(\\.\\d+)?$";
+    void sortForList(List<PriceZoneDataListVo> list) {
 
-        Integer[] zoneNumArrays = new Integer[finalNumList.size()];
-        for (int i = 0; i < finalNumList.size(); i++) {
-            zoneNumArrays[i] = Integer.parseInt(finalNumList.get(i).getZoneNum());
-        }
-        Arrays.sort(zoneNumArrays);
-        List<PriceZoneDataListVo> newZoneDataList = new ArrayList<>();
-
-        for (int i = 0; i < zoneNumArrays.length; i++) {
-            for (PriceZoneDataListVo zoneDataListVo : finalNumList) {
-                if(zoneNumArrays[i].equals(Integer.parseInt(zoneDataListVo.getZoneNum()))){
-                    newZoneDataList.add(zoneDataListVo);
-                }
+        for (PriceZoneDataListVo row : list) {
+            if(row.getZoneNum().length()<2 && row.getZoneNum().matches(numPattern)){
+                row.setZoneNum("0"+row.getZoneNum());
             }
         }
 
-        Collections.sort(finalStrList, Comparator.comparing(PriceZoneDataListVo::getZoneNum));
-        for (PriceZoneDataListVo zoneDataListVo : finalStrList) {
-            newZoneDataList.add(zoneDataListVo);
+        list.sort(Comparator.comparing(PriceZoneDataListVo::getZoneNum));
+
+        for (PriceZoneDataListVo row : list) {
+            if(row.getZoneNum().indexOf("0")==0)  {
+                row.setZoneNum(row.getZoneNum().substring(1));
+            }
         }
-        return newZoneDataList;
     }
+
 }
