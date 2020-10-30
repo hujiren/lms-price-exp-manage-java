@@ -143,34 +143,37 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
             }
             oneZoneDataList.add(priceZoneDataVo);
         }
-        Map<String, PriceZoneDataListVo> zoneMap = null;
-
+        Map<String, PriceZoneDataListVo> temporaryZoneMap;
+        List<PriceZoneDataListVo> zoneDataListVo;
+        List<PriceZoneDataListVo> zoneDataFromMapList;
+        List<PriceZoneDataListVo> zoneDataListVos = null;
         //遍历map,每一个map代表一个分区id对应的所有分区数据
         for (Map.Entry<Long, List<PriceZoneDataListVo>> longListEntry : zoneTabMaps.entrySet()) {
 
-            List<PriceZoneDataListVo> zoneDataList = longListEntry.getValue();
-            List<PriceZoneDataListVo> zoneDataListVo = new ArrayList<>();
-            zoneMap = new HashMap<>();
-
+            zoneDataFromMapList = longListEntry.getValue();//存储map的value的list集合
+            zoneDataListVo = new ArrayList<>();//中转对象
+            temporaryZoneMap = new HashMap<>();//用于做数据中转的临时对象
             String zoneNum;
-            for (PriceZoneDataListVo vo : zoneDataList) {
+
+            //将分区号相同的对象合并到新的map中,并将国家的中英文名用逗号拼接组装成新的属性
+            for (PriceZoneDataListVo vo : zoneDataFromMapList) {
                 zoneNum = vo.getZoneNum();
-                if(zoneMap.containsKey(zoneNum)){
-                    PriceZoneDataListVo zoneData = zoneMap.get(zoneNum);
+                if(temporaryZoneMap.containsKey(zoneNum)){
+                    PriceZoneDataListVo zoneData = temporaryZoneMap.get(zoneNum);
                     zoneData.setCountryNameCn(zoneData.getCountryNameCn() + "," + vo.getCountryNameCn());
                     zoneData.setCountryNameEn(zoneData.getCountryNameEn() + "," + vo.getCountryNameEn());
-                    zoneMap.put(zoneNum, zoneData);
+                    temporaryZoneMap.put(zoneNum, zoneData);
                 }else{
-                    zoneMap.put(zoneNum, vo);
+                    temporaryZoneMap.put(zoneNum, vo);
                 }
             }
 
-            List<PriceZoneDataListVo> zoneDataListVos = null;
-            for (Map.Entry<String, PriceZoneDataListVo> entry : zoneMap.entrySet()) {
+            //将中转map中的数据按分区号进行升序排序,得到新的List
+            for (Map.Entry<String, PriceZoneDataListVo> entry : temporaryZoneMap.entrySet()) {
                 zoneDataListVo.add(entry.getValue());
                 zoneDataListVos = sortForList(zoneDataListVo);
             }
-
+            //最后将主map的分区id对应的list数据集替换为全新组装好的list数据集
             longListEntry.setValue(zoneDataListVos);
         }
 

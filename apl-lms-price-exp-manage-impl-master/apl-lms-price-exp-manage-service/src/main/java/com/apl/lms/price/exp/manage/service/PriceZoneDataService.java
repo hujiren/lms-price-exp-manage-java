@@ -35,8 +35,5 @@ public interface PriceZoneDataService extends IService<PriceZoneDataListVo> {
      */
     Integer delBatchByZoneId(List<Long> ids);
 
-    /**
-     * 组装分区数据
-     */
-    Map<Long, List<PriceZoneDataListVo>> assemblingZoneData(List<Long> ids) throws Exception;
+    Map<Long, List<PriceZoneDataListVo>> assemblingZoneData(List<Long> zoneIds) throws Exception;
 }
