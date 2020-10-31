@@ -104,6 +104,7 @@ public class PriceListDao {
                 "            id = " + id;
         adbHelperReal.setTenantValue(null);
         PriceExpMainPo priceExpMainPo = adbHelperReal.queryObj(sql, id, PriceExpMainPo.class);
+
         return priceExpMainPo;
     }
 
