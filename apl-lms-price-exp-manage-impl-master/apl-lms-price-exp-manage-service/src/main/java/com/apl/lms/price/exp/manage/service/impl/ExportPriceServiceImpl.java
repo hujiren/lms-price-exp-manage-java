@@ -18,6 +18,7 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpDataObjVo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -182,12 +183,12 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
             if(!directoryTempName.equals("") && directoryTempName.contains("目录")){
                 //填写目录
-                fillDirectoryShell(creationHelper, excelWriter, directorySheet, expPriceInfoList, wb);
+                fillDirectoryShell(creationHelper, excelWriter, directorySheet, expPriceInfoList);
             }
 
             //填写分区表
             if(!zoneSheetMaps.isEmpty()){
-                fillZone(excelWriter, zoneSheetMaps, longListMap);
+                fillZone(excelWriter, zoneSheetMaps, longListMap, wb, expPriceInfoList);
             }
 
 
@@ -233,8 +234,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     private void fillDirectoryShell(CreationHelper creationHelper,
                                     ExcelWriter excelWriter,
                                     WriteSheet directorySheet,
-                                    List<ExpPriceInfoBo> expPriceInfoList,
-                                    XSSFWorkbook wb) {
+                                    List<ExpPriceInfoBo> expPriceInfoList) {
 
         FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
         excelWriter.fill(expPriceInfoList, fillConfig, directorySheet);
@@ -251,20 +251,22 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 continue;
 
             Cell priceNameCell = row.getCell(startColIndex + 1);
-//            Cell zoneNameCell = row.getCell(startColIndex + 2);
             if(null!=priceNameCell) {
                 Hyperlink hyperlink = creationHelper.createHyperlink(HyperlinkType.DOCUMENT);
-
-                hyperlink.setAddress("#" + priceNameCell.getStringCellValue()+"!A1");
+                CellAddress address = priceNameCell.getAddress();
+                String strAddress = address.formatAsString();
+                hyperlink.setAddress("#" + priceNameCell.getStringCellValue()+"!" + strAddress);
                 priceNameCell.setHyperlink(hyperlink);
             }
 
-//            XSSFCreationHelper creationHelper1 = new XSSFCreationHelper(wb);
-//            if(null!=zoneNameCell) {
-//                Hyperlink hyperlink2 = creationHelper1.createHyperlink(HyperlinkType.DOCUMENT);
-//                hyperlink2.setAddress("#" + zoneNameCell.getStringCellValue()+"!A1");
-//                priceNameCell.setHyperlink(hyperlink2);
-//            }
+            Cell zoneNameCell = row.getCell(startColIndex + 2);
+            if(null!=zoneNameCell) {
+                Hyperlink hyperlink2 = creationHelper.createHyperlink(HyperlinkType.DOCUMENT);
+                CellAddress address = zoneNameCell.getAddress();
+                String strAddress = address.formatAsString();
+                hyperlink2.setAddress("#" + zoneNameCell.getStringCellValue()+"!" + strAddress);
+                zoneNameCell.setHyperlink(hyperlink2);
+            }
         }
     }
 
@@ -325,7 +327,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             sheetNo++;
         }
 
-        int startZoneSheetNo = sheetNo;
+
         Map<Long, zoneDataInfo> zoneSheetMaps = new HashMap<>();
         if(zoneTemplateNo>0) {
             for (ExpPriceInfoBo expPriceInfoBo : expPriceInfoList) {
@@ -489,10 +491,20 @@ public class ExportPriceServiceImpl implements ExportPriceService {
      * @param zoneIndexMap
      * @param longListMap
      */
-    public void fillZone(ExcelWriter excelWriter, Map<Long, zoneDataInfo> zoneIndexMap, Map<Long, List<PriceZoneDataListVo>> longListMap){
+    public void fillZone(ExcelWriter excelWriter,
+                         Map<Long, zoneDataInfo> zoneIndexMap,
+                         Map<Long, List<PriceZoneDataListVo>> longListMap,
+                         XSSFWorkbook wb, List<ExpPriceInfoBo> expPriceInfoBoList){
 
         Map<String, Object> map;
+        String priceName = null;
         for (Map.Entry<Long, zoneDataInfo> zoneDataEntry : zoneIndexMap.entrySet()) {
+
+            for (ExpPriceInfoBo expPriceInfoBo : expPriceInfoBoList) {
+                if(zoneDataEntry.getValue().zoneName.equals(expPriceInfoBo.getZoneName())){
+                    priceName = expPriceInfoBo.getPriceName();
+                }
+            }
 
             //先填充zoneName和channelCategory
             WriteSheet zoneSheet = EasyExcel.writerSheet(zoneDataEntry.getValue().sheetNo).build();
@@ -524,13 +536,18 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 }else{
                     continue;
                 }
-//                EasyExcel.write(outFileName).withTemplate("G:\\temp\\export-exp-price-template-common.xlsx")
-//                        .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
-//                        .sheet("分区表模板").doFill(zoneDataList);
             }
             //填充分区数据
             excelWriter.fill(zoneDataList, zoneSheet);
 
+            Sheet sheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
+            Cell cell = findCell(sheet, "价格表");
+            if(cell != null){
+                XSSFCreationHelper creationHelper = wb.getCreationHelper();
+                XSSFHyperlink hyperlink = creationHelper.createHyperlink(HyperlinkType.DOCUMENT);
+                hyperlink.setAddress("#" + priceName + "!A1");
+                cell.setHyperlink(hyperlink);
+            }
         }
 
 
