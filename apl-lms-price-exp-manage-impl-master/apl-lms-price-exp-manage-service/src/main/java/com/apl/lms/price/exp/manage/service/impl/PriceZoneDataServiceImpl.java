@@ -76,7 +76,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
         joinTabs.add(joinCountry);
         JoinUtil.join(priceZoneDataListVo, joinTabs);
 
-        sortForList(priceZoneDataListVo);
+        zoneNumSort(priceZoneDataListVo);
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneDataListVo);
     }
@@ -151,7 +151,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
         for (Map.Entry<Long, List<PriceZoneDataListVo>> zoneTabEntry : zoneTabMaps.entrySet()) {
 
             sourceZoneDataList = zoneTabEntry.getValue();//存储map的value的list集合
-            sortForList(sourceZoneDataList);
+            zoneNumSort(sourceZoneDataList);
 
             newZoneDataList = new ArrayList<>();
             //将分区号相同的对象合并到新的map中,并将国家的中英文名用逗号拼接组装成新的属性
@@ -198,23 +198,41 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
         return zoneTabMaps;
     }
 
-    //Pattern pattern = Pattern.compile("^-?\\d+(\\.\\d+)?$");//判断是否是数字
-    String numPattern = "^-?\\d+(\\.\\d+)?$";
-    void sortForList(List<PriceZoneDataListVo> list) {
 
-        for (PriceZoneDataListVo row : list) {
+    String numPattern = "^-?\\d+(\\.\\d+)?$";
+
+    //分区号排序
+    void zoneNumSort(List<PriceZoneDataListVo> list) {
+
+        /*for (PriceZoneDataListVo row : list) {
             if(row.getZoneNum().length()<2 && row.getZoneNum().matches(numPattern)){
                 row.setZoneNum("0"+row.getZoneNum());
             }
-        }
+        }*/
 
-        list.sort(Comparator.comparing(PriceZoneDataListVo::getZoneNum));
+        //list.sort(Comparator.comparing(PriceZoneDataListVo::getZoneNum));
 
-        for (PriceZoneDataListVo row : list) {
+        Collections.sort(list, new Comparator<PriceZoneDataListVo>() {
+
+            @Override
+            public int compare(PriceZoneDataListVo o1, PriceZoneDataListVo o2) {
+
+                if(o1.getZoneNum().matches(numPattern) && o2.getZoneNum().matches(numPattern)) {
+                    if (o1.getZoneNum().length() < o2.getZoneNum().length())
+                        return -1;
+                    else if (o1.getZoneNum().length() > o2.getZoneNum().length())
+                        return 1;
+                }
+
+                return o1.getZoneNum().compareTo(o2.getZoneNum());
+            }
+        });
+
+        /*for (PriceZoneDataListVo row : list) {
             if(row.getZoneNum().indexOf("0")==0)  {
                 row.setZoneNum(row.getZoneNum().substring(1));
             }
-        }
+        }*/
     }
 
 }
