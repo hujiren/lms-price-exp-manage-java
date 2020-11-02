@@ -548,8 +548,8 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 hyperlink.setAddress("#" + priceName + "!A1");
                 cell.setHyperlink(hyperlink);
             }
-        }
 
+        }
 
     }
 
