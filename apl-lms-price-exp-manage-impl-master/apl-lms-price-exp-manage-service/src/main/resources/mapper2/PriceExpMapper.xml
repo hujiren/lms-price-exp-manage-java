@@ -149,7 +149,7 @@
              id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
              price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name,
              price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_group_id,
-             customer_group_name, customer_ids, customer_name, upd_time, quote_price_upd_time, is_quote, syn_status, quote_tenant_code)
+             customer_group_name, customer_ids, customer_name, upd_time, quote_price_upd_time, is_quote, syn_status, quote_tenant_code, add_profit_way)
          values
              (#{po.id},
              #{po.startDate},
@@ -183,7 +183,8 @@
              #{po.quotePriceUpdTime},
              #{po.isQuote},
              #{po.synStatus},
-             #{po.quoteTenantCode})
+             #{po.quoteTenantCode},
+             #{po.addProfitWay})
      </insert>
 
     <!--更新-->
@@ -380,5 +381,15 @@
         <foreach collection="ids" close=")" item="row" open="(" separator=",">
             #{row}
         </foreach>
+    </select>
+
+    <select id="getTenantPriceInfo" resultType="com.apl.lms.price.exp.pojo.po.PriceExpMainPo">
+        select
+            special_commodity, currency, price_data_id, zone_id, price_published_id, price_status, price_format,
+            start_date, end_date, account_type, account_no, start_weight, end_weight, aging, volume_divisor, upd_time
+        from
+            concat(#{code}, '_lms_exp_price')
+        where
+            id = #{id}
     </select>
 </mapper>

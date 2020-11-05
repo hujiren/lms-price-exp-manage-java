@@ -34,8 +34,8 @@ public class PriceSurchargePo implements Serializable {
     private Long priceId;
 
     @ApiModelProperty(name = "chargeName", value = "费用名 1超重费 2超值费 3电池费", required = true)
-    @NotNull(message = "费用名不能为空")
-    private Integer chargeName;
+    @NotBlank(message = "费用名不能为空")
+    private String chargeName;
 
     @TypeValidator(value = {"0", "1", "2"}, message = "费用方式值为0-2之间")
     @ApiModelProperty(name = "chargeWay", value = "费用方式 1按件价 2按票价")

@@ -21,4 +21,15 @@
     <select id="getIdBatchByPriceId" resultType="java.lang.Long">
         select id from price_computational_formula where price_id = #{priceId}
     </select>
+
+    <!--获取引用租户的计算公式-->
+    <select id="getTenantComputationalFormula"
+            resultType="com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo">
+        select
+            id, formula, zone_num, country, start_weight, end_weight, package_type
+        from
+            price_computational_formula
+        where
+            price_id = #{quotePriceId}
+    </select>
 </mapper>

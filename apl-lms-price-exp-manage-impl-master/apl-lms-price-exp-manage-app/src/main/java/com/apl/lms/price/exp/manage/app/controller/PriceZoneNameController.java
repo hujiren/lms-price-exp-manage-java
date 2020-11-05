@@ -56,7 +56,7 @@ public class PriceZoneNameController {
     @ApiOperation(value =  "添加分区表名称" , notes = "添加分区表名称")
     public ResultUtil<Long> add( @Validated PriceZoneNamePo priceZoneAddDto){
 
-              return priceZoneService.addPriceZoneName(priceZoneAddDto);
+        return priceZoneService.addPriceZoneName(priceZoneAddDto);
     }
 
     @PostMapping(value = "/upd-zone-name")

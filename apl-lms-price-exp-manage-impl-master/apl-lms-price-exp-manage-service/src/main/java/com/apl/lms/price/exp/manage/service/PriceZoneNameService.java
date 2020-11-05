@@ -2,9 +2,9 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.pojo.dto.PageDto;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.*;
+import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
-import com.baomidou.mybatisplus.annotation.SqlParser;
+import com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -22,7 +22,6 @@ public interface PriceZoneNameService extends IService<PriceZoneNamePo> {
      * @param id
      * @return
      */
-    @SqlParser(filter = true)
     String getPriceZoneName(Long id);
 
     /**
@@ -61,4 +60,17 @@ public interface PriceZoneNameService extends IService<PriceZoneNamePo> {
      */
     Map<Long, PriceZoneNamePo> getPriceZoneNameBatch(List<Long> zoneIds);
 
+    /**
+     * 获取分区详细
+     * @param zoneId
+     * @return
+     */
+    PriceZoneNameVo getZoneNameInfo(Long zoneId);
+
+    /**
+     * 获取引用租户的分区数据
+     * @param zoneId
+     * @return
+     */
+    PriceZoneNamePo getTenantPriceZone(Long zoneId);
 }

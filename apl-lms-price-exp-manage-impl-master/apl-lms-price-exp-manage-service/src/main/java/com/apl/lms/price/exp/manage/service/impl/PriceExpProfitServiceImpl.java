@@ -10,8 +10,10 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
+import com.apl.lms.price.exp.manage.service.UnifyProfitService;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
+import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 import com.apl.sys.lib.feign.InnerFeign;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -20,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +42,9 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
     //状态code枚举
     enum PriceExpProfitServiceCode {
-        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA", "没有找到对应数据");
+        NO_CORRESPONDING_DATA("NO_CORRESPONDING_DATA", "没有找到利润数据"),
+        HAVE_AT_LEAST_ONE_PROFIT("HAVE_AT_LEAST_ONE_PROFIT", "请至少添加一条利润"),
+        CHOOSE_OR_ADD_A_UNIFY_PROFIT("CHOOSE_OR_ADD_A_UNIFY_PROFIT", "请选择或者添加一条统一利润");
         private String code;
         private String msg;
 
@@ -58,6 +63,9 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     @Autowired
     AplCacheUtil aplCacheUtil;
 
+    @Autowired
+    UnifyProfitService unifyProfitService;
+
     static JoinFieldInfo joinCustomerGroupFieldInfo = null; //关联 客户组 反射字段缓存
 
     @Override
@@ -73,7 +81,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
 
     @Override
-    public PriceExpProfitPo getProfit(Long priceId) throws Exception {
+    public PriceExpProfitPo getProfit(Long priceId){
 
         PriceExpProfitPo priceExpProfitPo = baseMapper.getProfit(priceId);
 
@@ -96,18 +104,35 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
      * @return
      */
     @Override
-    public Long saveProfit(PriceExpProfitPo priceExpProfitPo1) throws JsonProcessingException {
+    @Transactional
+    public ResultUtil<Long> saveProfit(PriceExpProfitPo priceExpProfitPo1) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(priceExpProfitPo1);
         PriceExpProfitPo priceExpProfitPo = objectMapper.readValue(json, PriceExpProfitPo.class);
 
         List<PriceExpProfitDto> emptyProfitList = new ArrayList<>();
+        List<PriceExpProfitDto> increaseProfit = null;
         if(null == priceExpProfitPo.getIncreaseProfit()){
             priceExpProfitPo.setIncreaseProfit(emptyProfitList);
         }
-        //上调的利润
-        List<PriceExpProfitDto> increaseProfit = priceExpProfitPo.getIncreaseProfit();
+
+        if(priceExpProfitPo1.getAddProfitWay().equals(1)){
+            //上调的利润
+            increaseProfit = priceExpProfitPo.getIncreaseProfit();
+            if(increaseProfit.size() < 1)
+                return ResultUtil.APPRESULT(PriceExpProfitServiceCode.HAVE_AT_LEAST_ONE_PROFIT.code, PriceExpProfitServiceCode.HAVE_AT_LEAST_ONE_PROFIT.msg, 0L);
+        }
+
+        //将添加利润方式更新到价格表
+        PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
+        priceExpMainPo.setId(priceExpProfitPo.getId());
+        priceExpMainPo.setAddProfitWay(priceExpProfitPo.getAddProfitWay());
+        priceExpService.updateById(priceExpMainPo);
+
+        // TODO: 2020/11/4 满足 addProfitWay=2 的条件时,算法还没有写, 先直接返回保存成功
+        if(priceExpProfitPo1.getAddProfitWay().equals(0) || priceExpProfitPo1.getAddProfitWay().equals(2))
+            ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, 0L);
 
         if(increaseProfit.size() >0){
             //遍历上调的利润
@@ -177,8 +202,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         if(flag.equals(0)){
             throw new AplException(CommonStatusCode.SYSTEM_FAIL , null);
         }
-
-        return priceExpProfitPo.getId();
+        return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, priceExpProfitPo.getId());
     }
     
     private List<PriceExpProfitDto> getQuoteProfit(Long priceId){
@@ -285,22 +309,24 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
     public static void main(String[] args) {
 
-        List<PriceExpProfitDto> list1 = new ArrayList<>();
-        PriceExpProfitDto priceExpProfitDto = new PriceExpProfitDto(null, "",  "", 0.0, 10.0, 0.0, 1.1, 0.0);
-        list1.add(priceExpProfitDto);
-        priceExpProfitDto = new PriceExpProfitDto(null, "",  "", 10.0, 20.5, 0.0, 1.09, 0.0);
-        list1.add(priceExpProfitDto);
-
-        List<PriceExpProfitDto> list2 = new ArrayList<>();
-        PriceExpProfitDto priceExpProfitDto2 = new PriceExpProfitDto(null, "",  "", 0.0, 1.0, 0.0, 1.2, 0.0);
-        list2.add(priceExpProfitDto2);
-        priceExpProfitDto2 = new PriceExpProfitDto(null, "",  "", 1.0, 5.0, 0.0, 1.09, 0.0);
-        list2.add(priceExpProfitDto2);
+//        List<PriceExpProfitDto> list1 = new ArrayList<>();
+//        PriceExpProfitDto priceExpProfitDto = new PriceExpProfitDto(id, null, "",  "", 0.0, 10.0, 0.0, 1.1, 0.0);
+//        list1.add(priceExpProfitDto);
+//        priceExpProfitDto = new PriceExpProfitDto(id, null, "",  "", 10.0, 20.5, 0.0, 1.09, 0.0);
+//        list1.add(priceExpProfitDto);
+//
+//        List<PriceExpProfitDto> list2 = new ArrayList<>();
+//        PriceExpProfitDto priceExpProfitDto2 = new PriceExpProfitDto(id, null, "",  "", 0.0, 1.0, 0.0, 1.2, 0.0);
+//        list2.add(priceExpProfitDto2);
+//        priceExpProfitDto2 = new PriceExpProfitDto(id, null, "",  "", 1.0, 5.0, 0.0, 1.09, 0.0);
+//        list2.add(priceExpProfitDto2);
 
 //        mergeProfit(list1, list2);
-
-
     }
 
+    @Override
+    public PriceExpProfitPo getTenantProfit(Long quotePriceId) {
+        return baseMapper.getTenantProfit(quotePriceId);
+    }
 
 }

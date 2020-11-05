@@ -87,10 +87,10 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
 
     /**
      * 引用价格表
-     * @param referencePriceDto
+     * @param priceReferenceDto
      * @return
      */
-    ResultUtil<Long> referencePrice(ReferencePriceDto referencePriceDto) throws IOException;
+    ResultUtil<Boolean> referencePrice(PriceReferenceDto priceReferenceDto) throws Exception;
 
 
     /**

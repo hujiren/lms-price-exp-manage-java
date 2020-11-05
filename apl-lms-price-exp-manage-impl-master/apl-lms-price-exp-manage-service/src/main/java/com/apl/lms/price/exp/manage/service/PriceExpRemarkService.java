@@ -42,4 +42,11 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
      * @return
      */
     Map<Long, PriceExpRemarkPo> getPriceExpRemarkBatch(List<Long> ids);
+
+    /**
+     * 获取引用租户的备注
+     * @param quotePriceId
+     * @return
+     */
+    PriceExpRemarkPo getTenantPriceRemark(Long quotePriceId);
 }

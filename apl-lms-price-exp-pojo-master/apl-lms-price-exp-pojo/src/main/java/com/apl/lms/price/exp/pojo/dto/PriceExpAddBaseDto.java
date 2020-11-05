@@ -82,30 +82,33 @@ public class PriceExpAddBaseDto implements Serializable {
 
     @ApiModelProperty(name = "priceName" , value = "报价名称", required = true)
     @NotBlank(message = "报价名称不能为空")
-    private String priceName;
+    private String priceName;//
 
     @ApiModelProperty(name = "priceSaleName" , value = "销售名称")
-    private String priceSaleName;
+    private String priceSaleName;//
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型", required = true)
     @NotBlank(message = "渠道类型不能为空")
-    private String channelCategory;
+    private String channelCategory;//
 
     @ApiModelProperty(name = "partnerId" , value = "服务商id")
-    private Long partnerId;
+    private Long partnerId;//
 
     @ApiModelProperty(name = "partnerName" , value = "服务商名称")
-    private String partnerName;
+    private String partnerName;//
 
     @ApiModelProperty(name = "customerGroup" , value = "客户组")
-    private List<CustomerGroupDto> customerGroup;
+    private List<CustomerGroupDto> customerGroup;//
 
     @ApiModelProperty(name = "customer" , value = "客户")
-    private List<CustomerDto> customer;
+    private List<CustomerDto> customer;//
 
     @ApiModelProperty(name = "remark" , value = "备注")
     private String remark;
 
     @ApiModelProperty(name = "saleRemark", value = "销售备注")
     private String saleRemark;
+
+    @ApiModelProperty(name = "addProfitWay", value = "添加利润方式 0不加, 1单独加 2统一加")
+    private Integer addProfitWay;//
 }

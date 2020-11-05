@@ -1,12 +1,9 @@
 package com.apl.lms.price.exp.manage.mapper2;
 
-import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
 /**
@@ -63,4 +60,9 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      * @return
      */
     Long exists(Long id);
+
+    @SqlParser(filter = true)
+    PriceExpProfitPo getTenantProfit(Long quotePriceId);
+
+
 }

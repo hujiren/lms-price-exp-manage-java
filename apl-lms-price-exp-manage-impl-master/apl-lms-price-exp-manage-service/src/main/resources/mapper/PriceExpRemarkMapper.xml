@@ -9,12 +9,12 @@
 
     <!--获取详情-->
     <select id="getById" resultType="com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo">
-        select id,remark,sale_remark from price_exp_remark where id = #{id}
+        select id,remark,sale_remark,important_information from price_exp_remark where id = #{id}
     </select>
 
     <!--更新-->
     <update id="updById">
-        update price_exp_remark set remark = #{po.remark}, sale_remark = #{po.saleRemark} where id = #{po.id}
+        update price_exp_remark set remark = #{po.remark}, sale_remark = #{po.saleRemark}, important_information = #{po.importantInformation} where id = #{po.id}
     </update>
 
     <!--校验id是否存在-->
@@ -24,9 +24,14 @@
 
     <!--批量获取-->
     <select id="selectBatch" resultType="com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo">
-        select id, remark, sale_remark from price_exp_remark where id in
+        select id, remark, sale_remark,important_information from price_exp_remark where id in
         <foreach collection="ids" separator="," open="(" item="row" close=")">
             #{row}
         </foreach>
+    </select>
+
+    <!--获取引用租户的remark-->
+    <select id="getTenantPriceRemark" resultType="com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo">
+        select select id, remark, sale_remark,important_information from price_exp_remark where id = #{quotePriceId}
     </select>
 </mapper>

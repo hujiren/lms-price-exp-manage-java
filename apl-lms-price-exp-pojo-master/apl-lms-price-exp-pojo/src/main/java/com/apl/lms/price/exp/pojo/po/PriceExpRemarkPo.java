@@ -32,4 +32,7 @@ public class PriceExpRemarkPo extends Model<PriceExpRemarkPo> implements Seriali
     @ApiModelProperty(name = "saleRemark" , value = "销售备注")
     private String saleRemark;
 
+    @ApiModelProperty(name = "importantInformation" , value = "重要信息")
+    private String importantInformation;
+
 }

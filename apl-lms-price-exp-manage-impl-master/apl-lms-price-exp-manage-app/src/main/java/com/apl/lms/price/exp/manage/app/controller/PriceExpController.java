@@ -115,9 +115,8 @@ public class PriceExpController {
 
     @PostMapping(value = "/reference-price")
     @ApiOperation(value = "引用价格表", notes = "引用价格表")
-    public ResultUtil<Long> referencePrice(@RequestBody @Validated ReferencePriceDto referencePriceDto) throws Exception {
-
-        return priceExpService.referencePrice(referencePriceDto);
+    public ResultUtil<Boolean> referencePrice(@Validated @RequestBody PriceReferenceDto priceReferenceDto) throws Exception {
+        return priceExpService.referencePrice(priceReferenceDto);
     }
 
 
@@ -196,7 +195,6 @@ public class PriceExpController {
     public void exportExpPrice(HttpServletResponse response, String ids) throws Exception {
 
         List<Long> idList =  StringUtil.stringToLongList(ids);
-
         exportPricePrice.exportExpPrice(response, idList);
     }
 

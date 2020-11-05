@@ -80,4 +80,14 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
     public Map<Long, PriceExpRemarkPo> getPriceExpRemarkBatch(List<Long> ids) {
         return baseMapper.selectBatch(ids);
     }
+
+    /**
+     * 获取引用租户的remark
+     * @param quotePriceId
+     * @return
+     */
+    @Override
+    public PriceExpRemarkPo getTenantPriceRemark(Long quotePriceId) {
+        return baseMapper.getTenantPriceRemark(quotePriceId);
+    }
 }

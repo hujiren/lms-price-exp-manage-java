@@ -4,7 +4,8 @@
 
     <resultMap id="BaseResultMap" type="com.apl.lms.price.exp.pojo.vo.PriceExpDataVo">
         <result property="priceData" column="price_data" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
-    </resultMap><resultMap id="BaseResultMap2" type="com.apl.lms.price.exp.pojo.vo.PriceExpDataStringVo">
+    </resultMap>
+    <resultMap id="BaseResultMap2" type="com.apl.lms.price.exp.pojo.vo.PriceExpDataStringVo">
         <result property="priceData" column="price_data" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
     </resultMap>
 

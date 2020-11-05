@@ -1,9 +1,7 @@
 package com.apl.lms.price.exp.pojo.vo;
 
 import com.apl.lib.validate.TypeValidator;
-import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +10,6 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author hjr start
@@ -36,8 +33,8 @@ public class PriceSurchargeVo implements Serializable {
     private Long priceId;
 
     @ApiModelProperty(name = "chargeName", value = "费用名", required = true)
-    @NotNull(message = "费用名不能为空")
-    private Integer chargeName;
+    @NotBlank(message = "费用名不能为空")
+    private String chargeName;
 
     @TypeValidator(value = {"0", "1", "2"}, message = "费用方式值为0-2之间")
     @ApiModelProperty(name = "chargeWay", value = "费用方式 1按件价 2按票价")

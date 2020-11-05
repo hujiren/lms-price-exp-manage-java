@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper2.UnifyProfitMapper">
+
+    <resultMap id="BaseResultMap" type="com.apl.lms.price.exp.pojo.po.UnifyExpPricePo">
+        <result property="customerGroupId" column="customer_group_id" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
+    </resultMap>
+    <delete id="deleteBatch">
+        delete from unify_exp_profit where id in
+        <foreach collection="ids" close=")" item="row" open="(" separator=",">
+            #{row}
+        </foreach>
+    </delete>
+
+    <select id="getUnifyProfit" resultMap="BaseResultMap">
+        select
+            id, customer_group_id, customer_group_name, start_weight, end_weight, first_weight_profit, unit_weight_profit, proportion_profit
+        from
+            unify_exp_profit
+        <where>
+            <if test="customerGroupId > 0">
+                customer_group_id @> '${customerGroupId}'
+            </if>
+        </where>
+        order by id
+    </select>
+
+    <insert id="insertUnifyProfit">
+        insert into
+            unify_exp_profit (id, customer_group_id, customer_group_name, start_weight, end_weight, first_weight_profit, unit_weight_profit, proportion_profit)
+        values (
+            #{po.id}, #{po.customerGroupId, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}, #{po.customerGroupName},
+            #{po.startWeight}, #{po.endWeight}, #{po.firstWeightProfit}, #{po.unitWeightProfit}, #{po.proportionProfit}
+                )
+    </insert>
+
+
+    <update id="updateUnifyProfit">
+         update
+            unify_exp_profit
+         set
+            <if test="po.startWeight != null">
+                start_weight = #{po.startWeight},
+            </if>
+            <if test="po.endWeight != null">
+                end_weight = #{po.endWeight},
+            </if>
+            <if test="po.firstWeightProfit != null">
+                first_weight_profit = #{po.firstWeightProfit},
+            </if>
+            <if test="po.unitWeightProfit != null">
+                unit_weight_profit = #{po.unitWeightProfit},
+            </if>
+            <if test="po.proportionProfit != null">
+                proportion_profit = #{po.proportionProfit},
+            </if>
+            customer_group_id = #{po.customerGroupId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+            customer_group_name = #{po.customerGroupName}
+         where
+            id = #{po.id}
+
+    </update>
+</mapper>

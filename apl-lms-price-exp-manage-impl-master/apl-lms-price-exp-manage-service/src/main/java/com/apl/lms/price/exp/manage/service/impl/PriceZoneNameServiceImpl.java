@@ -9,6 +9,7 @@ import com.apl.lms.price.exp.manage.service.PriceZoneDataService;
 import com.apl.lms.price.exp.manage.service.PriceZoneNameService;
 import com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
+import com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -126,5 +127,26 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
     @Override
     public Map<Long, PriceZoneNamePo> getPriceZoneNameBatch(List<Long> zoneIds) {
         return baseMapper.getPriceZoneNameBatch(zoneIds);
+    }
+
+    /**
+     * 获取分区详细
+     * @param zoneId
+     * @return
+     */
+    @Override
+    public PriceZoneNameVo getZoneNameInfo(Long zoneId) {
+        PriceZoneNameVo priceZoneNameVo = baseMapper.getPriceZoneNameInfo(zoneId);
+        return priceZoneNameVo;
+    }
+
+    /**
+     * 获取引用租户的分区数据
+     * @param zoneId
+     * @return
+     */
+    @Override
+    public PriceZoneNamePo getTenantPriceZone(Long zoneId) {
+        return baseMapper.getTenantPriceZone(zoneId);
     }
 }

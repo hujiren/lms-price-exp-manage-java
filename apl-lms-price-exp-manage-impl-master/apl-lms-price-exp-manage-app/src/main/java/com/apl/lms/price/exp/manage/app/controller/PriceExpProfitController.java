@@ -34,20 +34,18 @@ public class PriceExpProfitController {
     public PriceExpProfitService priceExpProfitService;
 
     @PostMapping(value = "/save")
-    @ApiOperation(value = "保存", notes = "保存")
+    @ApiOperation(value = "批量保存", notes = "保存")
     public ResultUtil<Long> save(@Validated @RequestBody PriceExpProfitPo priceExpProfitPo) throws JsonProcessingException {
         ApiParamValidate.validate(priceExpProfitPo);
-
-        Long id = priceExpProfitService.saveProfit(priceExpProfitPo);
-
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , id);
+        ResultUtil<Long> longResultUtil = priceExpProfitService.saveProfit(priceExpProfitPo);
+        return longResultUtil;
 
     }
 
     @PostMapping(value = "/get")
     @ApiOperation(value = "获取利润数据", notes = "获取利润数据")
     @ApiImplicitParam(name = "priceId", value = " 价格表id", required = true, paramType = "query")
-    public ResultUtil<PriceExpProfitPo> get(@NotNull(message = "价格表id不能为空") Long priceId) throws Exception {
+    public ResultUtil<PriceExpProfitPo> get(@NotNull(message = "价格表id不能为空") Long priceId){
         PriceExpProfitPo profit = priceExpProfitService.getProfit(priceId);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS ,profit);
     }

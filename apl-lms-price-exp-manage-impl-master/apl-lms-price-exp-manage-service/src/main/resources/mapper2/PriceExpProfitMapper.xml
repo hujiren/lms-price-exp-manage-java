@@ -58,4 +58,9 @@
     <select id="exists" resultType="java.lang.Long">
         select id from price_exp_profit where id = #{id}
     </select>
+
+    <select id="getTenantProfit" resultType="com.apl.lms.price.exp.pojo.po.PriceExpProfitPo">
+        select id, increase_profit, final_profit from price_exp_profit where id = #{quotePriceId}
+    </select>
+
 </mapper>

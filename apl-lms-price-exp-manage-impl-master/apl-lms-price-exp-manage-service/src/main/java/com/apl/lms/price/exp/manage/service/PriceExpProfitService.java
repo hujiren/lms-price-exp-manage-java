@@ -21,7 +21,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @author hjr
      * @since 2020-09-11
      */
-    Long saveProfit(PriceExpProfitPo priceExpProfitPo) throws JsonProcessingException;
+    ResultUtil<Long> saveProfit(PriceExpProfitPo priceExpProfitPo) throws JsonProcessingException;
 
 
     /**
@@ -37,7 +37,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @author hjr
      * @since 2020-09-11
      */
-    PriceExpProfitPo getProfit(Long priceId) throws Exception;
+    PriceExpProfitPo getProfit(Long priceId);
 
     /**
      * 批量删除
@@ -45,6 +45,13 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @return
      */
     Integer delBatch(String ids);
+
+    /**
+     * 获取引用租户利润数据
+     * @param quotePriceId
+     * @return
+     */
+    PriceExpProfitPo getTenantProfit(Long quotePriceId);
 
 
 }

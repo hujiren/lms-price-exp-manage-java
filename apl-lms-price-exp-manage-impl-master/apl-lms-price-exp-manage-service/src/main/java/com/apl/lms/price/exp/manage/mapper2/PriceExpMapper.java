@@ -143,4 +143,12 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     List<ExpPriceInfoBo> getPriceInfoByIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 获取其他租户的信息
+     * @param priceId
+     * @return
+     */
+    @SqlParser(filter = true)
+    PriceExpMainPo getTenantPriceInfo(@Param("id") Long priceId, @Param("code") String tenantCode);
 }

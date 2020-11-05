@@ -4,6 +4,7 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public interface PriceZoneDataService extends IService<PriceZoneDataListVo> {
      * @param id
      * @return
      */
-    ResultUtil<List<PriceZoneDataListVo>> getList(Long id) throws Exception;
+    List<PriceZoneDataListVo> getList(Long id) throws Exception;
 
     /**
      * 批量删除
@@ -35,5 +36,18 @@ public interface PriceZoneDataService extends IService<PriceZoneDataListVo> {
      */
     Integer delBatchByZoneId(List<Long> ids);
 
+    /**
+     * 组装分区数据
+     * @param zoneIds
+     * @return
+     * @throws Exception
+     */
     Map<Long, List<PriceZoneDataListVo>> assemblingZoneData(List<Long> zoneIds) throws Exception;
+
+    /**
+     * 导出分区
+     * @param zoneId
+     * @return
+     */
+    ResultUtil<Boolean> exportZone(HttpServletResponse response, Long zoneId);
 }

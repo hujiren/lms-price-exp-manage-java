@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,4 +37,12 @@ public interface ComputationalFormulaMapper extends BaseMapper<PriceExpComputati
      * @return
      */
     List<Long> getIdBatchByPriceId(Long priceId);
+
+    /**
+     * 获取引用租户的计算公式
+     * @param quotePriceId
+     * @return
+     */
+    @SqlParser(filter = true)
+    List<PriceExpComputationalFormulaPo> getTenantComputationalFormula(Long quotePriceId);
 }

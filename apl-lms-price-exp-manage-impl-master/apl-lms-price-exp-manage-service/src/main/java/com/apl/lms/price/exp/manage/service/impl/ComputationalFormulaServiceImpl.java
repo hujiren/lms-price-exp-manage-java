@@ -126,4 +126,14 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
         List<Long> computationIds = baseMapper.getIdBatchByPriceId(priceId);
         return computationIds;
     }
+
+    /**
+     * 获取引用租户的计算公式
+     * @param quotePriceId
+     * @return
+     */
+    @Override
+    public List<PriceExpComputationalFormulaPo> getTenantComputationalFormula(Long quotePriceId) {
+        return baseMapper.getTenantComputationalFormula(quotePriceId);
+    }
 }

@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,9 +14,8 @@ import java.util.List;
  * @Classname PriceExpProfitDto
  * @Date 2020/9/11 11:14
  */
-@ApiModel(value = "快递销售价格利润-组装对象", description = "快递销售价格利润-组装对象")
-public class PriceExpProfitDto implements Serializable {
-    private static final long serialVersionUID = 4625197501272032171L;
+@ApiModel(value = "统一利润-组装对象", description = "统一利润-组装对象")
+public class UnifyProfitDto {
 
     @ApiModelProperty(name = "id", value = "id", required = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -27,12 +25,6 @@ public class PriceExpProfitDto implements Serializable {
     @ApiModelProperty(name = "customerGroup" , value = "客户组", required = true)
     @NotEmpty(message = "客户组不能为空")
     private List<CustomerGroupBo> customerGroups;
-
-    @ApiModelProperty(name = "zoneNum", value = "分区号")
-    private String zoneNum;
-
-    @ApiModelProperty(name = "countryCode", value = "国家简码")
-    private String countryCode;
 
     @ApiModelProperty(name = "startWeight", value = "起始重")
     private Double startWeight;
@@ -49,12 +41,10 @@ public class PriceExpProfitDto implements Serializable {
     @ApiModelProperty(name = "proportionProfit", value = "比例加")
     private Double proportionProfit;
 
-    // 客户组,  分区号,  国家简码, 起始重, 截止重, 首重加, 单位重加, 比例加
-    public PriceExpProfitDto(Long id, List<CustomerGroupBo> customerGroups, String zoneNum, String countryCode, Double startWeight, Double endWeight, Double firstWeightProfit, Double unitWeightProfit, Double proportionProfit) {
+    // 客户组, 起始重, 截止重, 首重加, 单位重加, 比例加
+    public UnifyProfitDto(Long id, List<CustomerGroupBo> customerGroups, String zoneNum, String countryCode, Double startWeight, Double endWeight, Double firstWeightProfit, Double unitWeightProfit, Double proportionProfit) {
         this.id = id;
         this.customerGroups = customerGroups;
-        this.zoneNum = zoneNum;
-        this.countryCode = countryCode;
         this.startWeight = startWeight;
         this.endWeight = endWeight;
         this.firstWeightProfit = firstWeightProfit;
@@ -62,7 +52,7 @@ public class PriceExpProfitDto implements Serializable {
         this.proportionProfit = proportionProfit;
     }
 
-    public PriceExpProfitDto(){}
+    public UnifyProfitDto(){}
 
     public List<CustomerGroupBo> getCustomerGroups() {
         return customerGroups;
@@ -70,22 +60,6 @@ public class PriceExpProfitDto implements Serializable {
 
     public void setCustomerGroups(List<CustomerGroupBo> customerGroups) {
         this.customerGroups = customerGroups;
-    }
-
-    public String getZoneNum() {
-        return zoneNum;
-    }
-
-    public void setZoneNum(String zoneNum) {
-        this.zoneNum = zoneNum;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
     }
 
     public Double getStartWeight() {

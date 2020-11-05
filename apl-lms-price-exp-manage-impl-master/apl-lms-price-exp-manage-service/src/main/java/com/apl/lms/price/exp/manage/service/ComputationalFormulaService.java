@@ -3,8 +3,8 @@ package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
-import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.extension.service.IService;
+
 import java.util.List;
 
 /**
@@ -18,7 +18,6 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @param priceId
      * @return
      */
-    @SqlParser(filter = true)
     List<PriceExpComputationalFormulaPo> getList(Long priceId);
 
     /**
@@ -54,6 +53,12 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @param priceId
      * @return
      */
-    @SqlParser(filter = true)
     List<Long> getIdBatch(Long priceId);
+
+    /**
+     * 获取引用租户的计算公式
+     * @param quotePriceId
+     * @return
+     */
+    List<PriceExpComputationalFormulaPo> getTenantComputationalFormula(Long quotePriceId);
 }

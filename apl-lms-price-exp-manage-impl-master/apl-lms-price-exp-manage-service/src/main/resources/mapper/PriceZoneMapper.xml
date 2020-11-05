@@ -56,4 +56,13 @@
             #{row}
         </foreach>
     </select>
+
+
+    <select id="getPriceZoneNameInfo" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo">
+        select channel_category, zone_name from price_zone where id = #{zoneId}
+    </select>
+
+    <select id="getTenantPriceZone" resultType="com.apl.lms.price.exp.pojo.po.PriceZoneNamePo">
+         select channel_category, zone_name from price_zone where id = #{zoneId}
+    </select>
 </mapper>

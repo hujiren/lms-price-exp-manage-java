@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
@@ -51,4 +52,12 @@ public interface PriceExpRemarkMapper extends BaseMapper<PriceExpRemarkPo> {
      */
     @MapKey(value = "id")
     Map<Long, PriceExpRemarkPo> selectBatch(@Param("ids") List<Long> ids);
+
+    /**
+     * 获取引用租户的remark
+     * @param quotePriceId
+     * @return
+     */
+    @SqlParser(filter = true)
+    PriceExpRemarkPo getTenantPriceRemark(Long quotePriceId);
 }
