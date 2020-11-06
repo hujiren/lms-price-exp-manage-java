@@ -53,4 +53,7 @@ public class ExpPriceInfoBo {
 
     @ApiModelProperty(name = "currency", value = "币制")
     private String currency;
+
+    @ApiModelProperty(name = "addProfitWay", value = "添加利润方式")
+    private Integer addProfitWay;
 }

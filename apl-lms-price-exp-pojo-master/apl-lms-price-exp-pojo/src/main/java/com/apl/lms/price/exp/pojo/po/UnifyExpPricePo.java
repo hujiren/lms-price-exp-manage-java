@@ -4,8 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * @author hjr start
  * @Classname UnifyExpPricePo
@@ -19,7 +17,7 @@ public class UnifyExpPricePo {
     private Long id;
 
     @ApiModelProperty(name = "customerGroupId" , value = "客户组id")
-    private List<Long> customerGroupId;
+    private String customerGroupId;
 
     @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
     private String customerGroupName;

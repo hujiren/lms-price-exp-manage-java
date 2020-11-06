@@ -3,7 +3,7 @@
 <mapper namespace="com.apl.lms.price.exp.manage.mapper2.PriceExpProfitMapper">
 
     <resultMap id="BaseResultMap" type="com.apl.lms.price.exp.pojo.po.PriceExpProfitPo">
-        <result property="finalProfit" column="final_profit" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
+        <result property="costProfit" column="cost_profit" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
         <result property="increaseProfit" column="increase_profit" typeHandler="com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler"/>
     </resultMap>
 
@@ -12,11 +12,11 @@
         insert into price_exp_profit(
             id,
             increase_profit,
-            final_profit
+            cost_profit
         )values (
             #{po.id},
             #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
-            #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
+            #{po.costProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
             )
     </insert>
 
@@ -26,15 +26,15 @@
             <if test="po.increaseProfit != null">
                 increase_profit = #{po.increaseProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
             </if>
-            <if test="po.finalProfit != null">
-                final_profit = #{po.finalProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
+            <if test="po.costProfit != null">
+                cost_profit = #{po.costProfit,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler}
             </if>
         where
             id = #{po.id}
     </update>
 
     <!-- 查找列表 2020-09-11-->
-    <select id="getProfit" resultMap="BaseResultMap">
+    <select id="getIncreaseProfit" resultMap="BaseResultMap">
         SELECT
            id, 
            increase_profit
@@ -49,18 +49,13 @@
         delete from price_exp_profit where id in(${ids})
     </delete>
 
-    <!--获取最终利润-->
-    <select id="getPriceFinalProfit" resultMap="BaseResultMap">
-        select final_profit from price_exp_profit where id = #{priceId}
-    </select>
-
     <!--校验id是否存在-->
-    <select id="exists" resultType="java.lang.Long">
-        select id from price_exp_profit where id = #{id}
+    <select id="exists" resultType="com.apl.lms.price.exp.pojo.po.PriceExpProfitPo">
+        select id, cost_profit from price_exp_profit where id = #{id}
     </select>
 
-    <select id="getTenantProfit" resultType="com.apl.lms.price.exp.pojo.po.PriceExpProfitPo">
-        select id, increase_profit, final_profit from price_exp_profit where id = #{quotePriceId}
+    <select id="getPriceProfit" resultType="com.apl.lms.price.exp.pojo.po.PriceExpProfitPo">
+        select id, increase_profit, cost_profit from price_exp_profit where id = #{quotePriceId}
     </select>
 
 </mapper>

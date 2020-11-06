@@ -38,7 +38,7 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      * @Author: ${cfg.author}
      * @Date: 2020-09-11
      */
-    PriceExpProfitPo getProfit(@Param("priceId") Long priceId);
+    PriceExpProfitPo getIncreaseProfit(@Param("priceId") Long priceId);
 
     /**
      * 批量删除
@@ -48,21 +48,14 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
     Integer delBatch(@Param("ids") String ids);
 
     /**
-     * 获取最终利润
-     * @param priceId
-     * @return
-     */
-    PriceExpProfitPo getPriceFinalProfit(@Param("priceId") Long priceId);
-
-    /**
      * 校验id是否存在
      * @param id
      * @return
      */
-    Long exists(Long id);
+    PriceExpProfitPo exists(Long id);
 
     @SqlParser(filter = true)
-    PriceExpProfitPo getTenantProfit(Long quotePriceId);
+    PriceExpProfitPo getPriceProfit(Long quotePriceId);
 
 
 }

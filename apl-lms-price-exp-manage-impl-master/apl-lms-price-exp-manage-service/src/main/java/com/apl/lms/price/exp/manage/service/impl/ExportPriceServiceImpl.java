@@ -193,7 +193,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
             //填写分区表
             if (!zoneSheetMaps.isEmpty()) {
-                fillZone(excelWriter, zoneSheetMaps, longListMap, wb, expPriceInfoList, xssfFont, xssfCellStyle);
+                fillZone(excelWriter, zoneSheetMaps, longListMap, expPriceInfoList, wb);
             }
 
             //web导出
@@ -504,14 +504,10 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     public void fillZone(ExcelWriter excelWriter,
                          Map<Long, zoneDataInfo> zoneIndexMap,
                          Map<Long, List<PriceZoneDataListVo>> longListMap,
-                         XSSFWorkbook wb,
                          List<ExpPriceInfoBo> expPriceInfoBoList,
-                         XSSFFont xssfFont, XSSFCellStyle xssfCellStyle){
-        xssfCellStyle.setBorderBottom(BorderStyle.MEDIUM);
-        xssfCellStyle.setBorderTop(BorderStyle.MEDIUM);
-        xssfCellStyle.setBorderRight(BorderStyle.MEDIUM);
-        xssfCellStyle.setBorderLeft(BorderStyle.MEDIUM);
-        xssfCellStyle.setWrapText(true);
+                         XSSFWorkbook wb
+                         ){
+
         Map<String, Object> map;
         String priceName = null;
         for (Map.Entry<Long, zoneDataInfo> zoneDataEntry : zoneIndexMap.entrySet()) {

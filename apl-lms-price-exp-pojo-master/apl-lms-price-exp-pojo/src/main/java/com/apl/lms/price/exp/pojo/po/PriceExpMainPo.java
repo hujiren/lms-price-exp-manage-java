@@ -127,6 +127,9 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "quotePriceCustomerGroupId" , value = "引用价格客户组id")
     private Long quotePriceCustomerGroupId;
 
+    @ApiModelProperty(name = "quotePriceCustomerId" , value = "引用价格客户id")
+    private Long quotePriceCustomerId;
+
     @ApiModelProperty(name = "addProfitWay", value = "添加利润方式 0不加, 1单独加 2统一加")
     private Integer addProfitWay;
 

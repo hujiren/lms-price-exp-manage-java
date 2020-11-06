@@ -151,4 +151,7 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      */
     @SqlParser(filter = true)
     PriceExpMainPo getTenantPriceInfo(@Param("id") Long priceId, @Param("code") String tenantCode);
+
+    Integer updPrice(@Param("po") PriceExpMainPo priceExpMainPo);
+
 }

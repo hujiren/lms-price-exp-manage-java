@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.manage.service;
 
+import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.dto.UnifyProfitDto;
 import com.apl.lms.price.exp.pojo.po.UnifyExpPricePo;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -22,4 +23,6 @@ public interface UnifyProfitService extends IService<UnifyExpPricePo> {
     //获取列表
     List<UnifyProfitDto> getList(Long customerGroupId);
 
+    //根据客户组id, 租户id进行筛选
+    List<PriceExpProfitDto> getListForTenant(Long customerGroupId, Long innerOrgId);
 }

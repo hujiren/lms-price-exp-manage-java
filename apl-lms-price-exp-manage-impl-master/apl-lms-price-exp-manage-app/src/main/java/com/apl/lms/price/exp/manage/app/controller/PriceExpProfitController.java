@@ -34,7 +34,7 @@ public class PriceExpProfitController {
     public PriceExpProfitService priceExpProfitService;
 
     @PostMapping(value = "/save")
-    @ApiOperation(value = "批量保存", notes = "保存")
+    @ApiOperation(value = "保存", notes = "保存")
     public ResultUtil<Long> save(@Validated @RequestBody PriceExpProfitPo priceExpProfitPo) throws JsonProcessingException {
         ApiParamValidate.validate(priceExpProfitPo);
         ResultUtil<Long> longResultUtil = priceExpProfitService.saveProfit(priceExpProfitPo);

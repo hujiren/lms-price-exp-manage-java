@@ -49,7 +49,8 @@ public class PriceListDao {
                 "  \"volume_divisor\" int4 NOT NULL,\n" +
                 "  \"upd_time\" timestamp(6),\n"+
                 "  \"quote_price_upd_time\" timestamp(6),\n"+
-                "  \"quote_price_customer_group_id\" int4 DEFAULT 0,\n" +
+                "  \"quote_price_customer_group_id\" int8 DEFAULT 0,\n" +
+                "  \"quote_price_customer_id\" int8 DEFAULT 0,\n" +
                 "  \"quote_tenant_code\" varchar(20) COLLATE \"pg_catalog\".\"default\",\n"+
                 "  \"is_quote\" int2 NOT NULL,\n"+
                 "  \"syn_status\" int2 DEFAULT 0,\n"+

@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -17,9 +16,8 @@ import java.util.List;
 @ApiModel(value = "统一利润-组装对象", description = "统一利润-组装对象")
 public class UnifyProfitDto {
 
-    @ApiModelProperty(name = "id", value = "id", required = true)
+    @ApiModelProperty(name = "id", value = "id")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @NotNull(message = "id不能为空")
     private Long id;
 
     @ApiModelProperty(name = "customerGroup" , value = "客户组", required = true)

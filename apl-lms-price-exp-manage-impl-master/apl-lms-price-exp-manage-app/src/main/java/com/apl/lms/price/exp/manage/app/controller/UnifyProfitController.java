@@ -38,9 +38,8 @@ public class UnifyProfitController {
     public ResultUtil<Boolean> save(@Validated @RequestBody UnifyProfitDto unifyProfitDto){
         ApiParamValidate.validate(unifyProfitDto);
 
-        Integer result = unifyProfitService.saveUnifyProfit(unifyProfitDto);
-
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , result);
+        unifyProfitService.saveUnifyProfit(unifyProfitDto);
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , true);
 
     }
 

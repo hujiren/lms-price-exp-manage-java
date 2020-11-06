@@ -17,7 +17,8 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
-import com.apl.lms.net.NetUtil;
+import com.apl.lms.net.ApiInfoBo;
+import com.apl.lms.net.ApiInfoNetService;
 import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
 import com.apl.lms.price.exp.manage.dao.Develop2Dao;
 import com.apl.lms.price.exp.manage.dao.PriceListDao;
@@ -37,7 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -839,7 +839,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      */
     @Override
     @Transactional
-    public ResultUtil<Long> addExpPrice(PriceExpAddDto priceExpAddDto) throws IOException {
+    public ResultUtil<Long> addExpPrice(PriceExpAddDto priceExpAddDto) throws Exception {
 
         Long priceDataId = SnowflakeIdWorker.generateId();
 
@@ -898,6 +898,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 if(quotePriceInfo.getUpdTime().equals(priceExpMainPo.getQuotePriceUpdTime()))
                     continue;
 
+                ApiInfoBo partnerApiInfoBo = ApiInfoNetService.getSysApiInfo(priceExpMainPo.getPartnerId());
                 //组装新的主表并执行更新()
                 PriceExpMainPo myPriceExpMainPo = new PriceExpMainPo();
                 BeanUtil.copyProperties(quotePriceInfo, myPriceExpMainPo);
@@ -916,12 +917,16 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 myPriceExpMainPo.setIsQuote(1);
                 myPriceExpMainPo.setSynStatus(1);
                 myPriceExpMainPo.setAddProfitWay(priceExpMainPo.getAddProfitWay());
+
                 //租户利润的客户组id
                 Long quotePriceCustomerGroupId = 0l;
+                Long quotePriceCustomerId = 0L;
                 if(priceExpMainPo.getPartnerId()>0) {
-                    quotePriceCustomerGroupId = NetUtil.getCustomerGroupId(priceExpMainPo.getPartnerId());
+                    quotePriceCustomerGroupId = partnerApiInfoBo.getCustomerGroupId();
+                    quotePriceCustomerId = partnerApiInfoBo.getCustomerId();
                 }
-                priceExpMainPo.setQuotePriceCustomerGroupId(quotePriceCustomerGroupId);
+                myPriceExpMainPo.setQuotePriceCustomerGroupId(quotePriceCustomerGroupId);
+                myPriceExpMainPo.setQuotePriceCustomerId(quotePriceCustomerId);
                 baseMapper.updById(myPriceExpMainPo);
 
                 //将引用价格的销售备注改为本价格服务商备注 ok
@@ -956,33 +961,23 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 //重新生成最终利润表
                 //过滤上家的利润,使用自己的利润
                 PriceExpProfitPo profit1 = priceExpProfitService.getProfit(myPriceExpMainPo.getId());
-                if(null != profit1){
-                    List<PriceExpProfitDto> increaseProfit = profit1.getIncreaseProfit();
-                    List<PriceExpProfitDto> finalProfit = profit1.getFinalProfit();
+                List<PriceExpProfitDto> costProfit1 = profit1.getCostProfit();
+                List<CustomerGroupBo> customerGroups = costProfit1.get(0).getCustomerGroups();
+                List<PriceExpProfitDto> costProfit = priceExpProfitService.getQuotePriceProfit( quotePriceId,
+                                                                                                partnerApiInfoBo.getCustomerGroupId(),
+                                                                                                myPriceExpMainPo.getAddProfitWay(),
+                                                                                                partnerApiInfoBo.getSysTenantId());
 
-                    PriceExpProfitPo profit = priceExpProfitService.getTenantProfit(priceExpMainPo.getId());
-                    BeanUtil.copyProperties(profit, profit1);
-                    profit1.setId(myPriceExpMainPo.getId());
-
-                    if(increaseProfit.size() > 0){
-                        List<CustomerGroupBo> customerGroups = increaseProfit.get(0).getCustomerGroups();
-                        List<PriceExpProfitDto> increaseProfit1 = profit1.getIncreaseProfit();
-                        for (PriceExpProfitDto priceExpProfitDto : increaseProfit1) {
-                            priceExpProfitDto.setCustomerGroups(customerGroups);
-                        }
+                if(null != customerGroups && customerGroups.size() > 0 && null != costProfit && costProfit.size() > 0){
+                    for (PriceExpProfitDto profitDto : costProfit) {
+                        profitDto.setCustomerGroups(customerGroups);
                     }
-                    if(finalProfit.size() > 0){
-                        List<CustomerGroupBo> customerGroups = finalProfit.get(0).getCustomerGroups();
-                        List<PriceExpProfitDto> finalProfit1 = profit1.getFinalProfit();
-                        for (PriceExpProfitDto priceExpProfitDto : finalProfit1) {
-                            priceExpProfitDto.setCustomerGroups(customerGroups);
-                        }
-                    }
-
-                    priceExpProfitService.saveProfit(profit1);
+                }
+                profit1.setCostProfit(costProfit);
+                priceExpProfitService.saveProfit(profit1);
                 }
             }
-        }
+
         return ResultUtil.APPRESULT(ExpListServiceCode.SYNCHRONOUS_SUCCESS.code, ExpListServiceCode.SYNCHRONOUS_SUCCESS.msg, true);
     }
 
@@ -996,11 +991,12 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Transactional
     public ResultUtil<Boolean> referencePrice(PriceReferenceDto priceReferenceDto) throws Exception {
         try {
-            String quoteTenantCode = priceReferenceDto.getTenantCode();
+            ApiInfoBo partnerApiInfoBo = ApiInfoNetService.getSysApiInfo(priceReferenceDto.getPartnerId());
+            String quoteTenantCode = partnerApiInfoBo.getSysTenantCode();
+
             //从主表中copy代码过来
             Long quotePriceId = priceReferenceDto.getQuotePriceId();
             Long priceId = SnowflakeIdWorker.generateId();
-//            Long zoneId = SnowflakeIdWorker.generateId();
             PriceExpMainPo priceExpMainPo =  baseMapper.getTenantPriceInfo(quotePriceId, quoteTenantCode);
             PriceExpMainPo newPriceExpMainPo = new PriceExpMainPo();
             BeanUtil.copyProperties(priceExpMainPo, newPriceExpMainPo);
@@ -1029,9 +1025,13 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             newPriceExpMainPo.setCustomerGroupId(expPriceInnerClass.customerGroupId);
 
             Long quotePriceCustomerGroupId = 0l;
-            if(null == priceExpMainPo.getPartnerId() || priceExpMainPo.getPartnerId() < 1)
-                quotePriceCustomerGroupId = NetUtil.getCustomerGroupId(priceExpMainPo.getPartnerId());
+            Long quotePriceCustomerId = 0L;
+            if(null != partnerApiInfoBo.getCustomerGroupId() && partnerApiInfoBo.getCustomerGroupId() > 0)
+                quotePriceCustomerGroupId = partnerApiInfoBo.getCustomerGroupId();
+            if(null != partnerApiInfoBo.getCustomerId() && partnerApiInfoBo.getCustomerId() > 0)
+                quotePriceCustomerId = partnerApiInfoBo.getCustomerId();
             newPriceExpMainPo.setQuotePriceCustomerGroupId(quotePriceCustomerGroupId);
+            newPriceExpMainPo.setQuotePriceCustomerId(quotePriceCustomerId);
 
             //创建租户真实表
             priceListDao.createRealTable();
@@ -1074,13 +1074,17 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
             //分区名称不需要copy zoneName 和 zoneData都是排除租户id的, 所以不影响数据回显
 
+            List<PriceExpProfitDto> costProfit = priceExpProfitService.getQuotePriceProfit( priceReferenceDto.getQuotePriceId(),
+                                                                                            partnerApiInfoBo.getCustomerGroupId(),
+                                                                                            newPriceExpMainPo.getAddProfitWay(),
+                                                                                            partnerApiInfoBo.getSysTenantId());
 
             //利润  由于是对方的利润, 所以客户组需要自己设置
-            PriceExpProfitPo priceExpProfitPo = priceExpProfitService.getTenantProfit(quotePriceId);
-            if(null != priceExpProfitPo){
-                priceExpProfitPo.setId(priceId);
-                priceExpProfitService.saveProfit(priceExpProfitPo);
-            }
+            PriceExpProfitPo priceExpProfitPo = new PriceExpProfitPo();
+            priceExpProfitPo.setId(priceId);
+            priceExpProfitPo.setAddProfitWay(null);
+            priceExpProfitPo.setCostProfit(costProfit);
+            priceExpProfitService.saveProfit(priceExpProfitPo);
         } catch (AplException e) {
             return ResultUtil.APPRESULT(e.getCode(), e.getMessage(), false);
         }
@@ -1088,7 +1092,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     }
 
 
-    ResultUtil<Long> addExpPriceBase(PriceExpAddBaseDto priceExpAddDto, Long quotePriceId, Long priceDataId, String quoteTenantCode) throws IOException {
+    ResultUtil<Long> addExpPriceBase(PriceExpAddBaseDto priceExpAddDto, Long quotePriceId, Long priceDataId, String quoteTenantCode) throws Exception {
 
         //不是公布价且不是成本价且不是销售价, 有服务商即成本价, 允许既是公布价又是成本价
         if (priceExpAddDto.getIsPublishedPrice().equals(2)
@@ -1124,19 +1128,19 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpMainPo.setQuoteTenantCode("");
         if(null == priceExpMainPo.getSynStatus())
             priceExpMainPo.setSynStatus(0);
-        if(null == priceExpMainPo.getQuotePriceCustomerGroupId())
-            priceExpMainPo.setQuotePriceCustomerGroupId(0L);
 
+        Long quotePriceCustomerGroupId = 0L;
+        Long quotePriceCustomerId = 0L;
         if(null == priceExpAddDto.getPartnerId() || priceExpAddDto.getPartnerId() < 1
                 || null == priceExpAddDto.getPartnerName() || priceExpAddDto.getPartnerName().equals("")){
             priceExpMainPo.setPartnerId(0L);
             priceExpMainPo.setPartnerName("");
+        }else{
+            ApiInfoBo partnerApiInfoBo = ApiInfoNetService.getSysApiInfo(priceExpAddDto.getPartnerId());
+            quotePriceCustomerGroupId = partnerApiInfoBo.getCustomerGroupId();
+            quotePriceCustomerId = partnerApiInfoBo.getCustomerId();
         }
-
-        Long quotePriceCustomerGroupId = 0l;
-        if(priceExpMainPo.getPartnerId()>0) {
-            quotePriceCustomerGroupId = NetUtil.getCustomerGroupId(priceExpMainPo.getPartnerId());
-        }
+        priceExpMainPo.setQuotePriceCustomerId(quotePriceCustomerId);
         priceExpMainPo.setQuotePriceCustomerGroupId(quotePriceCustomerGroupId);
 
         //处理特殊物品
@@ -1280,6 +1284,13 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 }
             }
         return priceInfoByIds;
+    }
+
+    @Override
+    public Integer updatePriceExpMain(PriceExpMainPo priceExpMainPo) {
+
+//        String innerOrgCode = CommonContextHolder.getSecurityUser().getInnerOrgCode();
+        return baseMapper.updPrice(priceExpMainPo);
     }
 
 

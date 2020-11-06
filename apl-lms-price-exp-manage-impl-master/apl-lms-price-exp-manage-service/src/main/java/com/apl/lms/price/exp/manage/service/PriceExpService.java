@@ -5,11 +5,13 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
-import com.apl.lms.price.exp.pojo.vo.*;
+import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpDataObjVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpPriceInfoVo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -68,7 +70,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param priceExpAddDto
      * @return
      */
-    ResultUtil<Long> addExpPrice(PriceExpAddDto priceExpAddDto) throws IOException;
+    ResultUtil<Long> addExpPrice(PriceExpAddDto priceExpAddDto) throws Exception;
 
     /**
      * 同步价格表
@@ -120,4 +122,9 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     List<ExpPriceInfoBo> getPriceInfoByIds(List<Long> ids);
+
+
+    Integer updatePriceExpMain(PriceExpMainPo priceExpMainPo);
+
+
 }

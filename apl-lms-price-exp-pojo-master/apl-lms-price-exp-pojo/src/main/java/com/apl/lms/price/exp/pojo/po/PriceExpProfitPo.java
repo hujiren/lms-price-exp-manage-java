@@ -34,14 +34,11 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
     @ApiModelProperty(name = "addProfitWay", value = "添加利润方式 0不加 1单独加 2统一加", required = true)
     private Integer addProfitWay;
 
-    @ApiModelProperty(name = "unifyProfitId", value = "统一利润id")
-    private Long unifyProfitId;
-
     @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
     private List<PriceExpProfitDto> increaseProfit;
 
-    @ApiModelProperty(name = "finalProfit", value = "最终利润", hidden = true)
-    private List<PriceExpProfitDto> finalProfit;
+    @ApiModelProperty(name = "costProfit", value = "成本利润", hidden = true)
+    private List<PriceExpProfitDto> costProfit;
 
     private static final long serialVersionUID = 1L;
 

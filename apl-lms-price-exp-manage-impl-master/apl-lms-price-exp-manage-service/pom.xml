@@ -53,7 +53,7 @@
 
         <dependency>
             <groupId>com.apl</groupId>
-            <artifactId>apl-lms-net</artifactId>
+            <artifactId>apl-sys-net</artifactId>
             <version>1.0.0</version>
         </dependency>
 

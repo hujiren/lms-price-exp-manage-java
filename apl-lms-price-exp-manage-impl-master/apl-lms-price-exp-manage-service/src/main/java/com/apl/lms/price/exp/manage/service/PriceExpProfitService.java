@@ -1,9 +1,12 @@
 package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.List;
 
 /**
  * <p>
@@ -46,12 +49,8 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      */
     Integer delBatch(String ids);
 
-    /**
-     * 获取引用租户利润数据
-     * @param quotePriceId
-     * @return
-     */
-    PriceExpProfitPo getTenantProfit(Long quotePriceId);
+
+    List<PriceExpProfitDto> getQuotePriceProfit(Long quotePriceId, Long customerGroupId, Integer addProfitWay, Long innerOrgId);
 
 
 }
