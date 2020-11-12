@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(value = "快递报价利润-保存对象", description = "快递报价利润-保存对象")
-public class ExpPriceProfitSaveDto {
+public class ExpPriceProfitDto {
 
     @ApiModelProperty(name = "id", value = "价格表id", required = true)
     @TableId(value = "id", type = IdType.INPUT )

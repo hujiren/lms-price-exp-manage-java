@@ -1,7 +1,7 @@
 package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lms.price.exp.pojo.dto.ExpPriceProfitSaveDto;
+import com.apl.lms.price.exp.pojo.dto.ExpPriceProfitDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -25,7 +25,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @author hjr
      * @since 2020-09-11
      */
-    ResultUtil<Long> saveProfit(ExpPriceProfitSaveDto expPriceProfitSaveDto) throws JsonProcessingException;
+    ResultUtil<Long> saveProfit(ExpPriceProfitDto expPriceProfitDto) throws JsonProcessingException;
 
 
     /**
@@ -41,7 +41,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @author hjr
      * @since 2020-09-11
      */
-    ExpPriceProfitSaveDto getProfit(Long priceId, Long customerGroupId);
+    ExpPriceProfitDto getProfit(Long priceId, Long customerGroupId);
 
     /**
      * 批量删除

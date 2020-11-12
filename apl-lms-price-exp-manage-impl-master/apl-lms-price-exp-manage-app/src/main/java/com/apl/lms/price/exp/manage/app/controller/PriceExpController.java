@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -140,7 +139,8 @@ public class PriceExpController {
     @ApiOperation(value = "获取成本价格表数据", notes = "获取成本价格表数据")
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
     public ResultUtil<PriceExpDataObjVo> getCostPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
-        PriceExpDataObjVo priceExpDataInfo = priceExpService.getCostPriceExpData(id, Collections.emptyList(), false);
+        PriceExpDataObjVo priceExpDataInfo = priceExpService.getPriceExpData(id,  false,  0l);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataInfo);
     }
 
@@ -152,8 +152,9 @@ public class PriceExpController {
             @ApiImplicitParam(name = "customerGroupId" , value = "客户组id", paramType = "query", required = true),
     })
     public ResultUtil<PriceExpDataObjVo> getSalePriceExpData(Long id, Long customerGroupId) throws Exception {
-        ResultUtil<PriceExpDataObjVo> salePriceDataByCustomerGroup = priceExpService.getSalePriceExpData(id, customerGroupId);
-        return salePriceDataByCustomerGroup;
+        PriceExpDataObjVo priceExpDataInfo = priceExpService.getPriceExpData(id,  true,  customerGroupId);
+
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataInfo);
     }
 
 
@@ -212,7 +213,6 @@ public class PriceExpController {
         exportPricePrice.exportExpPrice(response, priceIdList, 0l);
     }
 
-
     @GetMapping(value = "/export-sale-exp-price")
     @ApiOperation(value = "导出销售价快递价格", notes = "导出销售价快递价格")
     public void exportSaleExpPrice(HttpServletResponse response, String ids, Long customerGroupId) throws Exception {
@@ -221,5 +221,11 @@ public class PriceExpController {
         exportPricePrice.exportExpPrice(response, priceIdList, customerGroupId);
     }
 
+    @PostMapping(value = "/check-quote-price-is-exists")
+    @ApiOperation(value = "检测价格是否已被引用", notes = "检测价格是否已被引用")
+    public ResultUtil<Boolean> exportSaleExpPrice(Long quotePriceId){
+        ResultUtil<Boolean> isQuoteByExpPrice = priceExpService.isQuoteByExpPrice(quotePriceId);
+        return isQuoteByExpPrice;
+    }
 }
 

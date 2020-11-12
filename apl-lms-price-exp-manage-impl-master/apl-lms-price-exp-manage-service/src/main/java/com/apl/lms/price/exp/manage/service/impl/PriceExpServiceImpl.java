@@ -25,7 +25,6 @@ import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.manage.util.CheckObjFieldINull;
 import com.apl.lms.price.exp.pojo.bo.CustomerGroupBo;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
-import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
 import com.apl.lms.price.exp.pojo.dto.*;
 import com.apl.lms.price.exp.pojo.po.*;
 import com.apl.lms.price.exp.pojo.vo.*;
@@ -37,13 +36,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author hjr start
@@ -198,7 +193,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     }
 
     /**
-     * 获取销售价格详情
+     * 获取价格详情
      *
      * @param id 价格表主键Id
      * @return
@@ -324,243 +319,20 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpPriceInfoVo);
     }
 
-    /**
-     * 获取销售价 价格表数据
-     *
-     * @param
-     * @return
-     */
-    @Override
-    public ResultUtil<PriceExpDataObjVo> getSalePriceExpData(Long priceId, Long customerGroupId) throws Exception {
 
-        ExpPriceProfitSaveDto profit = priceExpProfitService.getProfit(priceId, customerGroupId);
 
-        if ((null == profit || null == profit.getAddProfitWay() || profit.getAddProfitWay().equals(0))){
-            PriceExpDataObjVo costPriceExpData = getCostPriceExpData(priceId, Collections.emptyList(), false);
-            return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, costPriceExpData);
-        }
-
-        List<PriceExpProfitDto> profitBoList = null;
-
-        Integer addProfitWay = profit.getAddProfitWay();
-        if(addProfitWay.equals(1)){
-
-            profitBoList = profit.getIncreaseProfit();
-
-        }else if(addProfitWay.equals(2)){
-
-            profitBoList = new ArrayList<>();
-            List<UnifyProfitDto> list = unifyProfitService.getList(customerGroupId);
-            for (UnifyProfitDto unifyProfitDto : list) {
-                PriceExpProfitDto profitDto = new PriceExpProfitDto();
-                BeanUtil.copyProperties(unifyProfitDto, profitDto);
-                profitBoList.add(profitDto);
-            }
-
-        }
-
-        PriceExpDataObjVo expDataObjVo = getCostPriceExpData(priceId,  profitBoList, true);
-
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, expDataObjVo);
-    }
-
-    /**
-     * 获取成本价 价格表数据
-     *
-     * @param priceId
-     * @return
-     */
-    @Override
-    public PriceExpDataObjVo getCostPriceExpData(Long priceId, List<PriceExpProfitDto> profitBoList, Boolean isSaleProfit) {
+    public PriceExpDataObjVo getPriceExpData(Long priceId,  Boolean isSaleProfit,  Long customerGroupId) {
 
         ExpPriceInfoBo expPriceInfoBo = getPriceInfo(priceId);
+
         if (null == expPriceInfoBo) {
             throw new AplException(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
                     ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg, null);
         }
-        Long priceDataId = expPriceInfoBo.getPriceDataId();
-        DecimalFormat df = new DecimalFormat("#.0");
-        //获取价格表数据返回对象
-        PriceExpDataVo priceExpDataInfo = priceExpDataService.getPriceExpDataInfoByPriceId(priceDataId);
-        //价格表数据
-        List<List<String>> priceData = priceExpDataInfo.getPriceData();
-        Pattern pattern = Pattern.compile("^(\\-|\\+)?\\d+(\\.\\d+)?$");
 
-        //转换类型
-        List<List<Object>> priceDataVo = new ArrayList<>();
-        for (List<String> priceDatum : priceData) {
-            List<Object> priceDataObj = new ArrayList<>();
-            for (String str : priceDatum) {
-                Matcher isNum = pattern.matcher(str);
-                if (isNum.matches()) {
-                    Double var1 = Double.parseDouble(str);
-                    String format = df.format(var1);
-                    Double element = Double.parseDouble(format);
-                    priceDataObj.add(element);
-                } else {
-                    priceDataObj.add(str);
-                }
-            }
-            priceDataVo.add(priceDataObj);
-        }
+        PriceExpDataObjVo priceExpData = priceExpDataService.getPriceExpData(expPriceInfoBo, priceId, isSaleProfit, customerGroupId);
 
-        ExpPriceProfitSaveDto profit = priceExpProfitService.getProfit(priceId, 0L);
-        List<PriceExpProfitDto> costProfit = profit.getCostProfit();
-        PriceExpDataObjVo expDataObjVo;
-        if(null != costProfit){
-            //成本价
-            expDataObjVo = AddProfitToThePrice(costProfit, priceId, expPriceInfoBo, priceDataVo, isSaleProfit, profitBoList);
-        }else{
-            expDataObjVo = new PriceExpDataObjVo();
-            expDataObjVo.setPriceData(priceDataVo);
-            expDataObjVo.setPriceDataId(priceDataId);
-        }
-            return expDataObjVo;
-    }
-
-    public List<PriceExpProfitMergeBo> assembleProfit(List<PriceExpProfitDto> profitDtoList){
-
-        List<PriceExpProfitMergeBo> profitBoList = new ArrayList<>();
-
-        for (PriceExpProfitDto profitDto : profitDtoList) {
-            PriceExpProfitMergeBo priceExpProfitMergeBo = new PriceExpProfitMergeBo();
-            BeanUtil.copyProperties(profitDto, priceExpProfitMergeBo);
-
-            //将国家简码组装成List
-            if (null != priceExpProfitMergeBo && null != priceExpProfitMergeBo.getCountryCode()) {
-                String[] countryCodeArray = priceExpProfitMergeBo.getCountryCode().split(",");
-                List<String> countryCodeList = strArrayToList(countryCodeArray);
-                priceExpProfitMergeBo.setCountryCodeList(countryCodeList);
-            }
-
-            //将分区号组装成List
-            if (null != priceExpProfitMergeBo && null != priceExpProfitMergeBo.getZoneNum()) {
-                String[] zoneArray = priceExpProfitMergeBo.getZoneNum().split(",");
-                List<String> zoneArrayList = strArrayToList(zoneArray);
-                priceExpProfitMergeBo.setZoneNumList(zoneArrayList);
-            }
-
-            //如果起始重,截止重为空, 则设为默认值 0.0 ~ 10000.0
-            if (null == priceExpProfitMergeBo.getStartWeight())
-                priceExpProfitMergeBo.setStartWeight(0.0);
-            if (null == priceExpProfitMergeBo.getEndWeight() || priceExpProfitMergeBo.getEndWeight().equals(0.0))
-                priceExpProfitMergeBo.setEndWeight(10000.0);
-
-            profitBoList.add(priceExpProfitMergeBo);
-        }
-
-        return profitBoList;
-    }
-
-    public PriceExpDataObjVo AddProfitToThePrice(List<PriceExpProfitDto> profitDtoList,
-                                                 Long priceId, ExpPriceInfoBo priceInfoBo,
-                                                 List<List<Object>> priceData, Boolean isSalePrice,
-                                                 List<PriceExpProfitDto> profitDtoList2) {
-        DecimalFormat df = new DecimalFormat("#.0");
-//        String s = JSONObject.toJSONString(profitDtoList);
-//        List<PriceExpProfitDto> priceExpProfitDto = JSON.parseArray(s, PriceExpProfitDto.class);
-
-        //将利润拆分并重新组装
-        List<PriceExpProfitMergeBo> profitBoList = assembleProfit(profitDtoList);
-
-        List<PriceExpProfitMergeBo> profitBoList2 = null;
-        if(null != profitDtoList2 && profitDtoList2.size() > 0){
-            profitBoList2 = assembleProfit(profitDtoList2);
-        }
-        List<List<Object>> priceData2 = new ArrayList<>();
-
-        //获取数据轴
-        ResultUtil<PriceExpAxisVo> axisInfoVo = priceExpAxisService.getAxisInfoById(priceId);
-        //轴: 重量段
-        List<WeightSectionDto> weightSections = axisInfoVo.getData().getWeightSection();
-        //轴: 分区国家
-        List<List<String>> zoneAndCountrys = axisInfoVo.getData().getZoneCountry();
-        //价格表格式
-        int priceFormat = priceInfoBo.getPriceFormat();
-
-        //起始列下标
-        int startColIndex = 0;
-        if (priceFormat == 1)
-            startColIndex = weightSections.get(0).getIndex();
-        else
-            startColIndex = 1;
-
-        List<String> zoneAndCountry = null;
-        WeightSectionDto weightSectionDto = null;
-        List<Object> objectList = priceData.get(0);
-        priceData2.add(objectList);
-
-        for (int rowIndex = 0; rowIndex < priceData.size() - 1; rowIndex++) {
-
-            if (priceFormat == 1) {
-                if (rowIndex < zoneAndCountrys.size())
-                    zoneAndCountry = zoneAndCountrys.get(rowIndex);
-            } else if (priceFormat == 2) {
-                if (rowIndex < weightSections.size())
-                    weightSectionDto = weightSections.get(rowIndex);
-            }
-
-            //除首行以外的行
-            List<Object> cells = priceData.get(rowIndex + 1);
-            List<Object> cells2 = new ArrayList<>();
-
-            for (int colIndex = 0; colIndex < startColIndex; colIndex++) {
-                Object priceStr = cells.get(colIndex);
-                cells2.add(priceStr);
-            }
-            //代表着重量段中的index属性
-            for (int colIndex = startColIndex; colIndex < cells.size(); colIndex++) {
-
-                if (priceFormat == 1) {
-                    if (colIndex - 1 < weightSections.size()) {
-                        if (colIndex == 0)
-                            weightSectionDto = weightSections.get(colIndex);
-                        else
-                            weightSectionDto = weightSections.get(colIndex - 1);
-                    }
-                } else if (priceFormat == 2) {
-                    if (colIndex - 1 < zoneAndCountrys.size()) {
-                        if (colIndex == 0)
-                            zoneAndCountry = zoneAndCountrys.get(colIndex);
-                        else
-                            zoneAndCountry = zoneAndCountrys.get(colIndex - 1);
-                    }
-                }
-
-                String priceStr = cells.get(colIndex).toString();
-                if (null != priceStr && priceStr.length() > 0) {
-                    priceStr = priceStr.replaceAll(",", "");
-                    if(priceStr.contains("*"))
-                        cells2.add(priceStr);
-                    else{
-                        Double priceVal = Double.parseDouble(priceStr);
-                        priceVal = priceExpDataService.priceMergeProfit(priceVal, zoneAndCountry, weightSectionDto, profitBoList);
-                        if (isSalePrice) {
-                            priceVal = priceExpDataService.priceMergeProfit(priceVal, zoneAndCountry, weightSectionDto, profitBoList2);
-                        }
-                        String format = df.format(priceVal);
-                        Double format1 = Double.parseDouble(format);
-                        priceData.get(rowIndex + 1).set(colIndex, format);
-                        cells2.add(format1);
-                    }
-                }
-            }
-            priceData2.add(cells2);
-        }
-        PriceExpDataObjVo objVo = new PriceExpDataObjVo();
-        objVo.setPriceDataId(priceInfoBo.getPriceDataId());
-        objVo.setPriceData(priceData2);
-        return objVo;
-    }
-
-
-    List<String> strArrayToList(String[] array) {
-
-        List<String> list = new ArrayList<>();
-        for (String s : array) {
-            list.add(s);
-        }
-        return list;
+        return priceExpData;
     }
 
 
@@ -984,7 +756,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 }
 
                 //重新生成利润表
-                ExpPriceProfitSaveDto expPriceProfitSaveDto = new ExpPriceProfitSaveDto();
+                ExpPriceProfitDto expPriceProfitDto = new ExpPriceProfitDto();
                 //获取服务商的销售利润 = 成本 + 增加
                 List<PriceExpProfitDto> partnerSaleProfit = priceExpProfitService.getQuotePriceSaleProfit(quotePriceId);
 
@@ -1005,9 +777,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                             continue;
                         }
                     }
-                    expPriceProfitSaveDto.setId(priceId);
-                    expPriceProfitSaveDto.setCostProfit(saleProfitList);
-                    priceExpProfitService.saveProfit(expPriceProfitSaveDto);
+                    expPriceProfitDto.setId(priceId);
+                    expPriceProfitDto.setCostProfit(saleProfitList);
+                    priceExpProfitService.saveProfit(expPriceProfitDto);
                 }
             }
         }
@@ -1025,11 +797,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     @Transactional
     public ResultUtil<Boolean> referencePrice(PriceReferenceDto priceReferenceDto) throws Exception {
         try {
-            Integer countNum = baseMapper.isQuoteByExpPrice(priceReferenceDto.getQuotePriceId());
-            if(countNum > 0)
-                return ResultUtil.APPRESULT(ExpListServiceCode.THIS_PRICE_HAS_BEEN_QUOTED_PLEASE_SYNCHRONIZE_DIRECTLY.code,
-                        ExpListServiceCode.THIS_PRICE_HAS_BEEN_QUOTED_PLEASE_SYNCHRONIZE_DIRECTLY.msg, false);
-
             PartnerApiInfoBo partnerApiInfoBo = PartnerNetService.getSysApiInfo(priceReferenceDto.getPartnerId());
             if (null == partnerApiInfoBo)
                 return ResultUtil.APPRESULT(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code,
@@ -1148,11 +915,11 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             }
 
             //利润  由于是对方的利润, 所以客户组需要自己设置
-            ExpPriceProfitSaveDto expPriceProfitSaveDto = new ExpPriceProfitSaveDto();
-            expPriceProfitSaveDto.setId(priceId);
-            expPriceProfitSaveDto.setAddProfitWay(null);
-            expPriceProfitSaveDto.setCostProfit(profitList);
-            priceExpProfitService.saveProfit(expPriceProfitSaveDto);
+            ExpPriceProfitDto expPriceProfitDto = new ExpPriceProfitDto();
+            expPriceProfitDto.setId(priceId);
+            expPriceProfitDto.setAddProfitWay(null);
+            expPriceProfitDto.setCostProfit(profitList);
+            priceExpProfitService.saveProfit(expPriceProfitDto);
 
         } catch (AplException e) {
             return ResultUtil.APPRESULT(e.getCode(), e.getMessage(), false);
@@ -1413,8 +1180,17 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         return expPriceInnerClass;
     }
 
-    class ExpPriceInnerClass {
+    @Override
+    public ResultUtil<Boolean> isQuoteByExpPrice(Long quotePriceId) {
+        Integer countNum = baseMapper.isQuoteByExpPrice(quotePriceId);
+        if(countNum > 0)
+            return ResultUtil.APPRESULT(ExpListServiceCode.THIS_PRICE_HAS_BEEN_QUOTED_PLEASE_SYNCHRONIZE_DIRECTLY.code,
+                    ExpListServiceCode.THIS_PRICE_HAS_BEEN_QUOTED_PLEASE_SYNCHRONIZE_DIRECTLY.msg, false);
 
+        return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
+    }
+
+    class ExpPriceInnerClass {
         public String customerGroupId;
         public String customerGroupName;
         public String customerIds;

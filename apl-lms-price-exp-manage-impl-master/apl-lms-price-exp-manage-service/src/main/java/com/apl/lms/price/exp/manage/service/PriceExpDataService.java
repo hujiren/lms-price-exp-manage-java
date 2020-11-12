@@ -1,10 +1,12 @@
 package com.apl.lms.price.exp.manage.service;
 
+import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
 import com.apl.lms.price.exp.pojo.dto.WeightSectionDto;
 import com.apl.lms.price.exp.pojo.dto.WeightSectionUpdDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
+import com.apl.lms.price.exp.pojo.vo.PriceExpDataObjVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -17,7 +19,15 @@ import java.util.List;
  */
 public interface PriceExpDataService extends IService<PriceExpDataPo> {
 
-
+    /**
+     * 为价格表数据添加利润
+     * @param expPriceInfoBo
+     * @param priceId
+     * @param isSaleProfit
+     * @param customerGroupId
+     * @return
+     */
+    PriceExpDataObjVo getPriceExpData(ExpPriceInfoBo expPriceInfoBo, Long priceId, Boolean isSaleProfit, Long customerGroupId);
     /**
      * 根据价格表id获取主数据信息
      * @param id

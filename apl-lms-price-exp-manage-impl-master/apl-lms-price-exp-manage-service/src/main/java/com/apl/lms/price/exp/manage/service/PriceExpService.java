@@ -128,12 +128,13 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param priceId
      * @return
      */
-    PriceExpDataObjVo getCostPriceExpData(Long priceId, List<PriceExpProfitDto> profitBoList, Boolean isSaleProfit) throws Exception;
+    PriceExpDataObjVo getPriceExpData(Long priceId,  Boolean isSaleProfit,  Long customerGroupId) throws Exception;
+
 
     /**
-     * 获取销售价格表数据
-     * @param
+     * 检测价格是否被引用
+     * @param quotePriceId
      * @return
      */
-    ResultUtil<PriceExpDataObjVo> getSalePriceExpData(Long id, Long customerGroupId) throws Exception;
+    ResultUtil<Boolean> isQuoteByExpPrice(Long quotePriceId);
 }

@@ -4,7 +4,7 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
-import com.apl.lms.price.exp.pojo.dto.ExpPriceProfitSaveDto;
+import com.apl.lms.price.exp.pojo.dto.ExpPriceProfitDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -35,9 +35,9 @@ public class PriceExpProfitController {
 
     @PostMapping(value = "/save")
     @ApiOperation(value = "保存", notes = "保存")
-    public ResultUtil<Long> save(@Validated @RequestBody ExpPriceProfitSaveDto expPriceProfitSaveDto) throws JsonProcessingException {
-        ApiParamValidate.validate(expPriceProfitSaveDto);
-        ResultUtil<Long> longResultUtil = priceExpProfitService.saveProfit(expPriceProfitSaveDto);
+    public ResultUtil<Long> save(@Validated @RequestBody ExpPriceProfitDto expPriceProfitDto) throws JsonProcessingException {
+        ApiParamValidate.validate(expPriceProfitDto);
+        ResultUtil<Long> longResultUtil = priceExpProfitService.saveProfit(expPriceProfitDto);
         return longResultUtil;
 
     }
@@ -45,8 +45,9 @@ public class PriceExpProfitController {
     @PostMapping(value = "/get")
     @ApiOperation(value = "获取利润数据", notes = "获取利润数据")
     @ApiImplicitParam(name = "priceId", value = " 价格表id", required = true, paramType = "query")
-    public ResultUtil<ExpPriceProfitSaveDto> get(@NotNull(message = "价格表id不能为空") Long priceId){
-        ExpPriceProfitSaveDto profit = priceExpProfitService.getProfit(priceId, 0L);
+    public ResultUtil<ExpPriceProfitDto> get(@NotNull(message = "价格表id不能为空") Long priceId){
+        ExpPriceProfitDto profit = priceExpProfitService.getProfit(priceId, 0L);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS ,profit);
     }
 

@@ -11,7 +11,7 @@ import com.apl.lms.price.exp.manage.service.PriceExpService;
 import com.apl.lms.price.exp.manage.service.UnifyProfitService;
 import com.apl.lms.price.exp.pojo.bo.CustomerGroupBo;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
-import com.apl.lms.price.exp.pojo.dto.ExpPriceProfitSaveDto;
+import com.apl.lms.price.exp.pojo.dto.ExpPriceProfitDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
@@ -83,38 +83,29 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
      * @return
      */
     @Override
-    public ExpPriceProfitSaveDto getProfit(Long priceId, Long customerGroupId){
+    public ExpPriceProfitDto getProfit(Long priceId, Long customerGroupId){
         ExpPriceInfoBo priceInfo = priceExpService.getPriceInfo(priceId);
-        if(null == priceInfo)
+        if(null == priceInfo || priceInfo.getAddProfitWay().equals(0))
             return null;
-        //增加的利润
+
         PriceExpProfitPo priceExpProfitPo = baseMapper.getProfit(priceId);
-        ExpPriceProfitSaveDto expPriceProfitSaveDto = new ExpPriceProfitSaveDto();
-        if(null != priceExpProfitPo && null != priceExpProfitPo.getIncreaseProfit() && !priceExpProfitPo.getIncreaseProfit().equals("")) {
-            String increaseProfit = priceExpProfitPo.getIncreaseProfit();
-            List<PriceExpProfitDto> profitDtoList = JSONObject.parseArray(increaseProfit, PriceExpProfitDto.class);
-            expPriceProfitSaveDto.setIncreaseProfit(profitDtoList);
-            if(customerGroupId > 0){
-                //如果客户组id大于0, 则按照客户组id进行筛选
-                List<PriceExpProfitDto> profitListVo = new ArrayList<>();
-                for (PriceExpProfitDto profitDto : profitDtoList) {
-                    List<CustomerGroupBo> customerGroups = profitDto.getCustomerGroups();
-                    for (CustomerGroupBo customerGroup : customerGroups) {
-                        if(customerGroup.getId().equals(customerGroupId)){
-                            profitListVo.add(profitDto);
-                            break;
-                        }
-                    }
-                }
-                expPriceProfitSaveDto.setIncreaseProfit(profitListVo);
-            }
-        }
+
+        ExpPriceProfitDto expPriceProfitDto = new ExpPriceProfitDto();
+        expPriceProfitDto.setId(priceId);
+        expPriceProfitDto.setAddProfitWay(priceInfo.getAddProfitWay());
 
         //成本利润
         if(null != priceExpProfitPo && null != priceExpProfitPo.getCostProfit() && !priceExpProfitPo.getCostProfit().equals("")) {
             String costProfit = priceExpProfitPo.getCostProfit();
             List<PriceExpProfitDto> profitDtoList = JSONObject.parseArray(costProfit, PriceExpProfitDto.class);
-            expPriceProfitSaveDto.setCostProfit(profitDtoList);
+            expPriceProfitDto.setCostProfit(profitDtoList);
+        }
+
+        //增加的利润
+        if(null != priceExpProfitPo && null != priceExpProfitPo.getIncreaseProfit() && !priceExpProfitPo.getIncreaseProfit().equals("")) {
+            String increaseProfit = priceExpProfitPo.getIncreaseProfit();
+            List<PriceExpProfitDto> profitDtoList = JSONObject.parseArray(increaseProfit, PriceExpProfitDto.class);
+            expPriceProfitDto.setIncreaseProfit(profitDtoList);
             if(customerGroupId > 0){
                 //如果客户组id大于0, 则按照客户组id进行筛选
                 List<PriceExpProfitDto> profitListVo = new ArrayList<>();
@@ -127,14 +118,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                         }
                     }
                 }
-                expPriceProfitSaveDto.setCostProfit(profitListVo);
+                expPriceProfitDto.setIncreaseProfit(profitListVo);
             }
         }
 
-        expPriceProfitSaveDto.setId(priceId);
-        expPriceProfitSaveDto.setAddProfitWay(priceInfo.getAddProfitWay());
-
-        return expPriceProfitSaveDto;
+        return expPriceProfitDto;
     }
 
 
@@ -149,34 +137,34 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
     /**
      * 保存利润
-     * @param expPriceProfitSaveDto
+     * @param expPriceProfitDto
      * @return
      */
     @Override
     @Transactional
-    public ResultUtil<Long> saveProfit(ExpPriceProfitSaveDto expPriceProfitSaveDto) {
+    public ResultUtil<Long> saveProfit(ExpPriceProfitDto expPriceProfitDto) {
 
         //将添加利润方式更新到价格表
-        if(null != expPriceProfitSaveDto.getAddProfitWay()){
+        if(null != expPriceProfitDto.getAddProfitWay()){
             PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
-            priceExpMainPo.setId(expPriceProfitSaveDto.getId());
-            priceExpMainPo.setAddProfitWay(expPriceProfitSaveDto.getAddProfitWay());
+            priceExpMainPo.setId(expPriceProfitDto.getId());
+            priceExpMainPo.setAddProfitWay(expPriceProfitDto.getAddProfitWay());
             priceExpService.updatePriceExpMain(priceExpMainPo);
         }
 
         Integer flag = 0;
-        Long id = baseMapper.exists(expPriceProfitSaveDto.getId());
+        Long id = baseMapper.exists(expPriceProfitDto.getId());
         PriceExpProfitPo priceExpProfitPo = new PriceExpProfitPo();
-        priceExpProfitPo.setId(expPriceProfitSaveDto.getId());
-        if(null != expPriceProfitSaveDto.getCostProfit() && expPriceProfitSaveDto.getCostProfit().size() > 0){
-            List<PriceExpProfitDto> costProfit = expPriceProfitSaveDto.getCostProfit();
+        priceExpProfitPo.setId(expPriceProfitDto.getId());
+        if(null != expPriceProfitDto.getCostProfit() && expPriceProfitDto.getCostProfit().size() > 0){
+            List<PriceExpProfitDto> costProfit = expPriceProfitDto.getCostProfit();
             String s = JSONObject.toJSONString(costProfit);
             priceExpProfitPo.setCostProfit(s);
         }else{
             priceExpProfitPo.setCostProfit("");
         }
-        if(null != expPriceProfitSaveDto.getIncreaseProfit() && expPriceProfitSaveDto.getIncreaseProfit().size() > 0){
-            List<PriceExpProfitDto> increaseProfit = expPriceProfitSaveDto.getIncreaseProfit();
+        if(null != expPriceProfitDto.getIncreaseProfit() && expPriceProfitDto.getIncreaseProfit().size() > 0){
+            List<PriceExpProfitDto> increaseProfit = expPriceProfitDto.getIncreaseProfit();
             String s = JSONObject.toJSONString(increaseProfit);
             priceExpProfitPo.setIncreaseProfit(s);
         }else{
