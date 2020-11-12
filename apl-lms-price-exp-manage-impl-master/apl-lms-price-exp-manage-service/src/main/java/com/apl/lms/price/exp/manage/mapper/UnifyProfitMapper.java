@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.po.UnifyExpPricePo;
-import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -27,6 +26,4 @@ public interface UnifyProfitMapper extends BaseMapper<UnifyExpPricePo> {
 
     Integer deleteBatch(@Param("ids") List<Long> ids);
 
-    @SqlParser(filter = true)
-    List<UnifyExpPricePo> getListForTenant(@Param("customerGroupId") Long customerGroupId, @Param("innerOrgId") Long innerOrgId);
 }

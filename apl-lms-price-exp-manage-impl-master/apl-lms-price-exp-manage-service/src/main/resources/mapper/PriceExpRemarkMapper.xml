@@ -32,6 +32,6 @@
 
     <!--获取引用租户的remark-->
     <select id="getTenantPriceRemark" resultType="com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo">
-        select select id, remark, sale_remark,important_information from price_exp_remark where id = #{quotePriceId}
+        select id, remark, sale_remark,important_information from price_exp_remark where id = #{quotePriceId}
     </select>
 </mapper>

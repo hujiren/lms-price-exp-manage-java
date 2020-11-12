@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * @author hjr start
@@ -41,7 +40,7 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     private String accountNo;
 
     @ApiModelProperty(name = "specialCommodity" , value = "特殊物品")
-    private List<Integer> specialCommodity;
+    private String specialCommodity;
 
     @ApiModelProperty(name = "priceFormat" , value = "价格表格式 1横向 2纵向")
     private Integer priceFormat;
@@ -95,13 +94,13 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     private String partnerName;
 
     @ApiModelProperty(name = "customerGroupId" , value = "客户组id")
-    private List<Long> customerGroupId;
+    private String customerGroupId;
 
     @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
     private String customerGroupName;
 
     @ApiModelProperty(name = "customerIds" , value = "客户ids")
-    private List<Long> customerIds;
+    private String customerIds;
 
     @ApiModelProperty(name = "customerName" , value = "客户名称")
     private String customerName;
@@ -133,6 +132,7 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "addProfitWay", value = "添加利润方式 0不加, 1单独加 2统一加")
     private Integer addProfitWay;
 
+
     public String getAccountNo() {
         if(null == accountNo){
             accountNo = "";
@@ -152,7 +152,7 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
         this.zoneId = zoneId;
     }
 
-    public List<Integer> getSpecialCommodity() {
+    public String getSpecialCommodity() {
         return specialCommodity;
     }
 }

@@ -58,8 +58,8 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      * @param priceVal
      * @param zoneAndCountry
      * @param weightSectionDto
-     * @param finalProfitBoList
+     * @param profitBoList
      * @return
      */
-    Double priceMergeProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> finalProfitBoList);
+    Double priceMergeProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> profitBoList);
 }

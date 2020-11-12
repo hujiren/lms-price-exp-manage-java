@@ -30,8 +30,6 @@ public class DatasourceAop {
     @Around("datasourceAop()")
     public Object doInvoke(ProceedingJoinPoint pjp) throws Throwable {
 
-        //MyAppContext.dbCacheUtil = aplCacheUtil;
-
         Object proceed = null; //com.apl.lib.interceptor.FeignHeaderInterceptor
         try {
             // 安全用户上下文
@@ -50,7 +48,7 @@ public class DatasourceAop {
             CommonContextHolder.securityUserContextHolder.set(securityUser);
 
             // 多租户ID值
-            AplTenantConfig.tenantIdContextHolder.set(securityUser.getInnerOrgId());
+            AplTenantConfig.tenantIdContextHolder.set(securityUser.getInnerOrgId());//com.apl.lib.interceptor.FeignHeaderInterceptor
 
             Object[] args = pjp.getArgs();
             proceed = pjp.proceed(args);

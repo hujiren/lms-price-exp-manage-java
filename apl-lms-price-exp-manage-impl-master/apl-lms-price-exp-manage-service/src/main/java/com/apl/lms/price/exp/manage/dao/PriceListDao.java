@@ -18,45 +18,45 @@ public class PriceListDao {
 
     public void createRealTable() {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
-        String sql = "CREATE TABLE  IF NOT EXISTS \"public\".\"" + securityUser.getInnerOrgCode() + "_lms_exp_price\" (\n" +
-                "  \"id\" int8 NOT NULL,\n" +
-                "  \"price_code\" varchar(50) COLLATE \"pg_catalog\".\"default\",\n" +
-                "  \"price_name\" varchar(50) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n"+
-                "  \"price_sale_name\" varchar(50) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n" +
-                "  \"partner_id\" int8 NOT NULL DEFAULT 0,\n"+
-                "  \"partner_name\" varchar(50) COLLATE \"pg_catalog\".\"default\",\n"+
-                "  \"customer_group_id\" jsonb,\n"+
-                "  \"customer_group_name\" varchar(100) COLLATE \"pg_catalog\".\"default\",\n"+
-                "  \"customer_ids\" jsonb,\n"+
-                "  \"customer_name\" varchar(255) COLLATE \"pg_catalog\".\"default\",\n"+
-                "  \"special_commodity\" jsonb,\n" +
-                "  \"channel_category\" varchar(50) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n"+
-                "  \"currency\" varchar(5) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n" +
-                "  \"price_data_id\" int8 NOT NULL DEFAULT 0,\n"+
-                "  \"quote_price_id\" int8 NOT NULL DEFAULT 0,\n"+
-                "  \"zone_id\" int8 NOT NULL,\n" +
-                "  \"price_published_id\" int8 NOT NULL DEFAULT 0,\n" +
-                "  \"is_published_price\" int2 NOT NULL,\n" +
-                "  \"price_status\" int2 NOT NULL,\n"+
-                "  \"price_format\" int2 DEFAULT 0,\n" +
-                "  \"start_date\" timestamp(6) NOT NULL,\n" +
-                "  \"end_date\" timestamp(6) NOT NULL,\n" +
-                "  \"account_type\" int2 NOT NULL,\n" +
-                "  \"account_no\" varchar(50) COLLATE \"pg_catalog\".\"default\" NOT NULL DEFAULT 0,\n" +
-                "  \"start_weight\" float4 NOT NULL ,\n" +
-                "  \"end_weight\" float4 NOT NULL ,\n" +
-                "  \"aging\" varchar(255) COLLATE \"pg_catalog\".\"default\",\n" +
-                "  \"volume_divisor\" int4 NOT NULL,\n" +
-                "  \"upd_time\" timestamp(6),\n"+
-                "  \"quote_price_upd_time\" timestamp(6),\n"+
-                "  \"quote_price_customer_group_id\" int8 DEFAULT 0,\n" +
-                "  \"quote_price_customer_id\" int8 DEFAULT 0,\n" +
-                "  \"quote_tenant_code\" varchar(20) COLLATE \"pg_catalog\".\"default\",\n"+
-                "  \"is_quote\" int2 NOT NULL,\n"+
-                "  \"syn_status\" int2 DEFAULT 0,\n"+
-                "  \"source_table_status\" int2 DEFAULT 0,\n" +
-                "  \"add_profit_way\" int2 NOT NULL,\n" +
-                "  \"inner_org_id\" int8 NOT NULL DEFAULT 0\n"+
+        String sql = "CREATE TABLE  IF NOT EXISTS" + " " + securityUser.getInnerOrgCode() + "_lms_exp_price (" +
+                "  id bigint(20) NOT NULL,\n" +
+                "  price_cod varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '价格表代码',\n" +
+                "  price_name varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '服务商名称',\n"+
+                "  price_sale_name varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '销售名称',\n" +
+                "  partner_id bigint(20) NOT NULL DEFAULT 0 COMMENT '服务商id',\n"+
+                "  partner_name varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '服务商名称',\n"+
+                "  customer_group_id varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户组id',\n"+
+                "  customer_group_name varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户组名称',\n"+
+                "  customer_ids varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户id',\n"+
+                "  customer_name varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户名称',\n"+
+                "  special_commodity varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '特殊物品',\n" +
+                "  channel_category varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '渠道类型',\n"+
+                "  currency varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '币制',\n" +
+                "  price_data_id bigint(20) NOT NULL DEFAULT 0 COMMENT '价格表数据id',\n"+
+                "  quote_price_id bigint(20) NOT NULL DEFAULT 0 COMMENT '引用价格表id',\n"+
+                "  zone_id bigint(20) NOT NULL DEFAULT 0 COMMENT '分区id',\n" +
+                "  price_published_id bigint(20) NOT NULL DEFAULT 0 COMMENT '关联公布价id',\n" +
+                "  is_published_price smallint(6) NOT NULL COMMENT '是否是公布价 1是 2不是',\n" +
+                "  price_status smallint(6) NOT NULL COMMENT '价格表状态 1正常 2计账 3无效',\n"+
+                "  price_format smallint(6) NULL DEFAULT NULL COMMENT '价格表格式 1横向 2纵向',\n" +
+                "  start_date datetime(0) NOT NULL COMMENT '起始日期',\n" +
+                "  end_date datetime(0) NOT NULL COMMENT '截止日期',\n" +
+                "  account_type smallint(6) NOT NULL COMMENT '账户类型 1代理 2贸易 3第三方',\n" +
+                "  account_no varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '快递账号',\n" +
+                "  start_weight float NOT NULL COMMENT '起始重',\n" +
+                "  end_weight float NOT NULL COMMENT '截止重',\n" +
+                "  aging varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '时效',\n" +
+                "  volume_divisor int(11) NOT NULL COMMENT '体积重基数',\n" +
+                "  upd_time datetime(0) NULL DEFAULT NULL COMMENT '更新时间',\n"+
+                "  quote_price_upd_time datetime(0) NULL DEFAULT NULL COMMENT '引用价格更新时间',\n"+
+                "  quote_price_customer_group_id bigint(20) NOT NULL DEFAULT 0 COMMENT '引用价格客户组id',\n" +
+                "  quote_price_customer_id bigint(20) NOT NULL DEFAULT 0 COMMENT '引用价格客户id',\n" +
+                "  quote_tenant_code varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '引用价格租户code',\n"+
+                "  is_quote smallint(6) NOT NULL COMMENT '是否引用 1 是 2否',\n"+
+                "  syn_status smallint(6) NULL DEFAULT NULL COMMENT '同步状态 0未同步 1同步成功 2同步异常 3引用价格表已被删除',\n"+
+                "  source_table_status smallint(6) NULL DEFAULT NULL COMMENT '源表状态',\n" +
+                "  add_profit_way smallint(6) NOT NULL COMMENT '添加利润方式 0不加 1单独加 2统一加',\n" +
+                "  inner_org_id bigint(20) NOT NULL COMMENT '多租户id'\n"+
                 ")";
 
         //创建租户price_exp_main物理表
@@ -64,9 +64,8 @@ public class PriceListDao {
 
     }
 
-    public PriceExpMainPo getRealUpdTime(Long id, String orgCode){
+    public PriceExpMainPo getRealInfo(Long id,String sql){
         adbHelperReal.setEnableTenant(false);
-        String sql = "select inner_org_id, upd_time from" + " " + orgCode + "_lms_exp_price where id = " + id;
         PriceExpMainPo priceExpMainPo = adbHelperReal.queryObj(sql, id, PriceExpMainPo.class);
         return priceExpMainPo;
     }

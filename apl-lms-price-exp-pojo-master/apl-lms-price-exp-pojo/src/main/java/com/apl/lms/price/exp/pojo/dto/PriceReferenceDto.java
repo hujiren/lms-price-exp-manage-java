@@ -52,10 +52,6 @@ public class PriceReferenceDto {
     @ApiModelProperty(name = "customerGroup", value = "客户组")
     private List<CustomerGroupDto> customerGroup;
 
-    //@ApiModelProperty(name = "tenantCode", value = "引用租户code", required = true)
-    //@NotBlank(message = "引用租户code不能为空")
-    //private String tenantCode;
-
     @ApiModelProperty(name = "addProfitWay", value = "添加利润的方式 0不加 1单独加 2统一加", required = true)
     @NotNull(message = "添加利润方式不能为空")
     private Integer addProfitWay;

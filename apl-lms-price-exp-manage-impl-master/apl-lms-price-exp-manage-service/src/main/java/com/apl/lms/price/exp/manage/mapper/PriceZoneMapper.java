@@ -63,6 +63,7 @@ public interface PriceZoneMapper extends BaseMapper<PriceZoneNamePo> {
      * @param zoneIds
      * @return
      */
+    @SqlParser(filter = true)
     @MapKey("id")
     Map<Long, PriceZoneNamePo> getPriceZoneNameBatch(@Param("ids") List<Long> zoneIds);
 

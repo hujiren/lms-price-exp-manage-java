@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.mapper2;
+package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostKeyDto;
@@ -144,14 +144,7 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      */
     List<ExpPriceInfoBo> getPriceInfoByIds(@Param("ids") List<Long> ids);
 
-    /**
-     * 获取其他租户的信息
-     * @param priceId
-     * @return
-     */
-    @SqlParser(filter = true)
-    PriceExpMainPo getTenantPriceInfo(@Param("id") Long priceId, @Param("code") String tenantCode);
-
     Integer updPrice(@Param("po") PriceExpMainPo priceExpMainPo);
 
+    Integer isQuoteByExpPrice(Long quotePriceId);
 }

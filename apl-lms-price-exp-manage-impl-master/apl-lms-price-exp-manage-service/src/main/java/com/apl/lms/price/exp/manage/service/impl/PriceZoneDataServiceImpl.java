@@ -126,6 +126,10 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
      */
     @Override
     public Map<Long, List<PriceZoneDataListVo>> assemblingZoneData(List<Long> zoneIds) throws Exception {
+
+        if(null == zoneIds || zoneIds.size() < 1){
+            return Collections.emptyMap();
+        }
         //分区Id去重
         HashSet<Long> idSet = new HashSet<>();
         for (Long zoneId : zoneIds) {

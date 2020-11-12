@@ -137,11 +137,11 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      * @param priceVal
      * @param zoneAndCountry
      * @param weightSectionDto
-     * @param finalProfitBoList
+     * @param profitBoList
      * @return
      */
     @Override
-    public Double priceMergeProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> finalProfitBoList){
+    public Double priceMergeProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> profitBoList){
 
         if(null==priceVal || priceVal.equals(0)){
             return  priceVal;
@@ -161,7 +161,7 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
 
         //查找利润
         boolean isFind = false;
-        for (PriceExpProfitMergeBo profitMergeBo : finalProfitBoList) {
+        for (PriceExpProfitMergeBo profitMergeBo : profitBoList) {
 
             if(profitMergeBo.getEndWeight()>0) {
                 if (endWeight <= profitMergeBo.getStartWeight()  ||  startWeight>=profitMergeBo.getEndWeight())
@@ -172,7 +172,7 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
             }
 
             if (null != zone && zone.length() > 0) {
-                if (profitMergeBo.getZoneNumList().size() == 0 || profitMergeBo.getZoneNumList().get(0).equals("") || profitMergeBo.getZoneNumList().contains(zone))
+                if (null == profitMergeBo.getZoneNumList() || profitMergeBo.getZoneNumList().size() == 0 || profitMergeBo.getZoneNumList().get(0).equals("") || profitMergeBo.getZoneNumList().contains(zone))
                     isFind = true;
             }
 
@@ -197,6 +197,12 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         }
 
         if(null!=findProfitMergeBo){
+            if(null == findProfitMergeBo.getFirstWeightProfit())
+                findProfitMergeBo.setFirstWeightProfit(0.0);
+            if(null == findProfitMergeBo.getProportionProfit())
+                findProfitMergeBo.setProportionProfit(0.0);
+            if(null == findProfitMergeBo.getUnitWeightProfit())
+                findProfitMergeBo.setUnitWeightProfit(0.0);
             //找到利润，相加
             if(weightSectionDto.getChargingWay()==1){
                 //首重加

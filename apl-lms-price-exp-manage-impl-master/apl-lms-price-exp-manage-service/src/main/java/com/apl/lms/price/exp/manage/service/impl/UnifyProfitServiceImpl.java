@@ -5,7 +5,6 @@ import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.UnifyProfitMapper;
 import com.apl.lms.price.exp.manage.service.UnifyProfitService;
 import com.apl.lms.price.exp.pojo.bo.CustomerGroupBo;
-import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.dto.UnifyProfitDto;
 import com.apl.lms.price.exp.pojo.po.UnifyExpPricePo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -100,29 +99,6 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
         return unifyProfitDto;
     }
 
-    /**
-     * 根据客户组id和租户id进行筛选
-     * @param customerGroupId
-     * @param innerOrgId
-     * @return
-     */
-    @Override
-    public List<PriceExpProfitDto> getListForTenant(Long customerGroupId, Long innerOrgId) {
-        if(customerGroupId == null)
-            customerGroupId = 0L;
-        if(innerOrgId == null)
-            innerOrgId = 0L;
-        List<PriceExpProfitDto> profitDtoList = new ArrayList<>();
-        List<UnifyExpPricePo> listForTenant = baseMapper.getListForTenant(customerGroupId, innerOrgId);
-        for (UnifyExpPricePo unifyExpPricePo : listForTenant) {
-            UnifyProfitDto unifyProfitDto = handCustomerGroupPoToDto(unifyExpPricePo);
-            PriceExpProfitDto profitDto = new PriceExpProfitDto();
-            BeanUtil.copyProperties(unifyProfitDto,profitDto);
-            profitDtoList.add(profitDto);
-        }
-
-        return profitDtoList;
-    }
 
     /**
      * 处理客户组 将Po 转换成 Dto

@@ -96,13 +96,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
 
 
     /**
-     * 获取价格表数据
-     * @param id
-     * @return
-     */
-    PriceExpDataObjVo getPriceExpDataInfoByPriceId(Long id) throws Exception;
-
-    /**
      * 获取quotePriceId, innerOrgId, priceDataId组合方法
      * @param id
      * @return
@@ -123,8 +116,24 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      */
     List<ExpPriceInfoBo> getPriceInfoByIds(List<Long> ids);
 
-
+    /**
+     * 更新价格主表
+     * @param priceExpMainPo
+     * @return
+     */
     Integer updatePriceExpMain(PriceExpMainPo priceExpMainPo);
 
+    /**
+     * 获取价格表数据
+     * @param priceId
+     * @return
+     */
+    PriceExpDataObjVo getCostPriceExpData(Long priceId, List<PriceExpProfitDto> profitBoList, Boolean isSaleProfit) throws Exception;
 
+    /**
+     * 获取销售价格表数据
+     * @param
+     * @return
+     */
+    ResultUtil<PriceExpDataObjVo> getSalePriceExpData(Long id, Long customerGroupId) throws Exception;
 }

@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -126,6 +127,8 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
      */
     @Override
     public Map<Long, PriceZoneNamePo> getPriceZoneNameBatch(List<Long> zoneIds) {
+        if(zoneIds.size() < 1)
+            return Collections.emptyMap();
         return baseMapper.getPriceZoneNameBatch(zoneIds);
     }
 

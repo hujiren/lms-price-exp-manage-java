@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.apl.lms.price.exp.manage.mapper2.PriceExpMapper">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceExpMapper">
 
     <!--分页查询销售价格列表-->
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
@@ -46,13 +46,13 @@
             and now() > end_date
         </if>
         <if test="key.specialCommodity > 0">
-            and special_commodity @> '[${key.specialCommodity}]'::jsonb
+            and FIND_IN_SET(#{key.specialCommodity,special_commodity})
         </if>
         <if test="key.customerGroupId != null">
-            and customer_group_id @> '${key.customerGroupId}'
+            and FIND_IN_SET(#{key.customerGroupId,customer_group_id})
         </if>
         <if test="key.customerId != null">
-            and customer_ids @> '${key.customerId}'
+            and FIND_IN_SET(#{key.customerId,customer_ids})
         </if>
         <if test="key.channelCategory != null">
             and channel_category = #{key.channelCategory}
@@ -84,7 +84,7 @@
             and volume_divisor = #{key.volumeDivisor}
         </if>
         <if test="key.specialCommodity > 0">
-            and special_commodity @> '[${key.specialCommodity}]'::jsonb
+            and FIND_IN_SET(#{key.specialCommodity,special_commodity})
         </if>
         <if test="key.accountType != null">
             and account_type = #{key.accountType}
@@ -147,8 +147,8 @@
         insert into
              lms_exp_price(
              id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
-             price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name,
-             price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_group_id,
+             price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name, quote_price_customer_id,
+             price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_group_id, quote_price_customer_group_id,
              customer_group_name, customer_ids, customer_name, upd_time, quote_price_upd_time, is_quote, syn_status, quote_tenant_code, add_profit_way)
          values
              (#{po.id},
@@ -157,7 +157,7 @@
              #{po.currency},
              #{po.accountType},
              #{po.accountNo},
-             #{po.specialCommodity,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+             #{po.specialCommodity},
              #{po.priceFormat},
              #{po.startWeight},
              #{po.endWeight},
@@ -169,15 +169,17 @@
              #{po.priceDataId},
              #{po.priceCode},
              #{po.priceName},
+             #{po.quotePriceCustomerId},
              #{po.priceSaleName},
              #{po.channelCategory},
              #{po.priceStatus},
              #{po.quotePriceId},
              #{po.partnerId},
              #{po.partnerName},
-             #{po.customerGroupId,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+             #{po.customerGroupId},
+             #{po.quotePriceCustomerGroupId},
              #{po.customerGroupName},
-             #{po.customerIds,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+             #{po.customerIds},
              #{po.customerName},
              #{po.updTime},
              #{po.quotePriceUpdTime},
@@ -194,7 +196,7 @@
             account_no = #{po.accountNo},
         </if>
         <if test="po.specialCommodity != null">
-            special_commodity = #{po.specialCommodity, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+            special_commodity = #{po.specialCommodity},
         </if>
         <if test="po.isPublishedPrice != null">
             is_published_price = #{po.isPublishedPrice},
@@ -218,13 +220,13 @@
             price_status = #{po.priceStatus},
         </if>
         <if test="po.customerGroupId != null">
-            customer_group_id = #{po.customerGroupId, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+            customer_group_id = #{po.customerGroupId},
         </if>
         <if test="po.customerGroupName != null">
             customer_group_name = #{po.customerGroupName},
         </if>
         <if test="po.customerIds">
-            customer_ids = #{po.customerIds, typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler},
+            customer_ids = #{po.customerIds},
         </if>
         <if test="po.customerName != null">
             customer_name = #{po.customerName},
@@ -386,13 +388,9 @@
         </foreach>
     </select>
 
-    <select id="getTenantPriceInfo" resultType="com.apl.lms.price.exp.pojo.po.PriceExpMainPo">
-        select
-            special_commodity, currency, price_data_id, zone_id, price_published_id, price_status, price_format,
-            start_date, end_date, account_type, account_no, start_weight, end_weight, aging, volume_divisor, upd_time
-        from
-            concat(#{code}, '_lms_exp_price')
-        where
-            id = #{id}
+
+    <!--查询是否被引用-->
+    <select id="isQuoteByExpPrice" resultType="java.lang.Integer">
+        select count(id) from lms_exp_price where quote_price_id = #{quotePriceId}
     </select>
 </mapper>

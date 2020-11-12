@@ -9,6 +9,7 @@ import com.alibaba.excel.write.metadata.fill.FillWrapper;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.StringUtil;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
@@ -78,15 +79,15 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     @Value("${lms.exp-price.export.out-file-name:export-exp-price.xlsx}")
     String outFileName;
 
+
     /**
      * 导出Excel表
-     *
      * @param response
      * @param ids
      * @throws Exception
      */
     @Override
-    public void exportExpPrice(HttpServletResponse response, List<Long> ids) throws Exception {
+    public void exportExpPrice(HttpServletResponse response, List<Long> ids, Long customerGroupId) throws Exception {
 
         if (null == templateFileName || templateFileName.length() < 2) {
             throw new AplException(ExportPriceEnum.NO_VALID_FILE_WAS_FOUND.code, ExportPriceEnum.NO_VALID_FILE_WAS_FOUND.msg, null);
@@ -109,9 +110,18 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
             //获取价格表数据
             Map<Long, PriceExpDataObjVo> priceDataMap = new HashMap<>();
-            for (Long id : ids) {
-                PriceExpDataObjVo priceExpDataInfo = priceExpService.getPriceExpDataInfoByPriceId(id);
-                priceDataMap.put(id, priceExpDataInfo);
+            if(null != customerGroupId && customerGroupId > 0){
+                for (Long id : ids) {
+
+                    ResultUtil<PriceExpDataObjVo> salePriceData = priceExpService.getSalePriceExpData(id , customerGroupId);
+                    PriceExpDataObjVo priceExpDataInfo = salePriceData.getData();
+                    priceDataMap.put(id, priceExpDataInfo);
+                }
+            }else{
+                for (Long id : ids) {
+                    PriceExpDataObjVo priceExpDataInfo = priceExpService.getCostPriceExpData(id, Collections.emptyList(), false);
+                    priceDataMap.put(id, priceExpDataInfo);
+                }
             }
 
             //获取分区ids
@@ -119,12 +129,14 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             List<Long> zoneIds = new ArrayList<>();
             for (ExpPriceInfoBo expPriceInfoBo : expPriceInfoList) {
                 expPriceInfoBo.setPriceName(expPriceInfoBo.getPriceName().replace("-", "").replace(" ", ""));
-                zoneName = expPriceInfoBo.getZoneName().replace("-", "").replace(" ", "");
-                if (!zoneName.contains("分区"))
-                    zoneName += "分区";
-                expPriceInfoBo.setZoneName(zoneName);
+                if(null !=  expPriceInfoBo.getZoneName() && expPriceInfoBo.getZoneId() > 0){
+                    zoneName = expPriceInfoBo.getZoneName().replace("-", "").replace(" ", "");
+                    if (!zoneName.contains("分区"))
+                        zoneName += "分区";
+                    expPriceInfoBo.setZoneName(zoneName);
 
-                zoneIds.add(expPriceInfoBo.getZoneId());
+                    zoneIds.add(expPriceInfoBo.getZoneId());
+                }
             }
 
             //获取分区组装数据
@@ -192,7 +204,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             }
 
             //填写分区表
-            if (!zoneSheetMaps.isEmpty()) {
+            if (!zoneSheetMaps.isEmpty() && !longListMap.isEmpty()) {
                 fillZone(excelWriter, zoneSheetMaps, longListMap, expPriceInfoList, wb);
             }
 
@@ -320,7 +332,19 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             throw new AplException(ExportPriceEnum.NO_PRICE_LIST_TEMPLATE_FOUND.code,
                     ExportPriceEnum.NO_PRICE_LIST_TEMPLATE_FOUND.msg);
         }
-
+        //
+        int sum = 0;
+        Map<String, ExpPriceInfoBo> deWeightMap = new HashMap<>();
+        for (ExpPriceInfoBo expPriceInfoBo : expPriceInfoList) {
+            String priceName = expPriceInfoBo.getPriceName();
+            if(deWeightMap.containsKey(priceName)){
+                priceName = priceName + "(" + sum + ")";
+                expPriceInfoBo.setPriceName(priceName);
+            }
+            deWeightMap.put(priceName, expPriceInfoBo);
+            sum++;
+        }
+        //
         int sheetNo = priceTemplateNo + 1;
         wb.setSheetName(priceTemplateNo, expPriceInfoList.get(0).getPriceName());
         for (int i = 1; i < expPriceInfoList.size(); i++) {
@@ -332,14 +356,21 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
         Map<Long, zoneDataInfo> zoneSheetMaps = new HashMap<>();
         HashMap<Long, ExpPriceInfoBo> transferMap = new HashMap<>();
-        List<String> stringNameList = new ArrayList<>();
+        List<String> repetitionNameList = new ArrayList<>();
         for (ExpPriceInfoBo expPriceInfoBo : expPriceInfoList) {
+            if(expPriceInfoBo.getZoneId() < 1)
+                continue;
             if (!transferMap.containsKey(expPriceInfoBo.getZoneId()))
                 transferMap.put(expPriceInfoBo.getZoneId(), expPriceInfoBo);
             else
-                stringNameList.add(expPriceInfoBo.getPriceName());
+                repetitionNameList.add(expPriceInfoBo.getPriceName());
         }
-        if (zoneTemplateNo > 0) {
+
+        if(transferMap.size() < 1 && zoneTemplateNo > 0){
+            wb.removeSheetAt(zoneTemplateNo);
+        }
+
+        if (zoneTemplateNo > 0 && transferMap.size() > 0) {
             for (Map.Entry<Long, ExpPriceInfoBo> entry : transferMap.entrySet()) {
                 ExpPriceInfoBo expPriceInfoBo = entry.getValue();
                 zoneDataInfo zoneDataInfo = new zoneDataInfo();
@@ -692,5 +723,4 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
         }
     }
-
 }

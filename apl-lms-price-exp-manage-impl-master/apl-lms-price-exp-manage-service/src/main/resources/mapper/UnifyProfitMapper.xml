@@ -59,13 +59,5 @@
 
     </update>
 
-    <select id="getListForTenant" resultType="com.apl.lms.price.exp.pojo.po.UnifyExpPricePo">
-        select
-            id, customer_group_id, customer_group_name, start_weight, end_weight, first_weight_profit, unit_weight_profit, proportion_profit
-        where
-            customer_group_id like concat('%', #{customerGroupId}, '%')
-        and
-            inner_org_id = #{innerOrgId}
-    </select>
 
 </mapper>

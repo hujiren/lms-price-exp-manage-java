@@ -12,6 +12,7 @@ import com.apl.lms.price.exp.pojo.vo.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -135,11 +137,23 @@ public class PriceExpController {
 
 
     @PostMapping(value = "/get-price-data")
-    @ApiOperation(value = "获取价格表数据", notes = "获取价格表数据")
+    @ApiOperation(value = "获取成本价格表数据", notes = "获取成本价格表数据")
     @ApiImplicitParam(name = "id", value = "价格表Id", required = true, paramType = "query")
-    public ResultUtil<PriceExpDataObjVo> getPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
-        PriceExpDataObjVo priceExpDataInfo = priceExpService.getPriceExpDataInfoByPriceId(id);
+    public ResultUtil<PriceExpDataObjVo> getCostPriceExpData(@NotNull(message = "价格表Id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws Exception {
+        PriceExpDataObjVo priceExpDataInfo = priceExpService.getCostPriceExpData(id, Collections.emptyList(), false);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceExpDataInfo);
+    }
+
+
+    @PostMapping(value = "/get-sale-price-data")
+    @ApiOperation(value = "获取销售价格表数据", notes = "获取销售价格表数据")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id" , value = "价格表Id" , paramType = "query", required = true),
+            @ApiImplicitParam(name = "customerGroupId" , value = "客户组id", paramType = "query", required = true),
+    })
+    public ResultUtil<PriceExpDataObjVo> getSalePriceExpData(Long id, Long customerGroupId) throws Exception {
+        ResultUtil<PriceExpDataObjVo> salePriceDataByCustomerGroup = priceExpService.getSalePriceExpData(id, customerGroupId);
+        return salePriceDataByCustomerGroup;
     }
 
 
@@ -191,11 +205,20 @@ public class PriceExpController {
 
 
     @GetMapping(value = "/export-exp-price")
-    @ApiOperation(value = "导出快递价格", notes = "导出快递价格")
+    @ApiOperation(value = "导出成本价快递价格", notes = "导出成本价快递价格")
     public void exportExpPrice(HttpServletResponse response, String ids) throws Exception {
 
-        List<Long> idList =  StringUtil.stringToLongList(ids);
-        exportPricePrice.exportExpPrice(response, idList);
+        List<Long> priceIdList =  StringUtil.stringToLongList(ids);
+        exportPricePrice.exportExpPrice(response, priceIdList, 0l);
+    }
+
+
+    @GetMapping(value = "/export-sale-exp-price")
+    @ApiOperation(value = "导出销售价快递价格", notes = "导出销售价快递价格")
+    public void exportSaleExpPrice(HttpServletResponse response, String ids, Long customerGroupId) throws Exception {
+
+        List<Long> priceIdList =  StringUtil.stringToLongList(ids);
+        exportPricePrice.exportExpPrice(response, priceIdList, customerGroupId);
     }
 
 }

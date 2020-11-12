@@ -1,7 +1,6 @@
 package com.apl.lms.price.exp.manage.service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -11,5 +10,6 @@ import java.util.List;
  */
 public interface ExportPriceService {
 
-    void exportExpPrice(HttpServletResponse response, List<Long> ids) throws Exception;
+    void exportExpPrice(HttpServletResponse response, List<Long> ids, Long customerGroupId) throws Exception;
+
 }

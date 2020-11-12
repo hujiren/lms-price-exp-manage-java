@@ -1,4 +1,4 @@
-package com.apl.lms.price.exp.manage.mapper2;
+package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 import com.baomidou.mybatisplus.annotation.SqlParser;
@@ -17,28 +17,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
 
-
-    /**
-     * 新增
-     * @param priceExpProfitPo
-     * @return
-     */
-
-    Integer addProfit(@Param("po") PriceExpProfitPo priceExpProfitPo);
-
-    /**
-     * 更新
-     * @param priceExpProfitPo
-     * @return
-     */
-    Integer updProfit(@Param("po") PriceExpProfitPo priceExpProfitPo);
-
     /**
      * @Desc: 查找列表
      * @Author: ${cfg.author}
      * @Date: 2020-09-11
      */
-    PriceExpProfitPo getIncreaseProfit(@Param("priceId") Long priceId);
+    PriceExpProfitPo getProfit(@Param("priceId") Long priceId);
 
     /**
      * 批量删除
@@ -52,10 +36,10 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      * @param id
      * @return
      */
-    PriceExpProfitPo exists(Long id);
+    Long exists(Long id);
 
     @SqlParser(filter = true)
-    PriceExpProfitPo getPriceProfit(Long quotePriceId);
+    PriceExpProfitPo getQuotePriceSaleProfit(Long quotePriceId);
 
 
 }

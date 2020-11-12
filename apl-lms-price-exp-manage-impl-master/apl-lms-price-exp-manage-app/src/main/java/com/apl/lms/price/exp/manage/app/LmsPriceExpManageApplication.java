@@ -27,7 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         exclude = {
             DruidDataSourceAutoConfigure.class
         })
-//@MapperScan("com.apl.lms.price.exp.manage.mapper")
+
 @MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc")
 @MapperScan(basePackages = "com.apl.lms.price.exp.manage.mapper2", sqlSessionFactoryRef = "sqlSessionFactoryForShardingjdbc2")
 @EnableFeignClients(basePackages = {"com.apl.lms.common.lib.feign","com.apl.lms.price.exp.lib.feign","com.apl.sys.lib.feign"})
