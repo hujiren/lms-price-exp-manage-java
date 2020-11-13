@@ -123,15 +123,14 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "synStatus" , value = "同步状态 0未同步 1同步成功 2同步异常 3引用价格表已被删除")
     private Integer synStatus;
 
-    @ApiModelProperty(name = "quotePriceCustomerGroupId" , value = "引用价格客户组id")
-    private Long quotePriceCustomerGroupId;
-
-    @ApiModelProperty(name = "quotePriceCustomerId" , value = "引用价格客户id")
-    private Long quotePriceCustomerId;
-
     @ApiModelProperty(name = "addProfitWay", value = "添加利润方式 0不加, 1单独加 2统一加")
     private Integer addProfitWay;
 
+//    @ApiModelProperty(name = "quotePriceCustomerGroupId" , value = "引用价格客户组id")
+//    private Long quotePriceCustomerGroupId;
+//
+//    @ApiModelProperty(name = "quotePriceCustomerId" , value = "引用价格客户id")
+//    private Long quotePriceCustomerId;
 
     public String getAccountNo() {
         if(null == accountNo){

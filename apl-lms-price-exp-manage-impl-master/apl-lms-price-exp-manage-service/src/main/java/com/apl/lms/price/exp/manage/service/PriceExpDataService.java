@@ -27,7 +27,8 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      * @param customerGroupId
      * @return
      */
-    PriceExpDataObjVo getPriceExpData(ExpPriceInfoBo expPriceInfoBo, Long priceId, Boolean isSaleProfit, Long customerGroupId);
+    PriceExpDataObjVo getPriceExpData(ExpPriceInfoBo expPriceInfoBo, Long priceId, Boolean isSaleProfit, Long customerGroupId) throws Exception;
+
     /**
      * 根据价格表id获取主数据信息
      * @param id
@@ -64,12 +65,12 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
     List<String> updHeadCells(WeightSectionUpdDto weightSectionUpdDto,List<String> headCells);
 
     /**
-     * 合并利润
+     * 一个单元格价格添加利润
      * @param priceVal
      * @param zoneAndCountry
      * @param weightSectionDto
      * @param profitBoList
      * @return
      */
-    Double priceMergeProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> profitBoList);
+    Double cellPriceAddProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> profitBoList);
 }

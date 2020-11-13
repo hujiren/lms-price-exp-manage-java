@@ -64,8 +64,25 @@ public class PriceListDao {
 
     }
 
-    public PriceExpMainPo getRealInfo(Long id,String sql){
+
+    public Integer getPriceProfitWay(Long id, String tenantCode){
         adbHelperReal.setEnableTenant(false);
+        String sql = "select add_profit_way from " + tenantCode + "_lms_exp_price where id = " + id;
+        Integer addProfitWay = adbHelperReal.queryBaseVal(sql, null, Integer.class);
+
+        return addProfitWay;
+    }
+
+    public PriceExpMainPo getQuotePriceUpdateTime(Long id, String tenantCode){
+        String sql = "select inner_org_id, upd_time from" + " " + tenantCode + "_lms_exp_price where id = " + id;
+        PriceExpMainPo priceExpMainPo = adbHelperReal.queryObj(sql, id, PriceExpMainPo.class);
+        return priceExpMainPo;
+    }
+
+    public PriceExpMainPo getSourcePriceInfo(Long id, String tenantCode) {
+        String sql = "select special_commodity, currency, price_data_id, zone_id, price_published_id, price_status, price_format," +
+                "start_date, end_date, account_type, account_no, start_weight, end_weight, aging, volume_divisor,add_profit_way, upd_time" + " " +
+                "from" + " " + tenantCode + "_lms_exp_price where id = " + id;
         PriceExpMainPo priceExpMainPo = adbHelperReal.queryObj(sql, id, PriceExpMainPo.class);
         return priceExpMainPo;
     }

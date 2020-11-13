@@ -4,10 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lms.net.PartnerNetService;
+import com.apl.lms.net.pojo.bo.PartnerApiInfoBo;
+import com.apl.lms.price.exp.manage.dao.PriceListDao;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpDataMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
 import com.apl.lms.price.exp.manage.service.PriceExpDataService;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
+import com.apl.lms.price.exp.manage.service.UnifyProfitService;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
 import com.apl.lms.price.exp.pojo.dto.*;
@@ -23,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,7 +59,13 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     @Autowired
     PriceExpAxisService priceExpAxisService;
 
-    public PriceExpDataObjVo getPriceExpData(ExpPriceInfoBo expPriceInfoBo, Long priceId, Boolean isSaleProfit, Long customerGroupId) {
+    @Autowired
+    UnifyProfitService unifyProfitService;
+
+    @Autowired
+    PriceListDao priceListDao;
+
+    public PriceExpDataObjVo getPriceExpData(ExpPriceInfoBo expPriceInfoBo, Long priceId, Boolean isSaleProfit, Long customerGroupId) throws Exception {
 
         Long priceDataId = expPriceInfoBo.getPriceDataId();
         DecimalFormat df = new DecimalFormat("#.0");
@@ -86,12 +97,44 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         }
         //转换原始价格数据end
 
-
+        ExpPriceProfitDto profitDto = null;
         PriceExpDataObjVo expDataObjVo = null;
-        ExpPriceProfitDto profit = priceExpProfitService.getProfit(priceId, customerGroupId);
-        if(null != profit){
-            //原价加利润
-            expDataObjVo = AddProfitToThePrice(isSaleProfit, priceId, expPriceInfoBo, priceDataVo, profit.getCostProfit(), profit.getIncreaseProfit());
+        List<PriceExpProfitDto> costProfit = null;
+        List<PriceExpProfitDto> increaseProfit = null;
+        Integer addProfitWay = expPriceInfoBo.getAddProfitWay();
+        if (!isSaleProfit && expPriceInfoBo.getQuotePriceId() > 0) {
+            //如果是引用服务商的价格, 成本价必须为服务商的销售利润
+            PartnerApiInfoBo partnerApiInfoBo = PartnerNetService.getSysApiInfo(expPriceInfoBo.getPartnerId());
+            if(null != partnerApiInfoBo) {
+                //获取引用价格租户id  客户组id
+                Long quotePriceTenantId = partnerApiInfoBo.getSysTenantId();
+                Long quotePriceCustomerGroupId = partnerApiInfoBo.getCustomerGroupId();
+                String quotePriceTenantCode = partnerApiInfoBo.getSysTenantCode();
+
+                //获取引用价格的addProfitWay
+                Integer quotePriceProfitWay = priceListDao.getPriceProfitWay(expPriceInfoBo.getQuotePriceId(), quotePriceTenantCode);
+
+                //获取引用价格的利润, 根据 addProfitWay 得到costProfit 和 increaseProfit或者unifyProfit 或者 null
+                if(null != quotePriceProfitWay)
+                    profitDto = priceExpProfitService.getProfit(expPriceInfoBo.getQuotePriceId(), quotePriceCustomerGroupId, quotePriceProfitWay, quotePriceTenantId);
+
+                if (null != profitDto)
+                    increaseProfit = profitDto.getIncreaseProfit();
+            }
+        }
+
+        if(null == profitDto)  {
+            //如果是销售价, 或者没有引用价格的成本价, 销售价, 则根据自身价格的addProfitWay获取自己表中的利润
+            profitDto = priceExpProfitService.getProfit(priceId, customerGroupId, addProfitWay, 0l);
+
+            if(isSaleProfit && null != profitDto)
+                increaseProfit = profitDto.getIncreaseProfit();
+        }
+
+        if(null != profitDto){
+            costProfit = profitDto.getCostProfit();
+            //加利润
+            expDataObjVo = addProfitToThePrice(priceId, expPriceInfoBo, priceDataVo, costProfit, increaseProfit);
 
         }else{
             //没有利润，直接原价
@@ -104,8 +147,8 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         return expDataObjVo;
     }
 
-    public PriceExpDataObjVo AddProfitToThePrice(Boolean isSalePrice,
-                                                 Long priceId,
+    //加利润
+    private PriceExpDataObjVo addProfitToThePrice(Long priceId,
                                                  ExpPriceInfoBo priceInfoBo,
                                                  List<List<Object>> priceData,
                                                  List<PriceExpProfitDto> costProfitList,
@@ -186,10 +229,13 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
                         cells2.add(priceStr);
                     else{
                         Double priceVal = Double.parseDouble(priceStr);
-                        priceVal = priceMergeProfit(priceVal, zoneAndCountry, weightSectionDto, costProfitList2);
-                        if (isSalePrice) {
-                            priceVal = priceMergeProfit(priceVal, zoneAndCountry, weightSectionDto, increaseProfitList2);
-                        }
+
+                        //加成本利润
+                        priceVal = cellPriceAddProfit(priceVal, zoneAndCountry, weightSectionDto, costProfitList2);
+
+                        //本价格增加的利润
+                        priceVal = cellPriceAddProfit(priceVal, zoneAndCountry, weightSectionDto, increaseProfitList2);
+
                         String format = df.format(priceVal);
                         Double format1 = Double.parseDouble(format);
                         priceData.get(rowIndex + 1).set(colIndex, format);
@@ -214,6 +260,8 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     public List<PriceExpProfitMergeBo> assembleZoneAndCountryForProfit(List<PriceExpProfitDto> profitDtoList){
 
         List<PriceExpProfitMergeBo> profitBoList = new ArrayList<>();
+        if(null == profitDtoList)
+            return Collections.emptyList();
 
         for (PriceExpProfitDto profitDto : profitDtoList) {
             PriceExpProfitMergeBo priceExpProfitMergeBo = new PriceExpProfitMergeBo();
@@ -353,7 +401,7 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     }
 
     /**
-     * 合并利润
+     * 一个单元格价格添加利润
      * @param priceVal
      * @param zoneAndCountry
      * @param weightSectionDto
@@ -361,9 +409,9 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      * @return
      */
     @Override
-    public Double priceMergeProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> profitBoList){
+    public Double cellPriceAddProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> profitBoList){
 
-        if(null==priceVal || priceVal.equals(0)){
+        if(null==priceVal || priceVal.equals(0) || null==profitBoList || profitBoList.isEmpty()){
             return  priceVal;
         }
 

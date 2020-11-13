@@ -26,11 +26,11 @@ public class ExpPriceProfitDto {
     @ApiModelProperty(name = "addProfitWay", value = "添加利润方式 0不加 1单独加 2统一加", required = true)
     private Integer addProfitWay;
 
-    @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
-    private List<PriceExpProfitDto> increaseProfit;
-
     @ApiModelProperty(name = "costProfit", value = "成本利润", hidden = true)
     private List<PriceExpProfitDto> costProfit;
+
+    @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
+    private List<PriceExpProfitDto> increaseProfit;
 
     private static final long serialVersionUID = 1L;
 

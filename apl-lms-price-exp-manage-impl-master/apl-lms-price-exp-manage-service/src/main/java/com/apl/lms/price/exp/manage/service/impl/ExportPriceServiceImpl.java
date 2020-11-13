@@ -9,7 +9,6 @@ import com.alibaba.excel.write.metadata.fill.FillWrapper;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
-import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.StringUtil;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
@@ -73,6 +72,9 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     @Autowired
     PriceZoneDataService priceZoneDataService;
 
+    @Autowired
+    PriceExpDataService priceExpDataService;
+
     @Value("${lms.exp-price.export.template-file-name:}")
     String templateFileName;
 
@@ -101,6 +103,11 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
         try {
 
+            if(null != customerGroupId)
+                customerGroupId = 0l;
+
+
+
             //获取价格主表信息
             List<ExpPriceInfoBo> expPriceInfoList = priceExpService.getPriceInfoByIds(ids);
             if (null == expPriceInfoList || expPriceInfoList.size() < 1) {
@@ -108,27 +115,14 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 throw new AplException(ExportPriceEnum.NO_CORRESPONDING_PRICE.code, ExportPriceEnum.NO_CORRESPONDING_PRICE.msg, null);
             }
 
-            //获取价格表数据
-            Map<Long, PriceExpDataObjVo> priceDataMap = new HashMap<>();
-            if(null != customerGroupId && customerGroupId > 0){
-                for (Long id : ids) {
-
-                    ResultUtil<PriceExpDataObjVo> salePriceData = priceExpService.getSalePriceExpData(id , customerGroupId);
-                    PriceExpDataObjVo priceExpDataInfo = salePriceData.getData();
-                    priceDataMap.put(id, priceExpDataInfo);
-                }
-            }else{
-                for (Long id : ids) {
-                    PriceExpDataObjVo priceExpDataInfo = priceExpService.getCostPriceExpData(id, Collections.emptyList(), false);
-                    priceDataMap.put(id, priceExpDataInfo);
-                }
-            }
-
             //获取分区ids
             String zoneName;
             List<Long> zoneIds = new ArrayList<>();
+
+            //分区表id和价格表数据
+            Map<Long, PriceExpDataObjVo> priceDataMap = new HashMap<>();
             for (ExpPriceInfoBo expPriceInfoBo : expPriceInfoList) {
-                expPriceInfoBo.setPriceName(expPriceInfoBo.getPriceName().replace("-", "").replace(" ", ""));
+
                 if(null !=  expPriceInfoBo.getZoneName() && expPriceInfoBo.getZoneId() > 0){
                     zoneName = expPriceInfoBo.getZoneName().replace("-", "").replace(" ", "");
                     if (!zoneName.contains("分区"))
@@ -137,10 +131,15 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
                     zoneIds.add(expPriceInfoBo.getZoneId());
                 }
+
+                PriceExpDataObjVo priceExpData = priceExpDataService.getPriceExpData(expPriceInfoBo,
+                        expPriceInfoBo.getId(), customerGroupId > 0, customerGroupId);
+
+                priceDataMap.put(expPriceInfoBo.getId(), priceExpData);
             }
 
-            //获取分区组装数据
-            Map<Long, List<PriceZoneDataListVo>> longListMap = priceZoneDataService.assemblingZoneData(zoneIds);
+            //组装分区数据
+            Map<Long, List<PriceZoneDataListVo>> zoneDataMap = priceZoneDataService.assemblingZoneData(zoneIds);
 
             //获取分区名称
             Map<Long, PriceZoneNamePo> priceZoneNameMap = priceZoneNameService.getPriceZoneNameBatch(zoneIds);
@@ -170,13 +169,14 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
             Map<Long, zoneDataInfo> zoneSheetMaps = templateInfo.zoneSheetNoMap;
 
-
             //按新的模板文件创建excelWriter对象
             excelWriter = EasyExcel.write(response.getOutputStream()).withTemplate(templateInfo.templateFileName).build();
 
             WriteSheet directorySheet = EasyExcel.writerSheet(directorySheetNo).build();
 
             for (ExpPriceInfoBo expPriceInfo : expPriceInfoList) {
+
+                expPriceInfo.setPriceName(expPriceInfo.getPriceName().replace("-", "").replace(" ", ""));
 
                 List<List<Object>> priceDataList = priceDataMap.get(expPriceInfo.getId()).getPriceData();
                 if (null == priceDataList || priceDataList.size() < 1) {
@@ -204,8 +204,8 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             }
 
             //填写分区表
-            if (!zoneSheetMaps.isEmpty() && !longListMap.isEmpty()) {
-                fillZone(excelWriter, zoneSheetMaps, longListMap, expPriceInfoList, wb);
+            if (!zoneSheetMaps.isEmpty() && !zoneDataMap.isEmpty()) {
+                fillZone(excelWriter, zoneSheetMaps, zoneDataMap, expPriceInfoList, wb);
             }
 
             //web导出

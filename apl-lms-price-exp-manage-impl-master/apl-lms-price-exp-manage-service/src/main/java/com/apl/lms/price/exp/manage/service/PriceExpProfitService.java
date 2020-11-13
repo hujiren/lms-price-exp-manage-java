@@ -37,11 +37,18 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
 
 
     /**
-     * @Desc: 分页查找 PriceExpProfitPo 列表
+     * @Desc: 获取利润
      * @author hjr
      * @since 2020-09-11
      */
-    ExpPriceProfitDto getProfit(Long priceId, Long customerGroupId);
+    ExpPriceProfitDto getProfit(Long priceId, Long customerGroupId, Integer addProfitWay, Long tenantId);
+
+    /**
+     * 获取增加的利润
+     * @param priceId
+     * @return
+     */
+    ExpPriceProfitDto getIncreaseProfitList(Long priceId);
 
     /**
      * 批量删除
@@ -50,8 +57,10 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      */
     Integer delBatch(String ids);
 
-
-    List<PriceExpProfitDto> getQuotePriceSaleProfit(Long quotePriceId);
-
-
+    /**
+     * 合并利润, 组装成销售利润
+     * @param profit
+     * @return
+     */
+    List<PriceExpProfitDto> assembleSaleProfit(ExpPriceProfitDto profit);
 }

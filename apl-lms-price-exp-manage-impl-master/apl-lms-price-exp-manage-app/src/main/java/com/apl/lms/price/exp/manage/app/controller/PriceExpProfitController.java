@@ -46,7 +46,7 @@ public class PriceExpProfitController {
     @ApiOperation(value = "获取利润数据", notes = "获取利润数据")
     @ApiImplicitParam(name = "priceId", value = " 价格表id", required = true, paramType = "query")
     public ResultUtil<ExpPriceProfitDto> get(@NotNull(message = "价格表id不能为空") Long priceId){
-        ExpPriceProfitDto profit = priceExpProfitService.getProfit(priceId, 0L);
+        ExpPriceProfitDto profit = priceExpProfitService.getIncreaseProfitList(priceId);
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS ,profit);
     }

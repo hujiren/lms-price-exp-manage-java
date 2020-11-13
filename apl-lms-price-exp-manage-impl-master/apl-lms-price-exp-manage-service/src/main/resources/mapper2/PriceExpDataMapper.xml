@@ -55,4 +55,5 @@
         update price_exp_data set price_data = #{allHeadCell,typeHandler=com.apl.lms.price.exp.lib.typeHandler.CommonJsonbHandler} where id = #{priceDataId}
     </update>
 
+
 </mapper>

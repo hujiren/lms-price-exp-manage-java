@@ -18,10 +18,11 @@ import org.springframework.stereotype.Repository;
 public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
 
     /**
-     * @Desc: 查找列表
+     * @Desc: 查找利润
      * @Author: ${cfg.author}
      * @Date: 2020-09-11
      */
+    @SqlParser(filter = true)
     PriceExpProfitPo getProfit(@Param("priceId") Long priceId);
 
     /**
@@ -38,8 +39,6 @@ public interface PriceExpProfitMapper extends BaseMapper<PriceExpProfitPo> {
      */
     Long exists(Long id);
 
-    @SqlParser(filter = true)
-    PriceExpProfitPo getQuotePriceSaleProfit(Long quotePriceId);
 
 
 }

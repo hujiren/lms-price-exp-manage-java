@@ -20,6 +20,6 @@ public interface UnifyProfitService extends IService<UnifyExpPricePo> {
     Integer del(List<Long> ids);
 
     //获取列表
-    List<UnifyProfitDto> getList(Long customerGroupId);
+    List<UnifyProfitDto> getList(Long customerGroupId, Long tenantId);
 
 }

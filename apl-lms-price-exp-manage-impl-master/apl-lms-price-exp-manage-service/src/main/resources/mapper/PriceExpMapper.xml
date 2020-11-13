@@ -46,13 +46,13 @@
             and now() > end_date
         </if>
         <if test="key.specialCommodity > 0">
-            and FIND_IN_SET(#{key.specialCommodity,special_commodity})
+            and FIND_IN_SET(#{key.specialCommodity},special_commodity)
         </if>
         <if test="key.customerGroupId != null">
-            and FIND_IN_SET(#{key.customerGroupId,customer_group_id})
+            and FIND_IN_SET(#{key.customerGroupId},customer_group_id)
         </if>
         <if test="key.customerId != null">
-            and FIND_IN_SET(#{key.customerId,customer_ids})
+            and FIND_IN_SET(#{key.customerId},customer_ids)
         </if>
         <if test="key.channelCategory != null">
             and channel_category = #{key.channelCategory}
@@ -147,9 +147,9 @@
         insert into
              lms_exp_price(
              id, start_date, end_date, currency, account_type, account_no, special_commodity, price_format, start_weight, end_weight,
-             price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name, quote_price_customer_id,
-             price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_group_id, quote_price_customer_group_id,
-             customer_group_name, customer_ids, customer_name, upd_time, quote_price_upd_time, is_quote, syn_status, quote_tenant_code, add_profit_way)
+             price_published_id, is_published_price, aging, volume_divisor, zone_id, price_data_id, price_code, price_name,
+             price_sale_name, channel_category, price_status, quote_price_id, partner_id, partner_name, customer_group_id,
+             customer_group_name, customer_ids, customer_name, upd_time, quote_price_upd_time, is_quote, syn_status, add_profit_way)
          values
              (#{po.id},
              #{po.startDate},
@@ -169,7 +169,6 @@
              #{po.priceDataId},
              #{po.priceCode},
              #{po.priceName},
-             #{po.quotePriceCustomerId},
              #{po.priceSaleName},
              #{po.channelCategory},
              #{po.priceStatus},
@@ -177,7 +176,6 @@
              #{po.partnerId},
              #{po.partnerName},
              #{po.customerGroupId},
-             #{po.quotePriceCustomerGroupId},
              #{po.customerGroupName},
              #{po.customerIds},
              #{po.customerName},
@@ -185,7 +183,6 @@
              #{po.quotePriceUpdTime},
              #{po.isQuote},
              #{po.synStatus},
-             #{po.quoteTenantCode},
              #{po.addProfitWay})
      </insert>
 
@@ -339,7 +336,8 @@
     <!--获取租户和价格数据表id-->
     <select id="getPriceInfo" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
         select
-            id, quote_price_id, inner_org_id, price_data_id, price_format, upd_time, quote_price_upd_time, channel_category, zone_id, end_date, price_name, add_profit_way
+            id, quote_price_id, inner_org_id, price_data_id, price_format, upd_time, quote_price_upd_time,
+            channel_category, zone_id, end_date, price_name, add_profit_way, partner_id
          from lms_exp_price where id = #{id}
     </select>
 

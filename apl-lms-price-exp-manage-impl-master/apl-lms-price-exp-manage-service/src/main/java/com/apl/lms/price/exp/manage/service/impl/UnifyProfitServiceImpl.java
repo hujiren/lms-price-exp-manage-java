@@ -1,6 +1,8 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.apl.lib.security.SecurityUser;
+import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.price.exp.manage.mapper.UnifyProfitMapper;
 import com.apl.lms.price.exp.manage.service.UnifyProfitService;
@@ -72,12 +74,17 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
      * @return
      */
     @Override
-    public List<UnifyProfitDto> getList(Long customerGroupId) {
+    public List<UnifyProfitDto> getList(Long customerGroupId, Long tenantId) {
+
+        if(tenantId.equals(0)){
+            SecurityUser securityUser =  CommonContextHolder.getSecurityUser();
+            tenantId = securityUser.getInnerOrgId();
+        }
 
         List<UnifyProfitDto> priceExpProfitDtoList = new ArrayList<>();
         if(null == customerGroupId)
             customerGroupId = 0L;
-        List<UnifyExpPricePo> unifyProfit = baseMapper.getUnifyProfit(customerGroupId);
+        List<UnifyExpPricePo> unifyProfit = baseMapper.getUnifyProfit(customerGroupId, tenantId);
 
         for (UnifyExpPricePo unifyExpPricePo : unifyProfit) {
             UnifyProfitDto unifyProfitDto = handCustomerGroupPoToDto(unifyExpPricePo);

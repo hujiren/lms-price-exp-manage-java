@@ -55,8 +55,8 @@ public class UnifyProfitController {
     @ApiOperation(value = "查询统一利润列表", notes = "按或者不按客户组id查询")
     @ApiImplicitParam(name = "customerGroupId", value = "客户组id", required = false, paramType = "query")
     public ResultUtil<List<UnifyProfitDto>> getList(Long customerGroupId) {
-        List<UnifyProfitDto> resultList = unifyProfitService.getList(customerGroupId);
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, resultList);
+        List<UnifyProfitDto> list = unifyProfitService.getList(customerGroupId, 0L);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, list);
     }
 
 }

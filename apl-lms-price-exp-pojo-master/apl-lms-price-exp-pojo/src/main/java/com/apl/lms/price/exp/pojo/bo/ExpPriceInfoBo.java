@@ -56,4 +56,7 @@ public class ExpPriceInfoBo {
 
     @ApiModelProperty(name = "addProfitWay", value = "添加利润方式")
     private Integer addProfitWay;
+
+    @ApiModelProperty(name = "partnerId", value = "服务商Id")
+    private Long partnerId;
 }

@@ -19,12 +19,14 @@ public class Develop2Dao {
 
 //        adbHelpeReal.saveBatch() 公式/附加费批量更新用这个
     public Integer updSurcharge(List<PriceSurchargePo> newList, List<Long> oldSurchargeIds) throws Exception {
-        Integer result = adbHelperReal.saveBatch(newList, oldSurchargeIds, "price_surcharge", "id", true);
+        Integer result = adbHelperReal.saveBatch(newList, oldSurchargeIds, "price_surcharge", "id", false);
+
         return result;
     }
 
     public Integer updComputation(List<PriceExpComputationalFormulaPo> newList, List<Long> oldComputationIds) throws Exception {
-        Integer result = adbHelperReal.saveBatch(newList, oldComputationIds, "price_computational_formula", "id", true);
+        Integer result = adbHelperReal.saveBatch(newList, oldComputationIds, "price_computational_formula", "id", false);
+
         return result;
     }
 
