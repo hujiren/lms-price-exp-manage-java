@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
  * @since 2020-09-11
  */
 @RestController
-@RequestMapping(value = "/price_exp_profit")
+@RequestMapping(value = "/price-exp-profit")
 @Validated
 @Api(value = "报价利润", tags = "报价利润")
 @Slf4j

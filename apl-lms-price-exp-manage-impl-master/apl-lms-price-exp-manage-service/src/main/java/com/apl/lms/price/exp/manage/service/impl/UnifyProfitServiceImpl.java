@@ -126,7 +126,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
             for (int i = 0; i < customerGroupIdArr.length; i++) {
                 CustomerGroupBo customerGroupBo = new CustomerGroupBo();
                 if(null != customerGroupIdArr[i] && !customerGroupIdArr[i].equals("")) {
-                    customerGroupBo.setId(Long.valueOf(customerGroupIdArr[i]));
+                    customerGroupBo.setCustomerGroupId(Long.valueOf(customerGroupIdArr[i]));
                 }
                 customerGroupBo.setCustomerGroupName(customerGroupNameArr[i]);
                 customerGroupDtoList.add(customerGroupBo);
@@ -151,7 +151,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
                     customerGroupId.append(",");
                 if (customerGroupName.length() > 0)
                     customerGroupName.append(", ");
-                customerGroupId.append(customerGroupDto.getId());
+                customerGroupId.append(customerGroupDto.getCustomerGroupId());
                 customerGroupName.append(customerGroupDto.getCustomerGroupName());
             }
             unifyExpPricePo.setCustomerGroupId(customerGroupId.toString());

@@ -7,15 +7,15 @@ package com.apl.lms.price.exp.pojo.bo;
  */
 public class CustomerGroupBo {
 
-    private Long id;
+    private Long customerGroupId;
     private String customerGroupName;
 
-    public Long getId() {
-        return id;
+    public Long getCustomerGroupId() {
+        return customerGroupId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCustomerGroupId(Long customerGroupId) {
+        this.customerGroupId = customerGroupId;
     }
 
     public String getCustomerGroupName() {

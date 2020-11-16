@@ -239,6 +239,9 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
                         String format = df.format(priceVal);
                         Double format1 = Double.parseDouble(format);
                         priceData.get(rowIndex + 1).set(colIndex, format);
+
+                        // <span class=\"noProfit\">142</span>
+                        // 142
                         cells2.add(format1);
                     }
                 }

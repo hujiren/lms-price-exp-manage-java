@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apl.lms.price.exp.manage.mapper.PriceIncreaseProfitMapper">
+
+    <select id="getList" resultType="com.apl.lms.price.exp.pojo.po.PriceIncreaseProfitPo">
+        select
+            id, price_id, customer_group_ids, customer_group_names, zone_num, country_code, start_Weight, end_weight, first_weight_profit,
+            unit_weight_profit, proportion_profit
+        from
+            price_increase_profit
+        where
+            price_id = #{priceId}
+    </select>
+</mapper>

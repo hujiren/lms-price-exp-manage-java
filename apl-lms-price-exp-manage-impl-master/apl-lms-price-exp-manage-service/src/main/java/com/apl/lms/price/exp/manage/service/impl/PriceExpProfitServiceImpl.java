@@ -221,7 +221,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                 List<CustomerGroupBo> customerGroups = profitDto.getCustomerGroups();
                 if(null != customerGroups && customerGroups.size() > 0){
                     for (CustomerGroupBo customerGroup : customerGroups) {
-                        if(customerGroup.getId().equals(customerGroupId)){
+                        if(customerGroup.getCustomerGroupId().equals(customerGroupId)){
                             increaseProfitList.add(profitDto);
                             break;
                         }
