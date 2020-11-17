@@ -18,7 +18,7 @@ import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.apl.lms.net.PartnerNetService;
 import com.apl.lms.net.pojo.bo.PartnerApiInfoBo;
 import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
-import com.apl.lms.price.exp.manage.dao.Develop2Dao;
+import com.apl.lms.price.exp.manage.dao.DevelopDao;
 import com.apl.lms.price.exp.manage.dao.PriceListDao;
 import com.apl.lms.price.exp.manage.mapper.PriceExpMapper;
 import com.apl.lms.price.exp.manage.service.*;
@@ -114,7 +114,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     PriceSurchargeService priceSurchargeService;
 
     @Autowired
-    Develop2Dao develop2Dao;
+    DevelopDao developDao;
 
     @Autowired
     PriceZoneDataService priceZoneDataService;
@@ -331,7 +331,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                     ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg, null);
         }
 
-        PriceExpDataObjVo priceExpData = priceExpDataService.getPriceExpData(expPriceInfoBo, priceId, isSaleProfit, customerGroupId);
+        PriceExpDataObjVo priceExpData = priceExpDataService.getPriceExpData(expPriceInfoBo, priceId, isSaleProfit, customerGroupId, false);
 
         return priceExpData;
     }
@@ -742,7 +742,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                         priceSurchargePo.setId(SnowflakeIdWorker.generateId());
                     }
                     List<Long> surchargeIds = priceSurchargeService.getIdBatch(priceId);
-                    develop2Dao.updSurcharge(quotePriceSurchargeList, surchargeIds);
+                    developDao.updSurcharge(quotePriceSurchargeList, surchargeIds);
                 }
 
                 //获取及更新公式并替换掉自己的公式:多行
@@ -753,7 +753,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                         priceExpComputationalFormulaPo.setId(SnowflakeIdWorker.generateId());
                     }
                     List<Long> computationIds = computationalFormulaService.getIdBatch(priceId);
-                    develop2Dao.updComputation(quoteComputationList, computationIds);
+                    developDao.updComputation(quoteComputationList, computationIds);
                 }
 
                 //获取引用价格利润
@@ -899,7 +899,15 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
     }
 
-
+    /**
+     * 新增价格表
+     * @param priceExpAddDto
+     * @param quotePriceId
+     * @param priceDataId
+     * @param quoteTenantCode
+     * @return
+     * @throws Exception
+     */
     ResultUtil<Long> addExpPriceBase(PriceExpAddBaseDto priceExpAddDto, Long quotePriceId, Long priceDataId, String quoteTenantCode) throws Exception {
 
         //不是公布价且不是成本价且不是销售价, 有服务商即成本价, 允许既是公布价又是成本价
@@ -1095,7 +1103,12 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         return baseMapper.updPrice(priceExpMainPo);
     }
 
-
+    /**
+     * 处理客户和客户组
+     * @param customerGroup
+     * @param customer
+     * @return
+     */
     public ExpPriceInnerClass disposeCustomerGroupAndCustomer(List<CustomerGroupDto> customerGroup, List<CustomerDto> customer) {
 
         ExpPriceInnerClass expPriceInnerClass = new ExpPriceInnerClass();

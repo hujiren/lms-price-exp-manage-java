@@ -4,6 +4,7 @@ import com.apl.lms.price.exp.pojo.po.CarrierPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.apl.lib.utils.ResultUtil;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -52,5 +53,5 @@ public interface CarrierService extends IService<CarrierPo> {
          * @param innerOrgId
          * @return
          */
-        ResultUtil<List<CarrierPo>> getListByInnerOrgId(Long innerOrgId);
+        ResultUtil<List<CarrierPo>> getListByInnerOrgId(Long innerOrgId) throws IOException, Exception;
 }

@@ -43,12 +43,6 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      */
     ExpPriceProfitDto getProfit(Long priceId, Long customerGroupId, Integer addProfitWay, Long tenantId);
 
-    /**
-     * 获取增加的利润
-     * @param priceId
-     * @return
-     */
-    ExpPriceProfitDto getIncreaseProfitList(Long priceId);
 
     /**
      * 批量删除

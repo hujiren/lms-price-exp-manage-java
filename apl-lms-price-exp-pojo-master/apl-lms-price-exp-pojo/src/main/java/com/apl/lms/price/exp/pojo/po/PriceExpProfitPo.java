@@ -29,9 +29,6 @@ public class PriceExpProfitPo extends Model<PriceExpProfitPo> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
-    @ApiModelProperty(name = "increaseProfit", value = "上调的利润", required = true)
-    private String increaseProfit;
-
     @ApiModelProperty(name = "costProfit", value = "成本利润", hidden = true)
     private String costProfit;
 

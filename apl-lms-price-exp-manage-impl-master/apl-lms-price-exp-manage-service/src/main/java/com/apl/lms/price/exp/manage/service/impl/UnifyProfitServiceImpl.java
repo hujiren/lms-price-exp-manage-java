@@ -76,7 +76,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
     @Override
     public List<UnifyProfitDto> getList(Long customerGroupId, Long tenantId) {
 
-        if(tenantId.equals(0)){
+        if(tenantId < 1){
             SecurityUser securityUser =  CommonContextHolder.getSecurityUser();
             tenantId = securityUser.getInnerOrgId();
         }

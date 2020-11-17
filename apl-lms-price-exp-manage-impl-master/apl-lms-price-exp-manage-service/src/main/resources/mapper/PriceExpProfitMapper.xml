@@ -6,7 +6,6 @@
     <select id="getProfit" resultType="com.apl.lms.price.exp.pojo.po.PriceExpProfitPo">
         SELECT
            id, 
-           increase_profit,
            cost_profit
         FROM
            price_exp_profit

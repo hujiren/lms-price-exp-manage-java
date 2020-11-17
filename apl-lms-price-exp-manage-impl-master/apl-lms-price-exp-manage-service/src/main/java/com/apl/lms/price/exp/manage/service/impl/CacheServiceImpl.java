@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -29,11 +30,11 @@ public class CacheServiceImpl implements CacheService {
     CacheMapper cacheMapper;
 
     @Override
-    public ResultUtil<Boolean> addPartnerCache(String keys, Long minKey, Long maxKey) {
+    public ResultUtil<Boolean> addPartnerCache(String keys, Long minKey, Long maxKey) throws IOException {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
         Map<String, PartnerCacheBo> maps = cacheMapper.addPartnerCache(keys, minKey, maxKey, securityUser.getInnerOrgId());
         if(null != maps && maps.size()>0) {
-            aplCacheUtil.opsForValue().multiSet(maps);
+            aplCacheUtil.opsForValue().set(maps);
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);

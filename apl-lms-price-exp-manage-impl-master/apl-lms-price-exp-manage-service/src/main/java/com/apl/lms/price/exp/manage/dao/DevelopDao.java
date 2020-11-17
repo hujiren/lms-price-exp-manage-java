@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class Develop2Dao {
+public class DevelopDao {
 
     AdbHelper adbHelperReal;
 
-    public Develop2Dao(){
+    public DevelopDao(){
         // 创建真实数据源JDBC
-        adbHelperReal = new AdbHelper("develop2");
+        adbHelperReal = new AdbHelper("develop");
     }
 
 //        adbHelpeReal.saveBatch() 公式/附加费批量更新用这个

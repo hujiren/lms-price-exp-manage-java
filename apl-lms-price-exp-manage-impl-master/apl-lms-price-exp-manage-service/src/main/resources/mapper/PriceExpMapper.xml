@@ -379,7 +379,7 @@
     <!--批量获取价格表信息-->
     <select id="getPriceInfoByIds" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
         select
-            id, quote_price_id, inner_org_id, price_data_id, price_format, upd_time, quote_price_upd_time, channel_category, zone_id, end_date, price_name, currency
+            id, quote_price_id, inner_org_id, price_data_id, price_format, upd_time, quote_price_upd_time, channel_category, zone_id, end_date, price_name, currency, add_profit_way
         from lms_exp_price where id in
         <foreach collection="ids" close=")" item="row" open="(" separator=",">
             #{row}

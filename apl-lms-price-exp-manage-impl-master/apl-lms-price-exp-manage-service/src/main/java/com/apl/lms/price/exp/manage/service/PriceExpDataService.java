@@ -1,9 +1,7 @@
 package com.apl.lms.price.exp.manage.service;
 
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
-import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpAddDto;
-import com.apl.lms.price.exp.pojo.dto.WeightSectionDto;
 import com.apl.lms.price.exp.pojo.dto.WeightSectionUpdDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpDataPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataObjVo;
@@ -27,7 +25,7 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      * @param customerGroupId
      * @return
      */
-    PriceExpDataObjVo getPriceExpData(ExpPriceInfoBo expPriceInfoBo, Long priceId, Boolean isSaleProfit, Long customerGroupId) throws Exception;
+    PriceExpDataObjVo getPriceExpData(ExpPriceInfoBo expPriceInfoBo, Long priceId, Boolean isSaleProfit, Long customerGroupId, boolean isExport) throws Exception;
 
     /**
      * 根据价格表id获取主数据信息
@@ -64,13 +62,5 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      */
     List<String> updHeadCells(WeightSectionUpdDto weightSectionUpdDto,List<String> headCells);
 
-    /**
-     * 一个单元格价格添加利润
-     * @param priceVal
-     * @param zoneAndCountry
-     * @param weightSectionDto
-     * @param profitBoList
-     * @return
-     */
-    Double cellPriceAddProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> profitBoList);
+
 }

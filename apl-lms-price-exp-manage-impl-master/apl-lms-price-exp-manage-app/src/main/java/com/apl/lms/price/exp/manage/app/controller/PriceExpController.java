@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -207,7 +208,7 @@ public class PriceExpController {
 
     @GetMapping(value = "/export-exp-price")
     @ApiOperation(value = "导出成本价快递价格", notes = "导出成本价快递价格")
-    public void exportExpPrice(HttpServletResponse response, String ids) throws Exception {
+    public void exportExpPrice(HttpServletResponse response, @NotBlank(message = "id不能为空") String ids) throws Exception {
 
         List<Long> priceIdList =  StringUtil.stringToLongList(ids);
         exportPricePrice.exportExpPrice(response, priceIdList, 0l);
@@ -216,7 +217,9 @@ public class PriceExpController {
 
     @GetMapping(value = "/export-sale-exp-price")
     @ApiOperation(value = "导出销售价快递价格", notes = "导出销售价快递价格")
-    public void exportSaleExpPrice(HttpServletResponse response, String ids, Long customerGroupId) throws Exception {
+    public void exportSaleExpPrice(HttpServletResponse response,
+                                   @NotBlank(message = "id不能为空") String ids,
+                                   @NotNull(message = "客户组id不能为空") Long customerGroupId) throws Exception {
 
         List<Long> priceIdList =  StringUtil.stringToLongList(ids);
         exportPricePrice.exportExpPrice(response, priceIdList, customerGroupId);

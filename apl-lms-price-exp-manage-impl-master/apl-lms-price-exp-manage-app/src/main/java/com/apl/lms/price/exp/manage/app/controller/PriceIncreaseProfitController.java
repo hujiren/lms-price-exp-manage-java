@@ -40,7 +40,7 @@ public class PriceIncreaseProfitController {
 
     @PostMapping(value = "/delete-batch")
     @ApiOperation(value =  "批量删除" , notes = "根据id批量删除")
-    public ResultUtil<Boolean> del(@NotEmpty(message = "id不能为空") List<Long> ids){
+    public ResultUtil<Boolean> del(@NotEmpty(message = "id不能为空") @RequestBody List<Long> ids){
 
         return priceIncreaseProfitService.deleteBatch(ids);
     }

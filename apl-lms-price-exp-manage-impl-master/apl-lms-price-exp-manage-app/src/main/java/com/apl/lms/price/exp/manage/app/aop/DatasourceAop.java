@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.app.aop;
 
 import com.apl.cache.AplCacheUtil;
+import com.apl.cache.jedis.JedisConnect;
 import com.apl.lib.constants.CommonAplConstants;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
@@ -52,6 +53,9 @@ public class DatasourceAop {
 
             Object[] args = pjp.getArgs();
             proceed = pjp.proceed(args);
+
+            //释放当前线程redis连接池
+            JedisConnect.close();
 
         } catch (Throwable e) {
             throw e;

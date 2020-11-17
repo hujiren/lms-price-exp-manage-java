@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 /**
  * @author hjr start
  * @date 2020-08-18 17:33
@@ -25,7 +27,7 @@ public class CacheController {
 
     @PostMapping("/add-partner-cache")
     @ApiOperation(value = "添加服务商缓存")
-    public ResultUtil<Boolean> addPartnerCache(@RequestParam("keys") String keys, Long minKey, Long maxKey){
+    public ResultUtil<Boolean> addPartnerCache(@RequestParam("keys") String keys, Long minKey, Long maxKey) throws IOException {
         return cacheService.addPartnerCache(keys, minKey, maxKey);
     }
 }

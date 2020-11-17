@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lib.utils.StringUtil;
 import com.apl.lms.net.PartnerNetService;
 import com.apl.lms.net.pojo.bo.PartnerApiInfoBo;
 import com.apl.lms.price.exp.manage.dao.PriceListDao;
@@ -64,237 +65,6 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
 
     @Autowired
     PriceListDao priceListDao;
-
-    public PriceExpDataObjVo getPriceExpData(ExpPriceInfoBo expPriceInfoBo, Long priceId, Boolean isSaleProfit, Long customerGroupId) throws Exception {
-
-        Long priceDataId = expPriceInfoBo.getPriceDataId();
-        DecimalFormat df = new DecimalFormat("#.0");
-
-        //转换原始价格数据start
-
-        //获取价格表数据返回对象
-        PriceExpDataVo priceExpDataInfo = getPriceExpDataInfoByPriceId(priceDataId);
-        //价格表数据
-        List<List<String>> priceData = priceExpDataInfo.getPriceData();
-        Pattern pattern = Pattern.compile("^(\\-|\\+)?\\d+(\\.\\d+)?$");
-
-        //转换类型
-        List<List<Object>> priceDataVo = new ArrayList<>();
-        for (List<String> priceDatum : priceData) {
-            List<Object> priceDataObj = new ArrayList<>();
-            for (String str : priceDatum) {
-                Matcher isNum = pattern.matcher(str);
-                if (isNum.matches()) {
-                    Double var1 = Double.parseDouble(str);
-                    String format = df.format(var1);
-                    Double element = Double.parseDouble(format);
-                    priceDataObj.add(element);
-                } else {
-                    priceDataObj.add(str);
-                }
-            }
-            priceDataVo.add(priceDataObj);
-        }
-        //转换原始价格数据end
-
-        ExpPriceProfitDto profitDto = null;
-        PriceExpDataObjVo expDataObjVo = null;
-        List<PriceExpProfitDto> costProfit = null;
-        List<PriceExpProfitDto> increaseProfit = null;
-        Integer addProfitWay = expPriceInfoBo.getAddProfitWay();
-        if (!isSaleProfit && expPriceInfoBo.getQuotePriceId() > 0) {
-            //如果是引用服务商的价格, 成本价必须为服务商的销售利润
-            PartnerApiInfoBo partnerApiInfoBo = PartnerNetService.getSysApiInfo(expPriceInfoBo.getPartnerId());
-            if(null != partnerApiInfoBo) {
-                //获取引用价格租户id  客户组id
-                Long quotePriceTenantId = partnerApiInfoBo.getSysTenantId();
-                Long quotePriceCustomerGroupId = partnerApiInfoBo.getCustomerGroupId();
-                String quotePriceTenantCode = partnerApiInfoBo.getSysTenantCode();
-
-                //获取引用价格的addProfitWay
-                Integer quotePriceProfitWay = priceListDao.getPriceProfitWay(expPriceInfoBo.getQuotePriceId(), quotePriceTenantCode);
-
-                //获取引用价格的利润, 根据 addProfitWay 得到costProfit 和 increaseProfit或者unifyProfit 或者 null
-                if(null != quotePriceProfitWay)
-                    profitDto = priceExpProfitService.getProfit(expPriceInfoBo.getQuotePriceId(), quotePriceCustomerGroupId, quotePriceProfitWay, quotePriceTenantId);
-
-                if (null != profitDto)
-                    increaseProfit = profitDto.getIncreaseProfit();
-            }
-        }
-
-        if(null == profitDto)  {
-            //如果是销售价, 或者没有引用价格的成本价, 销售价, 则根据自身价格的addProfitWay获取自己表中的利润
-            profitDto = priceExpProfitService.getProfit(priceId, customerGroupId, addProfitWay, 0l);
-
-            if(isSaleProfit && null != profitDto)
-                increaseProfit = profitDto.getIncreaseProfit();
-        }
-
-        if(null != profitDto){
-            costProfit = profitDto.getCostProfit();
-            //加利润
-            expDataObjVo = addProfitToThePrice(priceId, expPriceInfoBo, priceDataVo, costProfit, increaseProfit);
-
-        }else{
-            //没有利润，直接原价
-            expDataObjVo = new PriceExpDataObjVo();
-            expDataObjVo.setPriceData(priceDataVo);
-        }
-
-        expDataObjVo.setPriceDataId(priceDataId);
-
-        return expDataObjVo;
-    }
-
-    //加利润
-    private PriceExpDataObjVo addProfitToThePrice(Long priceId,
-                                                 ExpPriceInfoBo priceInfoBo,
-                                                 List<List<Object>> priceData,
-                                                 List<PriceExpProfitDto> costProfitList,
-                                                 List<PriceExpProfitDto> increaseProfitList) {
-        DecimalFormat df = new DecimalFormat("#.0");
-
-        //给利润组装分区和国家
-        List<PriceExpProfitMergeBo> costProfitList2 = assembleZoneAndCountryForProfit(costProfitList);
-
-        List<PriceExpProfitMergeBo> increaseProfitList2 = null;
-        if(null != increaseProfitList && increaseProfitList.size() > 0){
-            increaseProfitList2 = assembleZoneAndCountryForProfit(increaseProfitList);
-        }
-        List<List<Object>> priceData2 = new ArrayList<>();
-
-        //获取数据轴
-        ResultUtil<PriceExpAxisVo> axisInfoVo = priceExpAxisService.getAxisInfoById(priceId);
-        //轴: 重量段
-        List<WeightSectionDto> weightSections = axisInfoVo.getData().getWeightSection();
-        //轴: 分区国家
-        List<List<String>> zoneAndCountrys = axisInfoVo.getData().getZoneCountry();
-        //价格表格式
-        int priceFormat = priceInfoBo.getPriceFormat();
-
-        //起始列下标
-        int startColIndex = 0;
-        if (priceFormat == 1)
-            startColIndex = weightSections.get(0).getIndex();
-        else
-            startColIndex = 1;
-
-        List<String> zoneAndCountry = null;
-        WeightSectionDto weightSectionDto = null;
-        List<Object> objectList = priceData.get(0);
-        priceData2.add(objectList);
-
-        for (int rowIndex = 0; rowIndex < priceData.size() - 1; rowIndex++) {
-
-            if (priceFormat == 1) {
-                if (rowIndex < zoneAndCountrys.size())
-                    zoneAndCountry = zoneAndCountrys.get(rowIndex);
-            } else if (priceFormat == 2) {
-                if (rowIndex < weightSections.size())
-                    weightSectionDto = weightSections.get(rowIndex);
-            }
-
-            //除首行以外的行
-            List<Object> cells = priceData.get(rowIndex + 1);
-            List<Object> cells2 = new ArrayList<>();
-
-            for (int colIndex = 0; colIndex < startColIndex; colIndex++) {
-                Object priceStr = cells.get(colIndex);
-                cells2.add(priceStr);
-            }
-            //代表着重量段中的index属性
-            for (int colIndex = startColIndex; colIndex < cells.size(); colIndex++) {
-
-                if (priceFormat == 1) {
-                    if (colIndex - 1 < weightSections.size()) {
-                        if (colIndex == 0)
-                            weightSectionDto = weightSections.get(colIndex);
-                        else
-                            weightSectionDto = weightSections.get(colIndex - 1);
-                    }
-                } else if (priceFormat == 2) {
-                    if (colIndex - 1 < zoneAndCountrys.size()) {
-                        if (colIndex == 0)
-                            zoneAndCountry = zoneAndCountrys.get(colIndex);
-                        else
-                            zoneAndCountry = zoneAndCountrys.get(colIndex - 1);
-                    }
-                }
-
-                String priceStr = cells.get(colIndex).toString();
-                if (null != priceStr && priceStr.length() > 0) {
-                    priceStr = priceStr.replaceAll(",", "");
-                    if(priceStr.contains("*"))
-                        cells2.add(priceStr);
-                    else{
-                        Double priceVal = Double.parseDouble(priceStr);
-
-                        //加成本利润
-                        priceVal = cellPriceAddProfit(priceVal, zoneAndCountry, weightSectionDto, costProfitList2);
-
-                        //本价格增加的利润
-                        priceVal = cellPriceAddProfit(priceVal, zoneAndCountry, weightSectionDto, increaseProfitList2);
-
-                        String format = df.format(priceVal);
-                        Double format1 = Double.parseDouble(format);
-                        priceData.get(rowIndex + 1).set(colIndex, format);
-
-                        // <span class=\"noProfit\">142</span>
-                        // 142
-                        cells2.add(format1);
-                    }
-                }
-            }
-            priceData2.add(cells2);
-        }
-        PriceExpDataObjVo objVo = new PriceExpDataObjVo();
-        objVo.setPriceDataId(priceInfoBo.getPriceDataId());
-        objVo.setPriceData(priceData2);
-        return objVo;
-    }
-
-
-    /**
-     * 给利润组装分区和国家简码
-     * @param profitDtoList
-     * @return
-     */
-    public List<PriceExpProfitMergeBo> assembleZoneAndCountryForProfit(List<PriceExpProfitDto> profitDtoList){
-
-        List<PriceExpProfitMergeBo> profitBoList = new ArrayList<>();
-        if(null == profitDtoList)
-            return Collections.emptyList();
-
-        for (PriceExpProfitDto profitDto : profitDtoList) {
-            PriceExpProfitMergeBo priceExpProfitMergeBo = new PriceExpProfitMergeBo();
-            BeanUtil.copyProperties(profitDto, priceExpProfitMergeBo);
-
-            //将国家简码组装成List
-            if (null != priceExpProfitMergeBo && null != priceExpProfitMergeBo.getCountryCode()) {
-                String[] countryCodeArray = priceExpProfitMergeBo.getCountryCode().split(",");
-                List<String> countryCodeList = strArrayToList(countryCodeArray);
-                priceExpProfitMergeBo.setCountryCodeList(countryCodeList);
-            }
-
-            //将分区号组装成List
-            if (null != priceExpProfitMergeBo && null != priceExpProfitMergeBo.getZoneNum()) {
-                String[] zoneArray = priceExpProfitMergeBo.getZoneNum().split(",");
-                List<String> zoneArrayList = strArrayToList(zoneArray);
-                priceExpProfitMergeBo.setZoneNumList(zoneArrayList);
-            }
-
-            //如果起始重,截止重为空, 则设为默认值 0.0 ~ 10000.0
-            if (null == priceExpProfitMergeBo.getStartWeight())
-                priceExpProfitMergeBo.setStartWeight(0.0);
-            if (null == priceExpProfitMergeBo.getEndWeight() || priceExpProfitMergeBo.getEndWeight().equals(0.0))
-                priceExpProfitMergeBo.setEndWeight(10000.0);
-
-            profitBoList.add(priceExpProfitMergeBo);
-        }
-
-        return profitBoList;
-    }
 
     /**
      * 将String数组转换为List
@@ -403,6 +173,247 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         return newHeadCells;
     }
 
+    public PriceExpDataObjVo getPriceExpData(ExpPriceInfoBo expPriceInfoBo, Long priceId, Boolean isSaleProfit, Long customerGroupId, boolean isExport) throws Exception {
+
+        Long priceDataId = expPriceInfoBo.getPriceDataId();
+        DecimalFormat df = new DecimalFormat("#.0");
+
+        //转换原始价格数据start
+
+        //获取价格表数据返回对象
+        PriceExpDataVo priceExpDataInfo = getPriceExpDataInfoByPriceId(priceDataId);
+        //价格表数据
+        List<List<String>> priceData = priceExpDataInfo.getPriceData();
+        Pattern pattern = Pattern.compile("^(\\-|\\+)?\\d+(\\.\\d+)?$");
+
+        //转换类型
+        List<List<Object>> priceDataVo = new ArrayList<>();
+        for (List<String> priceDatum : priceData) {
+            List<Object> priceDataObj = new ArrayList<>();
+            for (String str : priceDatum) {
+                Matcher isNum = pattern.matcher(str);
+                if (isNum.matches()) {
+                    Double var1 = Double.parseDouble(str);
+                    String format = df.format(var1);
+                    Double element = Double.parseDouble(format);
+                    priceDataObj.add(element);
+                } else {
+                    priceDataObj.add(str);
+                }
+            }
+            priceDataVo.add(priceDataObj);
+        }
+        //转换原始价格数据end
+
+        ExpPriceProfitDto profitDto = null;
+        PriceExpDataObjVo expDataObjVo = null;
+        List<PriceExpProfitDto> costProfit = null;
+        List<PriceExpProfitDto> increaseProfit = null;
+        Integer addProfitWay = expPriceInfoBo.getAddProfitWay();
+        if (!isSaleProfit && expPriceInfoBo.getQuotePriceId() > 0) {
+            //如果是引用服务商的价格, 成本价必须为服务商的销售利润
+            PartnerApiInfoBo partnerApiInfoBo = null;
+            try{
+                partnerApiInfoBo = PartnerNetService.getSysApiInfo(expPriceInfoBo.getPartnerId());
+            }
+            catch (Exception e){
+
+            }
+            if(null != partnerApiInfoBo) {
+                //获取引用价格租户id  客户组id
+                Long quotePriceTenantId = partnerApiInfoBo.getSysTenantId();
+                Long quotePriceCustomerGroupId = partnerApiInfoBo.getCustomerGroupId();
+                String quotePriceTenantCode = partnerApiInfoBo.getSysTenantCode();
+
+                //获取引用价格的addProfitWay
+                Integer quotePriceProfitWay = priceListDao.getPriceProfitWay(expPriceInfoBo.getQuotePriceId(), quotePriceTenantCode);
+
+                //获取引用价格的利润, 根据 addProfitWay 得到costProfit 和 increaseProfit或者unifyProfit 或者 null
+                if(null != quotePriceProfitWay)
+                    profitDto = priceExpProfitService.getProfit(expPriceInfoBo.getQuotePriceId(), quotePriceCustomerGroupId, quotePriceProfitWay, quotePriceTenantId);
+
+                if (null != profitDto)
+                    increaseProfit = profitDto.getIncreaseProfit();
+            }
+        }
+
+        if(null == profitDto)  {
+            //如果是销售价, 或者没有引用价格的成本价, 销售价, 则根据自身价格的addProfitWay获取自己表中的利润
+            profitDto = priceExpProfitService.getProfit(priceId, customerGroupId, addProfitWay, 0l);
+
+            if(isSaleProfit && null != profitDto)
+                increaseProfit = profitDto.getIncreaseProfit();
+        }
+
+        if(null != profitDto){
+            costProfit = profitDto.getCostProfit();
+            //加利润
+            expDataObjVo = addProfitToThePrice(priceId, expPriceInfoBo, priceDataVo, costProfit, increaseProfit, isExport);
+
+        }else{
+            //没有利润，直接原价
+            expDataObjVo = new PriceExpDataObjVo();
+            expDataObjVo.setPriceData(priceDataVo);
+        }
+
+        expDataObjVo.setPriceDataId(priceDataId);
+
+        return expDataObjVo;
+    }
+
+    //加利润
+    private PriceExpDataObjVo addProfitToThePrice(Long priceId,
+                                                 ExpPriceInfoBo priceInfoBo,
+                                                 List<List<Object>> priceData,
+                                                 List<PriceExpProfitDto> costProfitList,
+                                                 List<PriceExpProfitDto> increaseProfitList,
+                                                 boolean isExport) {
+        //给利润组装分区和国家
+        List<PriceExpProfitMergeBo> costProfitList2 = assembleZoneAndCountryForProfit(costProfitList);
+
+        List<PriceExpProfitMergeBo> increaseProfitList2 = null;
+        if(null != increaseProfitList && increaseProfitList.size() > 0){
+            increaseProfitList2 = assembleZoneAndCountryForProfit(increaseProfitList);
+        }
+        List<List<Object>> priceData2 = new ArrayList<>();
+
+        //获取数据轴
+        ResultUtil<PriceExpAxisVo> axisInfoVo = priceExpAxisService.getAxisInfoById(priceId);
+        //轴: 重量段
+        List<WeightSectionDto> weightSections = axisInfoVo.getData().getWeightSection();
+        //轴: 分区国家
+        List<List<String>> zoneAndCountrys = axisInfoVo.getData().getZoneCountry();
+        //价格表格式
+        int priceFormat = priceInfoBo.getPriceFormat();
+
+        //起始列下标
+        int startColIndex = 0;
+        if (priceFormat == 1)
+            startColIndex = weightSections.get(0).getIndex();
+        else
+            startColIndex = 1;
+
+        List<String> zoneAndCountry = null;
+        WeightSectionDto weightSectionDto = null;
+        List<Object> objectList = priceData.get(0);
+        priceData2.add(objectList);
+        DecimalFormat df = new DecimalFormat("#.0");
+
+        for (int rowIndex = 0; rowIndex < priceData.size() - 1; rowIndex++) {
+
+            if (priceFormat == 1) {
+                if (rowIndex < zoneAndCountrys.size())
+                    zoneAndCountry = zoneAndCountrys.get(rowIndex);
+            } else if (priceFormat == 2) {
+                if (rowIndex < weightSections.size())
+                    weightSectionDto = weightSections.get(rowIndex);
+            }
+
+            //除首行以外的行
+            List<Object> cells = priceData.get(rowIndex + 1);
+            List<Object> cells2 = new ArrayList<>();
+
+            for (int colIndex = 0; colIndex < startColIndex; colIndex++) {
+                Object priceStr = cells.get(colIndex);
+                cells2.add(priceStr);
+            }
+            //代表着重量段中的index属性
+            for (int colIndex = startColIndex; colIndex < cells.size(); colIndex++) {
+
+                if (priceFormat == 1) {
+                    if (colIndex - 1 < weightSections.size()) {
+                        if (colIndex == 0)
+                            weightSectionDto = weightSections.get(colIndex);
+                        else
+                            weightSectionDto = weightSections.get(colIndex - 1);
+                    }
+                } else if (priceFormat == 2) {
+                    if (colIndex - 1 < zoneAndCountrys.size()) {
+                        if (colIndex == 0)
+                            zoneAndCountry = zoneAndCountrys.get(colIndex);
+                        else
+                            zoneAndCountry = zoneAndCountrys.get(colIndex - 1);
+                    }
+                }
+
+                String priceStr = cells.get(colIndex).toString();
+                if (!StringUtil.isEmpty(priceStr) && !priceStr.contains("*")) {
+                    priceStr = priceStr.replaceAll(",", "");
+                    Double priceVal = Double.parseDouble(priceStr);
+
+                    //加成本利润
+                    PriceCellInfo priceCellInfo = cellPriceAddProfit(priceVal, zoneAndCountry, weightSectionDto, costProfitList2);
+                    priceCellInfo.setExpression(null);
+
+                    //本价格增加的利润
+                    priceCellInfo =  cellPriceAddProfit(priceCellInfo.getValue(), zoneAndCountry, weightSectionDto, increaseProfitList2);
+
+                    String format = df.format(priceCellInfo.getValue());
+                    Double priceVal2 = Double.parseDouble(format);
+                    priceCellInfo.setValue(priceVal2);
+
+                    if(isExport)
+                        cells2.add(priceCellInfo.getValue());
+                    else
+                        cells2.add(priceCellInfo);
+                }
+                else{
+                    cells2.add("");
+                }
+            }
+            priceData2.add(cells2);
+        }
+
+        PriceExpDataObjVo objVo = new PriceExpDataObjVo();
+        objVo.setPriceDataId(priceInfoBo.getPriceDataId());
+        objVo.setPriceData(priceData2);
+
+        return objVo;
+    }
+
+
+    /**
+     * 给利润组装分区和国家简码
+     * @param profitDtoList
+     * @return
+     */
+    public List<PriceExpProfitMergeBo> assembleZoneAndCountryForProfit(List<PriceExpProfitDto> profitDtoList){
+
+        List<PriceExpProfitMergeBo> profitBoList = new ArrayList<>();
+        if(null == profitDtoList)
+            return Collections.emptyList();
+
+        for (PriceExpProfitDto profitDto : profitDtoList) {
+            PriceExpProfitMergeBo priceExpProfitMergeBo = new PriceExpProfitMergeBo();
+            BeanUtil.copyProperties(profitDto, priceExpProfitMergeBo);
+
+            //将国家简码组装成List
+            if (null != priceExpProfitMergeBo && null != priceExpProfitMergeBo.getCountryCode()) {
+                String[] countryCodeArray = priceExpProfitMergeBo.getCountryCode().split(",");
+                List<String> countryCodeList = strArrayToList(countryCodeArray);
+                priceExpProfitMergeBo.setCountryCodeList(countryCodeList);
+            }
+
+            //将分区号组装成List
+            if (null != priceExpProfitMergeBo && null != priceExpProfitMergeBo.getZoneNum()) {
+                String[] zoneArray = priceExpProfitMergeBo.getZoneNum().split(",");
+                List<String> zoneArrayList = strArrayToList(zoneArray);
+                priceExpProfitMergeBo.setZoneNumList(zoneArrayList);
+            }
+
+            //如果起始重,截止重为空, 则设为默认值 0.0 ~ 10000.0
+            if (null == priceExpProfitMergeBo.getStartWeight())
+                priceExpProfitMergeBo.setStartWeight(0.0);
+            if (null == priceExpProfitMergeBo.getEndWeight() || priceExpProfitMergeBo.getEndWeight().equals(0.0))
+                priceExpProfitMergeBo.setEndWeight(10000.0);
+
+            profitBoList.add(priceExpProfitMergeBo);
+        }
+
+        return profitBoList;
+    }
+
+
     /**
      * 一个单元格价格添加利润
      * @param priceVal
@@ -411,11 +422,12 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      * @param profitBoList
      * @return
      */
-    @Override
-    public Double cellPriceAddProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> profitBoList){
+    PriceCellInfo cellPriceAddProfit(Double priceVal, List<String> zoneAndCountry, WeightSectionDto weightSectionDto, List<PriceExpProfitMergeBo> profitBoList){
 
+        PriceCellInfo priceCellInfo = new PriceCellInfo();
+        priceCellInfo.setValue(priceVal);
         if(null==priceVal || priceVal.equals(0) || null==profitBoList || profitBoList.isEmpty()){
-            return  priceVal;
+            return  priceCellInfo;
         }
 
         int countryStartIndex = 0;
@@ -427,7 +439,6 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
 
         Double startWeight = weightSectionDto.getWeightStart();
         Double endWeight = weightSectionDto.getWeightEnd();
-        Double priceValResult = priceVal;
         PriceExpProfitMergeBo findProfitMergeBo = null;
 
         //查找利润
@@ -477,20 +488,46 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
             //找到利润，相加
             if(weightSectionDto.getChargingWay()==1){
                 //首重加
-                priceValResult += findProfitMergeBo.getFirstWeightProfit();
+                priceCellInfo.setValue(priceVal+findProfitMergeBo.getFirstWeightProfit());
+                priceCellInfo.setExpression(priceVal+"+"+findProfitMergeBo.getFirstWeightProfit());
 
             } else if(weightSectionDto.getChargingWay()==2 || weightSectionDto.getChargingWay()==3 || weightSectionDto.getChargingWay()==4){
                 // 单位重加
-                priceValResult += findProfitMergeBo.getUnitWeightProfit();
+                priceCellInfo.setValue(priceVal+findProfitMergeBo.getUnitWeightProfit());
+                priceCellInfo.setExpression(priceVal+"+"+findProfitMergeBo.getUnitWeightProfit());
             }
 
             if(findProfitMergeBo.getProportionProfit()>0) {
                 //比例加
-                priceValResult *= findProfitMergeBo.getProportionProfit();
+                priceCellInfo.setValue(priceVal*findProfitMergeBo.getProportionProfit());
+                priceCellInfo.setExpression(priceVal+"*"+findProfitMergeBo.getProportionProfit());
             }
         }
 
-        return priceValResult;
+        return priceCellInfo;
     }
 
+
+    class PriceCellInfo{
+        private Double value;
+
+        private String expression;
+
+        public Double getValue() {
+
+            return value;
+        }
+
+        public void setValue(Double value) {
+            this.value = value;
+        }
+
+        public String getExpression() {
+            return expression;
+        }
+
+        public void setExpression(String expression) {
+            this.expression = expression;
+        }
+    }
 }

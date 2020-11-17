@@ -103,10 +103,8 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
         try {
 
-            if(null != customerGroupId)
+            if(null == customerGroupId)
                 customerGroupId = 0l;
-
-
 
             //获取价格主表信息
             List<ExpPriceInfoBo> expPriceInfoList = priceExpService.getPriceInfoByIds(ids);
@@ -126,14 +124,16 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 if(null !=  expPriceInfoBo.getZoneName() && expPriceInfoBo.getZoneId() > 0){
                     zoneName = expPriceInfoBo.getZoneName().replace("-", "").replace(" ", "");
                     if (!zoneName.contains("分区"))
-                        zoneName += "分区";
+                        zoneName += "分区表";
                     expPriceInfoBo.setZoneName(zoneName);
 
                     zoneIds.add(expPriceInfoBo.getZoneId());
                 }
 
+                expPriceInfoBo.setPriceName(expPriceInfoBo.getPriceName().replace("-","").replace(" ",""));
+
                 PriceExpDataObjVo priceExpData = priceExpDataService.getPriceExpData(expPriceInfoBo,
-                        expPriceInfoBo.getId(), customerGroupId > 0, customerGroupId);
+                        expPriceInfoBo.getId(), customerGroupId > 0, customerGroupId, true);
 
                 priceDataMap.put(expPriceInfoBo.getId(), priceExpData);
             }
@@ -193,7 +193,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 PriceZoneNamePo priceZoneNamePo = priceZoneNameMap.get(expPriceInfo.getZoneId());
 
                 //填写一个工作表
-                fillPriceShell(excelWriter, priceSheet, expPriceInfo, priceExpRemarkPo, priceZoneNamePo, priceDataList, creationHelper);
+                fillPriceShell(excelWriter, priceSheet, expPriceInfo, priceExpRemarkPo, priceZoneNamePo, priceDataList, creationHelper, xssfCellStyle);
 
                 sheetNo++;
             }
@@ -205,7 +205,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
             //填写分区表
             if (!zoneSheetMaps.isEmpty() && !zoneDataMap.isEmpty()) {
-                fillZone(excelWriter, zoneSheetMaps, zoneDataMap, expPriceInfoList, wb);
+                fillZone(excelWriter, zoneSheetMaps, zoneDataMap, expPriceInfoList, wb, xssfCellStyle, xssfFont);
             }
 
             //web导出
@@ -332,7 +332,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             throw new AplException(ExportPriceEnum.NO_PRICE_LIST_TEMPLATE_FOUND.code,
                     ExportPriceEnum.NO_PRICE_LIST_TEMPLATE_FOUND.msg);
         }
-        //
+
         int sum = 0;
         Map<String, ExpPriceInfoBo> deWeightMap = new HashMap<>();
         for (ExpPriceInfoBo expPriceInfoBo : expPriceInfoList) {
@@ -412,13 +412,14 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                         PriceExpRemarkPo priceExpRemarkPo,
                         PriceZoneNamePo priceZoneNamePo,
                         List<List<Object>> priceDataList,
-                        XSSFCreationHelper creationHelper) {
+                        XSSFCreationHelper creationHelper,
+                        XSSFCellStyle xssfCellStyle) {
 
         //填充价格表模板内容
         fillPriceInfo(excelWriter, priceSheet, expPriceInfo, priceZoneNamePo, creationHelper);
 
         //填写价格表模板内容
-        fillPriceData(excelWriter, priceSheet, priceDataList);
+        fillPriceData(excelWriter, priceSheet, priceDataList, xssfCellStyle);
 
         //填写价格表模板备注
         List<String> saleRemarkList = new ArrayList<>();
@@ -466,12 +467,19 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     //填写报价格信息内容
     private void fillPriceData(ExcelWriter excelWriter,
                                WriteSheet writeSheet,
-                               List<List<Object>> priceDataList) {
+                               List<List<Object>> priceDataList,
+                               XSSFCellStyle xssfCellStyle) {
 
         Sheet sheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
         //查找priceList单元格
         Cell priceListFistCell = findCell(sheet, "priceList");
 
+//        xssfCellStyle.setBorderLeft(BorderStyle.THIN);
+//        xssfCellStyle.setBorderRight(BorderStyle.THIN);
+//        xssfCellStyle.setBorderTop(BorderStyle.THIN);
+//        xssfCellStyle.setBorderBottom(BorderStyle.THIN);
+//        xssfCellStyle.setAlignment(HorizontalAlignment.CENTER);//水平
+//        xssfCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直
 
         Row fieldRow = priceListFistCell.getRow();
         int priceColIndex = priceListFistCell.getColumnIndex();
@@ -504,6 +512,17 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
         excelWriter.fill(new FillWrapper("p", priceDataListNew), fillConfig, writeSheet);
 
+        //表格样式
+//        int startDataRowIndex = priceListFistCell.getRowIndex();
+//        Row startDataRow = sheet.getRow(startDataRowIndex);
+//        int lastCellNum = startDataRow.getLastCellNum();
+//        for(int i = startDataRowIndex; i < startDataRowIndex + 1; i++){
+//            Row row = sheet.getRow(i);
+//            for(int j = 0; j < 1; j++){
+//                Cell cell = row.getCell(j);
+//                cell.getCellStyle().cloneStyleFrom(xssfCellStyle);
+//            }
+//        }
     }
 
 
@@ -536,11 +555,21 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                          Map<Long, zoneDataInfo> zoneIndexMap,
                          Map<Long, List<PriceZoneDataListVo>> longListMap,
                          List<ExpPriceInfoBo> expPriceInfoBoList,
-                         XSSFWorkbook wb
+                         XSSFWorkbook wb,
+                         XSSFCellStyle xssfCellStyle,
+                         XSSFFont xssfFont
                          ){
 
         Map<String, Object> map;
         String priceName = null;
+        xssfCellStyle.setWrapText(true);
+        xssfCellStyle.setBorderLeft(BorderStyle.THIN);
+        xssfCellStyle.setBorderRight(BorderStyle.THIN);
+        xssfCellStyle.setBorderTop(BorderStyle.THIN);
+        xssfCellStyle.setBorderBottom(BorderStyle.THIN);
+        xssfCellStyle.setAlignment(HorizontalAlignment.CENTER);//水平
+        xssfCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直
+        int fontSize = 11;
         for (Map.Entry<Long, zoneDataInfo> zoneDataEntry : zoneIndexMap.entrySet()) {
 
             for (ExpPriceInfoBo expPriceInfoBo : expPriceInfoBoList) {
@@ -589,6 +618,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
             Sheet sheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
 
             Cell cell = findCell(sheet, "价格表");
+
             if (cell != null) {
                 //添加超链接
                 XSSFCreationHelper creationHelper = wb.getCreationHelper();
@@ -597,19 +627,40 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 cell.setHyperlink(hyperlink);
             }
 
-//            int startRowIndex = cell.getRowIndex() + 1;
-//            int endRowIndex = startRowIndex + rowNum;
-//            Row row = null;
-//            int lastCellNum = 3;
-//            for(int i = 3; i < 4; i++){
-//                row = sheet.getRow(i);
-//                if(null == row)
-//                    continue;
-//                for(int j = 1; j < 2; j++){
-//                    Cell cell1 = row.getCell(j);
-//                    cell1.setCellStyle();
-//                }
-//            }
+            int startRowIndex = cell.getRowIndex() + 1;
+            int endRowIndex = startRowIndex + rowNum;
+            Row row = null;
+            int lastCellNum = 3;
+            for(int i = startRowIndex; i < endRowIndex; i++){
+                row = sheet.getRow(i);
+                if(null == row)
+                    continue;
+                for(int j = 0; j < lastCellNum; j++){
+                    Cell cell1 = row.getCell(j);
+                    String cellValueStr = cell1.getStringCellValue();
+                    if(cellValueStr.equals("分区号") || cellValueStr.equals("中文名") || cellValueStr.equals("英文名")){
+                        xssfFont.setFontHeight(16);
+                        xssfFont.setBold(true);
+                        row.setHeightInPoints(30);
+                        xssfCellStyle.setFont(xssfFont);
+                        cell1.getCellStyle().cloneStyleFrom(xssfCellStyle);
+                        continue;
+                    }
+
+                    if(j == 1){
+                        Integer strLength = cellValueStr.length();
+                        int rowNumSize = 1;
+                        if(strLength > 35){
+                          rowNumSize = strLength / 35;
+                        }
+                        row.setHeightInPoints((fontSize + 5) * rowNumSize);
+                    }
+                    xssfFont.setFontHeight(fontSize);
+                    xssfFont.setBold(false);
+                    xssfCellStyle.setFont(xssfFont);
+                    cell1.getCellStyle().cloneStyleFrom(xssfCellStyle);
+                }
+            }
         }
     }
 
@@ -710,7 +761,7 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         xssfCellStyle.setBorderBottom(BorderStyle.MEDIUM);
         xssfCellStyle.setBorderLeft(BorderStyle.MEDIUM);
         xssfCellStyle.setBorderRight(BorderStyle.MEDIUM);
-
+        xssfCellStyle.setWrapText(true);
         int lastRowNum = sheet.getLastRowNum();
         for (int i = 2; i <= lastRowNum; i++) {
             Row row = sheet.getRow(i);

@@ -6,13 +6,14 @@ import com.apl.cache.AplCacheUtil;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
-import com.apl.lib.utils.StringUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
+import com.apl.lms.price.exp.manage.service.PriceIncreaseProfitService;
 import com.apl.lms.price.exp.manage.service.UnifyProfitService;
 import com.apl.lms.price.exp.pojo.bo.CustomerGroupBo;
 import com.apl.lms.price.exp.pojo.dto.ExpPriceProfitDto;
+import com.apl.lms.price.exp.pojo.dto.IncreaseProfitDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.dto.UnifyProfitDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
@@ -67,6 +68,9 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     @Autowired
     UnifyProfitService unifyProfitService;
 
+    @Autowired
+    PriceIncreaseProfitService priceIncreaseProfitService;
+
 
     @Override
     public ResultUtil<Boolean> delById(Long id){
@@ -79,31 +83,6 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL , false);
     }
 
-
-
-    /**
-     * 获取利润数据(含 根据客户组id进行过滤)
-     * @param priceId
-     * @return
-     */
-    @Override
-    public ExpPriceProfitDto getIncreaseProfitList(Long priceId){
-
-        PriceExpProfitPo priceExpProfitPo = baseMapper.getProfit(priceId);
-
-        ExpPriceProfitDto expPriceProfitDto = new ExpPriceProfitDto();
-        expPriceProfitDto.setId(priceId);
-        //expPriceProfitDto.setAddProfitWay(addProfitWay);
-
-        //成本利润
-        if(null != priceExpProfitPo && null != priceExpProfitPo.getCostProfit() && !priceExpProfitPo.getCostProfit().equals("")) {
-            String costProfit = priceExpProfitPo.getCostProfit();
-            List<PriceExpProfitDto> profitDtoList = JSONObject.parseArray(costProfit, PriceExpProfitDto.class);
-            expPriceProfitDto.setCostProfit(profitDtoList);
-        }
-
-        return  expPriceProfitDto;
-    }
 
 
     /**
@@ -143,13 +122,6 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             priceExpProfitPo.setCostProfit(costProfitStr);
         }else{
             priceExpProfitPo.setCostProfit("");
-        }
-        if(null != expPriceProfitDto.getIncreaseProfit() && !expPriceProfitDto.getIncreaseProfit().isEmpty()){
-            List<PriceExpProfitDto> increaseProfit = expPriceProfitDto.getIncreaseProfit();
-            String increaseProfitSrr = JSONObject.toJSONString(increaseProfit);
-            priceExpProfitPo.setIncreaseProfit(increaseProfitSrr);
-        }else{
-            priceExpProfitPo.setIncreaseProfit("");
         }
 
         if(null != id && id > 0){
@@ -198,9 +170,10 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         List<PriceExpProfitDto> increaseProfitList2 = null;
         if(addProfitWay.equals(1)){
             //此价格， 单独增加利润
-            String increaseProfitStr = priceExpProfitPo.getIncreaseProfit();
-            if(!StringUtil.isEmpty(increaseProfitStr))
-                increaseProfitList2 = JSONObject.parseArray(increaseProfitStr, PriceExpProfitDto.class);
+            ResultUtil<IncreaseProfitDto> increaseProfitDtoResultUtil = priceIncreaseProfitService.getList(priceId);
+            IncreaseProfitDto resultIncreaseData = increaseProfitDtoResultUtil.getData();
+            if(null != resultIncreaseData)
+                increaseProfitList2 = resultIncreaseData.getIncreaseProfit();
         }
         else if(addProfitWay.equals(2)){
             //此价格， 统一增加利润
@@ -227,11 +200,10 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
                         }
                     }
                 }
-
             }
         }
-
-        expPriceProfitDto.setIncreaseProfit(increaseProfitList);
+        if(increaseProfitList.size() > 0)
+            expPriceProfitDto.setIncreaseProfit(increaseProfitList);
 
         return expPriceProfitDto;
     }

@@ -1,18 +1,19 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import com.apl.cache.AplCacheUtil;
-import com.apl.lib.security.SecurityUser;
+import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.price.exp.manage.mapper.CarrierMapper;
 import com.apl.lms.price.exp.manage.service.CarrierService;
+import com.apl.lms.price.exp.pojo.po.CarrierPo;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.apl.lib.constants.CommonStatusCode;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.apl.lms.price.exp.pojo.po.CarrierPo;
+
+import java.io.IOException;
 import java.util.List;
 
 
@@ -98,7 +99,7 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
     }
 
     @Override
-    public ResultUtil<List<CarrierPo>> getListByInnerOrgId(Long innerOrgId) {
+    public ResultUtil<List<CarrierPo>> getListByInnerOrgId(Long innerOrgId) throws Exception {
 
         List<CarrierPo> carrierCacheList = getCommonCarrier();
         List<CarrierPo> carrierPoList = baseMapper.getListByInnerOrgId(innerOrgId);
@@ -111,7 +112,7 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , carrierCacheList);
     }
 
-    public List<CarrierPo> getCommonCarrier(){
+    public List<CarrierPo> getCommonCarrier() throws IOException {
         List<CarrierPo> carrierCacheList = (List<CarrierPo>) aplCacheUtil.opsForValue().get(CACHE_KEY);
 //        if(null == carrierCacheList || carrierCacheList.size() < 1){
 //            ResultUtil<List<CarrierPo>> resultList = lmsCommonFeign.getList();
