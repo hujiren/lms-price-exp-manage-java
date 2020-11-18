@@ -245,16 +245,17 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
                 increaseProfit = profitDto.getIncreaseProfit();
         }
 
-        if(null != profitDto){
+        if(null != profitDto) {
             costProfit = profitDto.getCostProfit();
+        }
             //加利润
             expDataObjVo = addProfitToThePrice(priceId, expPriceInfoBo, priceDataVo, costProfit, increaseProfit, isExport);
 
-        }else{
-            //没有利润，直接原价
-            expDataObjVo = new PriceExpDataObjVo();
-            expDataObjVo.setPriceData(priceDataVo);
-        }
+//        }else{
+//            //没有利润，直接原价
+//            expDataObjVo = new PriceExpDataObjVo();
+//            expDataObjVo.setPriceData(priceDataVo);
+//        }
 
         expDataObjVo.setPriceDataId(priceDataId);
 
@@ -268,9 +269,12 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
                                                  List<PriceExpProfitDto> costProfitList,
                                                  List<PriceExpProfitDto> increaseProfitList,
                                                  boolean isExport) {
-        //给利润组装分区和国家
-        List<PriceExpProfitMergeBo> costProfitList2 = assembleZoneAndCountryForProfit(costProfitList);
 
+        List<PriceExpProfitMergeBo> costProfitList2 = null;
+        //给利润组装分区和国家
+        if(null != costProfitList && costProfitList.size() > 0){
+             costProfitList2 = assembleZoneAndCountryForProfit(costProfitList);
+        }
         List<PriceExpProfitMergeBo> increaseProfitList2 = null;
         if(null != increaseProfitList && increaseProfitList.size() > 0){
             increaseProfitList2 = assembleZoneAndCountryForProfit(increaseProfitList);
@@ -459,7 +463,7 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
             }
 
             if (!isFind) {
-                if (profitMergeBo.getCountryCodeList().size() == 0 || profitMergeBo.getCountryCodeList().get(0).equals(""))
+                if (null == profitMergeBo.getCountryCodeList() || profitMergeBo.getCountryCodeList().size() == 0 || profitMergeBo.getCountryCodeList().get(0).equals(""))
                     isFind = true;
                 else {
                     for (int i = countryStartIndex; i < zoneAndCountry.size(); i++) {

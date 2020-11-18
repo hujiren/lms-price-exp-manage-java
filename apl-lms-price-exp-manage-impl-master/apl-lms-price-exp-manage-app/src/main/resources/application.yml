@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: apl-lms-price-exp-manage-app
+  thymeleaf:
+    cache: false
 
   profiles:
     include:

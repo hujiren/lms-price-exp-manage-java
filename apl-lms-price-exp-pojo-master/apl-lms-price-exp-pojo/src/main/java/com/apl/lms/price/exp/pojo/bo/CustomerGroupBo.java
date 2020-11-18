@@ -1,11 +1,13 @@
 package com.apl.lms.price.exp.pojo.bo;
 
+import java.io.Serializable;
+
 /**
  * @author hjr start
  * @Classname CustomerGroupBo
  * @Date 2020/9/24 15:12
  */
-public class CustomerGroupBo {
+public class CustomerGroupBo implements Serializable {
 
     private Long customerGroupId;
     private String customerGroupName;

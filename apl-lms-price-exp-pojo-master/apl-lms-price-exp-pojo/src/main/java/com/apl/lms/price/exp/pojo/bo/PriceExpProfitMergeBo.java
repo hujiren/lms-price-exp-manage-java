@@ -3,9 +3,11 @@ package com.apl.lms.price.exp.pojo.bo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +16,7 @@ import java.util.List;
  * @Date 2020/9/11 11:14
  */
 @Data
-public class PriceExpProfitMergeBo {
+public class PriceExpProfitMergeBo implements Serializable {
 
     @ApiModelProperty(name = "customerGroup" , value = "客户组", required = true)
     @NotBlank(message = "客户组不能为空")

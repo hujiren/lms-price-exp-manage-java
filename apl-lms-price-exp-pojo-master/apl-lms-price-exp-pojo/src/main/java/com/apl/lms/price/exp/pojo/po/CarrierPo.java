@@ -1,21 +1,19 @@
 package com.apl.lms.price.exp.pojo.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Min;
-import com.baomidou.mybatisplus.annotation.TableName;
-import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -29,7 +27,7 @@ import org.hibernate.validator.constraints.Length;
 @EqualsAndHashCode(callSuper = false)
 @TableName("carrier")
 @ApiModel(value=" 持久化对象", description=" 持久化对象")
-public class CarrierPo extends Model<CarrierPo> {
+public class CarrierPo extends Model<CarrierPo> implements Serializable{
 
 
     @TableId(value = "id", type = IdType.INPUT)

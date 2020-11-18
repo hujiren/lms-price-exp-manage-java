@@ -21,6 +21,9 @@ import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -288,30 +291,98 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
 
             excelWriter = EasyExcel.write(response.getOutputStream()).withTemplate(newTempFileName).build();
 
+            String sheetName = null;
+            int zoneTemplateSheetIndex = 0;
+            int numberOfSheets = wb.getNumberOfSheets();
+            if(numberOfSheets < 1)
+                throw new AplException(PriceZoneDataServiceCode.TEMPLATE_DOES_NOT_EXIST.code, PriceZoneDataServiceCode.TEMPLATE_DOES_NOT_EXIST.msg, null);
+
+            for(int i = 0; i < numberOfSheets; i++){
+                sheetName = wb.getSheetAt(i).getSheetName();
+                if(sheetName.contains("分区表模板"))
+                    zoneTemplateSheetIndex = i;
+            }
+            XSSFCellStyle xssfCellStyle = wb.createCellStyle();
+            xssfCellStyle.setWrapText(true);
+            xssfCellStyle.setBorderLeft(BorderStyle.THIN);
+            xssfCellStyle.setBorderRight(BorderStyle.THIN);
+            xssfCellStyle.setBorderTop(BorderStyle.THIN);
+            xssfCellStyle.setBorderBottom(BorderStyle.THIN);
+            xssfCellStyle.setAlignment(HorizontalAlignment.CENTER);//水平
+            xssfCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直
+            int fontSize = 11;
+            XSSFFont xssfFont = wb.createFont();
+
             //第一次填充
-            WriteSheet zoneSheet = EasyExcel.writerSheet(0).build();
+            WriteSheet zoneSheet = EasyExcel.writerSheet(zoneTemplateSheetIndex).build();
             zoneSheet.setSheetName(zoneNameInfo.getZoneName());
             Map<String, String> zoneNameMap = new HashMap<>();
             zoneNameMap.put("zoneName", zoneNameInfo.getZoneName());
             zoneNameMap.put("channelCategory", zoneNameInfo.getChannelCategory());
             excelWriter.fill(zoneNameMap, zoneSheet);
 
+
             //第二次填充
+            Integer rowNum = 0;
+            Map rowMap = null;
             List<Long> idList = new ArrayList<>();
             idList.add(zoneId);
-            Map<Long, List<PriceZoneDataListVo>> longListMap = assemblingZoneData(idList);
-            List<PriceZoneDataListVo> zoneDataListVos = longListMap.get(zoneId);
-            Map<String, String> rowMap = null;
+            Map<Long, List<PriceZoneDataListVo>> longListMap = assemblingZoneData(idList);//组装分区数据map(中文名,英文名)
             List<Map<String, String>> zoneDataList = new ArrayList<>();
 
-            for (PriceZoneDataListVo vo : zoneDataListVos) {
-                rowMap = new HashMap<>();
-                rowMap.put("zoneNum", vo.getZoneNum());
-                rowMap.put("nameCn", vo.getCountryNameCn());
-                rowMap.put("nameEn", vo.getCountryNameEn());
-                zoneDataList.add(rowMap);
+            for (Map.Entry<Long, List<PriceZoneDataListVo>> zoneDataMap : longListMap.entrySet()) {
+                if(zoneDataMap.getKey().equals(zoneId)){
+                    List<PriceZoneDataListVo> zoneDataVoList = zoneDataMap.getValue();
+                    for (PriceZoneDataListVo priceZoneDataListVo : zoneDataVoList) {
+                        rowMap = new HashMap<>();
+                        rowMap.put("zoneNum", priceZoneDataListVo.getZoneNum());
+                        rowMap.put("countryNameCn", priceZoneDataListVo.getCountryNameCn());
+                        rowMap.put("countryNameEn", priceZoneDataListVo.getCountryNameEn());
+                        zoneDataList.add(rowMap);
+                        rowNum++;
+                    }
+                }
             }
+
             excelWriter.fill(zoneDataList, zoneSheet);
+            Sheet sheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
+            Cell cell = findCell(sheet, "分区号");
+            int startRowIndex = cell.getRowIndex();
+            int startCellIndex = cell.getColumnIndex();
+            Row row = null;
+            int lastCellNum = 0;
+            for(int i = startRowIndex; i < longListMap.get(zoneId).size() + startRowIndex; i++){
+                row = sheet.getRow(i);
+                lastCellNum = startCellIndex + 2;
+                if(null == row)
+                    continue;
+                for(int j = startCellIndex; j < lastCellNum + 1; j++){
+                    Cell cell1 = row.getCell(j);
+                    String cellValueStr = cell1.getStringCellValue();
+                    if(cellValueStr.equals("分区号") || cellValueStr.equals("中文名") || cellValueStr.equals("英文名")){
+                        xssfFont.setFontHeight(16);
+                        xssfFont.setBold(true);
+                        row.setHeightInPoints(30);
+                        xssfCellStyle.setFont(xssfFont);
+                        cell1.getCellStyle().cloneStyleFrom(xssfCellStyle);
+                        continue;
+                    }
+
+                    if(startCellIndex + 1 == j){
+                        Integer strLength = cellValueStr.length();
+                        int rowNumSize = 1;
+                        if(strLength > 35){
+                            rowNumSize = strLength / 35;
+                        }
+                        row.setHeightInPoints((fontSize + 5) * rowNumSize);
+                    }
+                    xssfFont.setFontHeight(fontSize);
+                    xssfFont.setBold(false);
+                    xssfCellStyle.setFont(xssfFont);
+                    cell1.getCellStyle().cloneStyleFrom(xssfCellStyle);
+                }
+
+            }
 
             //web导出
             response.setContentType("application/vnd.ms-excel");
@@ -335,5 +406,31 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
             }
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS);
+    }
+
+    //查找单元格
+    private Cell findCell(Sheet sheet, String context) {
+
+        Cell cell;
+        String strVal;
+        Row fieldRow;
+        for (int rowIndex = 0; rowIndex < 5; rowIndex++) {
+            fieldRow = sheet.getRow(rowIndex);
+            if (null != fieldRow) {
+                for (int colIndex = 0; colIndex < 20; colIndex++) {
+                    cell = fieldRow.getCell(colIndex);
+                    if (null != cell) {
+                        strVal = cell.getStringCellValue();
+                        if (null != strVal && strVal.trim().equals(context)) {
+                            //找到单元格
+                            return cell;
+                        }
+                    }
+                }
+            }
+        }
+
+        //没有找到priceList单元格
+        return null;
     }
 }

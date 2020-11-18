@@ -6,13 +6,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author hjr start
  * @Classname PartnerCacheBo
  * @Date 2020/8/28 11:42
  */
 @Data
-public class PartnerCacheBo {
+public class PartnerCacheBo implements Serializable {
 
     private String cacheKey;
 

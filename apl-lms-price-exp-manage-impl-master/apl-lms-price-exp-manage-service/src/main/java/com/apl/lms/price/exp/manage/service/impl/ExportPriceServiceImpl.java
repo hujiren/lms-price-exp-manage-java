@@ -81,6 +81,13 @@ public class ExportPriceServiceImpl implements ExportPriceService {
     @Value("${lms.exp-price.export.out-file-name:export-exp-price.xlsx}")
     String outFileName;
 
+    //上传文件对象
+    private File userExcel;
+    // 上传文件类型的属性
+    private String userExcelContentType;
+    //上传文件名的属性
+    private String userExcelFileName;
+
 
     /**
      * 导出Excel表
@@ -282,8 +289,29 @@ public class ExportPriceServiceImpl implements ExportPriceService {
                 String strAddress = address.formatAsString();
                 hyperlink2.setAddress("#" + zoneNameCell.getStringCellValue() + "!" + strAddress);
                 zoneNameCell.setHyperlink(hyperlink2);
+
             }
         }
+    }
+
+    public Boolean uploadTemplateFile(){
+
+        //判断是不是Excel文件
+        if(userExcelFileName.matches("^.+\\.(?i)(xls|xlsx)$")){
+            try {
+//                importExcel(userExcel,userExcelFileName);
+                FileInputStream fis = new FileInputStream(userExcel);
+                boolean b = userExcelFileName.matches("^.+\\.xlsx$");
+
+                SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+                String templateFileNameByTenant = templateFileName.replace("-tenant", "-" + securityUser.getInnerOrgCode());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+
+
     }
 
     //创建新的模板文件，并复制模板Sheet

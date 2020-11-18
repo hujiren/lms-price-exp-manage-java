@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -13,7 +14,7 @@ import java.sql.Timestamp;
  */
 @Data
 @ApiModel(value = "快递价格批量关联属性对象", description = "快递价格批量关联属性对象")
-public class ExpPriceInfoBo {
+public class ExpPriceInfoBo implements Serializable {
 
     @ApiModelProperty(name = "id", value = "价格表id")
     private Long id;

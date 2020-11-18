@@ -94,7 +94,6 @@ public class PriceExpController {
     @ApiImplicitParam(name = "id", value = "价格表id", required = true, paramType = "query")
     public ResultUtil<PriceExpPriceInfoVo> getPriceExpInfo(@NotNull(message = "价格表id不能为空")
                                                                @Min(value = 1, message = "价格表id不能小于1") Long id) throws Exception {
-
         return priceExpService.getPriceExpInfo(id);
     }
 

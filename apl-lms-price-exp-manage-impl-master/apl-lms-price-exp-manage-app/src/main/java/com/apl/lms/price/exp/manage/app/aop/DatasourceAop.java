@@ -1,6 +1,6 @@
 package com.apl.lms.price.exp.manage.app.aop;
 
-import com.apl.cache.AplCacheUtil;
+import com.apl.cache.AplCacheHelper;
 import com.apl.cache.jedis.JedisConnect;
 import com.apl.lib.constants.CommonAplConstants;
 import com.apl.lib.security.SecurityUser;
@@ -22,7 +22,7 @@ public class DatasourceAop {
 
 
     @Autowired
-    AplCacheUtil aplCacheUtil;
+    AplCacheHelper aplCacheHelper;
 
     @Pointcut("execution(public * com.apl.lms.price.exp.manage.app.controller.*.* (..))")
     public void datasourceAop() {
@@ -40,22 +40,20 @@ public class DatasourceAop {
             if(null==token || token.length()==0){
                 token = CommonContextHolder.getRequest().getParameter("token");
             }
-
+            //com.apl.cache.AplCacheUtil
             if(null!=token && token.length()>0)
-                securityUser = CommonContextHolder.getSecurityUser(aplCacheUtil, token);
+                securityUser = CommonContextHolder.getSecurityUser(aplCacheHelper, token);
             else
-                securityUser = SecurityUserNetService.getSecurityUser(aplCacheUtil);
+                securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
 
             CommonContextHolder.securityUserContextHolder.set(securityUser);
 
-            // 多租户ID值
+            // 多租户Id值
             AplTenantConfig.tenantIdContextHolder.set(securityUser.getInnerOrgId());//com.apl.lib.interceptor.FeignHeaderInterceptor
 
             Object[] args = pjp.getArgs();
             proceed = pjp.proceed(args);
 
-            //释放当前线程redis连接池
-            JedisConnect.close();
 
         } catch (Throwable e) {
             throw e;
@@ -63,6 +61,9 @@ public class DatasourceAop {
             CommonContextHolder.securityUserContextHolder.remove();
             CommonContextHolder.tokenContextHolder.remove();
             //DataSourceContextHolder.clear();
+
+            //释放当前线程redis连接池
+            JedisConnect.close();
         }
 
         return proceed;

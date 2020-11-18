@@ -9,6 +9,7 @@
     <packaging>jar</packaging>
 
     <dependencies>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
@@ -87,7 +88,6 @@
             </snapshots>
         </repository>
     </repositories>
-
 
     <build>
         <plugins>

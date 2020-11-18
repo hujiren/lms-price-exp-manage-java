@@ -987,7 +987,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceListDao.createRealTable();
 
         priceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
-        Integer saveResult = baseMapper.insert(priceExpMainPo);
+        Integer saveResult = baseMapper.addExpPrice(priceExpMainPo);
         if (saveResult < 1) {
             throw new AplException(ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.code,
                     ExpListServiceCode.PRICE_EXP_MAIN_SAVE_DATA_FAILED.msg, null);

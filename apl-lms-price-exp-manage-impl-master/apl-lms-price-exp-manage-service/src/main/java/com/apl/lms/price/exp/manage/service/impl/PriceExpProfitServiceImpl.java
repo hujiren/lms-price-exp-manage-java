@@ -153,8 +153,6 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             return null;
 
         PriceExpProfitPo priceExpProfitPo = baseMapper.getProfit(priceId);
-        if(null == priceExpProfitPo)
-            return null;
 
         ExpPriceProfitDto expPriceProfitDto = new ExpPriceProfitDto();
         expPriceProfitDto.setId(priceId);

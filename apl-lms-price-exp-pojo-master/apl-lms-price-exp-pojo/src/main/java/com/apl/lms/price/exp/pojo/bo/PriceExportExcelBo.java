@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(value = "导出价格表对象", description = "导出价格表对象")
-public class PriceExportExcelBo {
+public class PriceExportExcelBo implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(name = "priceDataId", value = "价格数据表id")

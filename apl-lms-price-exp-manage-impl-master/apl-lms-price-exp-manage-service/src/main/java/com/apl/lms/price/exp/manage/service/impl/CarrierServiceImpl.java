@@ -114,10 +114,7 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
 
     public List<CarrierPo> getCommonCarrier() throws IOException {
         List<CarrierPo> carrierCacheList = (List<CarrierPo>) aplCacheUtil.opsForValue().get(CACHE_KEY);
-//        if(null == carrierCacheList || carrierCacheList.size() < 1){
-//            ResultUtil<List<CarrierPo>> resultList = lmsCommonFeign.getList();
-//            carrierCacheList = resultList.getData();
-//        }
+
         return carrierCacheList;
     }
 }
