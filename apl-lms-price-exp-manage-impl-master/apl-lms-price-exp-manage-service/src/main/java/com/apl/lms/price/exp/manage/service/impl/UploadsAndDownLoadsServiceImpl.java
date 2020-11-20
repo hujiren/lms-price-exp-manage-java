@@ -6,9 +6,11 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
+import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.StringUtil;
 import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
@@ -17,18 +19,17 @@ import com.apl.lms.price.exp.pojo.po.PriceZoneNamePo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataObjVo;
 import com.apl.lms.price.exp.pojo.vo.PriceZoneDataListVo;
 import org.apache.poi.common.usermodel.HyperlinkType;
+import org.apache.poi.poifs.filesystem.FileMagic;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -38,7 +39,7 @@ import java.util.*;
  * @Date 2020/10/15 15:22
  */
 @Service
-public class ExportPriceServiceImpl implements ExportPriceService {
+public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsService {
 
     enum ExportPriceEnum {
 
@@ -47,7 +48,16 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         NO_CORRESPONDING_PRICE("NO_CORRESPONDING_PRICE", "没有对应价格!"),
         NO_VALID_FILE_WAS_FOUND("NO_VALID_FILE_WAS_FOUND", "没有找到有效文件"),
         TEMPLATE_DOES_NOT_EXIST("Template does not exist", "模板不存在"),
-        NO_PRICE_LIST_TEMPLATE_FOUND("NO_PRICE_LIST_TEMPLATE_FOUND", "没有找到价格表模板");
+        NO_PRICE_LIST_TEMPLATE_FOUND("NO_PRICE_LIST_TEMPLATE_FOUND", "没有找到价格表模板"),
+        PLEASE_UPLOAD_EXCEL_FILE("PLEASE_UPLOAD_EXCEL_FILE", "请上传Excel文件"),
+        YOU_ALREADY_HAVE_THE_TEMPLATE("YOU_ALREADY_HAVE_THE_TEMPLATE", "您已拥有模板"),
+        UPLOAD_SUCCESSFUL("UPLOAD_SUCCESSFUL", "上传成功"),
+        THIS_FILE_IS_ALREADY_EXISTS("THIS_FILE_IS_ALREADY_EXISTS", "该文件已存在"),
+        THIS_FILE_DOSE_NOT_EXISTS("THIS_FILE_DOSE_NOT_EXISTS", "该文件不存在"),
+        THE_FILE_CANNOT_BE_FOUND("THE_FILE_CANNOT_BE_FOUND", "找不到指定文件"),
+        PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT("PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT","请传入正确格式的Excel文件"),
+        THE_UPLOADED_FILE_CANNOT_BE_EMPTY("THE_UPLOADED_FILE_CANNOT_BE_EMPTY", "不能上传空文件")
+        ;
 
         private String code;
         private String msg;
@@ -80,13 +90,6 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
     @Value("${lms.exp-price.export.out-file-name:export-exp-price.xlsx}")
     String outFileName;
-
-    //上传文件对象
-    private File userExcel;
-    // 上传文件类型的属性
-    private String userExcelContentType;
-    //上传文件名的属性
-    private String userExcelFileName;
 
 
     /**
@@ -292,26 +295,6 @@ public class ExportPriceServiceImpl implements ExportPriceService {
 
             }
         }
-    }
-
-    public Boolean uploadTemplateFile(){
-
-        //判断是不是Excel文件
-        if(userExcelFileName.matches("^.+\\.(?i)(xls|xlsx)$")){
-            try {
-//                importExcel(userExcel,userExcelFileName);
-                FileInputStream fis = new FileInputStream(userExcel);
-                boolean b = userExcelFileName.matches("^.+\\.xlsx$");
-
-                SecurityUser securityUser = CommonContextHolder.getSecurityUser();
-                String templateFileNameByTenant = templateFileName.replace("-tenant", "-" + securityUser.getInnerOrgCode());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return true;
-
-
     }
 
     //创建新的模板文件，并复制模板Sheet
@@ -782,24 +765,136 @@ public class ExportPriceServiceImpl implements ExportPriceService {
         public Map<Long, zoneDataInfo> zoneSheetNoMap;
     }
 
-    public void setFrame(ExcelWriter excelWriter, XSSFCellStyle xssfCellStyle) {
+    /**
+     * 上传Excel
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public ResultUtil<Boolean> uploadTemplateFile(MultipartFile file) throws IOException {
 
-        Sheet sheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
-        xssfCellStyle.setBorderTop(BorderStyle.MEDIUM);
-        xssfCellStyle.setBorderBottom(BorderStyle.MEDIUM);
-        xssfCellStyle.setBorderLeft(BorderStyle.MEDIUM);
-        xssfCellStyle.setBorderRight(BorderStyle.MEDIUM);
-        xssfCellStyle.setWrapText(true);
-        int lastRowNum = sheet.getLastRowNum();
-        for (int i = 2; i <= lastRowNum; i++) {
-            Row row = sheet.getRow(i);
-            if (null == row)
-                continue;
-            int firstCellNum = row.getFirstCellNum();
-            if (firstCellNum < 0)
-                break;
-            row.getCell(firstCellNum).getCellStyle().cloneStyleFrom(xssfCellStyle);
+        Boolean isExcel = false;
+        byte[] targetFileByteArr = file.getBytes();
+        if(targetFileByteArr.length < 1)
+            return ResultUtil.APPRESULT(ExportPriceEnum.THE_UPLOADED_FILE_CANNOT_BE_EMPTY.code,
+                    ExportPriceEnum.THE_UPLOADED_FILE_CANNOT_BE_EMPTY.msg, null);
 
+        FileMagic fileMagic = FileMagic.valueOf(file.getBytes());
+        if(Objects.equals(fileMagic, FileMagic.OLE2) || Objects.equals(fileMagic, FileMagic.OOXML)){
+            isExcel = true;
+        }
+        if(!isExcel){
+            return ResultUtil.APPRESULT(ExportPriceEnum.PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT.code,
+                    ExportPriceEnum.PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT.msg, null);
+        }
+
+        String targetFileName = file.getOriginalFilename();
+        String substringName = "";
+        int index = targetFileName.lastIndexOf(".");
+        if(index > 0)
+            substringName = targetFileName.substring(index + 1);
+
+        FileFormat fileFormat = new FileFormat();
+        if(!fileFormat.fileFormat.containsKey(substringName.toLowerCase())){
+            return ResultUtil.APPRESULT(ExportPriceEnum.PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT.code,
+                    ExportPriceEnum.PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT.msg, null);
+        }
+
+        FileOutputStream fos = null;
+        try {
+            SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+            String newFileName = templateFileName.replace("-tenant", "-" + securityUser.getInnerOrgCode());
+
+            if(null == file)
+                return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);
+
+            File newFile = new File(newFileName);
+            fos = new FileOutputStream(newFile);
+            fos.write(targetFileByteArr);
+
+        } catch (IOException e) {
+            return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);
+        } finally {
+            fos.close();
+        }
+
+        return ResultUtil.APPRESULT(ExportPriceEnum.UPLOAD_SUCCESSFUL.code,ExportPriceEnum.UPLOAD_SUCCESSFUL.msg, true);
+    }
+
+    /**
+     * 判断Excel是否存在
+     * @return
+     */
+    @Override
+    public ResultUtil<Boolean> excelIsExists(){
+
+        Boolean isExists = true;
+        SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+        String newFileName = templateFileName.replace("-tenant", "-" + securityUser.getInnerOrgCode());
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(newFileName);
+        } catch (FileNotFoundException e) {
+            isExists = false;
+        }
+        if(isExists)
+            return ResultUtil.APPRESULT(ExportPriceEnum.THIS_FILE_IS_ALREADY_EXISTS.code, ExportPriceEnum.THIS_FILE_IS_ALREADY_EXISTS.msg, true);
+
+        return ResultUtil.APPRESULT(ExportPriceEnum.THIS_FILE_DOSE_NOT_EXISTS.code, ExportPriceEnum.THIS_FILE_DOSE_NOT_EXISTS.msg, false);
+    }
+
+    /**
+     * 下载Excel模板
+     * @return
+     */
+    @Override
+    public ResultUtil<Boolean> downloadExcel(HttpServletResponse response) throws IOException {
+
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/vnd.ms-excel");
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+        outFileName = URLEncoder.encode(outFileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + outFileName);
+
+        SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+        String newFileName = templateFileName.replace("-tenant", "-" + securityUser.getInnerOrgCode());
+        OutputStream os = response.getOutputStream();
+        InputStream is = null;
+        File sourceFile = null;
+
+        try {
+            sourceFile = new File(newFileName);
+            is = new FileInputStream(newFileName);
+        } catch (FileNotFoundException e) {
+            return ResultUtil.APPRESULT(ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.code, ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.msg, null);
+        }
+        byte[] sourceFileByteArr = new byte[(int) sourceFile.length()];
+            int i = -1;
+            i = is.read(sourceFileByteArr);
+            if(i != -1)
+                os.write(sourceFileByteArr);
+            else
+            return ResultUtil.APPRESULT(ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.code, ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.msg, null);
+
+        if(null != os){
+            os.flush();
+            os.close();
+        }
+        if(null != is)
+            is.close();
+
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, true);
+    }
+
+    class FileFormat{
+        private Map<String, Object> fileFormat = null;
+
+        public FileFormat(){
+            if(null == fileFormat)
+                fileFormat = new HashMap<>();
+            fileFormat.put("xls","d0cf11e0");
+            fileFormat.put("xlsx","504b0304");
         }
     }
 }

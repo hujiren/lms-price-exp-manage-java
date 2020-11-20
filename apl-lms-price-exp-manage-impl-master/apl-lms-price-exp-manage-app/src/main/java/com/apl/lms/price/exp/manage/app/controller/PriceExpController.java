@@ -48,7 +48,7 @@ public class PriceExpController {
     PriceExpRemarkService priceExpRemarkService;
 
     @Autowired
-    ExportPriceService exportPricePrice;
+    UploadsAndDownLoadsService uploadsAndDownLoadsService;
 
     @Autowired
     PriceListDao priceListDao;
@@ -204,13 +204,19 @@ public class PriceExpController {
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
     }
 
+    @PostMapping(value = "/check-quote-price-is-exists")
+    @ApiOperation(value = "检测价格是否已被引用", notes = "检测价格是否已被引用")
+    public ResultUtil<Boolean> exportSaleExpPrice(Long quotePriceId){
+        ResultUtil<Boolean> isQuoteByExpPrice = priceExpService.isQuoteByExpPrice(quotePriceId);
+        return isQuoteByExpPrice;
+    }
 
     @GetMapping(value = "/export-exp-price")
     @ApiOperation(value = "导出成本价快递价格", notes = "导出成本价快递价格")
     public void exportExpPrice(HttpServletResponse response, @NotBlank(message = "id不能为空") String ids) throws Exception {
 
         List<Long> priceIdList =  StringUtil.stringToLongList(ids);
-        exportPricePrice.exportExpPrice(response, priceIdList, 0l);
+        uploadsAndDownLoadsService.exportExpPrice(response, priceIdList, 0l);
     }
 
 
@@ -221,15 +227,7 @@ public class PriceExpController {
                                    @NotNull(message = "客户组id不能为空") Long customerGroupId) throws Exception {
 
         List<Long> priceIdList =  StringUtil.stringToLongList(ids);
-        exportPricePrice.exportExpPrice(response, priceIdList, customerGroupId);
-    }
-
-
-    @PostMapping(value = "/check-quote-price-is-exists")
-    @ApiOperation(value = "检测价格是否已被引用", notes = "检测价格是否已被引用")
-    public ResultUtil<Boolean> exportSaleExpPrice(Long quotePriceId){
-        ResultUtil<Boolean> isQuoteByExpPrice = priceExpService.isQuoteByExpPrice(quotePriceId);
-        return isQuoteByExpPrice;
+        uploadsAndDownLoadsService.exportExpPrice(response, priceIdList, customerGroupId);
     }
 }
 
