@@ -12,6 +12,7 @@ import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
+import com.apl.lib.utils.StringUtil;
 import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
@@ -63,7 +64,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         SYNCHRONOUS_SUCCESS("SYNCHRONOUS_SUCCESS", "同步成功"),
         UNBOUND_PROFIT_RETURN_NAKED_PRICE("UNBOUND_PROFIT_RETURN_NAKED_PRICE", "没有绑定利润, 返回裸价格"),
         THIS_PRICE_HAS_BEEN_QUOTED_PLEASE_SYNCHRONIZE_DIRECTLY("THIS_PRICE_HAS_BEEN_QUOTED_PLEASE_SYNCHRONIZE_DIRECTLY", "该价格已经被引用过, 请直接同步"),
-        THE_REFERENCE_PRICE_HAS_BEEN_REMOVED("THE_REFERENCE_PRICE_HAS_BEEN_REMOVED", "引用价格已被删除");
+        THE_REFERENCE_PRICE_HAS_BEEN_REMOVED("THE_REFERENCE_PRICE_HAS_BEEN_REMOVED", "引用价格已被删除"),
+        THE_PRICE_HAS_BEEN_QUOTED("THIS_PRICE_HAS_BEEN_QUOTED", "该价格已引用"),
+        THE_PRICE_IS_NOT_QUOTE("THE_PRICE_IS_NOT_QUOTED", "该价格未引用")
+        ;
 
         private String code;
         private String msg;
@@ -683,7 +687,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 PriceExpMainPo quotePriceInfo = priceListDao.getRealPriceInfo(priceExpMainPo.getQuotePriceId(), priceExpMainPo.getQuoteTenantCode());
                 Long priceId = priceExpMainPo.getId();
                 Long quotePriceId = quotePriceInfo.getId();
-                if (null == quotePriceInfo || quotePriceInfo.getId() < 1 || quotePriceInfo.getId() == null) {
+                if (null == quotePriceInfo || quotePriceInfo.getId() < 1 || null == quotePriceInfo.getId()) {
                     //更新同步状态为3 引用的价格表已被删除
                     PriceExpMainPo priceExpMainPo1 = new PriceExpMainPo();
                     priceExpMainPo1.setId(priceExpMainPo.getId());
@@ -730,7 +734,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 //将引用价格的销售备注改为本价格服务商备注 ok
                 PriceExpRemarkPo quotePriceExpRemark = priceExpRemarkService.getTenantPriceRemark(quotePriceId);
                 PriceExpRemarkPo myPriceRemarkPo = new PriceExpRemarkPo();
-                myPriceRemarkPo.setId(myPriceExpMainPo.getId());
+                myPriceRemarkPo.setId(priceId);
                 myPriceRemarkPo.setRemark(quotePriceExpRemark.getSaleRemark());
                 priceExpRemarkService.updateRemark(myPriceRemarkPo);
 
@@ -748,9 +752,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 //获取及更新公式并替换掉自己的公式:多行
                 List<PriceExpComputationalFormulaPo> quoteComputationList = computationalFormulaService.getTenantComputationalFormula(quotePriceId);
                 if (null != quoteComputationList && quoteComputationList.size() > 0) {
-                    for (PriceExpComputationalFormulaPo priceExpComputationalFormulaPo : quoteComputationList) {
-                        priceExpComputationalFormulaPo.setPriceId(myPriceExpMainPo.getId());
-                        priceExpComputationalFormulaPo.setId(SnowflakeIdWorker.generateId());
+                    for (PriceExpComputationalFormulaPo quotePriceExpComputationFormula : quoteComputationList) {
+                        quotePriceExpComputationFormula.setPriceId(priceId);
+                        quotePriceExpComputationFormula.setId(SnowflakeIdWorker.generateId());
                     }
                     List<Long> computationIds = computationalFormulaService.getIdBatch(priceId);
                     developDao.updComputation(quoteComputationList, computationIds);
@@ -808,7 +812,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             newPriceExpMainPo.setIsQuote(1);
             newPriceExpMainPo.setSynStatus(1);
             newPriceExpMainPo.setQuotePriceId(quotePriceId);
-
+            
             newPriceExpMainPo.setZoneId(sourcePriceMainInfo.getZoneId());
             newPriceExpMainPo.setPartnerId(priceReferenceDto.getPartnerId());
             newPriceExpMainPo.setPartnerName(priceReferenceDto.getPartnerName());
@@ -1157,6 +1161,11 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         return expPriceInnerClass;
     }
 
+    /**
+     * 检测是否被引用
+     * @param quotePriceId
+     * @return
+     */
     @Override
     public ResultUtil<Boolean> isQuoteByExpPrice(Long quotePriceId) {
         Integer countNum = baseMapper.isQuoteByExpPrice(quotePriceId);
@@ -1167,6 +1176,27 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
     }
 
+    /**
+     * 检测是否引用了服务商价格
+     * @param priceId
+     * @return
+     */
+    @Override
+    public ResultUtil<Boolean> isQuotePartnerPrice(Long priceId) {
+        List<Long> priceIdList = StringUtil.stringToLongList(priceId.toString());
+
+        List<PriceExpMainPo> priceExpMainList = baseMapper.getList(priceIdList);
+
+        if (null != priceExpMainList && priceExpMainList.size() > 0) {
+            PriceExpMainPo priceExpMainPo = priceExpMainList.get(0);
+            if (priceExpMainPo.getQuotePriceId() < 1) {
+                return ResultUtil.APPRESULT(ExpListServiceCode.THE_PRICE_IS_NOT_QUOTE.code, ExpListServiceCode.THE_PRICE_IS_NOT_QUOTE.msg, false);
+            }else{
+                 return ResultUtil.APPRESULT(ExpListServiceCode.THE_PRICE_HAS_BEEN_QUOTED.code, ExpListServiceCode.THE_PRICE_HAS_BEEN_QUOTED.msg, true);
+            }
+        }
+        return ResultUtil.APPRESULT(ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.code, ExpListServiceCode.THERE_IS_NO_CORRESPONDING_DATA.msg, false);
+    }
     class ExpPriceInnerClass {
         public String customerGroupId;
         public String customerGroupName;

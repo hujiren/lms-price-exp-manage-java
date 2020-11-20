@@ -206,8 +206,17 @@ public class PriceExpController {
 
     @PostMapping(value = "/check-quote-price-is-exists")
     @ApiOperation(value = "检测价格是否已被引用", notes = "检测价格是否已被引用")
-    public ResultUtil<Boolean> exportSaleExpPrice(Long quotePriceId){
+    @ApiImplicitParam(name = "quotePriceId", value = "引用价格id", required = true, paramType = "query")
+    public ResultUtil<Boolean> isQuoteByExpPrice(@NotNull(message = "引用价格id不能为空") @Min(value = 0, message = "引用价格id不能小于0") Long quotePriceId){
         ResultUtil<Boolean> isQuoteByExpPrice = priceExpService.isQuoteByExpPrice(quotePriceId);
+        return isQuoteByExpPrice;
+    }
+
+    @PostMapping(value = "/check-is-quote-partner-price")
+    @ApiOperation(value = "检测是否引用服务商价格", notes = "检测是否引用服务商价格")
+    @ApiImplicitParam(name = "priceId", value = "价格表id", required = true, paramType = "query")
+    public ResultUtil<Boolean> isQuotePartnerPrice(@NotNull(message = "价格表id不能为空") @Min(value = 0, message = "价格表id不能小于0") Long priceId){
+        ResultUtil<Boolean> isQuoteByExpPrice = priceExpService.isQuotePartnerPrice(priceId);
         return isQuoteByExpPrice;
     }
 

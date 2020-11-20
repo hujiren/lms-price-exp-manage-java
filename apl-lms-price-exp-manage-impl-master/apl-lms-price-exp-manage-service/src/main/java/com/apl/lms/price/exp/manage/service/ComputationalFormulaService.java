@@ -48,12 +48,6 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      */
     Integer delBatch(String ids);
 
-    /**
-     * 根据价格表Id获取计算公式id
-     * @param priceId
-     * @return
-     */
-    List<Long> getIdBatch(Long priceId);
 
     /**
      * 获取引用租户的计算公式
@@ -61,4 +55,11 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @return
      */
     List<PriceExpComputationalFormulaPo> getTenantComputationalFormula(Long quotePriceId);
+
+    /**
+     * 根据价格表Id获取计算公式id
+     * @param priceId
+     * @return
+     */
+    List<Long> getIdBatch(Long priceId);
 }

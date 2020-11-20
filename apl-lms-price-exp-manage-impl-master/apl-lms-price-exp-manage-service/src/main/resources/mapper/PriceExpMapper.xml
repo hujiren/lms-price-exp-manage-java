@@ -293,6 +293,7 @@
             aging,
             price_published_id,
             price_data_id,
+            quote_price_id,
             quote_tenant_code,
             upd_time,
             quote_price_upd_time,

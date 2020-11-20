@@ -137,4 +137,11 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<Boolean> isQuoteByExpPrice(Long quotePriceId);
+
+    /**
+     * 检测是否引用服务商价格
+     * @param priceId
+     * @return
+     */
+    ResultUtil<Boolean> isQuotePartnerPrice(Long priceId);
 }

@@ -883,7 +883,6 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
         }
         if(null != is)
             is.close();
-//        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, true);
     }
 
     class FileFormat{

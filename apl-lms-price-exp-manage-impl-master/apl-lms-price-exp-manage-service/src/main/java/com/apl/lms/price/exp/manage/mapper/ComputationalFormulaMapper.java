@@ -23,7 +23,6 @@ public interface ComputationalFormulaMapper extends BaseMapper<PriceExpComputati
      */
     List<PriceExpComputationalFormulaPo> getList(@Param("priceId") Long priceId);
 
-
     /**
      * 批量删除
      * @param ids
@@ -32,17 +31,17 @@ public interface ComputationalFormulaMapper extends BaseMapper<PriceExpComputati
     Integer delBatch(@Param("ids") String ids);
 
     /**
-     * 根据价格表id获取计算公式Ids
-     * @param priceId
-     * @return
-     */
-    List<Long> getIdBatchByPriceId(Long priceId);
-
-    /**
      * 获取引用租户的计算公式
      * @param quotePriceId
      * @return
      */
     @SqlParser(filter = true)
     List<PriceExpComputationalFormulaPo> getTenantComputationalFormula(Long quotePriceId);
+
+    /**
+     * 根据价格表id获取计算公式Ids
+     * @param priceId
+     * @return
+     */
+    List<Long> getIdBatchByPriceId(Long priceId);
 }

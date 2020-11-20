@@ -41,4 +41,6 @@ public class BulkyWayPo extends Model<BulkyWayPo> {
     @NotNull(message = "代码不能为空")
     @Min(value = 0, message = "计泡方式代码不能小于0")
     private Integer code;
+
+
 }
