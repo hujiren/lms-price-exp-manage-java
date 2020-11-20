@@ -41,5 +41,5 @@ public interface UploadsAndDownLoadsService {
      * 下载模板
      * @return
      */
-    ResultUtil<Boolean> downloadExcel(HttpServletResponse response) throws IOException;
+    void downloadExcel(HttpServletResponse response) throws IOException;
 }

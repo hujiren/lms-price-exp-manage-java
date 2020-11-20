@@ -43,7 +43,7 @@ public class UploadsAndDownloadsController {
 
     @GetMapping(value = "/download")
     @ApiOperation(value = "下载Excel模板", notes = "下载Excel模板")
-    public ResultUtil<Boolean> downloadExcel(HttpServletResponse response) throws IOException {
-        return uploadsAndDownLoadsService.downloadExcel(response);
+    public void downloadExcel(HttpServletResponse response) throws IOException {
+        uploadsAndDownLoadsService.downloadExcel(response);
     }
 }

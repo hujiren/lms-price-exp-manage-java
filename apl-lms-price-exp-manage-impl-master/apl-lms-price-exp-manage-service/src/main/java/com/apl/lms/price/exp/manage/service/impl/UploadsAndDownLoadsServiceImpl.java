@@ -849,8 +849,8 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
      * @return
      */
     @Override
-    public ResultUtil<Boolean> downloadExcel(HttpServletResponse response) throws IOException {
-
+    public void downloadExcel(HttpServletResponse response) throws IOException {
+        //vnd.ms-excel
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/vnd.ms-excel");
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
@@ -867,7 +867,7 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
             sourceFile = new File(newFileName);
             is = new FileInputStream(newFileName);
         } catch (FileNotFoundException e) {
-            return ResultUtil.APPRESULT(ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.code, ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.msg, null);
+           throw new AplException(ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.code, ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.msg, null);
         }
         byte[] sourceFileByteArr = new byte[(int) sourceFile.length()];
             int i = -1;
@@ -875,7 +875,7 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
             if(i != -1)
                 os.write(sourceFileByteArr);
             else
-            return ResultUtil.APPRESULT(ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.code, ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.msg, null);
+                throw new AplException(ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.code, ExportPriceEnum.THE_FILE_CANNOT_BE_FOUND.msg, null);
 
         if(null != os){
             os.flush();
@@ -883,8 +883,7 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
         }
         if(null != is)
             is.close();
-
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, true);
+//        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, true);
     }
 
     class FileFormat{
