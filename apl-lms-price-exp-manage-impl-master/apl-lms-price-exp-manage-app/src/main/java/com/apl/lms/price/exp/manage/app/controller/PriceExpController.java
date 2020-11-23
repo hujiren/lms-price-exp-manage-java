@@ -234,9 +234,9 @@ public class PriceExpController {
     public void exportSaleExpPrice(HttpServletResponse response,
                                    @NotBlank(message = "id不能为空") String ids,
                                    @NotNull(message = "客户组id不能为空") Long customerGroupId) throws Exception {
-
         List<Long> priceIdList =  StringUtil.stringToLongList(ids);
         uploadsAndDownLoadsService.exportExpPrice(response, priceIdList, customerGroupId);
+
     }
 }
 

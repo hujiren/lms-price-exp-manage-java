@@ -144,7 +144,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
         keyDto.setInnerOrgId(securityUser.getInnerOrgId());
         List<PriceExpSaleListVo> priceExpSaleList = baseMapper.getPriceExpSaleList(page, keyDto);
-
         page.setRecords(priceExpSaleList);
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
@@ -172,6 +171,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         page.setRecords(priceExpListVoCostList);
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
+
     }
 
 
@@ -812,7 +812,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             newPriceExpMainPo.setIsQuote(1);
             newPriceExpMainPo.setSynStatus(1);
             newPriceExpMainPo.setQuotePriceId(quotePriceId);
-            
+
             newPriceExpMainPo.setZoneId(sourcePriceMainInfo.getZoneId());
             newPriceExpMainPo.setPartnerId(priceReferenceDto.getPartnerId());
             newPriceExpMainPo.setPartnerName(priceReferenceDto.getPartnerName());

@@ -56,6 +56,9 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
         THIS_FILE_DOSE_NOT_EXISTS("THIS_FILE_DOSE_NOT_EXISTS", "该文件不存在"),
         THE_FILE_CANNOT_BE_FOUND("THE_FILE_CANNOT_BE_FOUND", "找不到指定文件"),
         PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT("PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT","请传入正确格式的Excel文件"),
+        PLEASE_UPLOAD_A_PROPERLY_FORMATTED_EXCEL_FILE_OR_USE_OFFICE_2007_OR_HIGHER_TO_GENERATE_EXCEL(
+                "PLEASE_UPLOAD_A_PROPERLY_FORMATTED_EXCEL_FILE_OR_USE_OFFICE_2007_OR_HIGHER_TO_GENERATE_EXCEL",
+                "请上传正确格式的Excel文件或使用office 2007+ 及更高版本生成Excel"),
         THE_UPLOADED_FILE_CANNOT_BE_EMPTY("THE_UPLOADED_FILE_CANNOT_BE_EMPTY", "不能上传空文件")
         ;
 
@@ -781,12 +784,13 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
                     ExportPriceEnum.THE_UPLOADED_FILE_CANNOT_BE_EMPTY.msg, null);
 
         FileMagic fileMagic = FileMagic.valueOf(file.getBytes());
-        if(Objects.equals(fileMagic, FileMagic.OLE2) || Objects.equals(fileMagic, FileMagic.OOXML)){
+        //FileMagic.OLE2代表office 97-2005    FileMagic.OOXML代表office 2007+   导出EXCEL表格用的是XSSFWorkBook, 不兼容FileMagic OLE2
+        if(Objects.equals(fileMagic, FileMagic.OOXML)){
             isExcel = true;
         }
         if(!isExcel){
-            return ResultUtil.APPRESULT(ExportPriceEnum.PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT.code,
-                    ExportPriceEnum.PLEASE_PASS_IN_THE_FILE_IN_THE_CORRECT_FORMAT.msg, null);
+            return ResultUtil.APPRESULT(ExportPriceEnum.PLEASE_UPLOAD_A_PROPERLY_FORMATTED_EXCEL_FILE_OR_USE_OFFICE_2007_OR_HIGHER_TO_GENERATE_EXCEL.code,
+                    ExportPriceEnum.PLEASE_UPLOAD_A_PROPERLY_FORMATTED_EXCEL_FILE_OR_USE_OFFICE_2007_OR_HIGHER_TO_GENERATE_EXCEL.msg, null);
         }
 
         String targetFileName = file.getOriginalFilename();

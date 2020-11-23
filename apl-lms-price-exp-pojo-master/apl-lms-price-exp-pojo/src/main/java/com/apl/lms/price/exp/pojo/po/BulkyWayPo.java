@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @author hjr start
@@ -17,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel(value = "计泡方式-插入对象", description = "计泡方式-插入对象")
 @TableName("bulky_way")
-public class BulkyWayPo extends Model<BulkyWayPo> {
+public class BulkyWayPo extends Model<BulkyWayPo> implements Serializable {
 
     @ApiModelProperty(name = "id", value = "计泡方式Id", hidden = true)
     private Long id;
