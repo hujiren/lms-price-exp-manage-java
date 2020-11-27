@@ -26,7 +26,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param keyDto
      * @return
      */
-    ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleListKeyDto keyDto);
+    ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleKeyDto keyDto);
 
     /**
      * 分页获取成本价列表(分页)

@@ -33,7 +33,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     }
 
     /**
-     * 获取快递价格计算公式
+     * 根据价格表Id查询计算公式列表
      * @param priceId
      * @param
      * @return
@@ -47,7 +47,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     }
 
     /**
-     * 根据id删除燃油费
+     * 根据id删除计算公式
      * @param id
      * @return
      */
@@ -62,7 +62,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     }
 
     /**
-     * 更新燃油费
+     * 更新计算公式
      * @param priceExpComputationalFormulaPo
      * @return
      */
@@ -92,7 +92,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     }
 
     /**
-     * 新增燃油费
+     * 新增计算公式
      * @param priceExpComputationalFormulaPo
      * @return
      */
@@ -100,20 +100,20 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     public ResultUtil<Long> addComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo) {
 
         priceExpComputationalFormulaPo.setId(SnowflakeIdWorker.generateId());
-        Integer integer = baseMapper.insert(priceExpComputationalFormulaPo);
-        if(integer < 1){
+        Integer resultNum = baseMapper.insert(priceExpComputationalFormulaPo);
+        if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceExpComputationalFormulaPo.getId());
     }
 
     /**
-     * 批量删除
+     * 批量删除计算公式
      */
     @Override
     public Integer delBatch(String ids) {
-        Integer res = baseMapper.delBatch(ids);
-        return res;
+        Integer resultNum = baseMapper.delBatch(ids);
+        return resultNum;
     }
 
     /**

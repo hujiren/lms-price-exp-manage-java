@@ -43,7 +43,7 @@ public class CarrierController {
 
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新",  notes ="更新")
-    public ResultUtil<Boolean> updById(@Validated CarrierPo carrierPo) {
+    public ResultUtil<Boolean> upd(@Validated CarrierPo carrierPo) {
         ApiParamValidate.notEmpty("id", carrierPo.getId());
         ApiParamValidate.validate(carrierPo);
 
@@ -53,7 +53,7 @@ public class CarrierController {
     @PostMapping(value = "/del")
     @ApiOperation(value =  "删除" , notes = "删除")
     @ApiImplicitParam(name = "id",value = " id",required = true  , paramType = "query")
-    public ResultUtil<Boolean> delById(@NotNull(message = "id不能为空") @Min(value = 1 , message = "id不能小于1") Long id) {
+    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1 , message = "id不能小于1") Long id) {
 
         return carrierService.delById(id);
     }

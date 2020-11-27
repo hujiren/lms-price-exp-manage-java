@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- *  service接口
+ *  公共运输方service接口
  * </p>
  *
  * @author hjr
@@ -18,7 +18,7 @@ import java.util.List;
 public interface CarrierService extends IService<CarrierPo> {
 
         /**
-         * @Desc: 添加一个CarrierPo实体
+         * @Desc: 添加运输方
          * @author hjr
          * @since 2020-10-07
          */
@@ -26,7 +26,7 @@ public interface CarrierService extends IService<CarrierPo> {
 
 
         /**
-         * @Desc: 根据id 更新一个CarrierPo 实体
+         * @Desc: 更新运输方
          * @author hjr
          * @since 2020-10-07
          */
@@ -34,7 +34,7 @@ public interface CarrierService extends IService<CarrierPo> {
 
 
         /**
-         * @Desc: 根据id 查找一个CarrierPo 实体
+         * @Desc: 删除运输方
          * @author hjr
          * @since 2020-10-07
          */

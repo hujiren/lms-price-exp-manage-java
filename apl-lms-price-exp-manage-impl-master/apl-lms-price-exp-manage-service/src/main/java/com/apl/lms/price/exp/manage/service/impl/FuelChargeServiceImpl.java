@@ -37,7 +37,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
     }
 
     /**
-     * 分页查询快递价格
+     * 查询快递价格
      * @param
      * @param
      * @return
@@ -59,8 +59,8 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
     @Override
     public ResultUtil<Boolean> delFuelCharge(Long id) {
 
-        Integer integer = baseMapper.delById(id);
-        if(integer < 1){
+        Integer resultNum = baseMapper.delById(id);
+        if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
@@ -81,8 +81,8 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         fuelChargePo.setChannelCategory(fuelChargeAddDto.getChannelCategory());
         fuelChargePo.setId(fuelChargeAddDto.getId());
 
-        Integer integer = baseMapper.updFuelCharge(fuelChargePo);
-        if(integer < 1){
+        Integer resultNum = baseMapper.updFuelCharge(fuelChargePo);
+        if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
@@ -103,8 +103,8 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         fuelChargePo.setChannelCategory(fuelChargeAddDto.getChannelCategory());
         fuelChargePo.setId(SnowflakeIdWorker.generateId());
 
-        Integer integer = baseMapper.insertFuelCharge(fuelChargePo);
-        if(integer < 1){
+        Integer resultNum = baseMapper.insertFuelCharge(fuelChargePo);
+        if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, fuelChargePo.getId().toString());

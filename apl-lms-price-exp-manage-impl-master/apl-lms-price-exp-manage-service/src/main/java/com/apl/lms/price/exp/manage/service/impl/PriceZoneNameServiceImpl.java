@@ -113,8 +113,8 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
 
         priceZoneNamePo.setId(SnowflakeIdWorker.generateId());
         priceZoneNamePo.setChannelCategory(priceZoneNamePo.getChannelCategory().toUpperCase());
-        Integer integer = baseMapper.addPriceZoneName(priceZoneNamePo);
-        if(integer < 1){
+        Integer resultNum = baseMapper.addPriceZoneName(priceZoneNamePo);
+        if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceZoneNamePo.getId());
@@ -143,13 +143,4 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
         return priceZoneNameVo;
     }
 
-    /**
-     * 获取引用租户的分区数据
-     * @param zoneId
-     * @return
-     */
-    @Override
-    public PriceZoneNamePo getTenantPriceZone(Long zoneId) {
-        return baseMapper.getTenantPriceZone(zoneId);
-    }
 }

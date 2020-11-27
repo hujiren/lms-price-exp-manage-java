@@ -317,6 +317,7 @@
             id = #{id}
     </select>
 
+    <!--获取价格表数据ids-->
     <select id="getPriceDataIds" resultType="java.lang.Long">
         select price_data_id from lms_exp_price where id in (${ids})
     </select>
@@ -330,6 +331,8 @@
     <update id="upd">
         update lms_exp_price set start_weight = #{po.startWeight}, end_weight = #{po.endWeight} where id = #{po.id}
     </update>
+
+    <!--更新添加利润方式-->
     <update id="updPrice">
         update lms_exp_price set add_profit_way = #{po.addProfitWay} where id = #{po.id}
     </update>

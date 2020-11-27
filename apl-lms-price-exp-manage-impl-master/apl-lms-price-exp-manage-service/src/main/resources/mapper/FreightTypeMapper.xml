@@ -23,7 +23,7 @@
 
     </insert>
 
-    <!--查找列表-->
+    <!--根据租户id查找列表-->
     <select id="getListByInnerOrgId" resultType="com.apl.lms.price.exp.pojo.po.FreightTypePo">
         select
             id,

@@ -88,11 +88,11 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
             specialCommodityPo.setId(SnowflakeIdWorker.generateId());
             }
 
-        Integer integer = baseMapper.addSpecialCommodity(specialCommodityPoList);
-        if(integer < 1){
+        Integer resultNum = baseMapper.addSpecialCommodity(specialCommodityPoList);
+        if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, resultNum);
     }
 
 }

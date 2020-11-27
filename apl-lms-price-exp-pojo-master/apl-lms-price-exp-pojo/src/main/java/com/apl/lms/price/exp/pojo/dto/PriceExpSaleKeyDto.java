@@ -14,7 +14,7 @@ import javax.validation.constraints.Min;
  */
 @Data
 @ApiModel(value="快递销售价格表-条件查询对象", description="快递销售价格表-按条件查询对象")
-public class  PriceExpSaleListKeyDto {
+public class PriceExpSaleKeyDto {
 
     @ApiModelProperty(name = "priceType", value = "价格表类型", hidden = true)
     private Integer priceType;

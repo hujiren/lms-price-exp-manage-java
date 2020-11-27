@@ -38,25 +38,30 @@ public class FreightTypeServiceImpl extends ServiceImpl<FreightTypeMapper, Freig
             }
         }
 
+    /**
+     * 新增运输类型
+     * @param freightTypePoList
+     * @return
+     */
     @Override
     public ResultUtil<Long> add(List<FreightTypePo> freightTypePoList){
 
-        List<FreightTypePo> resultList = getList();
+        List<FreightTypePo> freightTypeList = getList();
 
-        for (FreightTypePo typePo : freightTypePoList) {
-            if(null != resultList && resultList.size() > 0){
-                for (FreightTypePo freightTypePo : resultList) {
-                    if(freightTypePo.getFreightTypeName().equals(typePo.getFreightTypeName())){
+        for (FreightTypePo freightType : freightTypePoList) {
+            if(null != freightTypeList && freightTypeList.size() > 0){
+                for (FreightTypePo freightTypePo : freightTypeList) {
+                    if(freightTypePo.getFreightTypeName().equals(freightType.getFreightTypeName())){
                         return ResultUtil.APPRESULT(FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.code,
-                                FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.msg + " " +typePo.getFreightTypeName(), null);
+                                FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.msg + " " +freightType.getFreightTypeName(), null);
                     }
-                    if(freightTypePo.getCode().equals(typePo.getCode())){
+                    if(freightTypePo.getCode().equals(freightType.getCode())){
                         return ResultUtil.APPRESULT(FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.code,
-                                FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.msg + " " +typePo.getCode(), null);
+                                FreightTypeServiceCode.DATA_CANNOT_BE_ADDED_REPEATEDLY.msg + " " +freightType.getCode(), null);
                     }
                 }
             }
-            typePo.setId(SnowflakeIdWorker.generateId());
+            freightType.setId(SnowflakeIdWorker.generateId());
         }
 
         Integer flag = baseMapper.addBatch(freightTypePoList);
@@ -67,6 +72,11 @@ public class FreightTypeServiceImpl extends ServiceImpl<FreightTypeMapper, Freig
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL , null);
     }
 
+    /**
+     * 删除运输类型
+     * @param id
+     * @return
+     */
     @Override
     public ResultUtil<Boolean> delById(Long id){
 
@@ -75,7 +85,10 @@ public class FreightTypeServiceImpl extends ServiceImpl<FreightTypeMapper, Freig
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS , true);
     }
 
-
+    /**
+     * 获取运输类型列表
+     * @return
+     */
     @Override
     public List<FreightTypePo> getList(){
 
@@ -84,6 +97,11 @@ public class FreightTypeServiceImpl extends ServiceImpl<FreightTypeMapper, Freig
         return list;
     }
 
+    /**
+     * 根据租户id获取运输类型列表
+     * @param innerOrgId
+     * @return
+     */
     @Override
     public List<FreightTypePo> getListByInnerOrgId(Long innerOrgId) {
 

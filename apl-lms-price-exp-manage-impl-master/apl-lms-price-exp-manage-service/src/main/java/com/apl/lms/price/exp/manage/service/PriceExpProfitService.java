@@ -21,7 +21,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
 
 
     /**
-     * @Desc: 根据id 更新一个PriceExpProfitPo 实体
+     * @Desc: 保存利润
      * @author hjr
      * @since 2020-09-11
      */
@@ -29,7 +29,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
 
 
     /**
-     * @Desc: 根据id 查找一个PriceExpProfitPo 实体
+     * @Desc: 删除利润
      * @author hjr
      * @since 2020-09-11
      */

@@ -35,7 +35,7 @@ public interface FreightTypeMapper extends BaseMapper<FreightTypePo> {
     Integer addBatch(@Param("freightTypePoList") List<FreightTypePo> freightTypePoList);
 
     /**
-     * 查找列表
+     * 根据租户id查找列表
      * @param innerOrgId
      * @return
      */

@@ -35,6 +35,7 @@
 
     </insert>
 
+    <!--删除附加费-->
     <delete id="delById">
         delete from price_surcharge where id = #{id}
     </delete>

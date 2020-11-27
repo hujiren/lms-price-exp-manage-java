@@ -36,7 +36,7 @@ public class SurchargeController {
     }
 
     @PostMapping(value = "/delete")
-    @ApiOperation(value =  "删除" , notes = "根据id删除")
+    @ApiOperation(value =  "删除" , notes = "根据id删除附加费")
     @ApiImplicitParam(name = "id", value = "附加费Id", required = true, paramType = "query")
     public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") Long id){
 

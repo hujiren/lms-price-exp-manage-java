@@ -20,18 +20,33 @@ import java.util.List;
 public interface PriceSurchargeMapper extends BaseMapper<PriceSurchargePo> {
 
     /**
-     * 获取详细
+     * 根据价格表id查询
      * @param priceId
      * @return
      */
     @SqlParser(filter = true)
     List<PriceSurchargeVo> getByPriceId(Long priceId);
 
+    /**
+     * 根据价格表id批量查询附加费id
+     * @param priceId
+     * @return
+     */
     @SqlParser(filter = true)
     List<Long> getIdBatchByPriceId(Long priceId);
 
+    /**
+     * 批量查询
+     * @param priceId
+     * @return
+     */
     @SqlParser(filter = true)
     List<PriceSurchargePo> selectByPriceId(Long priceId);
 
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
     Integer delBatch(String ids);
 }

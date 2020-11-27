@@ -34,7 +34,7 @@ public class FreightTypeController {
     public FreightTypeService freightTypeService;
 
     @PostMapping(value = "/add")
-    @ApiOperation(value =  "批量添加", notes ="批量添加")
+    @ApiOperation(value =  "批量添加", notes ="批量添加运输类型")
     public ResultUtil<Long> add(@RequestBody @Validated List<FreightTypePo> freightTypePoList) {
         ApiParamValidate.validate(freightTypePoList);
 

@@ -17,6 +17,12 @@ import java.util.List;
 @Repository
 public interface PartnerMapper extends BaseMapper<PartnerPo> {
 
+    /**
+     * 分页获取服务商列表
+     * @param page
+     * @param partnerKeyDto
+     * @return
+     */
     List<PartnerPo> getList(Page<PartnerPo> page, @Param("key") PartnerKeyDto partnerKeyDto);
 
 }

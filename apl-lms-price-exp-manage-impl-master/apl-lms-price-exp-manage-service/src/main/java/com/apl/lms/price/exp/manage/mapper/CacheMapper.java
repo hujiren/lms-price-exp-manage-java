@@ -15,7 +15,14 @@ import java.util.Map;
 @Mapper
 public interface CacheMapper extends BaseMapper {
 
-    //添加服务商缓存
+    /**
+     * 添加服务商缓存
+     * @param keys
+     * @param minKey
+     * @param maxKey
+     * @param innerOrgId
+     * @return
+     */
     @MapKey("cacheKey")
     Map<String, PartnerCacheBo> addPartnerCache(@Param("keys") String keys,
                                                 @Param("minKey") Long minKey,

@@ -3,8 +3,9 @@ package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.po.CarrierPo;
 import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import java.util.List;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -19,14 +20,13 @@ public interface CarrierMapper extends BaseMapper<CarrierPo> {
 
     
     /**
-     * @Desc: 查找列表
-     * @Author: ${cfg.author}
+     * @Desc: 查找公共运输方列表
      * @Date: 2020-10-07
      */
     List<CarrierPo> getList();
 
     /**
-     * 查询列表
+     * 根据租户id查询公共运输方列表
      * @param innerOrgId
      * @return
      */

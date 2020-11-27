@@ -27,6 +27,8 @@
     <select id="getIdBatchByPriceId" resultType="java.lang.Long">
         select id from price_surcharge where price_id = #{priceId}
     </select>
+
+    <!--获取详细-->
      <select id="selectByPriceId" resultType="com.apl.lms.price.exp.pojo.po.PriceSurchargePo">
         SELECT
           id,
@@ -48,6 +50,7 @@
           price_id = #{priceId}
     </select>
 
+    <!--批量删除-->
     <delete id="delBatch">
         delete from price_surcharge where price_id in(${ids})
     </delete>

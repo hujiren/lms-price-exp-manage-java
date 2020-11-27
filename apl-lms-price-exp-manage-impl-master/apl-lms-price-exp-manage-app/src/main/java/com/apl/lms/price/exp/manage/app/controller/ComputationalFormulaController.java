@@ -31,7 +31,7 @@ public class ComputationalFormulaController {
     ComputationalFormulaService computationalFormulaService;
 
     @PostMapping(value = "/get-list")
-    @ApiOperation(value =  "获取报价计算公式列表" , notes = "")
+    @ApiOperation(value =  "获取报价计算公式列表" , notes = "根据价格表id获取计算公式列表")
     @ApiImplicitParam(name = "priceId",value = "价格表id",required = true  , paramType = "query")
     public ResultUtil<List<PriceExpComputationalFormulaPo>> getList(@NotNull @Min(value = 1, message = "id不能小于1") Long priceId){
         List<PriceExpComputationalFormulaPo> list = computationalFormulaService.getList(priceId);
@@ -39,7 +39,7 @@ public class ComputationalFormulaController {
     }
 
     @PostMapping(value = "/del")
-    @ApiOperation(value =  "删除" , notes = "根据id删除")
+    @ApiOperation(value =  "删除" , notes = "根据id删除计算公式")
     @ApiImplicitParam(name = "id",value = "计算公式id",required = true  , paramType = "query")
     public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
 

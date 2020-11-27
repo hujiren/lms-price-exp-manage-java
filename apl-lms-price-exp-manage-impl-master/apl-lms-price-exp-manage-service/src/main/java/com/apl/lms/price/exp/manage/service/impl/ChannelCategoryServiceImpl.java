@@ -35,7 +35,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     }
 
     /**
-     * 分页查询
+     * 查询渠道类型列表
      * @param
      * @return
      */
@@ -50,7 +50,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
 
 
     /**
-     * 根据id删除渠道类型数据
+     * 根据id删除渠道类型
      * @param id
      * @return
      */
@@ -65,7 +65,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     }
 
     /**
-     * 修改
+     * 修改渠道类型
      * @param channelCategoryPo
      * @return
      */
@@ -80,7 +80,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     }
 
     /**
-     * 添加
+     * 添加渠道类型
      * @param channelCategoryPo
      * @return
      */

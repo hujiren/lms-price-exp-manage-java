@@ -136,7 +136,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    public ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleListKeyDto keyDto) {
+    public ResultUtil<Page<PriceExpSaleListVo>> getPriceExpSaleList(PageDto pageDto, PriceExpSaleKeyDto keyDto) {
 
         Page<PriceExpSaleListVo> page = new Page();
         page.setCurrent(pageDto.getPageIndex());
@@ -167,8 +167,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
         keyDto.setInnerOrgId(securityUser.getInnerOrgId());
-        List<PriceExpCostListVo> priceExpListVoCostList = baseMapper.getPriceExpCostList(page, keyDto);
-        page.setRecords(priceExpListVoCostList);
+        List<PriceExpCostListVo> priceExpCostList = baseMapper.getPriceExpCostList(page, keyDto);
+        page.setRecords(priceExpCostList);
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
 
@@ -190,9 +190,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         if (null != keyDto && keyDto.getChannelCategory() != null) {
             keyDto.setChannelCategory(keyDto.getChannelCategory().toUpperCase());
         }
-        List<PriceExpCostListVo> priceExpListVoCostList = baseMapper.getPublishedPriceList(page, keyDto);
+        List<PriceExpCostListVo> priceExpPublishedList = baseMapper.getPublishedPriceList(page, keyDto);
 
-        page.setRecords(priceExpListVoCostList);
+        page.setRecords(priceExpPublishedList);
 
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
@@ -220,7 +220,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpPriceInfoVo.setPublishedName(priceExpPriceInfoVo2.getPriceName());
         }
 
-
         priceExpPriceInfoVo.setOrgCode(securityUser.getInnerOrgCode());
         Integer customerIsNull = 0;
         Integer customerGroupIsNull = 0;
@@ -242,7 +241,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         //组装客户List (客户id, 客户名称)
         if (null != priceExpSaleVo && !priceExpSaleVo.getCustomerIds().equals("") && priceExpSaleVo.getCustomerIds() != null && priceExpSaleVo.getCustomerName() != null) {
-
 
             String customerIds = priceExpSaleVo.getCustomerIds().replaceAll(" ", "");
             String customerNames = priceExpSaleVo.getCustomerName().replaceAll(" ", "");
@@ -468,8 +466,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpMainPo.setEndWeight(priceExpDataUpdDto.getEndWeight());
             priceExpMainPo.setPriceFormat(priceExpDataUpdDto.getPriceFormat());
             priceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
-            Integer resInt = baseMapper.updateById(priceExpMainPo);
-            if (resInt < 1) {
+            Integer resultNum = baseMapper.updateById(priceExpMainPo);
+            if (resultNum < 1) {
                 throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
             }
 
@@ -477,8 +475,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
             priceExpDataPo.setPriceData(priceExpDataUpdDto.getPriceData());
             priceExpDataPo.setId(expPriceInfoBo.getPriceDataId());
-            Boolean result = priceExpDataService.updById(priceExpDataPo);
-            if (!result) {
+            Boolean resultBoo = priceExpDataService.updById(priceExpDataPo);
+            if (!resultBoo) {
                 throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
             }
 
@@ -487,8 +485,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpAxisPo.setAxisTransverse(priceExpDataUpdDto.getAxisTransverse());
             priceExpAxisPo.setAxisPortrait(priceExpDataUpdDto.getAxisPortrait());
             priceExpAxisPo.setId(expPriceInfoBo.getPriceDataId());
-            Boolean res = priceExpAxisService.updateByMainId(priceExpAxisPo);
-            if (!res) {
+            Boolean resultBoo2 = priceExpAxisService.updateByMainId(priceExpAxisPo);
+            if (!resultBoo2) {
                 throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
             }
 
@@ -616,17 +614,17 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpMainPo.setId(checkMainId);
         priceExpMainPo.setStartWeight(startWeight);
         priceExpMainPo.setEndWeight(endWeight);
-        Integer resInteger = baseMapper.upd(priceExpMainPo);
+        Integer resultNum = baseMapper.upd(priceExpMainPo);
 
-        if (resInteger < 1)
+        if (resultNum < 1)
             throw new AplException(CommonStatusCode.SAVE_FAIL, null);
         //构建新的表头
         List<String> newHeadCells = priceExpDataService.updHeadCells(weightSectionUpdDto, headCells);
         if (newHeadCells.size() < 1)
             throw new AplException(CommonStatusCode.SAVE_FAIL, null);
 
-        Boolean result = priceExpAxisService.updateByMainId(priceExpAxisPo);
-        if (!result) {
+        Boolean resultBoo = priceExpAxisService.updateByMainId(priceExpAxisPo);
+        if (!resultBoo) {
             throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
         }
         return newHeadCells;
@@ -689,11 +687,11 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 Long quotePriceId = quotePriceInfo.getId();
                 if (null == quotePriceInfo || quotePriceInfo.getId() < 1 || null == quotePriceInfo.getId()) {
                     //更新同步状态为3 引用的价格表已被删除
-                    PriceExpMainPo priceExpMainPo1 = new PriceExpMainPo();
-                    priceExpMainPo1.setId(priceExpMainPo.getId());
-                    priceExpMainPo1.setUpdTime(new Timestamp(System.currentTimeMillis()));
-                    priceExpMainPo1.setSynStatus(3);
-                    baseMapper.updateById(priceExpMainPo1);
+                    PriceExpMainPo newPriceExpMainPo = new PriceExpMainPo();
+                    newPriceExpMainPo.setId(priceExpMainPo.getId());
+                    newPriceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
+                    newPriceExpMainPo.setSynStatus(3);
+                    baseMapper.updateById(newPriceExpMainPo);
                     continue;
                 }
                 //说明已经同步过, 则该价格不需要同步
@@ -838,10 +836,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             newPriceExpMainPo.setCustomerGroupId(expPriceInnerClass.customerGroupId);
 
             Long quotePriceCustomerGroupId = partnerApiInfoBo.getCustomerGroupId();
-            Long quotePriceCustomerId = partnerApiInfoBo.getCustomerId();
             Long quotePriceTenantId = partnerApiInfoBo.getSysTenantId();
-            //newPriceExpMainPo.setQuotePriceCustomerGroupId(quotePriceCustomerGroupId);
-            //newPriceExpMainPo.setQuotePriceCustomerId(quotePriceCustomerId);
 
             //创建租户真实表
             priceListDao.createRealTable();
@@ -1081,9 +1076,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      */
     @Override
     public List<ExpPriceInfoBo> getPriceInfoByIds(List<Long> ids) {
-        List<ExpPriceInfoBo> priceInfoByIds = baseMapper.getPriceInfoByIds(ids);
+        List<ExpPriceInfoBo> priceInfoList = baseMapper.getPriceInfoByIds(ids);
         List<Long> zoneIds = new ArrayList<>();
-        for (ExpPriceInfoBo priceInfo : priceInfoByIds) {
+        for (ExpPriceInfoBo priceInfo : priceInfoList) {
             if (null != priceInfo.getZoneId() && priceInfo.getZoneId() > 0)
                 zoneIds.add(priceInfo.getZoneId());
         }
@@ -1091,19 +1086,17 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             Map<Long, PriceZoneNamePo> priceZoneMap = priceZoneNameService.getPriceZoneNameBatch(zoneIds);
 
             for (Map.Entry<Long, PriceZoneNamePo> PriceZoneNamePoEntry : priceZoneMap.entrySet()) {
-                for (ExpPriceInfoBo priceInfo : priceInfoByIds) {
+                for (ExpPriceInfoBo priceInfo : priceInfoList) {
                     if (PriceZoneNamePoEntry.getKey().equals(priceInfo.getZoneId()))
                         priceInfo.setZoneName(PriceZoneNamePoEntry.getValue().getZoneName());
                 }
             }
         }
-        return priceInfoByIds;
+        return priceInfoList;
     }
 
     @Override
     public Integer updatePriceExpMain(PriceExpMainPo priceExpMainPo) {
-
-//        String innerOrgCode = CommonContextHolder.getSecurityUser().getInnerOrgCode();
         return baseMapper.updPrice(priceExpMainPo);
     }
 
@@ -1185,10 +1178,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     public ResultUtil<Boolean> isQuotePartnerPrice(Long priceId) {
         List<Long> priceIdList = StringUtil.stringToLongList(priceId.toString());
 
-        List<PriceExpMainPo> priceExpMainList = baseMapper.getList(priceIdList);
+        List<PriceExpMainPo> priceExpMainPoList = baseMapper.getList(priceIdList);
 
-        if (null != priceExpMainList && priceExpMainList.size() > 0) {
-            PriceExpMainPo priceExpMainPo = priceExpMainList.get(0);
+        if (null != priceExpMainPoList && priceExpMainPoList.size() > 0) {
+            PriceExpMainPo priceExpMainPo = priceExpMainPoList.get(0);
             if (priceExpMainPo.getQuotePriceId() < 1) {
                 return ResultUtil.APPRESULT(ExpListServiceCode.THE_PRICE_IS_NOT_QUOTE.code, ExpListServiceCode.THE_PRICE_IS_NOT_QUOTE.msg, false);
             }else{

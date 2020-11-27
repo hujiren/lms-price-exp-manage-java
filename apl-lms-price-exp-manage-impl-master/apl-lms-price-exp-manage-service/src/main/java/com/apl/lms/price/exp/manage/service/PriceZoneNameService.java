@@ -67,10 +67,4 @@ public interface PriceZoneNameService extends IService<PriceZoneNamePo> {
      */
     PriceZoneNameVo getZoneNameInfo(Long zoneId);
 
-    /**
-     * 获取引用租户的分区数据
-     * @param zoneId
-     * @return
-     */
-    PriceZoneNamePo getTenantPriceZone(Long zoneId);
 }

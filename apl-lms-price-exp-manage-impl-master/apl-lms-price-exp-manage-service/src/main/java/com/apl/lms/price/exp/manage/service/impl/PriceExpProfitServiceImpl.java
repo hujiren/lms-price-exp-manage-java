@@ -71,7 +71,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     @Autowired
     PriceIncreaseProfitService priceIncreaseProfitService;
 
-
+    /**
+     * 删除利润
+     * @param id
+     * @return
+     */
     @Override
     public ResultUtil<Boolean> delById(Long id){
 
@@ -90,9 +94,9 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
      */
     @Override
     public Integer delBatch(String ids) {
-        Integer res = baseMapper.delBatch(ids);
+        Integer resultNum = baseMapper.delBatch(ids);
 
-        return res;
+        return resultNum;
     }
 
     /**

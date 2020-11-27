@@ -327,10 +327,10 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
             Map rowMap = null;
             List<Long> idList = new ArrayList<>();
             idList.add(zoneId);
-            Map<Long, List<PriceZoneDataListVo>> longListMap = assemblingZoneData(idList);//组装分区数据map(中文名,英文名)
+            Map<Long, List<PriceZoneDataListVo>> newZoneDataListMap = assemblingZoneData(idList);//组装分区数据map(中文名,英文名)
             List<Map<String, String>> zoneDataList = new ArrayList<>();
 
-            for (Map.Entry<Long, List<PriceZoneDataListVo>> zoneDataMap : longListMap.entrySet()) {
+            for (Map.Entry<Long, List<PriceZoneDataListVo>> zoneDataMap : newZoneDataListMap.entrySet()) {
                 if(zoneDataMap.getKey().equals(zoneId)){
                     List<PriceZoneDataListVo> zoneDataVoList = zoneDataMap.getValue();
                     for (PriceZoneDataListVo priceZoneDataListVo : zoneDataVoList) {
@@ -351,7 +351,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
             int startCellIndex = cell.getColumnIndex();
             Row row = null;
             int lastCellNum = 0;
-            for(int i = startRowIndex; i < longListMap.get(zoneId).size() + startRowIndex; i++){
+            for(int i = startRowIndex; i < newZoneDataListMap.get(zoneId).size() + startRowIndex; i++){
                 row = sheet.getRow(i);
                 lastCellNum = startCellIndex + 2;
                 if(null == row)

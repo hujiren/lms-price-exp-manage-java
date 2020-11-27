@@ -17,7 +17,7 @@ import java.util.List;
 public interface FreightTypeService extends IService<FreightTypePo> {
 
     /**
-     * @Desc: 添加一个FreightTypePo实体
+     * @Desc: 新增运输类型
      * @author hjr
      * @since 2020-10-07
      */
@@ -25,7 +25,7 @@ public interface FreightTypeService extends IService<FreightTypePo> {
 
 
     /**
-     * @Desc: 根据id 查找一个FreightTypePo 实体
+     * @Desc: 删除运输类型
      * @author hjr
      * @since 2020-10-07
      */
@@ -33,13 +33,13 @@ public interface FreightTypeService extends IService<FreightTypePo> {
 
 
     /**
-     * @Desc: 分页查找 FreightTypePo 列表
+     * @Desc: 获取运输类型列表
      * @author hjr
      * @since 2020-10-07
      */
     List<FreightTypePo> getList();
 
-    /**
+    /**根据租户id获取运输类型列表
      * @param innerOrgId
      * @return
      */

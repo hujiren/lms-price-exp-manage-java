@@ -60,6 +60,12 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
 
     static JoinFieldInfo joinSpecialCommodityFieldInfo = null; //跨项目跨库关联 特殊物品 反射字段缓存
 
+    /**
+     * 批量保存附加费
+     * @param priceSurchargePos
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional
     public ResultUtil<Boolean> save(List<PriceSurchargePo> priceSurchargePos) throws Exception {
@@ -68,7 +74,11 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
 
-
+    /**
+     * 删除附加费
+     * @param id
+     * @return
+     */
     @Override
     public ResultUtil<Boolean> delById(Long id) {
 
@@ -77,7 +87,12 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
 
     }
 
-
+    /**
+     * 获取详细
+     * @param priceId
+     * @return
+     * @throws Exception
+     */
     @Override
     public List<PriceSurchargeVo> selectById(Long priceId) throws Exception {
 
@@ -100,21 +115,36 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
         return priceSurchargeList;
     }
 
+    /**
+     * 获取详细
+     * @param priceId
+     * @return
+     */
     @Override
     public List<PriceSurchargePo> getById(Long priceId) {
         List<PriceSurchargePo> priceSurchargeList = baseMapper.selectByPriceId(priceId);
         return priceSurchargeList;
     }
 
+    /**
+     * 获取列表
+     * @param priceId
+     * @return
+     */
     @Override
     public List<Long> getIdBatch(Long priceId) {
         List<Long> surchargeIds = baseMapper.getIdBatchByPriceId(priceId);
         return surchargeIds;
     }
 
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
     @Override
     public Integer delBatch(String ids) {
-        Integer res = baseMapper.delBatch(ids);
-        return res;
+        Integer resultNum = baseMapper.delBatch(ids);
+        return resultNum;
     }
 }

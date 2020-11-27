@@ -3,7 +3,7 @@ package com.apl.lms.price.exp.manage.mapper;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.dto.PriceExpCostKeyDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpPublishedKeyDto;
-import com.apl.lms.price.exp.pojo.dto.PriceExpSaleListKeyDto;
+import com.apl.lms.price.exp.pojo.dto.PriceExpSaleKeyDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpMainPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpCostListVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpPriceInfoVo;
@@ -33,7 +33,7 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     @SqlParser(filter = true)
-    List<PriceExpSaleListVo> getPriceExpSaleList(Page<PriceExpSaleListVo> page, @Param("key") PriceExpSaleListKeyDto keyDto);
+    List<PriceExpSaleListVo> getPriceExpSaleList(Page<PriceExpSaleListVo> page, @Param("key") PriceExpSaleKeyDto keyDto);
 
     /**
      * 分页查询成本价格列表
@@ -144,7 +144,17 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      */
     List<ExpPriceInfoBo> getPriceInfoByIds(@Param("ids") List<Long> ids);
 
+    /**
+     * 更新添加利润方式
+     * @param priceExpMainPo
+     * @return
+     */
     Integer updPrice(@Param("po") PriceExpMainPo priceExpMainPo);
 
+    /**
+     * 检测是否被引用
+     * @param quotePriceId
+     * @return
+     */
     Integer isQuoteByExpPrice(Long quotePriceId);
 }

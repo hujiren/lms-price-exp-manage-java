@@ -21,7 +21,7 @@ public interface PriceSurchargeService extends IService<PriceSurchargePo> {
     ResultUtil<Boolean> save(List<PriceSurchargePo> priceSurchargePos) throws Exception;
 
     /**
-     * @Desc: 根据id 查找一个SurchargePo 实体
+     * @Desc: 删除附加费
      * @author hjr
      * @since 2020-09-28
      */
@@ -29,22 +29,25 @@ public interface PriceSurchargeService extends IService<PriceSurchargePo> {
 
 
     /**
-     * @Desc: 根据id 查找一个 SurchargePo 实体
+     * @Desc: 获取附加费详细
      * @author hjr
      * @since 2020-09-28
      */
 
     List<PriceSurchargeVo> selectById(Long priceId) throws Exception;
 
-
+    /**
+     * @Desc: 获取附加费详细
+     * @author hjr
+     * @since 2020-09-28
+     */
     List<PriceSurchargePo> getById(Long priceId);
 
-        /**
-         * 根据价格表id批量查询附加费id
-         * @param priceId
-         * @return
-         */
-
+    /**
+     * 根据价格表id批量查询附加费id
+     * @param priceId
+     * @return
+     */
     List<Long> getIdBatch(Long priceId);
 
     /**

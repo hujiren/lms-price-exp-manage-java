@@ -15,7 +15,7 @@ import java.util.List;
 public interface FuelChargeService extends IService<FuelChargePo> {
 
     /**
-     * 分页查询燃油费列表
+     * 查询燃油费列表
      * @param
      * @return
      */

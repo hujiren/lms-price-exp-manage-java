@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apl.lms.price.exp.manage.mapper.UnifyProfitMapper">
 
+    <!--批量删除-->
     <delete id="deleteBatch">
         delete from unify_exp_profit where id in
         <foreach collection="ids" close=")" item="row" open="(" separator=",">
@@ -9,6 +10,7 @@
         </foreach>
     </delete>
 
+    <!--获取统加利润-->
     <select id="getUnifyProfit" resultType="com.apl.lms.price.exp.pojo.po.UnifyExpPricePo">
         select
             id, customer_group_id, customer_group_name, start_weight, end_weight, first_weight_profit, unit_weight_profit, proportion_profit
@@ -23,7 +25,7 @@
         order by id
     </select>
 
-
+    <!--插入-->
     <insert id="insertUnifyProfit">
         insert into
             unify_exp_profit (id, customer_group_id, customer_group_name, start_weight, end_weight, first_weight_profit, unit_weight_profit, proportion_profit)
@@ -33,7 +35,7 @@
                 )
     </insert>
 
-
+    <!--更新-->
     <update id="updateUnifyProfit">
          update
             unify_exp_profit

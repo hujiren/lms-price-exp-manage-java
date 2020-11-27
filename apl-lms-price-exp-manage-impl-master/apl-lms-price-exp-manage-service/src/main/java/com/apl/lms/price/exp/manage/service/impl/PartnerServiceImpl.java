@@ -36,6 +36,12 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
         }
     }
 
+    /**
+     * 分页获取服务商列表
+     * @param pageDto
+     * @param partnerKeyDto
+     * @return
+     */
     @Override
     public ResultUtil<Page<PartnerPo>> getList(PageDto pageDto, PartnerKeyDto partnerKeyDto){
 
@@ -51,36 +57,56 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
+    /**
+     * 删除服务商
+     * @param id
+     * @return
+     */
     @Override
     public ResultUtil<Boolean> delPartner(Long id) {
 
-        Integer integer = baseMapper.deleteById(id);
-        if(integer < 1){
+        Integer resultNum = baseMapper.deleteById(id);
+        if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, PartnerServiceCode.ID_IS_NOT_EXITS.msg, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
+    /**
+     * 更新服务商
+     * @param partnerPo
+     * @return
+     */
     @Override
     public ResultUtil<Boolean> updPartner(PartnerPo partnerPo) {
         partnerPo.setPartnerCode(partnerPo.getPartnerCode().toUpperCase());
-        Integer integer = baseMapper.updateById(partnerPo);
-        if(integer < 1){
+        Integer resultNum = baseMapper.updateById(partnerPo);
+        if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
 
     }
 
+    /**
+     * 新增服务商
+     * @param partnerPo
+     * @return
+     */
     @Override
     public ResultUtil<Integer> addPartner(PartnerPo partnerPo) {
 
         partnerPo.setPartnerCode(partnerPo.getPartnerCode().toUpperCase());
         partnerPo.setId(SnowflakeIdWorker.generateId());
-        Integer integer = baseMapper.insert(partnerPo);
-        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, integer);
+        Integer resultNum = baseMapper.insert(partnerPo);
+        return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, resultNum);
     }
 
+    /**
+     * 获取服务商详细
+     * @param id
+     * @return
+     */
     @Override
     public ResultUtil<PartnerPo> getPartner(Long id) {
         PartnerPo partnerPo = baseMapper.selectById(id);

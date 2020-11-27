@@ -55,21 +55,21 @@ public class PriceExpController {
 
     @PostMapping(value = "/get-sale-list")
     @ApiOperation(value = "分页查询销售价格列表", notes = "分页查询销售价格列表")
-    public ResultUtil<Page<PriceExpSaleListVo>> getSaleList(PageDto pageDto, @Validated PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
+    public ResultUtil<Page<PriceExpSaleListVo>> getSaleList(PageDto pageDto, @Validated PriceExpSaleKeyDto priceExpSaleKeyDto) {
         priceListDao.createRealTable();
-        priceExpSaleListKeyDto.setPriceType(1);
+        priceExpSaleKeyDto.setPriceType(1);
 
-        return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleListKeyDto);
+        return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleKeyDto);
     }
 
 
     @PostMapping(value = "/get-customer-list")
     @ApiOperation(value = "分页查询客户价格列表", notes = "分页查询客户价格列表")
-    public ResultUtil<Page<PriceExpSaleListVo>> getCustomerList(PageDto pageDto, @Validated PriceExpSaleListKeyDto priceExpSaleListKeyDto) {
+    public ResultUtil<Page<PriceExpSaleListVo>> getCustomerList(PageDto pageDto, @Validated PriceExpSaleKeyDto priceExpSaleKeyDto) {
         priceListDao.createRealTable();
-        priceExpSaleListKeyDto.setPriceType(2);
+        priceExpSaleKeyDto.setPriceType(2);
 
-        return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleListKeyDto);
+        return priceExpService.getPriceExpSaleList(pageDto, priceExpSaleKeyDto);
     }
 
 

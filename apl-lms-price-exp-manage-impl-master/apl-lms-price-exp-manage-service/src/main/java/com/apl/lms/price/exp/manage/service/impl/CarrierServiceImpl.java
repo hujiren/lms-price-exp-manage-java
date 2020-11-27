@@ -51,37 +51,50 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
     @Autowired
     LmsCommonFeign lmsCommonFeign;
 
+    /**
+     * 添加公共运输方
+     * @param carrierPo
+     * @return
+     */
     @Override
     public ResultUtil<Long> add(CarrierPo carrierPo){
 
         carrierPo.setId(SnowflakeIdWorker.generateId());
-        Integer flag = baseMapper.insert(carrierPo);
-        if(flag.equals(1)){
+        Integer resultNum = baseMapper.insert(carrierPo);
+        if(resultNum.equals(1)){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , carrierPo.getId());
         }
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL , null);
     }
 
-
+    /**
+     * 更新公共运输方
+     * @param carrierPo
+     * @return
+     */
     @Override
     public ResultUtil<Boolean> updById(CarrierPo carrierPo){
 
 
-        Integer flag = baseMapper.updateById(carrierPo);
-        if(flag.equals(1)){
+        Integer resultNum = baseMapper.updateById(carrierPo);
+        if(resultNum.equals(1)){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , true);
         }
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL , false);
     }
 
-
+    /**
+     * 删除公共运输方
+     * @param id
+     * @return
+     */
     @Override
     public ResultUtil<Boolean> delById(Long id){
 
-        Integer flag = baseMapper.deleteById(id);
-        if(flag > 0){
+        Integer resultNum = baseMapper.deleteById(id);
+        if(resultNum > 0){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS , true);
         }
 
@@ -89,7 +102,10 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
                 CarrierServiceCode.ID_IS_NOT_EXISTS.msg,false);
     }
 
-
+    /**
+     * 获取公共运输方列表
+     * @return
+     */
     @Override
     public ResultUtil<List<CarrierPo>> getList(){
 
@@ -98,10 +114,16 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , carrierPoList);
     }
 
+    /**
+     * 根据租户id获取公共运输方列表
+     * @param innerOrgId
+     * @return
+     * @throws Exception
+     */
     @Override
     public ResultUtil<List<CarrierPo>> getListByInnerOrgId(Long innerOrgId) throws Exception {
 
-        List<CarrierPo> carrierCacheList = getCommonCarrier();
+        List<CarrierPo> carrierCacheList = getCommonCarrierByCache();
         List<CarrierPo> carrierPoList = baseMapper.getListByInnerOrgId(innerOrgId);
         if(null != carrierPoList && carrierPoList.size() > 0){
             for (CarrierPo commonCarrierPo : carrierPoList) {
@@ -112,9 +134,13 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , carrierCacheList);
     }
 
-    public List<CarrierPo> getCommonCarrier() throws IOException {
+    /**
+     * 从缓存获取公共运输方列表
+     * @return
+     * @throws IOException
+     */
+    public List<CarrierPo> getCommonCarrierByCache() throws IOException {
         List<CarrierPo> carrierCacheList = (List<CarrierPo>) aplCacheUtil.opsForValue("priceManage").get(CACHE_KEY);
-
         return carrierCacheList;
     }
 }

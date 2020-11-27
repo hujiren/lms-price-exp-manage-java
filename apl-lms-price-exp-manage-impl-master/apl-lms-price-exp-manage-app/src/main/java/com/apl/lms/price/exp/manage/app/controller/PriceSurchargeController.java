@@ -35,7 +35,7 @@ public class PriceSurchargeController {
 
     @PostMapping(value = "/save")
     @ApiOperation(value =  "批量保存",  notes ="批量保存")
-    public ResultUtil<Boolean> save(@Validated @RequestBody List<PriceSurchargePo> priceSurchargePos) throws Exception {
+    public ResultUtil<Boolean> saveBatch(@Validated @RequestBody List<PriceSurchargePo> priceSurchargePos) throws Exception {
 
         return priceSurchargeService.save(priceSurchargePos);
     }
@@ -43,7 +43,7 @@ public class PriceSurchargeController {
     @PostMapping(value = "/del")
     @ApiOperation(value =  "删除" , notes = "删除")
     @ApiImplicitParam(name = "id",value = " id",required = true  , paramType = "query")
-    public ResultUtil<Boolean> delById(@NotNull(message = "id不能为空") @Min(value = 1 , message = "id不能小于1") Long id) {
+    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1 , message = "id不能小于1") Long id) {
 
         return priceSurchargeService.delById(id);
     }
@@ -51,7 +51,7 @@ public class PriceSurchargeController {
     @PostMapping(value = "/get")
     @ApiOperation(value =  "获取详细" , notes = "获取详细")
     @ApiImplicitParam(name = "priceId",value = "价格表id",required = true  , paramType = "query")
-    public ResultUtil<List<PriceSurchargeVo>> selectById(@NotNull(message = "价格表id不能为空") @Min(value = 1 , message = "id不能小于1") Long priceId) throws Exception {
+    public ResultUtil<List<PriceSurchargeVo>> getById(@NotNull(message = "价格表id不能为空") @Min(value = 1 , message = "id不能小于1") Long priceId) throws Exception {
         List<PriceSurchargeVo> priceSurchargeVoList = priceSurchargeService.selectById(priceId);
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceSurchargeVoList);
     }

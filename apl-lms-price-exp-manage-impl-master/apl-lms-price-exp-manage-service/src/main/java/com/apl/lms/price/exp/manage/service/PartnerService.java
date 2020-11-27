@@ -14,13 +14,39 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PartnerService extends IService<PartnerPo> {
 
+    /**
+     * 分页获取服务商列表
+     * @param pageDto
+     * @param partnerKeyDto
+     * @return
+     */
     ResultUtil<Page<PartnerPo>> getList(PageDto pageDto, PartnerKeyDto partnerKeyDto);
 
+    /**
+     * 删除服务商
+     * @param id
+     * @return
+     */
     ResultUtil<Boolean> delPartner(Long id);
 
+    /**
+     * 更新服务商
+     * @param partnerPo
+     * @return
+     */
     ResultUtil<Boolean> updPartner(PartnerPo partnerPo);
 
+    /**
+     * 新增服务商
+     * @param partnerPo
+     * @return
+     */
     ResultUtil<Integer> addPartner(PartnerPo partnerPo);
 
+    /**
+     * 获取服务商详细
+     * @param id
+     * @return
+     */
     ResultUtil<PartnerPo> getPartner(Long id);
 }

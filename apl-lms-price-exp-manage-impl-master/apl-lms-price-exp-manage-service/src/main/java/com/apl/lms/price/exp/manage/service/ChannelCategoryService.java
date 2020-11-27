@@ -14,7 +14,7 @@ import java.util.List;
 public interface ChannelCategoryService extends IService<ChannelCategoryPo> {
 
     /**
-     * 分页查询渠道类型列表
+     * 查询渠道类型列表
      * @param
      * @param
      * @return
@@ -22,7 +22,7 @@ public interface ChannelCategoryService extends IService<ChannelCategoryPo> {
     ResultUtil<List<ChannelCategoryListVo>> getList();
 
     /**
-     * 删除
+     * 删除渠道类型
      * @param id
      * @return
      */

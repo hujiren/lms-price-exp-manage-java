@@ -29,6 +29,14 @@ public class CacheServiceImpl implements CacheService {
     @Autowired
     CacheMapper cacheMapper;
 
+    /**
+     * 添加服务商缓存
+     * @param keys
+     * @param minKey
+     * @param maxKey
+     * @return
+     * @throws IOException
+     */
     @Override
     public ResultUtil<Boolean> addPartnerCache(String keys, Long minKey, Long maxKey) throws IOException {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();

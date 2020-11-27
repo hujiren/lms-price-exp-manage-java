@@ -74,11 +74,4 @@ public interface PriceZoneMapper extends BaseMapper<PriceZoneNamePo> {
      */
     PriceZoneNameVo getPriceZoneNameInfo(Long zoneId);
 
-    /**
-     *
-     * @param zoneId
-     * @return
-     */
-    @SqlParser(filter = true)
-    PriceZoneNamePo getTenantPriceZone(Long zoneId);
 }

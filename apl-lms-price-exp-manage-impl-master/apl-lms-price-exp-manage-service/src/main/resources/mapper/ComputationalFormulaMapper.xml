@@ -12,7 +12,7 @@
             price_id = #{priceId}
     </select>
 
-    <!--批量删除-->
+    <!--批量删除计算公式-->
     <delete id="delBatch">
         delete from price_computational_formula where price_id in(${ids})
     </delete>
