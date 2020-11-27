@@ -113,7 +113,7 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
     }
 
     public List<CarrierPo> getCommonCarrier() throws IOException {
-        List<CarrierPo> carrierCacheList = (List<CarrierPo>) aplCacheUtil.opsForValue().get(CACHE_KEY);
+        List<CarrierPo> carrierCacheList = (List<CarrierPo>) aplCacheUtil.opsForValue("priceManage").get(CACHE_KEY);
 
         return carrierCacheList;
     }

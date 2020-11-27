@@ -64,6 +64,7 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
         List<PriceIncreaseProfitPo> increaseProfitPoList = baseMapper.getList(priceId);
         List<PriceExpProfitDto> newIncreaseProfitList = new ArrayList<>();
 
+        //处理客户组
         if(null != increaseProfitPoList && increaseProfitPoList.size() > 0){
             for (PriceIncreaseProfitPo increaseProfitPo : increaseProfitPoList) {
 

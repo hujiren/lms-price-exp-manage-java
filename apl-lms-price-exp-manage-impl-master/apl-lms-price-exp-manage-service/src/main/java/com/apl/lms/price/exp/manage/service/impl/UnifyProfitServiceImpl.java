@@ -114,10 +114,15 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
      */
     public UnifyProfitDto handCustomerGroupPoToDto(UnifyExpPricePo unifyExpPricePo){
 
-        UnifyProfitDto unifyProfitDto  = new UnifyProfitDto();
-        if (unifyExpPricePo.getCustomerGroupId() != null && !unifyExpPricePo.getCustomerGroupId().equals("") && !unifyExpPricePo.getCustomerGroupName().equals("") && unifyExpPricePo.getCustomerGroupName() != null) {
-            String customerGroupIds = unifyExpPricePo.getCustomerGroupId().replace("[", "").replace("]", "").replaceAll(" ", "");
-            String customerGroupName = unifyExpPricePo.getCustomerGroupName().replace("[", "").replace("]", "").replaceAll(" ", "");
+        UnifyProfitDto unifyProfitDto = null;
+        if (unifyExpPricePo.getCustomerGroupId() != null && !unifyExpPricePo.getCustomerGroupId().equals("")
+                && !unifyExpPricePo.getCustomerGroupName().equals("") && unifyExpPricePo.getCustomerGroupName() != null) {
+
+            String customerGroupIds = unifyExpPricePo.getCustomerGroupId().replace("[", "")
+                    .replace("]", "").replaceAll(" ", "");
+
+            String customerGroupName = unifyExpPricePo.getCustomerGroupName().replace("[", "")
+                    .replace("]", "").replaceAll(" ", "");
 
             List<CustomerGroupBo> customerGroupDtoList = new ArrayList<>();
             String[] customerGroupIdArr = customerGroupIds.split(",");
@@ -131,6 +136,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
                 customerGroupBo.setCustomerGroupName(customerGroupNameArr[i]);
                 customerGroupDtoList.add(customerGroupBo);
             }
+            unifyProfitDto = new UnifyProfitDto();
             unifyProfitDto.setCustomerGroups(customerGroupDtoList);
         }
         return unifyProfitDto;

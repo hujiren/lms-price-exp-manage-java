@@ -24,7 +24,7 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
     enum SpecialCommodityServiceCode {
         ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在"),
         THE_DATA_ALREADY_EXISTS("THE_DATA_ALREADY_EXISTS", "该数据已经存在:");
-        ;
+
 
         private String code;
         private String msg;
@@ -71,6 +71,7 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
 
         List<SpecialCommodityPo> resultList = getList();
 
+        //不能添加同名或者code相同的特殊物品
             for (SpecialCommodityPo specialCommodityPo : specialCommodityPoList) {
                 if(null != resultList && resultList.size() > 0) {
                     for (SpecialCommodityPo commodityPo : resultList) {

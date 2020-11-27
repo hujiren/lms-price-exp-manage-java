@@ -793,7 +793,7 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
                     ExportPriceEnum.PLEASE_UPLOAD_A_PROPERLY_FORMATTED_EXCEL_FILE_OR_USE_OFFICE_2007_OR_HIGHER_TO_GENERATE_EXCEL.msg, null);
         }
 
-        String targetFileName = file.getOriginalFilename();
+        String targetFileName = file.getOriginalFilename();//获取真实的文件名
         String substringName = "";
         int index = targetFileName.lastIndexOf(".");
         if(index > 0)
@@ -809,18 +809,16 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
         try {
             SecurityUser securityUser = CommonContextHolder.getSecurityUser();
             String newFileName = templateFileName.replace("-tenant", "-" + securityUser.getInnerOrgCode());
-
-            if(null == file)
-                return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);
-
             File newFile = new File(newFileName);
             fos = new FileOutputStream(newFile);
             fos.write(targetFileByteArr);
 
         } catch (IOException e) {
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);
+
         } finally {
-            fos.close();
+            if(null != fos)
+                fos.close();
         }
 
         return ResultUtil.APPRESULT(ExportPriceEnum.UPLOAD_SUCCESSFUL.code,ExportPriceEnum.UPLOAD_SUCCESSFUL.msg, true);
@@ -854,6 +852,7 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
      */
     @Override
     public void downloadExcel(HttpServletResponse response) throws IOException {
+
         //vnd.ms-excel
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/vnd.ms-excel");

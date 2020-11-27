@@ -14,8 +14,8 @@ import lombok.Data;
 @Data
 @TableName("price_increase_profit")
 @ApiModel(value = "增加的利润-持久化对象", description = "增加的利润-持久化对象")
-public class PriceIncreaseProfitPo extends Model<PriceIncreaseProfitPo> {
 
+public class PriceIncreaseProfitPo extends Model<PriceIncreaseProfitPo> {
     @ApiModelProperty(name = "id", value = "id")
     private Long id;
 

@@ -34,7 +34,7 @@ public class CacheServiceImpl implements CacheService {
         SecurityUser securityUser = CommonContextHolder.getSecurityUser();
         Map<String, PartnerCacheBo> maps = cacheMapper.addPartnerCache(keys, minKey, maxKey, securityUser.getInnerOrgId());
         if(null != maps && maps.size()>0) {
-            aplCacheUtil.opsForValue().set(maps);
+            aplCacheUtil.opsForValue("priceManage").set(maps);
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
         }
         return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL, false);
