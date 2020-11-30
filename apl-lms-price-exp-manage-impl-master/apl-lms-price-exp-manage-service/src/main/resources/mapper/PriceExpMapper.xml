@@ -341,7 +341,7 @@
     <select id="getPriceInfo" resultType="com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo">
         select
             id, quote_price_id, inner_org_id, price_data_id, price_format, upd_time, quote_price_upd_time,
-            channel_category, zone_id, end_date, price_name, add_profit_way, partner_id
+            channel_category, zone_id, end_date, price_name, add_profit_way, partner_id, is_published_price
          from lms_exp_price where id = #{id}
     </select>
 
@@ -390,9 +390,9 @@
         </foreach>
     </select>
 
-
     <!--查询是否被引用-->
     <select id="isQuoteByExpPrice" resultType="java.lang.Integer">
         select count(id) from lms_exp_price where quote_price_id = #{quotePriceId}
     </select>
+
 </mapper>

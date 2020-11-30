@@ -22,7 +22,6 @@ public interface ChannelCategoryMapper extends BaseMapper<ChannelCategoryPo> {
      * @param
      * @return
      */
-
     List<ChannelCategoryListVo> getList();
 
     /**

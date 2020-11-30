@@ -5,6 +5,7 @@ import com.apl.lms.price.exp.pojo.dto.IncreaseProfitDto;
 import com.apl.lms.price.exp.pojo.po.PriceIncreaseProfitPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -23,10 +24,10 @@ public interface PriceIncreaseProfitService extends IService<PriceIncreaseProfit
 
     /**
      * 批量删除
-     * @param ids
+     * @param increaseIds
      * @return
      */
-    ResultUtil<Boolean> deleteBatch(List<Long> ids);
+    ResultUtil<Boolean> deleteBatch(List<Long> increaseIds,Long priceId) throws IOException;
 
     /**
      * 批量保存 新增或修改

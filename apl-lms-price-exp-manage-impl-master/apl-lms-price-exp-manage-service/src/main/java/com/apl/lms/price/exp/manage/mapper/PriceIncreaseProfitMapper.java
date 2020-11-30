@@ -22,4 +22,11 @@ public interface PriceIncreaseProfitMapper extends BaseMapper<PriceIncreaseProfi
      */
     @SqlParser(filter = true)
     List<PriceIncreaseProfitPo> getList(Long priceId);
+
+    /**
+     * 获取详细信息
+     * @param increaseId
+     * @return
+     */
+    PriceIncreaseProfitPo getIncreaseInfo(Long increaseId);
 }

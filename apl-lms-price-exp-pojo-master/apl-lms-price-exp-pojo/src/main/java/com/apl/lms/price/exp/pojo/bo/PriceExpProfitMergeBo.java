@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.pojo.bo;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -16,6 +17,7 @@ import java.util.List;
  * @Date 2020/9/11 11:14
  */
 @Data
+@ApiModel(value = "利润 中转对象", description = "利润 中转对象")
 public class PriceExpProfitMergeBo implements Serializable {
 
     @ApiModelProperty(name = "customerGroup" , value = "客户组", required = true)

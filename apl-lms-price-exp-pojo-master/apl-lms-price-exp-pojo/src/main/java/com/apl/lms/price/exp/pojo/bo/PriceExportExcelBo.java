@@ -15,7 +15,7 @@ import java.util.List;
  * @Date 2020/10/16 15:03
  */
 @Data
-@ApiModel(value = "导出价格表对象", description = "导出价格表对象")
+@ApiModel(value = "导出价格表中转对象", description = "导出价格表中转对象")
 public class PriceExportExcelBo implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)

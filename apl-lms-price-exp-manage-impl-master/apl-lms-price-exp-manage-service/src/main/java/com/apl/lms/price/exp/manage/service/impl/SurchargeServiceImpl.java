@@ -57,10 +57,8 @@ public class SurchargeServiceImpl extends ServiceImpl<SurchargeMapper, Surcharge
      */
     @Override
     public ResultUtil<Boolean> delSurcharge(Long id) {
-        Integer resultNum = baseMapper.delById(id);
-        if(resultNum < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, SurchargeServiceCode.ID_DOES_NOT_EXITS.msg, false);
-        }
+        SurchargePo surchargePo = baseMapper.selectById(id);
+        baseMapper.delById(id);
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 

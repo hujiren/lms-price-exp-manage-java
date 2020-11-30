@@ -1,9 +1,12 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.apl.cache.AplCacheHelper;
 import com.apl.db.adb.AdbHelper;
 import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lms.net.SecurityUserNetService;
 import com.apl.lms.price.exp.manage.mapper.PriceIncreaseProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
 import com.apl.lms.price.exp.manage.service.PriceIncreaseProfitService;
@@ -18,6 +21,7 @@ import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +52,9 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
 
     @Autowired
     PriceExpService priceExpService;
+
+    @Autowired
+    AplCacheHelper aplCacheHelper;
     /**
      * 根据价格表id获取增加的利润列表
      * @param priceId
@@ -97,12 +104,13 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
 
     /**
      * 批量删除
-     * @param ids
+     * @param increaseIds
      * @return
      */
     @Override
-    public ResultUtil<Boolean> deleteBatch(List<Long> ids) {
-        baseMapper.deleteBatchIds(ids);
+    public ResultUtil<Boolean> deleteBatch(List<Long> increaseIds, Long priceId) throws IOException {
+        baseMapper.deleteBatchIds(increaseIds);
+        aplCacheHelper.opsForKey("exp-price-increase-profit").patternDel(priceId);
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
@@ -115,11 +123,17 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
     public ResultUtil<Boolean> saveBatchIncreaseProfit(IncreaseProfitDto increaseProfitDto) throws Exception {
 
         Integer addProfitWay = increaseProfitDto.getAddProfitWay();
+        Long priceId = increaseProfitDto.getId();
         if(null != addProfitWay){
             PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
-            priceExpMainPo.setId(increaseProfitDto.getId());
+            priceExpMainPo.setId(priceId);
             priceExpMainPo.setAddProfitWay(addProfitWay);
             priceExpService.updatePriceExpMain(priceExpMainPo);
+            SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
+            aplCacheHelper.opsForKey("exp-price-published-price").patternDel(priceId);
+            aplCacheHelper.opsForKey("exp-price-extended-info").patternDel(priceId);
+            aplCacheHelper.opsForKey("exp-price-sale-price-list").patternDel(securityUser.getInnerOrgCode());
+            aplCacheHelper.opsForKey("exp-price-cost-price-list").patternDel(securityUser.getInnerOrgCode());
         }
 
         List<PriceExpProfitDto> increaseProfitList = increaseProfitDto.getIncreaseProfit();
@@ -152,6 +166,7 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
             priceIncreaseProfitPoList.add(priceIncreaseProfitPo);
         }
         adbHelper.saveBatch(priceIncreaseProfitPoList, "price_increase_profit", "id", true);
+        aplCacheHelper.opsForKey("exp-price-increase-profit").patternDel(priceId);
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }

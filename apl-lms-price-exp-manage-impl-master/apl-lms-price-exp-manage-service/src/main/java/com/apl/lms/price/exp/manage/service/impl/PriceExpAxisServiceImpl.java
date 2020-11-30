@@ -1,7 +1,9 @@
 package com.apl.lms.price.exp.manage.service.impl;
+import com.apl.cache.AplCacheHelper;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lib.utils.StringUtil;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpAxisMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
@@ -14,6 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +44,10 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
     }
     @Autowired
     PriceExpService priceExpService;
+
+    @Autowired
+    AplCacheHelper aplCacheHelper;
+
     /**
      * 保存价格表轴数据
      * @param priceDataId
@@ -63,17 +70,17 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
      * @return
      */
     @Override
-    public Boolean updateByMainId(PriceExpAxisPo priceExpAxisPo) {
+    public Boolean updById(PriceExpAxisPo priceExpAxisPo) throws IOException {
 
         Integer result = 0;
-        Long checkId = baseMapper.exists(priceExpAxisPo.getId());
-        if(null == checkId || checkId.equals(0)){
+        Long priceDataId = baseMapper.exists(priceExpAxisPo.getId());
+        if(null == priceDataId || priceDataId.equals(0)){
             result = baseMapper.insertAxis(priceExpAxisPo);
         }
         else {
-            result = baseMapper.updateByMainId(priceExpAxisPo);
+            result = baseMapper.updById(priceExpAxisPo);
+            aplCacheHelper.opsForKey("exp-price-axis").patternDel(priceDataId);
         }
-
 
         return result > 0 ? true : false;
     }
@@ -148,13 +155,15 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
 
     /**
      * 批量删除
-     * @param ids
+     * @param priceDataIds
      * @return
      */
     @Override
-    public Integer delBatch(String ids) {
-        Integer res = baseMapper.delBatch(ids);
-        return res;
+    public Integer delBatch(String priceDataIds) throws IOException {
+        Integer resultNum = baseMapper.delBatch(priceDataIds);
+        List<Long> priceDataIdList = StringUtil.stringToLongList(priceDataIds);
+        aplCacheHelper.opsForKey("exp-price-axis").patternDel(priceDataIdList);
+        return resultNum;
     }
 
 }

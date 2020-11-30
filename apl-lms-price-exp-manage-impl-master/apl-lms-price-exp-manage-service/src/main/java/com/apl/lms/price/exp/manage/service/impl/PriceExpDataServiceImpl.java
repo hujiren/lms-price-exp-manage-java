@@ -1,6 +1,7 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.apl.cache.AplCacheHelper;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.utils.ResultUtil;
@@ -9,10 +10,7 @@ import com.apl.lms.net.PartnerNetService;
 import com.apl.lms.net.pojo.bo.PartnerApiInfoBo;
 import com.apl.lms.price.exp.manage.dao.PriceListDao;
 import com.apl.lms.price.exp.manage.mapper2.PriceExpDataMapper;
-import com.apl.lms.price.exp.manage.service.PriceExpAxisService;
-import com.apl.lms.price.exp.manage.service.PriceExpDataService;
-import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
-import com.apl.lms.price.exp.manage.service.UnifyProfitService;
+import com.apl.lms.price.exp.manage.service.*;
 import com.apl.lms.price.exp.pojo.bo.ExpPriceInfoBo;
 import com.apl.lms.price.exp.pojo.bo.PriceExpProfitMergeBo;
 import com.apl.lms.price.exp.pojo.dto.*;
@@ -26,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +54,9 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     }
 
     @Autowired
+    PriceExpService priceExpService;
+
+    @Autowired
     PriceExpProfitService priceExpProfitService;
 
     @Autowired
@@ -65,6 +67,9 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
 
     @Autowired
     PriceListDao priceListDao;
+
+    @Autowired
+    AplCacheHelper aplCacheHelper;
 
     /**
      * 将String数组转换为List
@@ -119,15 +124,16 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      * @return
      */
     @Override
-    public Boolean updById(PriceExpDataPo priceExpDataPo) {
+    public Boolean updById(PriceExpDataPo priceExpDataPo) throws IOException {
 
         Integer saveResult = 0;
-        Long checkId = baseMapper.exists(priceExpDataPo.getId());
-        if(null==checkId || checkId.equals(0))
+        Long priceDataId = baseMapper.exists(priceExpDataPo.getId());
+        if(null==priceDataId || priceDataId.equals(0))
             saveResult = baseMapper.insertData(priceExpDataPo);
-        else
+        else{
             saveResult = baseMapper.updById(priceExpDataPo);
-
+            aplCacheHelper.opsForKey("exp-price-cell-value").patternDel(priceDataId);
+        }
         return saveResult > 0 ? true : false;
     }
 
@@ -135,8 +141,10 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      * 批量删除
      */
     @Override
-    public Integer delBatch(String ids) {
-        return baseMapper.delBatch(ids);
+    public Integer delBatch(String priceDataIds) throws IOException {
+        List<Long> priceDataIdList = StringUtil.stringToLongList(priceDataIds);
+        aplCacheHelper.opsForKey("exp-price-cell-value").patternDel(priceDataIdList);
+        return baseMapper.delBatch(priceDataIds);
     }
 
     /**
@@ -146,9 +154,8 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
      */
     @Override
     @Transactional
-    public List<String> updHeadCells(WeightSectionUpdDto weightSectionUpdDto,List<String> headCells) {
+    public List<String> updHeadCells(WeightSectionUpdDto weightSectionUpdDto,List<String> headCells) throws IOException {
 
-//        List<List<String>> allHeadCell = baseMapper.getHeadCells(weightSectionUpdDto.getPriceDataId());
         PriceExpDataStringVo priceExpDataStringVo = baseMapper.getHeadCells(weightSectionUpdDto.getPriceDataId());
         List<List<String>> allHeadCell = priceExpDataStringVo.getPriceData();
         if(null == allHeadCell)
@@ -170,6 +177,8 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         Integer integer = baseMapper.updateData(weightSectionUpdDto.getPriceDataId(), allHeadCell);
         if(integer < 1)
             throw new AplException(CommonStatusCode.SAVE_FAIL,null);
+        aplCacheHelper.opsForKey("exp-price-cell-value").patternDel(weightSectionUpdDto.getPriceDataId());
+
         return newHeadCells;
     }
 
@@ -250,12 +259,6 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         }
             //加利润
             expDataObjVo = addProfitToThePrice(priceId, expPriceInfoBo, priceDataVo, costProfit, increaseProfit, isExport);
-
-//        }else{
-//            //没有利润，直接原价
-//            expDataObjVo = new PriceExpDataObjVo();
-//            expDataObjVo.setPriceData(priceDataVo);
-//        }
 
         expDataObjVo.setPriceDataId(priceDataId);
 

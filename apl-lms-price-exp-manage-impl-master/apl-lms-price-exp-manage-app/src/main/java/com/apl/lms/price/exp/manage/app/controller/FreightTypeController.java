@@ -52,15 +52,15 @@ public class FreightTypeController {
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "查询列表" , notes = "查询列表")
     public ResultUtil<List<FreightTypePo>> getList() {
-        List<FreightTypePo> list = freightTypeService.getList();
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, list);
+        List<FreightTypePo> resultList = freightTypeService.getList();
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, resultList);
     }
 
     @PostMapping(value = "/get-list-admin")
     @ApiOperation(value =  "查询列表-管理员通道" , notes = "查询列表-管理员通道")
     @ApiImplicitParam(name = "innerOrgId",value = " 租户id",required = true  , paramType = "query")
     public ResultUtil<List<FreightTypePo>> getList(Long innerOrgId) {
-        List<FreightTypePo> list = freightTypeService.getListByInnerOrgId(innerOrgId);
-        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, list);
+        List<FreightTypePo> resultList = freightTypeService.getListByInnerOrgId(innerOrgId);
+        return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, resultList);
     }
 }

@@ -23,14 +23,12 @@ public interface FreightTypeService extends IService<FreightTypePo> {
      */
     ResultUtil<Long> add(List<FreightTypePo> freightTypePoList);
 
-
     /**
      * @Desc: 删除运输类型
      * @author hjr
      * @since 2020-10-07
      */
     ResultUtil<Boolean> delById(Long id);
-
 
     /**
      * @Desc: 获取运输类型列表

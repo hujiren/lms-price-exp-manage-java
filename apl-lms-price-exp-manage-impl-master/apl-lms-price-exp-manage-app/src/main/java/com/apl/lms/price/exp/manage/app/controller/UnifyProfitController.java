@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public class UnifyProfitController {
 
     @PostMapping(value = "/save")
     @ApiOperation(value = "保存统一利润", notes = "保存统一利润")
-    public ResultUtil<Boolean> save(@Validated @RequestBody UnifyProfitDto unifyProfitDto){
+    public ResultUtil<Boolean> save(@Validated @RequestBody UnifyProfitDto unifyProfitDto) throws IOException {
         ApiParamValidate.validate(unifyProfitDto);
 
         unifyProfitService.saveUnifyProfit(unifyProfitDto);
@@ -45,7 +46,7 @@ public class UnifyProfitController {
 
     @PostMapping(value = "/del")
     @ApiOperation(value = "批量删除统一利润", notes = "批量删除统一利润")
-    public ResultUtil<Boolean> del(@RequestBody List<Long> ids){
+    public ResultUtil<Boolean> del(@RequestBody List<Long> ids) throws IOException {
         Integer result = unifyProfitService.del(ids);
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS , result);
     }

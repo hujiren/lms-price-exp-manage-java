@@ -1,8 +1,11 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
+import com.apl.cache.AplCacheHelper;
 import com.apl.lib.constants.CommonStatusCode;
+import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
+import com.apl.lms.net.SecurityUserNetService;
 import com.apl.lms.price.exp.manage.mapper.FuelChargeMapper;
 import com.apl.lms.price.exp.manage.service.FuelChargeService;
 import com.apl.lms.price.exp.pojo.dto.FuelChargeAddDto;
@@ -10,8 +13,10 @@ import com.apl.lms.price.exp.pojo.po.FuelChargePo;
 import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -36,6 +41,9 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         }
     }
 
+    @Autowired
+    AplCacheHelper aplCacheHelper;
+
     /**
      * 查询快递价格
      * @param
@@ -44,7 +52,6 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
      */
     @Override
     public ResultUtil<List<FuelChargeVo>> getList() {
-
 
         List<FuelChargeVo> fuelChargeVoList = baseMapper.getList();
 
@@ -57,12 +64,16 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
      * @return
      */
     @Override
-    public ResultUtil<Boolean> delFuelCharge(Long id) {
+    public ResultUtil<Boolean> delFuelCharge(Long id) throws IOException {
 
-        Integer resultNum = baseMapper.delById(id);
-        if(resultNum < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, false);
+        FuelChargePo fuelChargePo = baseMapper.selectById(id);
+
+        if(null != fuelChargePo){
+            baseMapper.delById(id);
+            SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
+            aplCacheHelper.opsForKey("exp-price-fuel-value").patternDel(securityUser.getInnerOrgCode(), fuelChargePo.getChannelCategory());
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
@@ -72,7 +83,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updFuelCharge(FuelChargeAddDto fuelChargeAddDto) {
+    public ResultUtil<Boolean> updFuelCharge(FuelChargeAddDto fuelChargeAddDto) throws IOException {
 
         FuelChargePo fuelChargePo = new FuelChargePo();
         fuelChargePo.setStartDate(new Timestamp(fuelChargeAddDto.getStartDate()));
@@ -85,6 +96,11 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
+
+        SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
+
+        aplCacheHelper.opsForKey("exp-price-fuel-value").patternDel(securityUser.getInnerOrgCode(), fuelChargePo.getChannelCategory());
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
 

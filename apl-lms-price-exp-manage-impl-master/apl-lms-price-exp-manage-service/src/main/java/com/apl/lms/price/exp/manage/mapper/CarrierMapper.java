@@ -18,7 +18,6 @@ import java.util.List;
 @Repository
 public interface CarrierMapper extends BaseMapper<CarrierPo> {
 
-    
     /**
      * @Desc: 查找公共运输方列表
      * @Date: 2020-10-07

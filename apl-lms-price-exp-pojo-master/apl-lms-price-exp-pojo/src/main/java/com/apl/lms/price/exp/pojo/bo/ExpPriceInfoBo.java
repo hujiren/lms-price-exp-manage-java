@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  * @Date 2020/9/15 11:37
  */
 @Data
-@ApiModel(value = "快递价格批量关联属性对象", description = "快递价格批量关联属性对象")
+@ApiModel(value = "快递价格 批量关联属性对象", description = "快递价格 批量关联属性对象")
 public class ExpPriceInfoBo implements Serializable {
 
     @ApiModelProperty(name = "id", value = "价格表id")
@@ -60,4 +60,8 @@ public class ExpPriceInfoBo implements Serializable {
 
     @ApiModelProperty(name = "partnerId", value = "服务商Id")
     private Long partnerId;
+
+    @ApiModelProperty(name = "isPublishedPrice", value = "是否是公布价")
+    private Integer isPublishedPrice;
+
 }

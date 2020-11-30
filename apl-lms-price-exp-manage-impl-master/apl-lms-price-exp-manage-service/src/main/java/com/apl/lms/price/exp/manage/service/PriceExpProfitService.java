@@ -5,8 +5,8 @@ import com.apl.lms.price.exp.pojo.dto.ExpPriceProfitDto;
 import com.apl.lms.price.exp.pojo.dto.PriceExpProfitDto;
 import com.apl.lms.price.exp.pojo.po.PriceExpProfitPo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,15 +25,9 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @author hjr
      * @since 2020-09-11
      */
-    ResultUtil<Long> saveProfit(ExpPriceProfitDto expPriceProfitDto) throws JsonProcessingException;
+    ResultUtil<Long> saveProfit(ExpPriceProfitDto expPriceProfitDto) throws IOException;
 
 
-    /**
-     * @Desc: 删除利润
-     * @author hjr
-     * @since 2020-09-11
-     */
-    ResultUtil<Boolean> delById(Long id);
 
 
     /**
@@ -49,7 +43,7 @@ public interface PriceExpProfitService extends IService<PriceExpProfitPo> {
      * @param ids
      * @return
      */
-    Integer delBatch(String ids);
+    Integer delBatch(String ids) throws IOException;
 
     /**
      * 合并利润, 组装成销售利润

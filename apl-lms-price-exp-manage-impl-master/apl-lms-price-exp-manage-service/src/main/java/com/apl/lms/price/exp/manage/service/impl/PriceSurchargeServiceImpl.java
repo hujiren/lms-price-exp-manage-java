@@ -1,12 +1,13 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
-import com.apl.cache.AplCacheUtil;
+import com.apl.cache.AplCacheHelper;
 import com.apl.db.adb.AdbHelper;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.join.JoinBase;
 import com.apl.lib.join.JoinFieldInfo;
 import com.apl.lib.join.JoinUtil;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lib.utils.StringUtil;
 import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.price.exp.manage.mapper.PriceSurchargeMapper;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     LmsCommonFeign lmsCommonFeign;
 
     @Autowired
-    AplCacheUtil aplCacheUtil;
+    AplCacheHelper aplCacheHelper;
 
     @Autowired
     AdbHelper adbHelper;
@@ -71,6 +73,8 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     public ResultUtil<Boolean> save(List<PriceSurchargePo> priceSurchargePos) throws Exception {
         adbHelper.saveBatch(priceSurchargePos, "price_surcharge", "id", true);
 
+        aplCacheHelper.opsForKey("exp-price-surcharge").patternDel(priceSurchargePos.get(0).getPriceId());
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
 
@@ -80,9 +84,11 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
      * @return
      */
     @Override
-    public ResultUtil<Boolean> delById(Long id) {
+    public ResultUtil<Boolean> delById(Long id, Long priceId) throws IOException {
 
         baseMapper.deleteById(id);
+        aplCacheHelper.opsForKey("exp-price-surcharge").patternDel(priceId);
+
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
 
     }
@@ -98,7 +104,7 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
 
         List<PriceSurchargeVo> priceSurchargeList = baseMapper.getByPriceId(priceId);
         //组装特殊物品
-        JoinSpecialCommodity joinSpecialCommodity = new JoinSpecialCommodity(1, lmsCommonFeign, aplCacheUtil);
+        JoinSpecialCommodity joinSpecialCommodity = new JoinSpecialCommodity(1, lmsCommonFeign, aplCacheHelper);
 
         List<JoinBase> joinTabs = new ArrayList<>();
         //关联特殊物品字段信息
@@ -139,12 +145,15 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
 
     /**
      * 批量删除
-     * @param ids
+     * @param priceIds
      * @return
      */
     @Override
-    public Integer delBatch(String ids) {
-        Integer resultNum = baseMapper.delBatch(ids);
+    public Integer delBatch(String priceIds) throws IOException {
+        List<Long> idList = StringUtil.stringToLongList(priceIds);
+        if(null != idList && idList.size() > 0)
+            aplCacheHelper.opsForKey("exp-price-surcharge").patternDel(idList);
+        Integer resultNum = baseMapper.delBatch(priceIds);
         return resultNum;
     }
 }

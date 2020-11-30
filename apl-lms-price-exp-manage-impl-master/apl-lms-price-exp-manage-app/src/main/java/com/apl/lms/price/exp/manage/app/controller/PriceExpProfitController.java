@@ -4,7 +4,6 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.validate.ApiParamValidate;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
 import com.apl.lms.price.exp.pojo.dto.ExpPriceProfitDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 /**
  * @author hjr
@@ -31,7 +32,7 @@ public class PriceExpProfitController {
 
     @PostMapping(value = "/save")
     @ApiOperation(value = "保存", notes = "保存")
-    public ResultUtil<Long> save(@Validated @RequestBody ExpPriceProfitDto expPriceProfitDto) throws JsonProcessingException {
+    public ResultUtil<Long> save(@Validated @RequestBody ExpPriceProfitDto expPriceProfitDto) throws IOException {
         ApiParamValidate.validate(expPriceProfitDto);
         ResultUtil<Long> longResultUtil = priceExpProfitService.saveProfit(expPriceProfitDto);
         return longResultUtil;

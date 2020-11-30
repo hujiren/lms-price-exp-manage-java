@@ -6,6 +6,7 @@ import com.apl.lms.price.exp.pojo.po.FuelChargePo;
 import com.apl.lms.price.exp.pojo.vo.FuelChargeVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -26,14 +27,14 @@ public interface FuelChargeService extends IService<FuelChargePo> {
      * @param id
      * @return
      */
-    ResultUtil<Boolean> delFuelCharge(Long id);
+    ResultUtil<Boolean> delFuelCharge(Long id) throws IOException;
 
     /**
      * 更新燃油费
      * @param fuelChargeAddDto
      * @return
      */
-    ResultUtil<Boolean> updFuelCharge(FuelChargeAddDto fuelChargeAddDto);
+    ResultUtil<Boolean> updFuelCharge(FuelChargeAddDto fuelChargeAddDto) throws IOException;
 
     /**
      * 新增燃油费

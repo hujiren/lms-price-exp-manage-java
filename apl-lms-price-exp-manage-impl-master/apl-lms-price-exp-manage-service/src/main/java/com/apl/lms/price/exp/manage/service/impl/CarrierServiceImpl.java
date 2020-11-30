@@ -76,7 +76,6 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
     @Override
     public ResultUtil<Boolean> updById(CarrierPo carrierPo){
 
-
         Integer resultNum = baseMapper.updateById(carrierPo);
         if(resultNum.equals(1)){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , true);
@@ -130,7 +129,6 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
                 carrierCacheList.add(commonCarrierPo);
             }
         }
-
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , carrierCacheList);
     }
 

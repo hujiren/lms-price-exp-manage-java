@@ -5,6 +5,7 @@ import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,14 +26,14 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @param id
      * @return
      */
-    ResultUtil<Boolean> delComputationalFormula(Long id);
+    ResultUtil<Boolean> delComputationalFormula(Long id, Long priceId) throws IOException;
 
     /**
      * 更新计算公式
      * @param priceExpComputationalFormulaPo
      * @return
      */
-    ResultUtil<Boolean> updComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo);
+    ResultUtil<Boolean> updComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo) throws IOException;
 
     /**
      * 新增计算公式
@@ -46,7 +47,7 @@ public interface ComputationalFormulaService extends IService<PriceExpComputatio
      * @param ids
      * @return
      */
-    Integer delBatch(String ids);
+    Integer delBatch(String ids) throws IOException;
 
 
     /**

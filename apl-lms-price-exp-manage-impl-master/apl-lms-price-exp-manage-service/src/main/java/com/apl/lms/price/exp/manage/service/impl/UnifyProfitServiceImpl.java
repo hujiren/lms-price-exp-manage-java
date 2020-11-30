@@ -1,9 +1,11 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.apl.cache.AplCacheHelper;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
 import com.apl.lib.utils.SnowflakeIdWorker;
+import com.apl.lms.net.SecurityUserNetService;
 import com.apl.lms.price.exp.manage.mapper.UnifyProfitMapper;
 import com.apl.lms.price.exp.manage.service.UnifyProfitService;
 import com.apl.lms.price.exp.pojo.bo.CustomerGroupBo;
@@ -12,8 +14,10 @@ import com.apl.lms.price.exp.pojo.po.UnifyExpPricePo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import groovy.util.logging.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +30,16 @@ import java.util.List;
 @Service
 public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, UnifyExpPricePo> implements UnifyProfitService {
 
+    @Autowired
+    AplCacheHelper aplCacheHelper;
+
     /**
      * 添加 or 修改 统一利润
      * @param unifyProfitDto
      * @return
      */
     @Override
-    public Integer saveUnifyProfit(UnifyProfitDto unifyProfitDto) {
+    public Integer saveUnifyProfit(UnifyProfitDto unifyProfitDto) throws IOException {
 
         //将Dto客户组转换成Po客户组
         UnifyExpPricePo unifyExpPricePo = handCustomerGroupDtoToPo(unifyProfitDto);
@@ -40,7 +47,10 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
 
         //id大于0就是修改  小于0就是删除
         if(null != unifyProfitDto.getId() && unifyProfitDto.getId() > 0){
-            return baseMapper.updateUnifyProfit(unifyExpPricePo);
+            Integer resultNum = baseMapper.updateUnifyProfit(unifyExpPricePo);
+            SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
+            aplCacheHelper.opsForKey("exp-price-unify-profit").patternDel(securityUser.getInnerOrgId());
+            return resultNum;
         }else{
             unifyExpPricePo.setId(SnowflakeIdWorker.generateId());
             if(null == unifyExpPricePo.getStartWeight())
@@ -64,7 +74,11 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
      * @return
      */
     @Override
-    public Integer del(List<Long> ids) {
+    public Integer del(List<Long> ids) throws IOException {
+
+        SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
+        aplCacheHelper.opsForKey("exp-price-unify-profit").patternDel(securityUser.getInnerOrgId());
+
         return baseMapper.deleteBatch(ids);
     }
 

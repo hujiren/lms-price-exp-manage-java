@@ -1,10 +1,9 @@
 package com.apl.lms.price.exp.manage.service;
 
+import com.apl.lib.utils.ResultUtil;
 import com.apl.lms.price.exp.pojo.po.CarrierPo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.apl.lib.utils.ResultUtil;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -42,16 +41,16 @@ public interface CarrierService extends IService<CarrierPo> {
 
 
         /**
-         * @Desc: 分页查找 CarrierPo 列表
+         * @Desc: 查找列表
          * @author hjr
          * @since 2020-10-07
          */
         ResultUtil<List<CarrierPo>>getList();
 
         /**
-         * 查询列表
+         * 查询列表(选择器: 租户Id)
          * @param innerOrgId
          * @return
          */
-        ResultUtil<List<CarrierPo>> getListByInnerOrgId(Long innerOrgId) throws IOException, Exception;
+        ResultUtil<List<CarrierPo>> getListByInnerOrgId(Long innerOrgId) throws Exception;
 }

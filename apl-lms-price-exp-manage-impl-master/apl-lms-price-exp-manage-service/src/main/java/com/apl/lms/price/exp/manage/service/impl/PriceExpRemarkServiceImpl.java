@@ -1,11 +1,15 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
+import com.apl.cache.AplCacheHelper;
+import com.apl.lib.utils.StringUtil;
 import com.apl.lms.price.exp.manage.mapper.PriceExpRemarkMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpRemarkService;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +34,9 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
         }
     }
 
+    @Autowired
+    AplCacheHelper aplCacheHelper;
+
     /**
      * 根据id获取详情
      * @param id
@@ -47,12 +54,13 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
      * @return
      */
     @Override
-    public Boolean updateRemark(PriceExpRemarkPo priceExpRemarkPo) {
+    public Boolean updateRemark(PriceExpRemarkPo priceExpRemarkPo) throws IOException {
         Long checkId = baseMapper.exists(priceExpRemarkPo.getId());
 
         Integer flag = 0;
         if(null!=checkId && checkId>0){
             flag = baseMapper.updateById(priceExpRemarkPo);
+            aplCacheHelper.opsForKey("exp-price-remark").patternDel(checkId);
         }
         else {
             flag = baseMapper.insert(priceExpRemarkPo);
@@ -66,7 +74,9 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
      * @return
      */
     @Override
-    public Integer delBatch(String ids) {
+    public Integer delBatch(String ids) throws IOException {
+        List<Long> idList = StringUtil.stringToLongList(ids);
+        aplCacheHelper.opsForKey("exp-price-remark").patternDel(idList);
         Integer res = baseMapper.delBatch(ids);
         return res;
     }

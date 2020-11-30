@@ -157,4 +157,5 @@ public interface PriceExpMapper extends BaseMapper<PriceExpMainPo> {
      * @return
      */
     Integer isQuoteByExpPrice(Long quotePriceId);
+
 }

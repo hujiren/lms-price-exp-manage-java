@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.constraints.NotEmpty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -40,9 +40,10 @@ public class PriceIncreaseProfitController {
 
     @PostMapping(value = "/delete-batch")
     @ApiOperation(value =  "批量删除" , notes = "根据id批量删除")
-    public ResultUtil<Boolean> del(@NotEmpty(message = "id不能为空") @RequestBody List<Long> ids){
+    @ApiImplicitParam(name = "priceId", value = "价格表id", required = true, paramType = "query")
+    public ResultUtil<Boolean> del(@NotEmpty(message = "id不能为空") @RequestBody List<Long> increaseIds, Long priceId) throws IOException {
 
-        return priceIncreaseProfitService.deleteBatch(ids);
+        return priceIncreaseProfitService.deleteBatch(increaseIds, priceId);
     }
 
     @PostMapping(value = "/save-batch")

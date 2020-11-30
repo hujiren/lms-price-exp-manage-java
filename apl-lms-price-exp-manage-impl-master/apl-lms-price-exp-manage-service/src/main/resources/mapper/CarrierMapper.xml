@@ -11,7 +11,7 @@
            carrier
     </select>
 
-    <!--查找列表-->
+    <!--查找列表 选择器-->
     <select id="getListByInnerOrgId" resultType="com.apl.lms.price.exp.pojo.po.CarrierPo">
         SELECT
            id,

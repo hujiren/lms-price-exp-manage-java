@@ -6,6 +6,7 @@ import com.apl.lms.price.exp.manage.service.ComputationalFormulaService;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -40,15 +42,18 @@ public class ComputationalFormulaController {
 
     @PostMapping(value = "/del")
     @ApiOperation(value =  "删除" , notes = "根据id删除计算公式")
-    @ApiImplicitParam(name = "id",value = "计算公式id",required = true  , paramType = "query")
-    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id",value = "计算公式id",required = true  , paramType = "query"),
+        @ApiImplicitParam(name = "priceId",value = "价格表id",required = true  , paramType = "query")
+    })
+    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id, Long priceId) throws IOException {
 
-        return computationalFormulaService.delComputationalFormula(id);
+        return computationalFormulaService.delComputationalFormula(id, priceId);
     }
 
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新计算公式")
-    public ResultUtil<Boolean> upd(@Validated PriceExpComputationalFormulaPo computationalFormulaUpdDto){
+    public ResultUtil<Boolean> upd(@Validated PriceExpComputationalFormulaPo computationalFormulaUpdDto) throws IOException {
 
         return computationalFormulaService.updComputationalFormula(computationalFormulaUpdDto);
     }

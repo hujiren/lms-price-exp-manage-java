@@ -17,12 +17,12 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -123,14 +123,14 @@ public class PriceExpController {
 
     @PostMapping(value = "/delete-price-batch")
     @ApiOperation(value = "批量删除价格表", notes = "根据Id批量删除价格表")
-    public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "价格表id不能为空") @RequestBody List<Long> ids){
-        return priceExpService.deletePriceBatch(ids);
+    public ResultUtil<Boolean> deleteCostPrice(@NotEmpty(message = "价格表id不能为空") @RequestBody List<Long> priceIds) throws IOException {
+        return priceExpService.deletePriceBatch(priceIds);
     }
 
 
     @PostMapping(value = "/upd-exp-price")
     @ApiOperation(value = "更新价格主表", notes = "更新价格主表")
-    public ResultUtil<Boolean> updExpPrice(@Validated @RequestBody PriceExpUpdDto priceExpUpdDto) {
+    public ResultUtil<Boolean> updExpPrice(@Validated @RequestBody PriceExpUpdDto priceExpUpdDto) throws IOException {
         return priceExpService.updExpPrice(priceExpUpdDto);
     }
 
@@ -160,7 +160,7 @@ public class PriceExpController {
 
     @PostMapping(value = "/upd-price-data")
     @ApiOperation(value = "更新数据表数据", notes = "更新数据表数据")
-    public ResultUtil<Boolean> updatePriceData(@Validated @RequestBody PriceExpDataUpdDto priceExpDataUpdDto){
+    public ResultUtil<Boolean> updatePriceData(@Validated @RequestBody PriceExpDataUpdDto priceExpDataUpdDto) throws IOException {
         return priceExpService.updatePriceData(priceExpDataUpdDto);
     }
 
@@ -176,7 +176,7 @@ public class PriceExpController {
 
     @PostMapping(value = "/upd-transverse-weight-section")
     @ApiOperation(value = "更新横向重量段", notes = "更新横向重量段")
-    public ResultUtil<List<String> > updTransverseWeightSection(@RequestBody @Validated WeightSectionUpdDto weightSectionUpdDto) {
+    public ResultUtil<List<String> > updTransverseWeightSection(@RequestBody @Validated WeightSectionUpdDto weightSectionUpdDto) throws IOException {
         List<String>  headCells = priceExpService.updTransverseWeightSection(weightSectionUpdDto);
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, headCells);
@@ -194,7 +194,7 @@ public class PriceExpController {
 
     @PostMapping(value = "/upd-remark")
     @ApiOperation(value = "更新备注", notes = "根据Id更新备注")
-    public ResultUtil<Boolean> updRemark(@Validated @RequestBody PriceExpRemarkPo priceExpRemarkPo) {
+    public ResultUtil<Boolean> updRemark(@Validated @RequestBody PriceExpRemarkPo priceExpRemarkPo) throws IOException {
 
         Boolean saveResult = priceExpRemarkService.updateRemark(priceExpRemarkPo);
 

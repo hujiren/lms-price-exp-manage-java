@@ -20,7 +20,7 @@ import java.util.List;
 public class PriceExpDataPo extends Model<PriceExpDataPo> implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @ApiModelProperty(name = "id" , value = "价格主表Id", required = true)
+    @ApiModelProperty(name = "id" , value = "价格数据表Id", required = true)
     private Long id;
 
     @ApiModelProperty(name = "priceData" , value = "价格表数据", required = true)

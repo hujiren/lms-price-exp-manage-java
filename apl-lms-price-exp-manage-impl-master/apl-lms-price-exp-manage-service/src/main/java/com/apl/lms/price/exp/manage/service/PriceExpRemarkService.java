@@ -3,6 +3,7 @@ package com.apl.lms.price.exp.manage.service;
 import com.apl.lms.price.exp.pojo.po.PriceExpRemarkPo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,14 +14,12 @@ import java.util.Map;
  */
 public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
 
-
-
     /**
      * 更新
      * @param priceExpRemarkPo
      * @return
      */
-    Boolean updateRemark(PriceExpRemarkPo priceExpRemarkPo);
+    Boolean updateRemark(PriceExpRemarkPo priceExpRemarkPo) throws IOException;
 
     /**
      * 获取详情
@@ -34,7 +33,7 @@ public interface PriceExpRemarkService extends IService<PriceExpRemarkPo> {
      * @param ids
      * @return
      */
-    Integer delBatch(String ids);
+    Integer delBatch(String ids) throws IOException;
 
     /**
      * 批量获取

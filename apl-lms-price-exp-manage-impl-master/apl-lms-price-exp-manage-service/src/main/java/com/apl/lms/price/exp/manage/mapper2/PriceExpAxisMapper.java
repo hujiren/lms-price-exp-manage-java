@@ -30,7 +30,7 @@ public interface PriceExpAxisMapper extends BaseMapper<PriceExpAxisPo> {
      * @param priceExpAxisPo
      * @return
      */
-    Integer updateByMainId(@Param("po") PriceExpAxisPo priceExpAxisPo);
+    Integer updById(@Param("po") PriceExpAxisPo priceExpAxisPo);
 
     /**
      * 根据id批量删除

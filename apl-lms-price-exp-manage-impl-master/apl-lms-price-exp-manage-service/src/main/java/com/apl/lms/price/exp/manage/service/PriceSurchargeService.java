@@ -5,6 +5,7 @@ import com.apl.lms.price.exp.pojo.po.PriceSurchargePo;
 import com.apl.lms.price.exp.pojo.vo.PriceSurchargeVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public interface PriceSurchargeService extends IService<PriceSurchargePo> {
      * @author hjr
      * @since 2020-09-28
      */
-    ResultUtil<Boolean> delById(Long id);
+    ResultUtil<Boolean> delById(Long id, Long priceId) throws IOException;
 
 
     /**
@@ -55,5 +56,5 @@ public interface PriceSurchargeService extends IService<PriceSurchargePo> {
      * @param toString
      * @return
      */
-    Integer delBatch(String toString);
+    Integer delBatch(String toString) throws IOException;
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -40,14 +41,14 @@ public class FuelChargeController {
     @PostMapping(value = "/del")
     @ApiOperation(value =  "删除" , notes = "根据id删除")
     @ApiImplicitParam(name = "id",value = "燃油费Id",required = true  , paramType = "query")
-    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id){
+    public ResultUtil<Boolean> del(@NotNull(message = "id不能为空") @Min(value = 1, message = "id不能小于1") Long id) throws IOException {
 
         return fuelChargeService.delFuelCharge(id);
     }
 
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新" , notes = "根据id更新燃油费")
-    public ResultUtil<Boolean> upd( @Validated FuelChargeAddDto fuelChargeAddDto){
+    public ResultUtil<Boolean> upd( @Validated FuelChargeAddDto fuelChargeAddDto) throws IOException {
 
         return fuelChargeService.updFuelCharge(fuelChargeAddDto);
     }

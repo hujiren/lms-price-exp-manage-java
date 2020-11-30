@@ -5,6 +5,8 @@ import com.apl.lms.price.exp.pojo.po.PriceExpAxisPo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpAxisVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.IOException;
+
 /**
  * @author hjr start
  * @Classname PriceExpDataService
@@ -26,7 +28,7 @@ public interface PriceExpAxisService extends IService<PriceExpAxisPo> {
      * @param priceExpAxisPo
      * @return
      */
-    Boolean updateByMainId(PriceExpAxisPo priceExpAxisPo);
+    Boolean updById(PriceExpAxisPo priceExpAxisPo) throws IOException;
 
     /**
      * 获取详细
@@ -37,10 +39,10 @@ public interface PriceExpAxisService extends IService<PriceExpAxisPo> {
 
     /**
      * 批量删除
-     * @param ids
+     * @param priceDataIds
      * @return
      */
-    Integer delBatch(String ids);
+    Integer delBatch(String priceDataIds) throws IOException;
 
 
 }

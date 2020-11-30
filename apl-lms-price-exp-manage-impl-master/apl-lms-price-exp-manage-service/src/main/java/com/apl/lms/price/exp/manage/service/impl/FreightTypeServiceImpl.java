@@ -11,7 +11,6 @@ import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lms.price.exp.pojo.po.FreightTypePo;
 import java.util.List;
 
-
 /**
  * <p>
  *  service实现类
@@ -64,8 +63,8 @@ public class FreightTypeServiceImpl extends ServiceImpl<FreightTypeMapper, Freig
             freightType.setId(SnowflakeIdWorker.generateId());
         }
 
-        Integer flag = baseMapper.addBatch(freightTypePoList);
-        if(flag>0){
+        Integer resultNum = baseMapper.addBatch(freightTypePoList);
+        if(resultNum > 0){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , freightTypePoList.get(0).getId());
         }
 
@@ -92,9 +91,9 @@ public class FreightTypeServiceImpl extends ServiceImpl<FreightTypeMapper, Freig
     @Override
     public List<FreightTypePo> getList(){
 
-        List<FreightTypePo> list = baseMapper.getList();
+        List<FreightTypePo> freightTypeList = baseMapper.getList();
 
-        return list;
+        return freightTypeList;
     }
 
     /**
@@ -105,8 +104,8 @@ public class FreightTypeServiceImpl extends ServiceImpl<FreightTypeMapper, Freig
     @Override
     public List<FreightTypePo> getListByInnerOrgId(Long innerOrgId) {
 
-        List<FreightTypePo> list = baseMapper.getListByInnerOrgId(innerOrgId);
+        List<FreightTypePo> freightTypePoList = baseMapper.getListByInnerOrgId(innerOrgId);
 
-        return list;
+        return freightTypePoList;
     }
 }

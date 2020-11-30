@@ -34,7 +34,7 @@
     </insert>
 
     <!--更新-->
-    <update id="updateByMainId">
+    <update id="updById">
         update
             price_exp_axis
         set

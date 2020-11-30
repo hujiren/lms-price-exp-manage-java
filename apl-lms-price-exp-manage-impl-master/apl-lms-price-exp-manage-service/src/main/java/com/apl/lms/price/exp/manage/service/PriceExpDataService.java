@@ -8,6 +8,7 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpDataObjVo;
 import com.apl.lms.price.exp.pojo.vo.PriceExpDataVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -46,21 +47,20 @@ public interface PriceExpDataService extends IService<PriceExpDataPo> {
      * @param priceExpDataPo
      * @return
      */
-    Boolean updById(PriceExpDataPo priceExpDataPo);
+    Boolean updById(PriceExpDataPo priceExpDataPo) throws IOException;
 
     /**
      * 批量删除
-     * @param ids
+     * @param priceDataIds
      * @return
      */
-    Integer delBatch(String ids);
+    Integer delBatch(String priceDataIds) throws IOException;
 
     /**
      * 更新表头
      * @param weightSectionUpdDto
      * @return
      */
-    List<String> updHeadCells(WeightSectionUpdDto weightSectionUpdDto,List<String> headCells);
-
+    List<String> updHeadCells(WeightSectionUpdDto weightSectionUpdDto,List<String> headCells) throws IOException;
 
 }

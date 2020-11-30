@@ -1,14 +1,19 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
+import com.apl.cache.AplCacheHelper;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.utils.ResultUtil;
 import com.apl.lib.utils.SnowflakeIdWorker;
+import com.apl.lib.utils.StringUtil;
 import com.apl.lms.price.exp.manage.mapper.ComputationalFormulaMapper;
 import com.apl.lms.price.exp.manage.service.ComputationalFormulaService;
 import com.apl.lms.price.exp.pojo.po.PriceExpComputationalFormulaPo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -32,6 +37,9 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
         }
     }
 
+    @Autowired
+    AplCacheHelper aplCacheHelper;
+
     /**
      * 根据价格表Id查询计算公式列表
      * @param priceId
@@ -52,12 +60,9 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
      * @return
      */
     @Override
-    public ResultUtil<Boolean> delComputationalFormula(Long id) {
-
-        Integer integer = baseMapper.deleteById(id);
-        if(integer < 1){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, ExpListServiceCode.ID_IS_NOT_EXITS.msg, false);
-        }
+    public ResultUtil<Boolean> delComputationalFormula(Long id, Long priceId) throws IOException {
+            baseMapper.deleteById(id);
+            aplCacheHelper.opsForKey("exp-price-formula").patternDel(priceId);
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
@@ -67,7 +72,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo) {
+    public ResultUtil<Boolean> updComputationalFormula(PriceExpComputationalFormulaPo priceExpComputationalFormulaPo) throws IOException {
 
         if(null == priceExpComputationalFormulaPo.getZoneNum()){
             priceExpComputationalFormulaPo.setZoneNum("");
@@ -84,10 +89,13 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
         if(null == priceExpComputationalFormulaPo.getPackageType()){
             priceExpComputationalFormulaPo.setPackageType("");
         }
-        Integer integer = baseMapper.updateById(priceExpComputationalFormulaPo);
-        if(integer < 1){
+        Integer resultNum = baseMapper.updateById(priceExpComputationalFormulaPo);
+        if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
+
+        aplCacheHelper.opsForKey("exp-price-formula").patternDel(priceExpComputationalFormulaPo.getPriceId());
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
 
@@ -108,11 +116,13 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     }
 
     /**
-     * 批量删除计算公式
+     * 根据价格表Id批量删除计算公式
      */
     @Override
-    public Integer delBatch(String ids) {
-        Integer resultNum = baseMapper.delBatch(ids);
+    public Integer delBatch(String priceIds) throws IOException {
+        Integer resultNum = baseMapper.delBatch(priceIds);
+        List<Long> idList = StringUtil.stringToLongList(priceIds);
+        aplCacheHelper.opsForKey("exp-price-formula").patternDel(idList);
         return resultNum;
     }
 

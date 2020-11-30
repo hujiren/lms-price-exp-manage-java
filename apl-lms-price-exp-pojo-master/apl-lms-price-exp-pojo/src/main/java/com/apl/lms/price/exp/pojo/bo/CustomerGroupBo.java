@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author hjr start
- * @Classname CustomerGroupBo
+ * @Classname CustomerGroupBo 客户组组装对象
  * @Date 2020/9/24 15:12
  */
 public class CustomerGroupBo implements Serializable {

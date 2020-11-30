@@ -12,6 +12,7 @@ import com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -56,14 +57,14 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param priceExpUpdDto
      * @return
      */
-    ResultUtil<Boolean> updExpPrice(PriceExpUpdDto priceExpUpdDto);
+    ResultUtil<Boolean> updExpPrice(PriceExpUpdDto priceExpUpdDto) throws IOException;
 
     /**
      * 更新价格表数据
      * @param priceExpDataUpdDto
      * @return
      */
-    ResultUtil<Boolean> updatePriceData(PriceExpDataUpdDto priceExpDataUpdDto);
+    ResultUtil<Boolean> updatePriceData(PriceExpDataUpdDto priceExpDataUpdDto) throws IOException;
 
     /**
      * 新增快递价格
@@ -80,11 +81,11 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
     ResultUtil<Boolean> syncPrice(List<Long> priceIds) throws Exception;
 
     /**
-     * 根据id批量删除价格数据
-     * @param ids
+     * 根据id批量删除价格表
+     * @param priceIds
      * @return
      */
-    ResultUtil<Boolean> deletePriceBatch(List<Long> ids);
+    ResultUtil<Boolean> deletePriceBatch(List<Long> priceIds) throws IOException;
 
 
     /**
@@ -107,7 +108,7 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @param weightSectionUpdDto
      * @return
      */
-    List<String> updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto);
+    List<String> updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto) throws IOException;
 
     /**
      * 批量获取价格表信息
@@ -144,4 +145,6 @@ public interface PriceExpService extends IService<PriceExpMainPo> {
      * @return
      */
     ResultUtil<Boolean> isQuotePartnerPrice(Long priceId);
+
+
 }

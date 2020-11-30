@@ -1,7 +1,7 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.apl.cache.AplCacheUtil;
+import com.apl.cache.AplCacheHelper;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
 import com.apl.lib.join.JoinBase;
@@ -17,6 +17,7 @@ import com.apl.lms.common.lib.cache.JoinSpecialCommodity;
 import com.apl.lms.common.lib.feign.LmsCommonFeign;
 import com.apl.lms.common.query.manage.dto.SpecialCommodityDto;
 import com.apl.lms.net.PartnerNetService;
+import com.apl.lms.net.SecurityUserNetService;
 import com.apl.lms.net.pojo.bo.PartnerApiInfoBo;
 import com.apl.lms.price.exp.lib.feign.PriceExpFeign;
 import com.apl.lms.price.exp.manage.dao.DevelopDao;
@@ -35,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +84,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
     LmsCommonFeign lmsCommonFeign;
 
     @Autowired
-    AplCacheUtil aplCacheUtil;
+    AplCacheHelper aplCacheHelper;
 
     @Autowired
     PriceExpDataService priceExpDataService;
@@ -295,7 +297,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 specialCommodityList.add(specialCommodityDto);
             }
 
-            JoinSpecialCommodity joinSpecialCommodity = new JoinSpecialCommodity(1, lmsCommonFeign, aplCacheUtil);
+            JoinSpecialCommodity joinSpecialCommodity = new JoinSpecialCommodity(1, lmsCommonFeign, aplCacheHelper);
             List<JoinBase> joinTabs = new ArrayList<>();
             //关联特殊物品字段信息
             if (null != joinSpecialCommodityFieldInfo) {
@@ -358,7 +360,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    public ResultUtil<Boolean> updExpPrice(PriceExpUpdDto priceExpUpdDto) {
+    public ResultUtil<Boolean> updExpPrice(PriceExpUpdDto priceExpUpdDto) throws IOException {
 
         if (priceExpUpdDto.getIsPublishedPrice() != 1) {
 
@@ -432,6 +434,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
         //更新价格表
         Integer integer = baseMapper.updById(priceExpMainPo);
+        SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
+        delPriceExpCache(priceExpMainPo.getId(), securityUser, null);
         if (integer < 1) {
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, true);
         }
@@ -448,8 +452,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      */
     @Override
     @Transactional
-    public ResultUtil<Boolean> updatePriceData(PriceExpDataUpdDto priceExpDataUpdDto) {
-        SecurityUser securityUser = CommonContextHolder.getSecurityUser();
+    public ResultUtil<Boolean> updatePriceData(PriceExpDataUpdDto priceExpDataUpdDto) throws IOException {
+        SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
 
         ExpPriceInfoBo expPriceInfoBo = baseMapper.getPriceInfo(priceExpDataUpdDto.getId());
 
@@ -467,9 +471,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpMainPo.setPriceFormat(priceExpDataUpdDto.getPriceFormat());
             priceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
             Integer resultNum = baseMapper.updateById(priceExpMainPo);
-            if (resultNum < 1) {
-                throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
-            }
+            delPriceExpCache(priceExpMainPo.getId(), securityUser, null);
 
             //更新价格表数据
             PriceExpDataPo priceExpDataPo = new PriceExpDataPo();
@@ -485,7 +487,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpAxisPo.setAxisTransverse(priceExpDataUpdDto.getAxisTransverse());
             priceExpAxisPo.setAxisPortrait(priceExpDataUpdDto.getAxisPortrait());
             priceExpAxisPo.setId(expPriceInfoBo.getPriceDataId());
-            Boolean resultBoo2 = priceExpAxisService.updateByMainId(priceExpAxisPo);
+            Boolean resultBoo2 = priceExpAxisService.updById(priceExpAxisPo);
             if (!resultBoo2) {
                 throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
             }
@@ -505,7 +507,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      */
     @Override
     @Transactional
-    public List<String> updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto) {
+    public List<String> updTransverseWeightSection(WeightSectionUpdDto weightSectionUpdDto) throws IOException {
 
         if (null == weightSectionUpdDto || weightSectionUpdDto.getWeightSection().size() == 0) {
             throw new AplException(ExpListServiceCode.PLEASE_FILL_IN_THE_DATA_FIRST.code, ExpListServiceCode.PLEASE_FILL_IN_THE_DATA_FIRST.msg);
@@ -616,6 +618,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpMainPo.setEndWeight(endWeight);
         Integer resultNum = baseMapper.upd(priceExpMainPo);
 
+        SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
+        delPriceExpCache(checkMainId, securityUser, null);
+
         if (resultNum < 1)
             throw new AplException(CommonStatusCode.SAVE_FAIL, null);
         //构建新的表头
@@ -623,7 +628,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         if (newHeadCells.size() < 1)
             throw new AplException(CommonStatusCode.SAVE_FAIL, null);
 
-        Boolean resultBoo = priceExpAxisService.updateByMainId(priceExpAxisPo);
+        Boolean resultBoo = priceExpAxisService.updById(priceExpAxisPo);
         if (!resultBoo) {
             throw new AplException(ExpListServiceCode.ID_IS_NOT_EXIST.code, ExpListServiceCode.ID_IS_NOT_EXIST.msg);
         }
@@ -676,11 +681,11 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
         if (null != priceExpMainList && priceExpMainList.size() > 0) {
 
+            SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
             for (PriceExpMainPo priceExpMainPo : priceExpMainList) {
                 if (priceExpMainPo.getQuotePriceId() < 1) {
                     continue;
                 }
-
                 //获取主表信息
                 PriceExpMainPo quotePriceInfo = priceListDao.getRealPriceInfo(priceExpMainPo.getQuotePriceId(), priceExpMainPo.getQuoteTenantCode());
                 Long priceId = priceExpMainPo.getId();
@@ -688,10 +693,11 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 if (null == quotePriceInfo || quotePriceInfo.getId() < 1 || null == quotePriceInfo.getId()) {
                     //更新同步状态为3 引用的价格表已被删除
                     PriceExpMainPo newPriceExpMainPo = new PriceExpMainPo();
-                    newPriceExpMainPo.setId(priceExpMainPo.getId());
+                    newPriceExpMainPo.setId(priceId);
                     newPriceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
                     newPriceExpMainPo.setSynStatus(3);
                     baseMapper.updateById(newPriceExpMainPo);
+                    delPriceExpCache(priceId, securityUser, null);
                     continue;
                 }
                 //说明已经同步过, 则该价格不需要同步
@@ -720,14 +726,12 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
                 //租户利润的客户组id
                 Long quotePriceCustomerGroupId = 0l;
-                Long quotePriceCustomerId = 0L;
                 if (priceExpMainPo.getPartnerId() > 0) {
                     quotePriceCustomerGroupId = partnerApiInfoBo.getCustomerGroupId();
-                    quotePriceCustomerId = partnerApiInfoBo.getCustomerId();
                 }
-                //myPriceExpMainPo.setQuotePriceCustomerGroupId(quotePriceCustomerGroupId);
-                //myPriceExpMainPo.setQuotePriceCustomerId(quotePriceCustomerId);
+
                 baseMapper.updateById(myPriceExpMainPo);
+                delPriceExpCache(priceId, securityUser, null);
 
                 //将引用价格的销售备注改为本价格服务商备注 ok
                 PriceExpRemarkPo quotePriceExpRemark = priceExpRemarkService.getTenantPriceRemark(quotePriceId);
@@ -1026,7 +1030,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
      * @return
      */
     @Override
-    public ResultUtil<Boolean> deletePriceBatch(List<Long> priceIdList) {
+    public ResultUtil<Boolean> deletePriceBatch(List<Long> priceIdList) throws IOException {
 
         StringBuffer sbPriceIds = new StringBuffer();
         for (Long id : priceIdList) {
@@ -1035,7 +1039,7 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             }
             sbPriceIds.append(id);
         }
-
+        SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
         //获取价格表数据id
         List<Long> priceDataIdList = baseMapper.getPriceDataIds(sbPriceIds.toString());
         StringBuffer sbPriceDataIds = new StringBuffer();
@@ -1045,9 +1049,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             }
             sbPriceDataIds.append(priceDataId);
         }
-
         //删除价格表
         baseMapper.delBatchs(sbPriceIds.toString());
+        delPriceExpCache(0L, securityUser, priceIdList);
 
         if (sbPriceDataIds.length() > 0) {
             //删除轴数据
@@ -1195,5 +1199,23 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         public String customerGroupName;
         public String customerIds;
         public String customerName;
+    }
+
+
+
+    public void delPriceExpCache(Long priceId, SecurityUser securityUser, List<Long> priceIds) throws IOException {
+
+        if(null != priceIds || priceIds.size() > 0){
+            for (Long id : priceIds) {
+                aplCacheHelper.opsForKey("exp-price-extended-info").patternDel(id);
+                aplCacheHelper.opsForKey("exp-price-published-price").patternDel(id);
+            }
+        }else{
+            aplCacheHelper.opsForKey("exp-price-extended-info").patternDel(priceId);
+            aplCacheHelper.opsForKey("exp-price-published-price").patternDel(priceId);
+        }
+
+        aplCacheHelper.opsForKey("exp-price-cost-price-list").patternDel(securityUser.getInnerOrgCode());
+        aplCacheHelper.opsForKey("exp-price-sale-price-list").patternDel(securityUser.getInnerOrgCode());
     }
 }

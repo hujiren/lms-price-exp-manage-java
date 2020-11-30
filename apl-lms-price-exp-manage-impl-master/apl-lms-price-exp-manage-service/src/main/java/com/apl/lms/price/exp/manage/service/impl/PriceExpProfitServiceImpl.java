@@ -2,10 +2,13 @@ package com.apl.lms.price.exp.manage.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.apl.cache.AplCacheUtil;
+import com.apl.cache.AplCacheHelper;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.exception.AplException;
+import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.ResultUtil;
+import com.apl.lib.utils.StringUtil;
+import com.apl.lms.net.SecurityUserNetService;
 import com.apl.lms.price.exp.manage.mapper.PriceExpProfitMapper;
 import com.apl.lms.price.exp.manage.service.PriceExpProfitService;
 import com.apl.lms.price.exp.manage.service.PriceExpService;
@@ -25,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +67,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     InnerFeign innerFeign;
 
     @Autowired
-    AplCacheUtil aplCacheUtil;
+    AplCacheHelper aplCacheHelper;
 
     @Autowired
     UnifyProfitService unifyProfitService;
@@ -71,30 +75,16 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
     @Autowired
     PriceIncreaseProfitService priceIncreaseProfitService;
 
-    /**
-     * 删除利润
-     * @param id
-     * @return
-     */
-    @Override
-    public ResultUtil<Boolean> delById(Long id){
-
-        Integer flag = baseMapper.deleteById(id);
-        if(flag > 0){
-            return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS , true);
-        }
-
-        return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL , false);
-    }
-
-
 
     /**
      * 批量删除
      */
     @Override
-    public Integer delBatch(String ids) {
-        Integer resultNum = baseMapper.delBatch(ids);
+    public Integer delBatch(String priceIds) throws IOException {
+        //此方法是被批量删除价格表时调用, 参数为多个价格表id, 不可前端传参数
+        List<Long> idList = StringUtil.stringToLongList(priceIds);
+        Integer resultNum = baseMapper.delBatch(priceIds);//价格表id = 成本利润id
+        aplCacheHelper.opsForKey("exp-price-cost-profit").patternDel(idList);
 
         return resultNum;
     }
@@ -106,16 +96,22 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
      */
     @Override
     @Transactional
-    public ResultUtil<Long> saveProfit(ExpPriceProfitDto expPriceProfitDto) {
+    public ResultUtil<Long> saveProfit(ExpPriceProfitDto expPriceProfitDto) throws IOException {
 
         //将添加利润方式更新到价格表
         if(null != expPriceProfitDto.getAddProfitWay()){
+            Long priceId = expPriceProfitDto.getId();
             PriceExpMainPo priceExpMainPo = new PriceExpMainPo();
-            priceExpMainPo.setId(expPriceProfitDto.getId());
+            priceExpMainPo.setId(priceId);
             priceExpMainPo.setAddProfitWay(expPriceProfitDto.getAddProfitWay());
             priceExpService.updatePriceExpMain(priceExpMainPo);
+            SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
+            aplCacheHelper.opsForKey("exp-price-published-price").patternDel(priceId);
+            aplCacheHelper.opsForKey("exp-price-extended-info").patternDel(priceId);
+            aplCacheHelper.opsForKey("exp-price-sale-price-list").patternDel(securityUser.getInnerOrgCode());
+            aplCacheHelper.opsForKey("exp-price-cost-price-list").patternDel(securityUser.getInnerOrgCode());
         }
-        
+
         Integer flag = 0;
         Long id = baseMapper.exists(expPriceProfitDto.getId());
         PriceExpProfitPo priceExpProfitPo = new PriceExpProfitPo();
@@ -131,6 +127,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         if(null != id && id > 0){
             //如果有相同id则更新
             flag = baseMapper.updateById(priceExpProfitPo);
+            aplCacheHelper.opsForKey("exp-price-cost-profit").patternDel(priceExpProfitPo.getId());
         }
         else {
             //如果没有相同id则是添加 id采用价格表id
