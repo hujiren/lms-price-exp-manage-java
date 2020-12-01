@@ -84,7 +84,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         //此方法是被批量删除价格表时调用, 参数为多个价格表id, 不可前端传参数
         List<Long> idList = StringUtil.stringToLongList(priceIds);
         Integer resultNum = baseMapper.delBatch(priceIds);//价格表id = 成本利润id
-        aplCacheHelper.opsForKey("exp-price-cost-profit").patternDel(idList);
+        aplCacheHelper.opsForKey("exp-price-cost-profit").delByBucket(idList);
 
         return resultNum;
     }
@@ -106,10 +106,10 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             priceExpMainPo.setAddProfitWay(expPriceProfitDto.getAddProfitWay());
             priceExpService.updatePriceExpMain(priceExpMainPo);
             SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
-            aplCacheHelper.opsForKey("exp-price-published-price").patternDel(priceId);
-            aplCacheHelper.opsForKey("exp-price-extended-info").patternDel(priceId);
-            aplCacheHelper.opsForKey("exp-price-sale-price-list").patternDel(securityUser.getInnerOrgCode());
-            aplCacheHelper.opsForKey("exp-price-cost-price-list").patternDel(securityUser.getInnerOrgCode());
+            aplCacheHelper.opsForKey("exp-price-published-price").delByBucket(priceId);
+            aplCacheHelper.opsForKey("exp-price-extended-info").delByBucket(priceId);
+            aplCacheHelper.opsForKey("exp-price-sale-price-list").delByBucket(securityUser.getInnerOrgCode());
+            aplCacheHelper.opsForKey("exp-price-cost-price-list").delByBucket(securityUser.getInnerOrgCode());
         }
 
         Integer flag = 0;
@@ -127,7 +127,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
         if(null != id && id > 0){
             //如果有相同id则更新
             flag = baseMapper.updateById(priceExpProfitPo);
-            aplCacheHelper.opsForKey("exp-price-cost-profit").patternDel(priceExpProfitPo.getId());
+            aplCacheHelper.opsForKey("exp-price-cost-profit").delByBucket(priceExpProfitPo.getId());
         }
         else {
             //如果没有相同id则是添加 id采用价格表id

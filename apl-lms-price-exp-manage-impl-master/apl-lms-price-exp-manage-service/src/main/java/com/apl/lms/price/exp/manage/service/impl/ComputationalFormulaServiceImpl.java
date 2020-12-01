@@ -62,7 +62,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     @Override
     public ResultUtil<Boolean> delComputationalFormula(Long id, Long priceId) throws IOException {
             baseMapper.deleteById(id);
-            aplCacheHelper.opsForKey("exp-price-formula").patternDel(priceId);
+            aplCacheHelper.opsForKey("exp-price-formula").delByBucket(priceId);
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
@@ -94,7 +94,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
 
-        aplCacheHelper.opsForKey("exp-price-formula").patternDel(priceExpComputationalFormulaPo.getPriceId());
+        aplCacheHelper.opsForKey("exp-price-formula").delByBucket(priceExpComputationalFormulaPo.getPriceId());
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
@@ -122,7 +122,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
     public Integer delBatch(String priceIds) throws IOException {
         Integer resultNum = baseMapper.delBatch(priceIds);
         List<Long> idList = StringUtil.stringToLongList(priceIds);
-        aplCacheHelper.opsForKey("exp-price-formula").patternDel(idList);
+        aplCacheHelper.opsForKey("exp-price-formula").delByBucket(idList);
         return resultNum;
     }
 

@@ -110,7 +110,7 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
     @Override
     public ResultUtil<Boolean> deleteBatch(List<Long> increaseIds, Long priceId) throws IOException {
         baseMapper.deleteBatchIds(increaseIds);
-        aplCacheHelper.opsForKey("exp-price-increase-profit").patternDel(priceId);
+        aplCacheHelper.opsForKey("exp-price-increase-profit").delByBucket(priceId);
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
@@ -130,10 +130,10 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
             priceExpMainPo.setAddProfitWay(addProfitWay);
             priceExpService.updatePriceExpMain(priceExpMainPo);
             SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
-            aplCacheHelper.opsForKey("exp-price-published-price").patternDel(priceId);
-            aplCacheHelper.opsForKey("exp-price-extended-info").patternDel(priceId);
-            aplCacheHelper.opsForKey("exp-price-sale-price-list").patternDel(securityUser.getInnerOrgCode());
-            aplCacheHelper.opsForKey("exp-price-cost-price-list").patternDel(securityUser.getInnerOrgCode());
+            aplCacheHelper.opsForKey("exp-price-published-price").delByBucket(priceId);
+            aplCacheHelper.opsForKey("exp-price-extended-info").delByBucket(priceId);
+            aplCacheHelper.opsForKey("exp-price-sale-price-list").delByBucket(securityUser.getInnerOrgCode());
+            aplCacheHelper.opsForKey("exp-price-cost-price-list").delByBucket(securityUser.getInnerOrgCode());
         }
 
         List<PriceExpProfitDto> increaseProfitList = increaseProfitDto.getIncreaseProfit();
@@ -166,7 +166,7 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
             priceIncreaseProfitPoList.add(priceIncreaseProfitPo);
         }
         adbHelper.saveBatch(priceIncreaseProfitPoList, "price_increase_profit", "id", true);
-        aplCacheHelper.opsForKey("exp-price-increase-profit").patternDel(priceId);
+        aplCacheHelper.opsForKey("exp-price-increase-profit").delByBucket(priceId);
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }

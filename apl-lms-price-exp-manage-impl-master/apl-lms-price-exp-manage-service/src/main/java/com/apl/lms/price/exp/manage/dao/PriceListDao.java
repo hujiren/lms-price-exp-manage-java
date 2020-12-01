@@ -25,7 +25,7 @@ public class PriceListDao {
                 "  price_sale_name varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '销售名称',\n" +
                 "  partner_id bigint(20) NOT NULL DEFAULT 0 COMMENT '服务商id',\n"+
                 "  partner_name varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '服务商名称',\n"+
-                "  customer_group_id varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户组id',\n"+
+                "  customer_group_ids varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户组id',\n"+
                 "  customer_group_name varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户组名称',\n"+
                 "  customer_ids varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户id',\n"+
                 "  customer_name varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户名称',\n"+
@@ -110,7 +110,7 @@ public class PriceListDao {
                 "            channel_category,\n" +
                 "            price_status,\n" +
                 "            partner_id,\n" +
-                "            customer_group_id,\n"+
+                "            customer_group_ids,\n"+
                 "            customer_group_name,\n"+
                 "            customer_ids,\n"+
                 "            customer_name,\n"+

@@ -60,7 +60,7 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
         Integer flag = 0;
         if(null!=checkId && checkId>0){
             flag = baseMapper.updateById(priceExpRemarkPo);
-            aplCacheHelper.opsForKey("exp-price-remark").patternDel(checkId);
+            aplCacheHelper.opsForKey("exp-price-remark").delByBucket(checkId);
         }
         else {
             flag = baseMapper.insert(priceExpRemarkPo);
@@ -76,7 +76,7 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
     @Override
     public Integer delBatch(String ids) throws IOException {
         List<Long> idList = StringUtil.stringToLongList(ids);
-        aplCacheHelper.opsForKey("exp-price-remark").patternDel(idList);
+        aplCacheHelper.opsForKey("exp-price-remark").delByBucket(idList);
         Integer res = baseMapper.delBatch(ids);
         return res;
     }

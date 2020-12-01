@@ -79,7 +79,7 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
         }
         else {
             result = baseMapper.updById(priceExpAxisPo);
-            aplCacheHelper.opsForKey("exp-price-axis").patternDel(priceDataId);
+            aplCacheHelper.opsForKey("exp-price-axis").delByBucket(priceDataId);
         }
 
         return result > 0 ? true : false;
@@ -162,7 +162,7 @@ public class PriceExpAxisServiceImpl extends ServiceImpl<PriceExpAxisMapper, Pri
     public Integer delBatch(String priceDataIds) throws IOException {
         Integer resultNum = baseMapper.delBatch(priceDataIds);
         List<Long> priceDataIdList = StringUtil.stringToLongList(priceDataIds);
-        aplCacheHelper.opsForKey("exp-price-axis").patternDel(priceDataIdList);
+        aplCacheHelper.opsForKey("exp-price-axis").delByBucket(priceDataIdList);
         return resultNum;
     }
 

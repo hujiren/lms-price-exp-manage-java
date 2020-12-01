@@ -25,7 +25,7 @@ public class PriceListDao {
                 "  \"price_sale_name\" varchar(50) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n" +
                 "  \"partner_id\" int8 NOT NULL DEFAULT 0,\n"+
                 "  \"partner_name\" varchar(50) COLLATE \"pg_catalog\".\"default\",\n"+
-                "  \"customer_group_id\" jsonb,\n"+
+                "  \"customer_group_ids\" jsonb,\n"+
                 "  \"customer_group_name\" varchar(100) COLLATE \"pg_catalog\".\"default\",\n"+
                 "  \"customer_ids\" jsonb,\n"+
                 "  \"customer_name\" varchar(255) COLLATE \"pg_catalog\".\"default\",\n"+

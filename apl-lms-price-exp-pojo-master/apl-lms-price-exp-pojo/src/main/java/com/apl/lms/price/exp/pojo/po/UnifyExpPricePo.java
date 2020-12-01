@@ -16,11 +16,11 @@ public class UnifyExpPricePo {
     @ApiModelProperty(name = "id" , value = "统一利润Id")
     private Long id;
 
-    @ApiModelProperty(name = "customerGroupId" , value = "客户组id")
-    private String customerGroupId;
+    @ApiModelProperty(name = "customerGroupIds" , value = "客户组id")
+    private String customerGroupIds;
 
-    @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
-    private String customerGroupName;
+    @ApiModelProperty(name = "customerGroupNames" , value = "客户组名称")
+    private String customerGroupNames;
 
     @ApiModelProperty(name = "startWeight", value = "起始重")
     private Double startWeight;

@@ -49,7 +49,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
         if(null != unifyProfitDto.getId() && unifyProfitDto.getId() > 0){
             Integer resultNum = baseMapper.updateUnifyProfit(unifyExpPricePo);
             SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
-            aplCacheHelper.opsForKey("exp-price-unify-profit").patternDel(securityUser.getInnerOrgId());
+            aplCacheHelper.opsForKey("exp-price-unify-profit").delByBucket(securityUser.getInnerOrgId());
             return resultNum;
         }else{
             unifyExpPricePo.setId(SnowflakeIdWorker.generateId());
@@ -77,7 +77,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
     public Integer del(List<Long> ids) throws IOException {
 
         SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
-        aplCacheHelper.opsForKey("exp-price-unify-profit").patternDel(securityUser.getInnerOrgId());
+        aplCacheHelper.opsForKey("exp-price-unify-profit").delByBucket(securityUser.getInnerOrgId());
 
         return baseMapper.deleteBatch(ids);
     }
@@ -129,13 +129,13 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
     public UnifyProfitDto handCustomerGroupPoToDto(UnifyExpPricePo unifyExpPricePo){
 
         UnifyProfitDto unifyProfitDto = null;
-        if (unifyExpPricePo.getCustomerGroupId() != null && !unifyExpPricePo.getCustomerGroupId().equals("")
-                && !unifyExpPricePo.getCustomerGroupName().equals("") && unifyExpPricePo.getCustomerGroupName() != null) {
+        if (unifyExpPricePo.getCustomerGroupIds() != null && !unifyExpPricePo.getCustomerGroupIds().equals("")
+                && !unifyExpPricePo.getCustomerGroupNames().equals("") && unifyExpPricePo.getCustomerGroupNames() != null) {
 
-            String customerGroupIds = unifyExpPricePo.getCustomerGroupId().replace("[", "")
+            String customerGroupIds = unifyExpPricePo.getCustomerGroupIds().replace("[", "")
                     .replace("]", "").replaceAll(" ", "");
 
-            String customerGroupName = unifyExpPricePo.getCustomerGroupName().replace("[", "")
+            String customerGroupName = unifyExpPricePo.getCustomerGroupNames().replace("[", "")
                     .replace("]", "").replaceAll(" ", "");
 
             List<CustomerGroupBo> customerGroupDtoList = new ArrayList<>();
@@ -174,11 +174,11 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
                 customerGroupId.append(customerGroupDto.getCustomerGroupId());
                 customerGroupName.append(customerGroupDto.getCustomerGroupName());
             }
-            unifyExpPricePo.setCustomerGroupId(customerGroupId.toString());
-            unifyExpPricePo.setCustomerGroupName(customerGroupName.toString());
+            unifyExpPricePo.setCustomerGroupIds(customerGroupId.toString());
+            unifyExpPricePo.setCustomerGroupNames(customerGroupName.toString());
         } else {
-            unifyExpPricePo.setCustomerGroupId("");
-            unifyExpPricePo.setCustomerGroupName("");
+            unifyExpPricePo.setCustomerGroupIds("");
+            unifyExpPricePo.setCustomerGroupNames("");
         }
         return unifyExpPricePo;
     }

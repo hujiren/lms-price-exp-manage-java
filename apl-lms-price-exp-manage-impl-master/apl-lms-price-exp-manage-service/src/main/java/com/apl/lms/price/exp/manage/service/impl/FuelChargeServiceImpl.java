@@ -71,7 +71,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         if(null != fuelChargePo){
             baseMapper.delById(id);
             SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
-            aplCacheHelper.opsForKey("exp-price-fuel-value").patternDel(securityUser.getInnerOrgCode(), fuelChargePo.getChannelCategory());
+            aplCacheHelper.opsForKey("exp-price-fuel-value").delByBucket(securityUser.getInnerOrgCode(), fuelChargePo.getChannelCategory());
         }
 
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
@@ -99,7 +99,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
 
         SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
 
-        aplCacheHelper.opsForKey("exp-price-fuel-value").patternDel(securityUser.getInnerOrgCode(), fuelChargePo.getChannelCategory());
+        aplCacheHelper.opsForKey("exp-price-fuel-value").delByBucket(securityUser.getInnerOrgCode(), fuelChargePo.getChannelCategory());
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }

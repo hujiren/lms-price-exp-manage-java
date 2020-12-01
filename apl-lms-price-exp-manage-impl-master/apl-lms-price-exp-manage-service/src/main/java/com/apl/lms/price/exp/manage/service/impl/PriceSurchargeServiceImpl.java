@@ -73,7 +73,7 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     public ResultUtil<Boolean> save(List<PriceSurchargePo> priceSurchargePos) throws Exception {
         adbHelper.saveBatch(priceSurchargePos, "price_surcharge", "id", true);
 
-        aplCacheHelper.opsForKey("exp-price-surcharge").patternDel(priceSurchargePos.get(0).getPriceId());
+        aplCacheHelper.opsForKey("exp-price-surcharge").delByBucket(priceSurchargePos.get(0).getPriceId());
 
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
@@ -87,7 +87,7 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     public ResultUtil<Boolean> delById(Long id, Long priceId) throws IOException {
 
         baseMapper.deleteById(id);
-        aplCacheHelper.opsForKey("exp-price-surcharge").patternDel(priceId);
+        aplCacheHelper.opsForKey("exp-price-surcharge").delByBucket(priceId);
 
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
 
@@ -152,7 +152,7 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     public Integer delBatch(String priceIds) throws IOException {
         List<Long> idList = StringUtil.stringToLongList(priceIds);
         if(null != idList && idList.size() > 0)
-            aplCacheHelper.opsForKey("exp-price-surcharge").patternDel(idList);
+            aplCacheHelper.opsForKey("exp-price-surcharge").delByBucket(idList);
         Integer resultNum = baseMapper.delBatch(priceIds);
         return resultNum;
     }

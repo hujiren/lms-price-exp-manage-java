@@ -1205,17 +1205,17 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
     public void delPriceExpCache(Long priceId, SecurityUser securityUser, List<Long> priceIds) throws IOException {
 
-        if(null != priceIds || priceIds.size() > 0){
+        if(null != priceIds && priceIds.size() > 0){
             for (Long id : priceIds) {
-                aplCacheHelper.opsForKey("exp-price-extended-info").patternDel(id);
-                aplCacheHelper.opsForKey("exp-price-published-price").patternDel(id);
+                aplCacheHelper.opsForKey("exp-price-extended-info").delByBucket(id);
+                aplCacheHelper.opsForKey("exp-price-published-price").delByBucket(id);
             }
         }else{
-            aplCacheHelper.opsForKey("exp-price-extended-info").patternDel(priceId);
-            aplCacheHelper.opsForKey("exp-price-published-price").patternDel(priceId);
+            aplCacheHelper.opsForKey("exp-price-extended-info").delByBucket(priceId);
+            aplCacheHelper.opsForKey("exp-price-published-price").delByBucket(priceId);
         }
 
-        aplCacheHelper.opsForKey("exp-price-cost-price-list").patternDel(securityUser.getInnerOrgCode());
-        aplCacheHelper.opsForKey("exp-price-sale-price-list").patternDel(securityUser.getInnerOrgCode());
+        aplCacheHelper.opsForKey("exp-price-cost-price-list").delByBucket(securityUser.getInnerOrgCode());
+        aplCacheHelper.opsForKey("exp-price-sale-price-list").delByBucket(securityUser.getInnerOrgCode());
     }
 }

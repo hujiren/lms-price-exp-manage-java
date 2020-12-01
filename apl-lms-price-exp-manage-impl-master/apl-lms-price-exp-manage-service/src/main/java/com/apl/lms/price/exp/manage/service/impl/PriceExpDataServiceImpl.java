@@ -132,7 +132,7 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
             saveResult = baseMapper.insertData(priceExpDataPo);
         else{
             saveResult = baseMapper.updById(priceExpDataPo);
-            aplCacheHelper.opsForKey("exp-price-cell-value").patternDel(priceDataId);
+            aplCacheHelper.opsForKey("exp-price-cell-value").delByBucket(priceDataId);
         }
         return saveResult > 0 ? true : false;
     }
@@ -143,7 +143,7 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
     @Override
     public Integer delBatch(String priceDataIds) throws IOException {
         List<Long> priceDataIdList = StringUtil.stringToLongList(priceDataIds);
-        aplCacheHelper.opsForKey("exp-price-cell-value").patternDel(priceDataIdList);
+        aplCacheHelper.opsForKey("exp-price-cell-value").delByBucket(priceDataIdList);
         return baseMapper.delBatch(priceDataIds);
     }
 
@@ -177,7 +177,7 @@ public class PriceExpDataServiceImpl extends ServiceImpl<PriceExpDataMapper, Pri
         Integer integer = baseMapper.updateData(weightSectionUpdDto.getPriceDataId(), allHeadCell);
         if(integer < 1)
             throw new AplException(CommonStatusCode.SAVE_FAIL,null);
-        aplCacheHelper.opsForKey("exp-price-cell-value").patternDel(weightSectionUpdDto.getPriceDataId());
+        aplCacheHelper.opsForKey("exp-price-cell-value").delByBucket(weightSectionUpdDto.getPriceDataId());
 
         return newHeadCells;
     }
