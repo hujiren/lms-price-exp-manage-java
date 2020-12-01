@@ -8,7 +8,8 @@
             id, start_date, end_date, fuel_charge, channel_category
         from
             fuel_charge
-        order by channel_category
+        order by
+            channel_category
     </select>
 
     <!--根据id删除燃油费-->
@@ -21,7 +22,10 @@
         update
             fuel_charge
         set
-            start_date = #{po.startDate}, end_date = #{po.endDate}, fuel_charge = #{po.fuelCharge},channel_category = #{po.channelCategory}
+            start_date = #{po.startDate},
+            end_date = #{po.endDate},
+            fuel_charge = #{po.fuelCharge},
+            channel_category = #{po.channelCategory}
         where
             id = #{po.id}
     </update>
@@ -29,9 +33,22 @@
     <!--新增燃油费-->
     <insert id="insertFuelCharge">
         insert into
-            fuel_charge(id, start_date, end_date, fuel_charge, channel_category)
+            fuel_charge
+            (
+                id,
+                start_date,
+                end_date,
+                fuel_charge,
+                channel_category
+            )
         values
-            (#{po.id}, #{po.startDate}, #{po.endDate}, #{po.fuelCharge}, #{po.channelCategory})
+            (
+                #{po.id},
+                #{po.startDate},
+                #{po.endDate},
+                #{po.fuelCharge},
+                #{po.channelCategory}
+            )
     </insert>
 
 </mapper>

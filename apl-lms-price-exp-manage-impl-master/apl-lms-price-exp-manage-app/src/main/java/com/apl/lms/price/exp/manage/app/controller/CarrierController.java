@@ -35,8 +35,8 @@ public class CarrierController {
     @PostMapping(value = "/add")
     @ApiOperation(value =  "添加", notes ="添加")
     public ResultUtil<Long> add(@Validated CarrierPo carrierPo) {
-        ApiParamValidate.validate(carrierPo);
 
+        ApiParamValidate.validate(carrierPo);
 
         return carrierService.add(carrierPo);
     }
@@ -44,6 +44,7 @@ public class CarrierController {
     @PostMapping(value = "/upd")
     @ApiOperation(value =  "更新",  notes ="更新")
     public ResultUtil<Boolean> upd(@Validated CarrierPo carrierPo) {
+
         ApiParamValidate.notEmpty("id", carrierPo.getId());
         ApiParamValidate.validate(carrierPo);
 

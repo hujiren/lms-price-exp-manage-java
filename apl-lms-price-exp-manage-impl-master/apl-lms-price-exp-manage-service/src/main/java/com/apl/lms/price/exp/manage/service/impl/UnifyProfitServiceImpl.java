@@ -50,6 +50,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
             Integer resultNum = baseMapper.updateUnifyProfit(unifyExpPricePo);
             SecurityUser securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
             aplCacheHelper.opsForKey("exp-price-unify-profit").delByBucket(securityUser.getInnerOrgId());
+
             return resultNum;
         }else{
             unifyExpPricePo.setId(SnowflakeIdWorker.generateId());
@@ -63,6 +64,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
                 unifyExpPricePo.setUnitWeightProfit(0d);
             if(null == unifyExpPricePo.getProportionProfit())
                 unifyExpPricePo.setProportionProfit(0d);
+
             return baseMapper.insertUnifyProfit(unifyExpPricePo);
         }
 
@@ -105,6 +107,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
             BeanUtil.copyProperties(unifyExpPricePo, unifyProfitDto);
             priceExpProfitDtoList.add(unifyProfitDto);
         }
+
         return priceExpProfitDtoList;
     }
 
@@ -114,9 +117,11 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
      * @return
      */
     public UnifyProfitDto get(Long id) {
+
         UnifyExpPricePo unifyExpPricePo = baseMapper.selectById(id);
         UnifyProfitDto unifyProfitDto = handCustomerGroupPoToDto(unifyExpPricePo);
         BeanUtils.copyProperties(unifyExpPricePo, unifyProfitDto);
+
         return unifyProfitDto;
     }
 
@@ -153,6 +158,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
             unifyProfitDto = new UnifyProfitDto();
             unifyProfitDto.setCustomerGroups(customerGroupDtoList);
         }
+
         return unifyProfitDto;
     }
 
@@ -162,6 +168,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
      * @return
      */
     public UnifyExpPricePo handCustomerGroupDtoToPo(UnifyProfitDto unifyProfitDto){
+
         UnifyExpPricePo unifyExpPricePo = new UnifyExpPricePo();
         if (null != unifyProfitDto.getCustomerGroups() && unifyProfitDto.getCustomerGroups().size() > 0) {
             StringBuffer customerGroupId = new StringBuffer();
@@ -180,6 +187,7 @@ public class UnifyProfitServiceImpl extends ServiceImpl<UnifyProfitMapper, Unify
             unifyExpPricePo.setCustomerGroupIds("");
             unifyExpPricePo.setCustomerGroupNames("");
         }
+
         return unifyExpPricePo;
     }
 }

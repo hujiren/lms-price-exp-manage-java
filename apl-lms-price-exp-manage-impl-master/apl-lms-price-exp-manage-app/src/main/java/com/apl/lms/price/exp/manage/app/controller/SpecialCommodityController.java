@@ -31,7 +31,9 @@ public class SpecialCommodityController {
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "获取特殊物品列表" , notes = "获取特殊物品列表")
     public ResultUtil<List<SpecialCommodityPo>> getList(){
+
         List<SpecialCommodityPo> list = specialCommodityService.getList();
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, list);
     }
 

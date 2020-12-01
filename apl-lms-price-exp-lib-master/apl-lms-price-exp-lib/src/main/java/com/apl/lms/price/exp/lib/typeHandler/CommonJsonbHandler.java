@@ -12,7 +12,6 @@ import org.postgresql.util.PGobject;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Slf4j
@@ -25,14 +24,17 @@ public class CommonJsonbHandler  extends BaseTypeHandler<Object> {
 
     @SneakyThrows
     @Override
-    public void setNonNullParameter(PreparedStatement preparedStatement, int i, Object obj, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement preparedStatement, int i, Object obj, JdbcType jdbcType){
+
         PGobject jsonObject = new PGobject();
         jsonObject.setType("json");
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
         String val = objectMapper.writeValueAsString(obj);
+
         if(null!=val && val.contains("_")){
             log.debug("====================下划线==="+val);
         }
+
         jsonObject.setValue(val);
         preparedStatement.setObject(i, jsonObject);
     }
@@ -40,7 +42,7 @@ public class CommonJsonbHandler  extends BaseTypeHandler<Object> {
 
     @SneakyThrows
     @Override
-    public Object getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public Object getNullableResult(ResultSet rs, String columnName){
 
         String data = rs.getString(columnName);
 
@@ -54,12 +56,12 @@ public class CommonJsonbHandler  extends BaseTypeHandler<Object> {
 
 
     @Override
-    public List getNullableResult(ResultSet resultSet, int i) throws SQLException {
+    public List getNullableResult(ResultSet resultSet, int i) {
         return null;
     }
 
     @Override
-    public List getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
+    public List getNullableResult(CallableStatement callableStatement, int i){
         return null;
     }
 

@@ -37,9 +37,10 @@ public class UnifyProfitController {
     @PostMapping(value = "/save")
     @ApiOperation(value = "保存统一利润", notes = "保存统一利润")
     public ResultUtil<Boolean> save(@Validated @RequestBody UnifyProfitDto unifyProfitDto) throws IOException {
-        ApiParamValidate.validate(unifyProfitDto);
 
+        ApiParamValidate.validate(unifyProfitDto);
         unifyProfitService.saveUnifyProfit(unifyProfitDto);
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , true);
 
     }
@@ -47,7 +48,9 @@ public class UnifyProfitController {
     @PostMapping(value = "/del")
     @ApiOperation(value = "批量删除统一利润", notes = "批量删除统一利润")
     public ResultUtil<Boolean> del(@RequestBody List<Long> ids) throws IOException {
+
         Integer result = unifyProfitService.del(ids);
+
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS , result);
     }
 
@@ -56,7 +59,9 @@ public class UnifyProfitController {
     @ApiOperation(value = "查询统一利润列表", notes = "按或者不按客户组id查询")
     @ApiImplicitParam(name = "customerGroupId", value = "客户组id", required = false, paramType = "query")
     public ResultUtil<List<UnifyProfitDto>> getList(Long customerGroupId) {
+
         List<UnifyProfitDto> list = unifyProfitService.getList(customerGroupId, 0L);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, list);
     }
 

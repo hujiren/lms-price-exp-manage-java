@@ -57,7 +57,9 @@ public class PriceSurchargeController {
     @ApiOperation(value =  "获取详细" , notes = "获取详细")
     @ApiImplicitParam(name = "priceId",value = "价格表id",required = true  , paramType = "query")
     public ResultUtil<List<PriceSurchargeVo>> getById(@NotNull(message = "价格表id不能为空") @Min(value = 1 , message = "id不能小于1") Long priceId) throws Exception {
+
         List<PriceSurchargeVo> priceSurchargeVoList = priceSurchargeService.selectById(priceId);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceSurchargeVoList);
     }
 

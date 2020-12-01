@@ -54,10 +54,13 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
      */
     @Override
     public ResultUtil<Boolean> delSpecialCommodity(Long id) {
+
         Integer integer = baseMapper.deleteById(id);
+
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code, SpecialCommodityServiceCode.ID_DOES_NOT_EXITS.msg, false);
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
@@ -89,9 +92,11 @@ public class SpecialCommodityServiceImpl extends ServiceImpl<SpecialCommodityMap
             }
 
         Integer resultNum = baseMapper.addSpecialCommodity(specialCommodityPoList);
+
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, resultNum);
     }
 

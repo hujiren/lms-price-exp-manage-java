@@ -20,6 +20,7 @@ public class JoinPartner extends JoinBase<PartnerCacheBo> {
     PriceExpFeign priceExpFeign;
 
     public JoinPartner(int joinStyle, PriceExpFeign priceExpFeign, BaseCacheUtil cacheUtil){
+
         this.priceExpFeign = priceExpFeign;
         this.cacheUtil = cacheUtil;
         this.tabName = "partner";
@@ -32,6 +33,7 @@ public class JoinPartner extends JoinBase<PartnerCacheBo> {
     public Boolean addCache(String keys, Long minKey, Long maxKey){
 
         ResultUtil<Boolean> result = priceExpFeign.addPartnerCache(keys, minKey, maxKey);
+
         if(result.getCode().equals(CommonStatusCode.SYSTEM_SUCCESS.code))
             return true;
 

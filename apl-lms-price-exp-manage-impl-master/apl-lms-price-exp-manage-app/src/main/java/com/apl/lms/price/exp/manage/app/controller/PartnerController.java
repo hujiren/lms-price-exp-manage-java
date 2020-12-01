@@ -42,6 +42,7 @@ public class PartnerController {
     @ApiOperation(value =  "分页获取服务商列表" , notes = "根据关键字来查询")
     public ResultUtil<Page<PartnerPo>> getList(PageDto pageDto ,
                                                @Validated PartnerKeyDto partnerKeyDto){
+
         return partnerService.getList(pageDto, partnerKeyDto);
     }
 

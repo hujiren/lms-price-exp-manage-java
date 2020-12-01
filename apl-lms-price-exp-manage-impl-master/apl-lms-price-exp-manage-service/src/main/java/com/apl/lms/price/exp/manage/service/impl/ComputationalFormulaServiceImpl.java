@@ -24,19 +24,6 @@ import java.util.List;
 @Slf4j
 public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFormulaMapper, PriceExpComputationalFormulaPo> implements ComputationalFormulaService {
 
-    enum ExpListServiceCode {
-        ID_IS_NOT_EXITS("ID_IS_NOT_EXITS","id不存在")
-        ;
-
-        private String code;
-        private String msg;
-
-        ExpListServiceCode(String code, String msg) {
-            this.code = code;
-            this.msg = msg;
-        }
-    }
-
     @Autowired
     AplCacheHelper aplCacheHelper;
 
@@ -61,8 +48,10 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
      */
     @Override
     public ResultUtil<Boolean> delComputationalFormula(Long id, Long priceId) throws IOException {
-            baseMapper.deleteById(id);
-            aplCacheHelper.opsForKey("exp-price-formula").delByBucket(priceId);
+
+        baseMapper.deleteById(id);
+        aplCacheHelper.opsForKey("exp-price-formula").delByBucket(priceId);
+
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
@@ -109,9 +98,11 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
 
         priceExpComputationalFormulaPo.setId(SnowflakeIdWorker.generateId());
         Integer resultNum = baseMapper.insert(priceExpComputationalFormulaPo);
+
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceExpComputationalFormulaPo.getId());
     }
 
@@ -120,9 +111,11 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
      */
     @Override
     public Integer delBatch(String priceIds) throws IOException {
+
         Integer resultNum = baseMapper.delBatch(priceIds);
         List<Long> idList = StringUtil.stringToLongList(priceIds);
         aplCacheHelper.opsForKey("exp-price-formula").delByBucket(idList);
+
         return resultNum;
     }
 
@@ -133,6 +126,7 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
      */
     @Override
     public List<PriceExpComputationalFormulaPo> getTenantComputationalFormula(Long quotePriceId) {
+
         return baseMapper.getTenantComputationalFormula(quotePriceId);
     }
 
@@ -143,7 +137,9 @@ public class ComputationalFormulaServiceImpl extends ServiceImpl<ComputationalFo
      */
     @Override
     public List<Long> getIdBatch(Long priceId) {
+
         List<Long> computationIds = baseMapper.getIdBatchByPriceId(priceId);
+
         return computationIds;
     }
 }

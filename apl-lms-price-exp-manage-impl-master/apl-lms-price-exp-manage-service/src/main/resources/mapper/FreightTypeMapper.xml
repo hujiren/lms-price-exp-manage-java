@@ -15,10 +15,19 @@
     <!--批量添加-->
     <insert id="addBatch">
         insert into
-        freight_type(id, code, freight_type_name)
+            freight_type
+            (
+                id,
+                code,
+                freight_type_name
+            )
         values
         <foreach collection="freightTypePoList" open="" separator="," close="" item="row" index="">
-        (#{row.id}, #{row.code}, #{row.freightTypeName})
+            (
+                #{row.id},
+                #{row.code},
+                #{row.freightTypeName}
+            )
         </foreach>
 
     </insert>

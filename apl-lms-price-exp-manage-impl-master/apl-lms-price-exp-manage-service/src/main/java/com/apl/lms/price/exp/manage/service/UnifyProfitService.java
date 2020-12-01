@@ -14,13 +14,28 @@ import java.util.List;
  */
 public interface UnifyProfitService extends IService<UnifyExpPricePo> {
 
-    //添加 OR 修改
+    /**
+     * 保存统加利润
+     * @param unifyProfitDto
+     * @return
+     * @throws IOException
+     */
     Integer saveUnifyProfit(UnifyProfitDto unifyProfitDto) throws IOException;
 
-    //批量删除
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     * @throws IOException
+     */
     Integer del(List<Long> ids) throws IOException;
 
-    //获取列表
+    /**
+     * 查询列表
+     * @param customerGroupId
+     * @param tenantId
+     * @return
+     */
     List<UnifyProfitDto> getList(Long customerGroupId, Long tenantId);
 
 }

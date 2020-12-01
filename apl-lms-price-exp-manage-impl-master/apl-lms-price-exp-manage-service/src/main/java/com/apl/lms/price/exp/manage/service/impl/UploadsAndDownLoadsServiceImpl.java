@@ -488,13 +488,6 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
         //查找priceList单元格
         Cell priceListFistCell = findCell(sheet, "priceList");
 
-//        xssfCellStyle.setBorderLeft(BorderStyle.THIN);
-//        xssfCellStyle.setBorderRight(BorderStyle.THIN);
-//        xssfCellStyle.setBorderTop(BorderStyle.THIN);
-//        xssfCellStyle.setBorderBottom(BorderStyle.THIN);
-//        xssfCellStyle.setAlignment(HorizontalAlignment.CENTER);//水平
-//        xssfCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直
-
         Row fieldRow = priceListFistCell.getRow();
         int priceColIndex = priceListFistCell.getColumnIndex();
 
@@ -526,17 +519,6 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
         FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
         excelWriter.fill(new FillWrapper("p", priceDataListNew), fillConfig, writeSheet);
 
-        //表格样式
-//        int startDataRowIndex = priceListFistCell.getRowIndex();
-//        Row startDataRow = sheet.getRow(startDataRowIndex);
-//        int lastCellNum = startDataRow.getLastCellNum();
-//        for(int i = startDataRowIndex; i < startDataRowIndex + 1; i++){
-//            Row row = sheet.getRow(i);
-//            for(int j = 0; j < 1; j++){
-//                Cell cell = row.getCell(j);
-//                cell.getCellStyle().cloneStyleFrom(xssfCellStyle);
-//            }
-//        }
     }
 
 
@@ -565,7 +547,8 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
      * @param zoneIndexMap
      * @param longListMap
      */
-    public void fillZone(ExcelWriter excelWriter,
+    public void fillZone(
+                         ExcelWriter excelWriter,
                          Map<Long, zoneDataInfo> zoneIndexMap,
                          Map<Long, List<PriceZoneDataListVo>> longListMap,
                          List<ExpPriceInfoBo> expPriceInfoBoList,
@@ -706,68 +689,6 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
     }
 
 
-    //复制单元格
-    private void copySheet(XSSFSheet sourceSheet, XSSFSheet targetSheet) {
-        //getLastRowNum 获取有数据的最后一行的行号  getLastCellNum获取有数据的最后一列的列号
-        int rowLastRowNum = sourceSheet.getLastRowNum();
-
-        //遍历行
-        for (int rowIndex = 0; rowIndex <= rowLastRowNum; rowIndex++) {
-
-            //获取第<rowIndex>行
-            XSSFRow sourceRow = sourceSheet.getRow(rowIndex);
-            //获取当前行的最后一列列号
-            int lastCellNum = sourceRow.getLastCellNum();
-            //创建第<rowIndex>行
-            XSSFRow targetRow = targetSheet.createRow(rowIndex);
-
-            //遍历列
-            for (int colIndex = 0; colIndex < lastCellNum; colIndex++) {
-                //在当前行中取第<colIndex>个单元格
-                XSSFCell sourceCell = sourceRow.getCell(colIndex);
-                if (null != sourceCell) {
-                    //获取单元格中的值
-                    String sourceCellVal = sourceCell.getStringCellValue();
-                    //为目标行创建单元格
-                    Cell targetCell = targetRow.createCell(colIndex);
-                    //为单元格赋值
-                    targetCell.setCellValue(sourceCellVal);
-                    //为单元格设置样式
-                    targetCell.setCellStyle(sourceCell.getCellStyle());
-
-                }
-            }
-        }
-    }
-
-    class zoneDataInfo {
-        public Integer sheetNo;
-
-        public String zoneName;
-
-        public String channelCategory;
-    }
-
-    class TemplateInfo {
-        public String templateFileName;
-
-        public int templateNo;
-
-        public int directoryTempNo;
-
-        public String directoryTempName;
-
-        public XSSFCreationHelper creationHelper;
-
-        public XSSFCellStyle xssfCellStyle;
-
-        public XSSFFont xssfFont;
-
-        public XSSFWorkbook wb;
-
-        public Map<Long, zoneDataInfo> zoneSheetNoMap;
-    }
-
     /**
      * 上传Excel
      * @param file
@@ -897,5 +818,33 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
             fileFormat.put("xls","d0cf11e0");
             fileFormat.put("xlsx","504b0304");
         }
+    }
+
+    class zoneDataInfo {
+        public Integer sheetNo;
+
+        public String zoneName;
+
+        public String channelCategory;
+    }
+
+    class TemplateInfo {
+        public String templateFileName;
+
+        public int templateNo;
+
+        public int directoryTempNo;
+
+        public String directoryTempName;
+
+        public XSSFCreationHelper creationHelper;
+
+        public XSSFCellStyle xssfCellStyle;
+
+        public XSSFFont xssfFont;
+
+        public XSSFWorkbook wb;
+
+        public Map<Long, zoneDataInfo> zoneSheetNoMap;
     }
 }

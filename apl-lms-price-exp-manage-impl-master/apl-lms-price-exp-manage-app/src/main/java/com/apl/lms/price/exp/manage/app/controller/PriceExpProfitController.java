@@ -33,8 +33,10 @@ public class PriceExpProfitController {
     @PostMapping(value = "/save")
     @ApiOperation(value = "保存", notes = "保存")
     public ResultUtil<Long> save(@Validated @RequestBody ExpPriceProfitDto expPriceProfitDto) throws IOException {
+
         ApiParamValidate.validate(expPriceProfitDto);
         ResultUtil<Long> longResultUtil = priceExpProfitService.saveProfit(expPriceProfitDto);
+
         return longResultUtil;
 
     }

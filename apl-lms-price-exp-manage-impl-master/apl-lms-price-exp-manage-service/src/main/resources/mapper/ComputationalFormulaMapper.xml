@@ -7,7 +7,7 @@
         select
             id, formula, zone_num, country, start_weight, end_weight, package_type
         from
-        price_computational_formula
+            price_computational_formula
         where
             price_id = #{priceId}
     </select>

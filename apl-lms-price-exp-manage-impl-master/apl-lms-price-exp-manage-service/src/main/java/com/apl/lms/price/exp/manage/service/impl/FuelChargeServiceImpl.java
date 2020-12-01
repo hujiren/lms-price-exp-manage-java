@@ -93,6 +93,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         fuelChargePo.setId(fuelChargeAddDto.getId());
 
         Integer resultNum = baseMapper.updFuelCharge(fuelChargePo);
+
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
@@ -120,6 +121,7 @@ public class FuelChargeServiceImpl extends ServiceImpl<FuelChargeMapper, FuelCha
         fuelChargePo.setId(SnowflakeIdWorker.generateId());
 
         Integer resultNum = baseMapper.insertFuelCharge(fuelChargePo);
+
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }

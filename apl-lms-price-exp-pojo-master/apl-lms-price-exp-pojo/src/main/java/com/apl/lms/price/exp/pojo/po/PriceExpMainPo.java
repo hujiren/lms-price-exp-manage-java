@@ -93,8 +93,8 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "partnerName" , value = "服务商名称")
     private String partnerName;
 
-    @ApiModelProperty(name = "customerGroupId" , value = "客户组id")
-    private String customerGroupId;
+    @ApiModelProperty(name = "customerGroupIds" , value = "客户组id")
+    private String customerGroupIds;
 
     @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
     private String customerGroupName;

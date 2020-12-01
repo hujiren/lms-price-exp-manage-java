@@ -64,6 +64,7 @@ public class FreightTypeServiceImpl extends ServiceImpl<FreightTypeMapper, Freig
         }
 
         Integer resultNum = baseMapper.addBatch(freightTypePoList);
+
         if(resultNum > 0){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , freightTypePoList.get(0).getId());
         }

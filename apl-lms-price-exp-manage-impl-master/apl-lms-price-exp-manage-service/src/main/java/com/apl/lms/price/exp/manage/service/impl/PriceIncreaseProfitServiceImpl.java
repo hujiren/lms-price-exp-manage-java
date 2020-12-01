@@ -99,6 +99,7 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
         increaseProfitVo.setAddProfitWay(priceInfo.getAddProfitWay());
         increaseProfitVo.setIncreaseProfit(newIncreaseProfitList);
         increaseProfitVo.setId(priceId);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, increaseProfitVo);
     }
 
@@ -109,8 +110,10 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
      */
     @Override
     public ResultUtil<Boolean> deleteBatch(List<Long> increaseIds, Long priceId) throws IOException {
+
         baseMapper.deleteBatchIds(increaseIds);
         aplCacheHelper.opsForKey("exp-price-increase-profit").delByBucket(priceId);
+
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
@@ -165,6 +168,7 @@ public class PriceIncreaseProfitServiceImpl extends ServiceImpl<PriceIncreasePro
             priceIncreaseProfitPo.setCustomerGroupNames(sbCustomerGroupName.toString());
             priceIncreaseProfitPoList.add(priceIncreaseProfitPo);
         }
+
         adbHelper.saveBatch(priceIncreaseProfitPoList, "price_increase_profit", "id", true);
         aplCacheHelper.opsForKey("exp-price-increase-profit").delByBucket(priceId);
 

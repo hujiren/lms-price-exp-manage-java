@@ -79,11 +79,14 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
      */
     @Override
     public ResultUtil<Boolean> updPartner(PartnerPo partnerPo) {
+
         partnerPo.setPartnerCode(partnerPo.getPartnerCode().toUpperCase());
         Integer resultNum = baseMapper.updateById(partnerPo);
+
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
 
     }
@@ -99,6 +102,7 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
         partnerPo.setPartnerCode(partnerPo.getPartnerCode().toUpperCase());
         partnerPo.setId(SnowflakeIdWorker.generateId());
         Integer resultNum = baseMapper.insert(partnerPo);
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, resultNum);
     }
 
@@ -109,7 +113,9 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerMapper, PartnerPo> im
      */
     @Override
     public ResultUtil<PartnerPo> getPartner(Long id) {
+
         PartnerPo partnerPo = baseMapper.selectById(id);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, partnerPo);
     }
 }

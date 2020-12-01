@@ -17,16 +17,36 @@
     <insert id="addSpecialCommodity">
 
             insert into
-                special_commodity(id, special_commodity_name, special_commodity_name_en, code)
+                special_commodity
+                (
+                    id,
+                    special_commodity_name,
+                    special_commodity_name_en,
+                    code
+                )
             values
             <foreach collection="po" close="" open="" item="row" separator="," index="">
-                (#{row.id}, #{row.specialCommodityName}, #{row.specialCommodityNameEn}, #{row.code})
+                (
+                    #{row.id},
+                    #{row.specialCommodityName},
+                    #{row.specialCommodityNameEn},
+                    #{row.code}
+                )
             </foreach>
 
     </insert>
 
     <!--获取特殊物品详细-->
     <select id="getSpecialCommodity" resultType="com.apl.lms.price.exp.pojo.po.SpecialCommodityPo">
-        select id,special_commodity_name, special_commodity_name_en, code from special_commodity where id = #{id}
+        select
+            id,
+            special_commodity_name,
+            special_commodity_name_en,
+            code
+        from
+            special_commodity
+        where
+            id = #{id}
     </select>
+
 </mapper>

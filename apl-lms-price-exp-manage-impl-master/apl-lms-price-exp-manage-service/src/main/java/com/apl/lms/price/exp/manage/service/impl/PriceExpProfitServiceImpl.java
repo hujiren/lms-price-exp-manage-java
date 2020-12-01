@@ -81,6 +81,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
      */
     @Override
     public Integer delBatch(String priceIds) throws IOException {
+
         //此方法是被批量删除价格表时调用, 参数为多个价格表id, 不可前端传参数
         List<Long> idList = StringUtil.stringToLongList(priceIds);
         Integer resultNum = baseMapper.delBatch(priceIds);//价格表id = 成本利润id
@@ -133,9 +134,11 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
             //如果没有相同id则是添加 id采用价格表id
             flag = baseMapper.insert(priceExpProfitPo);
         }
+
         if(flag.equals(0)){
             throw new AplException(CommonStatusCode.SYSTEM_FAIL , null);
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, priceExpProfitPo.getId());
     }
 
@@ -210,6 +213,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
     @Override
     public List<PriceExpProfitDto> assembleSaleProfit(ExpPriceProfitDto profit) {
+
         List<PriceExpProfitDto> costProfit = profit.getCostProfit();
         List<PriceExpProfitDto> increaseProfit = profit.getIncreaseProfit();
         if(null == costProfit)
@@ -223,6 +227,7 @@ public class PriceExpProfitServiceImpl extends ServiceImpl<PriceExpProfitMapper,
 
     //合并利润
     static List<PriceExpProfitDto> mergeProfit(List<PriceExpProfitDto> list1, List<PriceExpProfitDto> list2){
+
         if(list1.size()<1 && list2.size()<1){
             List<PriceExpProfitDto> emptyList = new ArrayList<>();
             return emptyList;

@@ -28,6 +28,7 @@ public class CacheController {
     @PostMapping("/add-partner-cache")
     @ApiOperation(value = "添加服务商缓存")
     public ResultUtil<Boolean> addPartnerCache(@RequestParam("keys") String keys, Long minKey, Long maxKey) throws IOException {
+
         return cacheService.addPartnerCache(keys, minKey, maxKey);
     }
 }

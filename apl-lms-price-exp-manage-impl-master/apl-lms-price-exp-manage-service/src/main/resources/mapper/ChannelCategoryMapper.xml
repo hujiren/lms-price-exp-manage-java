@@ -5,7 +5,8 @@
     <!--分页查询渠道类型-->
     <select id="getList" resultType="com.apl.lms.price.exp.pojo.vo.ChannelCategoryListVo">
         select
-            id, channel_category
+            id,
+            channel_category
         from
             channel_category
     </select>
@@ -20,8 +21,13 @@
         update
             channel_category
         set
-            channel_category = #{po.channelCategory}, bulky_way = #{po.bulkyWay}, volume_weight_way = #{po.volumeWeightWay},
-            carrier = #{po.carrier}, cargo_type = #{po.cargoType}, volume_divisor = #{po.volumeDivisor}, remote_charge_formula = #{po.remoteChargeFormula}
+            channel_category = #{po.channelCategory},
+            bulky_way = #{po.bulkyWay},
+            volume_weight_way = #{po.volumeWeightWay},
+            carrier = #{po.carrier},
+            cargo_type = #{po.cargoType},
+            volume_divisor = #{po.volumeDivisor},
+            remote_charge_formula = #{po.remoteChargeFormula}
         where
             id = #{po.id}
     </update>
@@ -29,9 +35,28 @@
     <!--新增渠道类型-->
     <insert id="addChannelCategory">
         insert into
-            channel_category(id, channel_category, bulky_way, volume_weight_way, carrier, cargo_type, volume_divisor, remote_charge_formula)
+            channel_category
+            (
+                id,
+                channel_category,
+                bulky_way,
+                volume_weight_way,
+                carrier,
+                cargo_type,
+                volume_divisor,
+                remote_charge_formula
+            )
         values
-            (#{po.id}, #{po.channelCategory}, #{po.bulkyWay}, #{po.volumeWeightWay}, #{po.carrier}, #{po.cargoType}, #{po.volumeDivisor}, #{po.remoteChargeFormula})
+            (
+                #{po.id},
+                #{po.channelCategory},
+                #{po.bulkyWay},
+                #{po.volumeWeightWay},
+                #{po.carrier},
+                #{po.cargoType},
+                #{po.volumeDivisor},
+                #{po.remoteChargeFormula}
+            )
     </insert>
 
 </mapper>

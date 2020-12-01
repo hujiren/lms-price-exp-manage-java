@@ -11,11 +11,15 @@
         where
             1=1
         <if test="key.code != null">
-            and  partner_code = #{key.code}
+            and
+                partner_code = #{key.code}
         </if>
+
         <if test="key.keyword != null">
-            and partner_short_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
-            or partner_full_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            and
+                partner_short_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
+            or
+                partner_full_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
 
     </select>

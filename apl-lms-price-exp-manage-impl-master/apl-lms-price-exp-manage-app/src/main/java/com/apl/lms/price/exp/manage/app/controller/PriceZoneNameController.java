@@ -34,7 +34,9 @@ public class PriceZoneNameController {
     @PostMapping(value = "/get-zone-name")
     @ApiOperation(value =  "获取快递分区名称" , notes = "获取快递分区名称")
     public ResultUtil<String> getZoneName(Long id){
+
         String priceZoneName = priceZoneService.getPriceZoneName(id);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, priceZoneName);
     }
 

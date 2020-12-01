@@ -28,27 +28,18 @@ import java.util.Map;
 @Slf4j
 public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, PriceZoneNamePo> implements PriceZoneNameService {
 
-    enum ExpListServiceCode {
-        ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在");
-        ;
-
-        private String code;
-        private String msg;
-
-        ExpListServiceCode(String code, String msg) {
-            this.code = code;
-            this.msg = msg;
-        }
-    }
 
     @Autowired
     PriceZoneDataService priceZoneDataService;
+
+
     /**
      * 获取分区名称
      * @param id
      * @return
      */
     public String getPriceZoneName(Long id){
+
         String zoneName = baseMapper.getPriceZoneName(id);
 
         return zoneName;
@@ -70,6 +61,7 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
         priceZoneNameKeyDto.setChannelCategory(priceZoneNameKeyDto.getChannelCategory().toUpperCase());
         List<PriceZoneNamePo> priceZoneVoList = baseMapper.getPriceZoneNameList(page, priceZoneNameKeyDto);
         page.setRecords(priceZoneVoList);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, page);
     }
 
@@ -84,6 +76,7 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
 
         baseMapper.delPriceZoneName(ids);
         priceZoneDataService.delBatchByZoneId(ids);
+
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, true);
     }
 
@@ -97,9 +90,11 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
 
         priceZoneNamePo.setChannelCategory(priceZoneNamePo.getChannelCategory().toUpperCase());
         Integer integer = baseMapper.updPriceZoneName(priceZoneNamePo);
+
         if(integer < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
 
@@ -114,9 +109,11 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
         priceZoneNamePo.setId(SnowflakeIdWorker.generateId());
         priceZoneNamePo.setChannelCategory(priceZoneNamePo.getChannelCategory().toUpperCase());
         Integer resultNum = baseMapper.addPriceZoneName(priceZoneNamePo);
+
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, priceZoneNamePo.getId());
     }
 
@@ -127,8 +124,10 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
      */
     @Override
     public Map<Long, PriceZoneNamePo> getPriceZoneNameBatch(List<Long> zoneIds) {
+
         if(zoneIds.size() < 1)
             return Collections.emptyMap();
+
         return baseMapper.getPriceZoneNameBatch(zoneIds);
     }
 
@@ -139,7 +138,9 @@ public class PriceZoneNameServiceImpl extends ServiceImpl<PriceZoneMapper, Price
      */
     @Override
     public PriceZoneNameVo getZoneNameInfo(Long zoneId) {
+
         PriceZoneNameVo priceZoneNameVo = baseMapper.getPriceZoneNameInfo(zoneId);
+
         return priceZoneNameVo;
     }
 

@@ -46,7 +46,6 @@ import java.util.*;
 @Slf4j
 public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, PriceZoneDataListVo> implements PriceZoneDataService {
 
-    JoinFieldInfo joinCountryFieldInfo = null;
 
     @Autowired
     AplCacheUtil aplCacheUtil;
@@ -63,7 +62,10 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
     @Value("${lms.exp-zone.export.out-file-name:export-exp-zone.xlsx}")
     String outFileName;
 
+    JoinFieldInfo joinCountryFieldInfo = null;
+
     enum PriceZoneDataServiceCode {
+
         ID_DOES_NOT_EXITS("ID_DOES_NOT_EXITS", "id不存在"),
         NO_VALID_FILE_WAS_FOUND("NO_VALID_FILE_WAS_FOUND", "没有找到有效文件"),
         TEMPLATE_DOES_NOT_EXIST("Template does not exist", "模板不存在");
@@ -85,6 +87,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
      */
     @Override
     public List<PriceZoneDataListVo> getList(Long id) throws Exception {
+
         List<PriceZoneDataListVo> priceZoneDataListVo = baseMapper.getList(id);
 
         List<JoinBase> joinTabs = new ArrayList<>();
@@ -110,7 +113,9 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
 
     @Override
     public ResultUtil<Boolean> deleteBatch(List<Long> ids) {
+
         Integer resInteger = baseMapper.deleteByZoneId(ids);
+
         return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS, resInteger);
     }
 
@@ -121,7 +126,9 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
      */
     @Override
     public Integer delBatchByZoneId(List<Long> ids) {
+
         return baseMapper.delBatchByZoneId(ids);
+
     }
 
     /**
@@ -405,6 +412,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
                 excelWriter.finish();
             }
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS);
     }
 

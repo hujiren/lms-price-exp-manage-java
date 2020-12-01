@@ -2,7 +2,6 @@ package com.apl.lms.price.exp.manage.mapper;
 
 import com.apl.lms.price.exp.pojo.po.SpecialCommodityPo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -20,7 +19,6 @@ import java.util.List;
 @Mapper
 @Repository
 public interface SpecialCommodityMapper extends BaseMapper<SpecialCommodityPo> {
-
 
     /**
      * @Desc: 查找特殊物品列表

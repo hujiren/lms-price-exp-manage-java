@@ -18,6 +18,7 @@ public class PriceExpFeignImpl implements PriceExpFeign {
     public ResultUtil<Boolean> addPartnerCache(@RequestParam("keys") String keys,
                                                @RequestParam("minKey") Long minKey,
                                                @RequestParam("maxKey") Long maxKey) {
+
         return ResultUtil.APPRESULT(CommonStatusCode.SERVER_INVOKE_FAIL.getCode() , CommonStatusCode.SERVER_INVOKE_FAIL.getMsg() , null);
     }
 }

@@ -20,16 +20,19 @@ public class DataSourceHealthConfig extends DataSourceHealthContributorAutoConfi
 
 
     public DataSourceHealthConfig(Map<String, DataSource> dataSources, ObjectProvider<DataSourcePoolMetadataProvider> metadataProviders) {
+
         super(dataSources, metadataProviders);
     }
 
 
     @Override
     protected AbstractHealthIndicator createIndicator(DataSource source) {
+
         DataSourceHealthIndicator indicator = (DataSourceHealthIndicator) super.createIndicator(source);
         if (!StringUtils.hasText(indicator.getQuery())) {
             indicator.setQuery(defaultQuery);
         }
+
         return indicator;
 
         //return null;

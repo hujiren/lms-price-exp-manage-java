@@ -56,14 +56,18 @@ public class DatasourceAop {
 
 
         } catch (Throwable e) {
+
             throw e;
+
         } finally {
+
             CommonContextHolder.securityUserContextHolder.remove();
             CommonContextHolder.tokenContextHolder.remove();
             //DataSourceContextHolder.clear();
 
             //释放当前线程redis连接池
             JedisConnect.close();
+
         }
 
         return proceed;

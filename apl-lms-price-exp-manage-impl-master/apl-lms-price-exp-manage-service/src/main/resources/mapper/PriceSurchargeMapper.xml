@@ -5,22 +5,22 @@
     <!--查找详情-->
     <select id="getByPriceId" resultType="com.apl.lms.price.exp.pojo.vo.PriceSurchargeVo">
         SELECT
-          id,
-          price_id,
-          charge_name,
-          charge_way,
-          weight_way,
-          special_commodity_code,
-          formula,
-          remark,
-          over_weight,
-          over_length,
-          over_declared_value,
-          currency
+            id,
+            price_id,
+            charge_name,
+            charge_way,
+            weight_way,
+            special_commodity_code,
+            formula,
+            remark,
+            over_weight,
+            over_length,
+            over_declared_value,
+            currency
         FROM
-          price_surcharge
+            price_surcharge
         where
-          price_id = #{priceId}
+            price_id = #{priceId}
     </select>
 
     <!--根据价格表Id查询附加费Id-->
@@ -31,23 +31,23 @@
     <!--获取详细-->
      <select id="selectByPriceId" resultType="com.apl.lms.price.exp.pojo.po.PriceSurchargePo">
         SELECT
-          id,
-          price_id,
-          charge_name,
-          charge_way,
-          weight_way,
-          special_commodity_code,
-          formula,
-          remark,
-          over_weight,
-          over_length,
-          over_declared_value,
-          currency,
-          inner_org_id
+            id,
+            price_id,
+            charge_name,
+            charge_way,
+            weight_way,
+            special_commodity_code,
+            formula,
+            remark,
+            over_weight,
+            over_length,
+            over_declared_value,
+            currency,
+            inner_org_id
         FROM
-          price_surcharge
+            price_surcharge
         where
-          price_id = #{priceId}
+            price_id = #{priceId}
     </select>
 
     <!--批量删除-->

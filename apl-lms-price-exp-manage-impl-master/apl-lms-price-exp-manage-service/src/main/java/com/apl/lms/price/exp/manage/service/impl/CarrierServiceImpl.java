@@ -61,6 +61,7 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
 
         carrierPo.setId(SnowflakeIdWorker.generateId());
         Integer resultNum = baseMapper.insert(carrierPo);
+
         if(resultNum.equals(1)){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , carrierPo.getId());
         }
@@ -77,6 +78,7 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
     public ResultUtil<Boolean> updById(CarrierPo carrierPo){
 
         Integer resultNum = baseMapper.updateById(carrierPo);
+
         if(resultNum.equals(1)){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS , true);
         }
@@ -93,6 +95,7 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
     public ResultUtil<Boolean> delById(Long id){
 
         Integer resultNum = baseMapper.deleteById(id);
+
         if(resultNum > 0){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_SUCCESS , true);
         }
@@ -129,6 +132,7 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
                 carrierCacheList.add(commonCarrierPo);
             }
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS , carrierCacheList);
     }
 
@@ -138,7 +142,9 @@ public class CarrierServiceImpl extends ServiceImpl<CarrierMapper, CarrierPo> im
      * @throws IOException
      */
     public List<CarrierPo> getCommonCarrierByCache() throws IOException {
+
         List<CarrierPo> carrierCacheList = (List<CarrierPo>) aplCacheUtil.opsForValue("priceManage").get(CACHE_KEY);
+
         return carrierCacheList;
     }
 }

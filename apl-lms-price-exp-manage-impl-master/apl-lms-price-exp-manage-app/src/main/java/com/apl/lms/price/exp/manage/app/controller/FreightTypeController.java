@@ -36,6 +36,7 @@ public class FreightTypeController {
     @PostMapping(value = "/add")
     @ApiOperation(value =  "批量添加", notes ="批量添加运输类型")
     public ResultUtil<Long> add(@RequestBody @Validated List<FreightTypePo> freightTypePoList) {
+
         ApiParamValidate.validate(freightTypePoList);
 
         return freightTypeService.add(freightTypePoList);
@@ -52,7 +53,9 @@ public class FreightTypeController {
     @PostMapping(value = "/get-list")
     @ApiOperation(value =  "查询列表" , notes = "查询列表")
     public ResultUtil<List<FreightTypePo>> getList() {
+
         List<FreightTypePo> resultList = freightTypeService.getList();
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, resultList);
     }
 
@@ -60,7 +63,9 @@ public class FreightTypeController {
     @ApiOperation(value =  "查询列表-管理员通道" , notes = "查询列表-管理员通道")
     @ApiImplicitParam(name = "innerOrgId",value = " 租户id",required = true  , paramType = "query")
     public ResultUtil<List<FreightTypePo>> getList(Long innerOrgId) {
+
         List<FreightTypePo> resultList = freightTypeService.getListByInnerOrgId(innerOrgId);
+
         return ResultUtil.APPRESULT(CommonStatusCode.GET_SUCCESS, resultList);
     }
 }

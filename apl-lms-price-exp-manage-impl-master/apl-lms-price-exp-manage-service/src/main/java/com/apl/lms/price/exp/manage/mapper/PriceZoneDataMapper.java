@@ -39,13 +39,11 @@ public interface PriceZoneDataMapper extends BaseMapper<PriceZoneDataListVo> {
      */
     Integer delBatchByZoneId(@Param("ids") List<Long> ids);
 
-
     /**
      * 根据zoneId批量查询数据
      * @param ids
      * @return
      */
-
     @SqlParser(filter = true)
     List<PriceZoneDataListVo> getListByZoneIds(@Param("ids") HashSet<Long> ids);
 }

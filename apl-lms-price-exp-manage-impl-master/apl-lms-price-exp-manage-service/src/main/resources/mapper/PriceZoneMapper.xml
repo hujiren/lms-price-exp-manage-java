@@ -5,7 +5,9 @@
     <!--分页查询快递分区列表-->
     <select id="getPriceZoneNameList" resultType="com.apl.lms.price.exp.pojo.po.PriceZoneNamePo" parameterType="com.apl.lms.price.exp.pojo.dto.PriceZoneNameKeyDto">
         select
-            id, channel_category, zone_name
+            id,
+            channel_category,
+            zone_name
         from
             price_zone
         where
@@ -20,46 +22,74 @@
 
     <select id="getPriceZoneName" resultType="java.lang.String">
         select
-        zone_name
+            zone_name
         from
-        price_zone
+            price_zone
         where
-         id=#{id}
+            id=#{id}
     </select>
 
     <!--根据id删除快递分区-->
     <delete id="delPriceZoneName">
         delete from price_zone where id in
-            <foreach collection="ids" index="" separator="," item="row" open="(" close=")">
-                #{row}
-             </foreach>
+        <foreach collection="ids" index="" separator="," item="row" open="(" close=")">
+            #{row}
+         </foreach>
     </delete>
 
     <!--更新快递分区-->
     <update id="updPriceZoneName">
-        update price_zone set channel_category = #{po.channelCategory}, zone_name = #{po.zoneName} where id = #{po.id}
+        update
+            price_zone
+        set
+            channel_category = #{po.channelCategory},
+            zone_name = #{po.zoneName}
+        where
+            id = #{po.id}
     </update>
 
     <!--新增快递分区-->
     <insert id="addPriceZoneName">
-        insert into price_zone(id, channel_category, zone_name) values (#{po.id}, #{po.channelCategory}, #{po.zoneName})
+        insert into
+            price_zone
+            (
+                id,
+                channel_category,
+                zone_name
+            )
+        values
+            (
+                #{po.id},
+                #{po.channelCategory},
+                #{po.zoneName}
+            )
     </insert>
 
     <!--批量获取分区名称-->
     <select id="getPriceZoneNameBatch" resultType="com.apl.lms.price.exp.pojo.po.PriceZoneNamePo">
-         select
-            id, channel_category, zone_name
+        select
+            id,
+            channel_category,
+            zone_name
         from
             price_zone
-        where id in
+        where
+            id
+        in
         <foreach collection="ids" close=")" item="row" open="(" separator=",">
             #{row}
         </foreach>
     </select>
 
-
+    <!--获取分区详细数据-->
     <select id="getPriceZoneNameInfo" resultType="com.apl.lms.price.exp.pojo.vo.PriceZoneNameVo">
-        select channel_category, zone_name from price_zone where id = #{zoneId}
+        select
+            channel_category,
+            zone_name
+        from
+            price_zone
+        where
+            id = #{zoneId}
     </select>
 
 </mapper>

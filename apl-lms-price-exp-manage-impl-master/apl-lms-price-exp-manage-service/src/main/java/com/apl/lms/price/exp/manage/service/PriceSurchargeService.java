@@ -19,6 +19,12 @@ import java.util.List;
 public interface PriceSurchargeService extends IService<PriceSurchargePo> {
 
 
+    /**
+     * 批量保存
+     * @param priceSurchargePos
+     * @return
+     * @throws Exception
+     */
     ResultUtil<Boolean> save(List<PriceSurchargePo> priceSurchargePos) throws Exception;
 
     /**

@@ -56,6 +56,7 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     public ResultUtil<Boolean> delChannelCategory(Long id) {
 
         Integer resultNum = baseMapper.delById(id);
+
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.DEL_FAIL.code,ChannelCategoryServiceCode.ID_IS_NOT_EXITS.msg, false);
         }
@@ -71,9 +72,11 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
     public ResultUtil<Boolean> updChannelCategory(ChannelCategoryPo channelCategoryPo) {
 
         Integer resultNum = baseMapper.updChannelCategory(channelCategoryPo);
+
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, false);
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, true);
     }
 
@@ -84,11 +87,14 @@ public class ChannelCategoryServiceImpl extends ServiceImpl<ChannelCategoryMappe
      */
     @Override
     public ResultUtil<String> addChannelCategory(ChannelCategoryPo channelCategoryPo) {
+
         channelCategoryPo.setId(SnowflakeIdWorker.generateId());
         Integer resultNum = baseMapper.addChannelCategory(channelCategoryPo);
+
         if(resultNum < 1){
             return ResultUtil.APPRESULT(CommonStatusCode.SAVE_FAIL, null);
         }
+
         return ResultUtil.APPRESULT(CommonStatusCode.SAVE_SUCCESS, channelCategoryPo.getId().toString());
     }
 

@@ -13,24 +13,38 @@
             price_surcharge
         where
             1=1
+
         <if test="key.code > 0">
             and code = #{key.code}
         </if>
+
         <if test="key.keyword != null">
             and charge_name LIKE CONCAT( '%' , #{key.keyword} , '%' )
             or charge_name_en LIKE CONCAT( '%' , #{key.keyword} , '%' )
         </if>
+
         order by code
     </select>
 
     <!--批量插入附加费-->
     <insert id="addSurcharge">
             insert into
-                price_surcharge(id, charge_name, charge_name_en, code)
+                price_surcharge
+                (
+                    id,
+                    charge_name,
+                    charge_name_en,
+                    code
+                )
             values
 
         <foreach collection="po" index="" separator="," item="row" open="" close="">
-            (#{row.id}, #{row.chargeName}, #{row.chargeNameEn}, #{row.code})
+            (
+                #{row.id},
+                #{row.chargeName},
+                #{row.chargeNameEn},
+                 #{row.code}
+            )
         </foreach>
 
     </insert>

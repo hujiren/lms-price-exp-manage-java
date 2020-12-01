@@ -37,19 +37,6 @@ import java.util.List;
 @Slf4j
 public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper, PriceSurchargePo> implements PriceSurchargeService {
 
-    //状态code枚举
-    /*enum SurchargeServiceCode {
-
-            ;
-
-            private String code;
-            private String msg;
-
-            SurchargeServiceCode(String code, String msg) {
-                 this.code = code;
-                 this.msg = msg;
-            }
-        }*/
 
     @Autowired
     LmsCommonFeign lmsCommonFeign;
@@ -71,6 +58,7 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
     @Override
     @Transactional
     public ResultUtil<Boolean> save(List<PriceSurchargePo> priceSurchargePos) throws Exception {
+
         adbHelper.saveBatch(priceSurchargePos, "price_surcharge", "id", true);
 
         aplCacheHelper.opsForKey("exp-price-surcharge").delByBucket(priceSurchargePos.get(0).getPriceId());
@@ -128,7 +116,9 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
      */
     @Override
     public List<PriceSurchargePo> getById(Long priceId) {
+
         List<PriceSurchargePo> priceSurchargeList = baseMapper.selectByPriceId(priceId);
+
         return priceSurchargeList;
     }
 
@@ -139,7 +129,9 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
      */
     @Override
     public List<Long> getIdBatch(Long priceId) {
+
         List<Long> surchargeIds = baseMapper.getIdBatchByPriceId(priceId);
+
         return surchargeIds;
     }
 
@@ -150,10 +142,12 @@ public class PriceSurchargeServiceImpl extends ServiceImpl<PriceSurchargeMapper,
      */
     @Override
     public Integer delBatch(String priceIds) throws IOException {
+
         List<Long> idList = StringUtil.stringToLongList(priceIds);
         if(null != idList && idList.size() > 0)
             aplCacheHelper.opsForKey("exp-price-surcharge").delByBucket(idList);
         Integer resultNum = baseMapper.delBatch(priceIds);
+
         return resultNum;
     }
 }

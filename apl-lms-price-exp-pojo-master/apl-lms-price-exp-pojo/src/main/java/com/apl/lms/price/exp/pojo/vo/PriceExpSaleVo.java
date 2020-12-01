@@ -12,8 +12,8 @@ import lombok.Data;
 @ApiModel(value="快递销售价格表-组装返回对象", description="快递销售价格表-组装返回对象")
 public class PriceExpSaleVo {
 
-    @ApiModelProperty(name = "customerGroupId" , value = "客户组id")
-    private String customerGroupId;
+    @ApiModelProperty(name = "customerGroupIds" , value = "客户组id")
+    private String customerGroupIds;
 
     @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
     private String customerGroupName;

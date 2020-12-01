@@ -18,6 +18,7 @@ import java.util.List;
  */
 @Repository
 public interface UnifyProfitMapper extends BaseMapper<UnifyExpPricePo> {
+
     /**
      * 获取统加利润列表
      * @param customerGroupId

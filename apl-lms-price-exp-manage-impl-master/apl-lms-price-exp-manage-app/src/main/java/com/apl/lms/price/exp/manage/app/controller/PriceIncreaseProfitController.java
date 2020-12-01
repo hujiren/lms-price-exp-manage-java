@@ -35,6 +35,7 @@ public class PriceIncreaseProfitController {
     @ApiOperation(value =  "获取增加的利润列表" , notes = "获取增加的利润列表")
     @ApiImplicitParam(name = "priceId", value = "价格表id", required = true, paramType = "query")
     public ResultUtil<IncreaseProfitDto> getList(Long priceId){
+
         return priceIncreaseProfitService.getList(priceId);
     }
 
