@@ -489,7 +489,15 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
         Cell priceListFistCell = findCell(sheet, "priceList");
 
         Row fieldRow = priceListFistCell.getRow();
+        int fieldRowNum = fieldRow.getRowNum();
         int priceColIndex = priceListFistCell.getColumnIndex();
+
+        xssfCellStyle.setAlignment(HorizontalAlignment.CENTER);//水平
+        xssfCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直
+//        xssfCellStyle.setBorderLeft(BorderStyle.THIN);
+//        xssfCellStyle.setBorderRight(BorderStyle.THIN);
+//        xssfCellStyle.setBorderTop(BorderStyle.THIN);
+//        xssfCellStyle.setBorderBottom(BorderStyle.THIN);
 
         // 构建表格数据，行为Map类型
         // 和填写模板sheet字段( {p1}, {p2}, {p3}...)
@@ -519,6 +527,17 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
         FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
         excelWriter.fill(new FillWrapper("p", priceDataListNew), fillConfig, writeSheet);
 
+        Row fieldRow2 = sheet.getRow(fieldRowNum);
+        int lastCellNum = fieldRow2.getLastCellNum();
+        for(int i = fieldRow2.getRowNum(); i <= priceDataList.size(); i++){
+
+            Row row = sheet.getRow(i);
+            for(int j = 0; j < lastCellNum; j++){
+                Cell cell = row.getCell(j);
+//                sheet.autoSizeColumn(j); 自适应列宽
+                cell.getCellStyle().cloneStyleFrom(xssfCellStyle);
+            }
+        }
     }
 
 
@@ -613,7 +632,9 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
             //填充分区数据
             excelWriter.fill(zoneDataList, zoneSheet);
             Sheet sheet = excelWriter.writeContext().writeSheetHolder().getCachedSheet();
-
+            sheet.setColumnWidth(0, 3 * 1208);
+            sheet.setColumnWidth(1, 10 * 1208);
+            sheet.setColumnWidth(2, 10 * 1208);
             Cell cell = findCell(sheet, "价格表");
 
             if (cell != null) {
@@ -628,7 +649,7 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
             int endRowIndex = startRowIndex + rowNum;
             Row row = null;
             int lastCellNum = 3;
-            for(int i = startRowIndex; i < endRowIndex; i++){
+            for(int i = startRowIndex; i <= endRowIndex; i++){
                 row = sheet.getRow(i);
                 if(null == row)
                     continue;
@@ -643,19 +664,23 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
                         cell1.getCellStyle().cloneStyleFrom(xssfCellStyle);
                         continue;
                     }
-
                     if(j == 1){
+                        cellValueStr = cell1.getStringCellValue();
                         Integer strLength = cellValueStr.length();
                         int rowNumSize = 1;
-                        if(strLength > 35){
-                          rowNumSize = strLength / 35;
+                        if(strLength > 41){
+                            if(strLength % 41 == 0)
+                                rowNumSize = strLength / 41;
+                            else
+                                rowNumSize += strLength / 41;
                         }
-                        row.setHeightInPoints((fontSize + 5) * rowNumSize);
+                        row.setHeightInPoints((float) (fontSize * rowNumSize * 1.5));//fontSize = 11
                     }
                     xssfFont.setFontHeight(fontSize);
                     xssfFont.setBold(false);
                     xssfCellStyle.setFont(xssfFont);
                     cell1.getCellStyle().cloneStyleFrom(xssfCellStyle);
+//                    sheet.autoSizeColumn(j);
                 }
             }
         }

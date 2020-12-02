@@ -27,7 +27,7 @@
             inner_org_id = #{tenantId}
 
         <if test="customerGroupId > 0">
-            and FIND_IN_SET(#{customerGroupIds}, customer_group_ids)
+            and FIND_IN_SET(#{customerGroupId}, customer_group_ids)
         </if>
 
         order by id

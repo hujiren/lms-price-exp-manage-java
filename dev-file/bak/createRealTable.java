@@ -26,9 +26,9 @@ public class PriceListDao {
                 "  \"partner_id\" int8 NOT NULL DEFAULT 0,\n"+
                 "  \"partner_name\" varchar(50) COLLATE \"pg_catalog\".\"default\",\n"+
                 "  \"customer_group_ids\" jsonb,\n"+
-                "  \"customer_group_name\" varchar(100) COLLATE \"pg_catalog\".\"default\",\n"+
+                "  \"customer_group_names\" varchar(100) COLLATE \"pg_catalog\".\"default\",\n"+
                 "  \"customer_ids\" jsonb,\n"+
-                "  \"customer_name\" varchar(255) COLLATE \"pg_catalog\".\"default\",\n"+
+                "  \"customer_names\" varchar(255) COLLATE \"pg_catalog\".\"default\",\n"+
                 "  \"special_commodity\" jsonb,\n" +
                 "  \"channel_category\" varchar(50) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n"+
                 "  \"currency\" varchar(5) COLLATE \"pg_catalog\".\"default\" NOT NULL,\n" +
@@ -49,8 +49,6 @@ public class PriceListDao {
                 "  \"volume_divisor\" int4 NOT NULL,\n" +
                 "  \"upd_time\" timestamp(6),\n"+
                 "  \"quote_price_upd_time\" timestamp(6),\n"+
-                "  \"quote_price_customer_group_id\" int8 DEFAULT 0,\n" +
-                "  \"quote_price_customer_id\" int8 DEFAULT 0,\n" +
                 "  \"quote_tenant_code\" varchar(20) COLLATE \"pg_catalog\".\"default\",\n"+
                 "  \"is_quote\" int2 NOT NULL,\n"+
                 "  \"syn_status\" int2 DEFAULT 0,\n"+
@@ -94,10 +92,10 @@ public class PriceListDao {
                 "            channel_category,\n" +
                 "            price_status,\n" +
                 "            partner_id,\n" +
-                "            customer_group_id,\n"+
-                "            customer_group_name,\n"+
+                "            customer_group_ids,\n"+
+                "            customer_group_name,s\n"+
                 "            customer_ids,\n"+
-                "            customer_name,\n"+
+                "            customer_names,\n"+
                 "            price_name,\n" +
                 "            partner_name,\n" +
                 "            upd_time\n"+

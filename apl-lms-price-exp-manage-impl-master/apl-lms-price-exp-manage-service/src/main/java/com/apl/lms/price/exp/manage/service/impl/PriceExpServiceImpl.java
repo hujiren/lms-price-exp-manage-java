@@ -243,10 +243,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
 
         //组装客户List (客户id, 客户名称)
-        if (null != priceExpSaleVo && !priceExpSaleVo.getCustomerIds().equals("") && priceExpSaleVo.getCustomerIds() != null && priceExpSaleVo.getCustomerName() != null) {
+        if (null != priceExpSaleVo && !priceExpSaleVo.getCustomerIds().equals("") && priceExpSaleVo.getCustomerIds() != null && priceExpSaleVo.getCustomerNames() != null) {
 
             String customerIds = priceExpSaleVo.getCustomerIds().replaceAll(" ", "");
-            String customerNames = priceExpSaleVo.getCustomerName().replaceAll(" ", "");
+            String customerNames = priceExpSaleVo.getCustomerNames().replaceAll(" ", "");
 
             List<CustomerDto> customerDtoList = new ArrayList<>();
 
@@ -264,9 +264,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         }
 
         //组装客户组List(客户组id, 客户组名称)
-        if (priceExpSaleVo.getCustomerGroupIds() != null && !priceExpSaleVo.getCustomerGroupName().equals("") && priceExpSaleVo.getCustomerGroupName() != null) {
+        if (priceExpSaleVo.getCustomerGroupIds() != null && !priceExpSaleVo.getCustomerGroupNames().equals("") && priceExpSaleVo.getCustomerGroupNames() != null) {
             String customerGroupIds = priceExpSaleVo.getCustomerGroupIds().replaceAll(" ", "");
-            String customerGroupName = priceExpSaleVo.getCustomerGroupName().replaceAll(" ", "");
+            String customerGroupName = priceExpSaleVo.getCustomerGroupNames().replaceAll(" ", "");
 
             List<CustomerGroupDto> customerGroupDtoList = new ArrayList<>();
             String[] customerGroupIdArr = customerGroupIds.split(",");
@@ -410,10 +410,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         if (priceExpUpdDto.getIsPublishedPrice().equals(1)) {
             // 公布价, 客户、 客户组、服务商设为空
             priceExpMainPo.setCustomerGroupIds("");
-            priceExpMainPo.setCustomerGroupName("");
+            priceExpMainPo.setCustomerGroupNames("");
 
             priceExpMainPo.setCustomerIds("");
-            priceExpMainPo.setCustomerName("");
+            priceExpMainPo.setCustomerNames("");
 
             priceExpMainPo.setPartnerId(0l);
             priceExpMainPo.setPartnerName("");
@@ -421,9 +421,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             //处理客户和客户组
             ExpPriceInnerClass expPriceInnerClass = disposeCustomerGroupAndCustomer(priceExpUpdDto.getCustomerGroup(), priceExpUpdDto.getCustomer());
             priceExpMainPo.setCustomerGroupIds(expPriceInnerClass.customerGroupId);
-            priceExpMainPo.setCustomerGroupName(expPriceInnerClass.customerGroupName);
+            priceExpMainPo.setCustomerGroupNames(expPriceInnerClass.customerGroupName);
             priceExpMainPo.setCustomerIds(expPriceInnerClass.customerIds);
-            priceExpMainPo.setCustomerName(expPriceInnerClass.customerName);
+            priceExpMainPo.setCustomerNames(expPriceInnerClass.customerName);
         }
 
         priceExpMainPo.setUpdTime(new Timestamp(System.currentTimeMillis()));
@@ -714,9 +714,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
                 myPriceExpMainPo.setPartnerId(priceExpMainPo.getPartnerId());
                 myPriceExpMainPo.setPartnerName(priceExpMainPo.getPartnerName());
                 myPriceExpMainPo.setCustomerIds(priceExpMainPo.getCustomerIds());
-                myPriceExpMainPo.setCustomerName(priceExpMainPo.getCustomerName());
+                myPriceExpMainPo.setCustomerNames(priceExpMainPo.getCustomerNames());
                 myPriceExpMainPo.setCustomerGroupIds(priceExpMainPo.getCustomerGroupIds());
-                myPriceExpMainPo.setCustomerGroupName(priceExpMainPo.getCustomerGroupName());
+                myPriceExpMainPo.setCustomerGroupNames(priceExpMainPo.getCustomerGroupNames());
                 myPriceExpMainPo.setChannelCategory(priceExpMainPo.getChannelCategory());
                 myPriceExpMainPo.setQuotePriceId(quotePriceId);
                 myPriceExpMainPo.setIsPublishedPrice(2);
@@ -836,9 +836,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
 
             //处理客户和客户组
             ExpPriceInnerClass expPriceInnerClass = disposeCustomerGroupAndCustomer(priceReferenceDto.getCustomerGroup(), priceReferenceDto.getCustomer());
-            newPriceExpMainPo.setCustomerName(expPriceInnerClass.customerName);
+            newPriceExpMainPo.setCustomerNames(expPriceInnerClass.customerName);
             newPriceExpMainPo.setCustomerIds(expPriceInnerClass.customerIds);
-            newPriceExpMainPo.setCustomerGroupName(expPriceInnerClass.customerGroupName);
+            newPriceExpMainPo.setCustomerGroupNames(expPriceInnerClass.customerGroupName);
             newPriceExpMainPo.setCustomerGroupIds(expPriceInnerClass.customerGroupId);
 
             Long quotePriceCustomerGroupId = partnerApiInfoBo.getCustomerGroupId();
@@ -972,10 +972,10 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         if (priceExpAddDto.getIsPublishedPrice().equals(1)) {
             // 公布价, 客户、 客户组、服务商设为空
             priceExpMainPo.setCustomerGroupIds("");
-            priceExpMainPo.setCustomerGroupName("");
+            priceExpMainPo.setCustomerGroupNames("");
 
             priceExpMainPo.setCustomerIds("");
-            priceExpMainPo.setCustomerName("");
+            priceExpMainPo.setCustomerNames("");
 
             priceExpMainPo.setPartnerId(0l);
             priceExpMainPo.setPartnerName("");
@@ -983,9 +983,9 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             //处理客户和客户组
             ExpPriceInnerClass expPriceInnerClass = disposeCustomerGroupAndCustomer(priceExpAddDto.getCustomerGroup(), priceExpAddDto.getCustomer());
             priceExpMainPo.setCustomerGroupIds(expPriceInnerClass.customerGroupId);
-            priceExpMainPo.setCustomerGroupName(expPriceInnerClass.customerGroupName);
+            priceExpMainPo.setCustomerGroupNames(expPriceInnerClass.customerGroupName);
             priceExpMainPo.setCustomerIds(expPriceInnerClass.customerIds);
-            priceExpMainPo.setCustomerName(expPriceInnerClass.customerName);
+            priceExpMainPo.setCustomerNames(expPriceInnerClass.customerName);
         }
 
         //创建租户真实表

@@ -96,14 +96,14 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
     @ApiModelProperty(name = "customerGroupIds" , value = "客户组id")
     private String customerGroupIds;
 
-    @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
-    private String customerGroupName;
+    @ApiModelProperty(name = "customerGroupNames" , value = "客户组名称")
+    private String customerGroupNames;
 
     @ApiModelProperty(name = "customerIds" , value = "客户ids")
     private String customerIds;
 
-    @ApiModelProperty(name = "customerName" , value = "客户名称")
-    private String customerName;
+    @ApiModelProperty(name = "customerNames" , value = "客户名称")
+    private String customerNames;
 
     @ApiModelProperty(name = "updTime" , value = "更新时间")
     private Timestamp updTime;
@@ -125,12 +125,6 @@ public class PriceExpMainPo extends Model<PriceExpMainPo> {
 
     @ApiModelProperty(name = "addProfitWay", value = "添加利润方式 0不加, 1单独加 2统一加")
     private Integer addProfitWay;
-
-//    @ApiModelProperty(name = "quotePriceCustomerGroupId" , value = "引用价格客户组id")
-//    private Long quotePriceCustomerGroupId;
-//
-//    @ApiModelProperty(name = "quotePriceCustomerId" , value = "引用价格客户id")
-//    private Long quotePriceCustomerId;
 
     public String getAccountNo() {
         if(null == accountNo){

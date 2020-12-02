@@ -6,7 +6,7 @@
     <select id="getPriceExpSaleList" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleListVo">
         select
             id, start_date, end_date, currency, volume_divisor, account_type, special_commodity, price_code,
-            price_sale_name as price_name, customer_group_name, customer_name, channel_category, price_status, syn_status
+            price_sale_name as price_name, customer_group_names, customer_names, channel_category, price_status, syn_status
         from
             lms_exp_price
         where
@@ -20,10 +20,10 @@
             and is_quote = #{key.isQuote}
         </if>
         <if test="key.priceType == 1">
-            and customer_group_name != ''
+            and customer_group_names != ''
         </if>
         <if test="key.priceType == 2">
-            and customer_name != ''
+            and customer_names != ''
         </if>
         <if test="key.volumeDivisor != null">
             and volume_divisor = #{key.volumeDivisor}
@@ -50,7 +50,7 @@
             and FIND_IN_SET(#{key.specialCommodity},special_commodity)
         </if>
         <if test="key.customerGroupId != null">
-            and FIND_IN_SET(#{key.customerGroupId},customer_group_ids)
+            and FIND_IN_SET(#{key.customerGroupIds},customer_group_ids)
         </if>
         <if test="key.customerId != null">
             and FIND_IN_SET(#{key.customerId},customer_ids)
@@ -179,8 +179,8 @@
                  id, start_date, end_date, currency, account_type, account_no, special_commodity,
                  price_format, start_weight, end_weight, price_published_id, is_published_price, aging,
                  volume_divisor, zone_id, price_data_id, price_code, price_name, price_sale_name, channel_category,
-                 price_status, quote_price_id, partner_id, partner_name, customer_group_ids, customer_group_name,
-                 customer_ids, customer_name, upd_time, quote_price_upd_time, is_quote, syn_status, add_profit_way
+                 price_status, quote_price_id, partner_id, partner_name, customer_group_ids, customer_group_names,
+                 customer_ids, customer_names, upd_time, quote_price_upd_time, is_quote, syn_status, add_profit_way
              )
          values
              (
@@ -209,9 +209,9 @@
                  #{po.partnerId},
                  #{po.partnerName},
                  #{po.customerGroupIds},
-                 #{po.customerGroupName},
+                 #{po.customerGroupNames},
                  #{po.customerIds},
-                 #{po.customerName},
+                 #{po.customerNames},
                  #{po.updTime},
                  #{po.quotePriceUpdTime},
                  #{po.isQuote},
@@ -253,14 +253,14 @@
         <if test="po.customerGroupIds != null">
             customer_group_ids = #{po.customerGroupIds},
         </if>
-        <if test="po.customerGroupName != null">
-            customer_group_name = #{po.customerGroupName},
+        <if test="po.customerGroupNames != null">
+            customer_group_names = #{po.customerGroupNames},
         </if>
         <if test="po.customerIds">
             customer_ids = #{po.customerIds},
         </if>
-        <if test="po.customerName != null">
-            customer_name = #{po.customerName},
+        <if test="po.customerNames != null">
+            customer_names = #{po.customerNames},
         </if>
         <if test="po.updTime != null">
             upd_time = #{po.updTime},
@@ -352,9 +352,9 @@
     <select id="getCustomerInfo" resultType="com.apl.lms.price.exp.pojo.vo.PriceExpSaleVo">
         select
             customer_group_ids,
-            customer_group_name,
+            customer_group_names,
             customer_ids,
-            customer_name
+            customer_names
         from
             lms_exp_price
         where

@@ -24,11 +24,11 @@ public class PriceExpSaleListVo {
     @ApiModelProperty(name = "priceName" , value = "报价名称")
     private String priceName;
 
-    @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
-    private String customerGroupName;
+    @ApiModelProperty(name = "customerGroupNames" , value = "客户组名称")
+    private String customerGroupNames;
 
-    @ApiModelProperty(name = "customersName" , value = "客户名称")
-    private String customerName;
+    @ApiModelProperty(name = "customersNames" , value = "客户名称")
+    private String customerNames;
 
     @ApiModelProperty(name = "channelCategory" , value = "渠道类型")
     private String channelCategory;

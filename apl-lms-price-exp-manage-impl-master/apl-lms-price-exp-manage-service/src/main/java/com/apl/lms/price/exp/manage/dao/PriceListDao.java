@@ -26,9 +26,9 @@ public class PriceListDao {
                 "  partner_id bigint(20) NOT NULL DEFAULT 0 COMMENT '服务商id',\n"+
                 "  partner_name varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '服务商名称',\n"+
                 "  customer_group_ids varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户组id',\n"+
-                "  customer_group_name varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户组名称',\n"+
+                "  customer_group_names varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户组名称',\n"+
                 "  customer_ids varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户id',\n"+
-                "  customer_name varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户名称',\n"+
+                "  customer_names varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户名称',\n"+
                 "  special_commodity varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '特殊物品',\n" +
                 "  channel_category varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '渠道类型',\n"+
                 "  currency varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '币制',\n" +
@@ -49,8 +49,6 @@ public class PriceListDao {
                 "  volume_divisor int(11) NOT NULL COMMENT '体积重基数',\n" +
                 "  upd_time datetime(0) NULL DEFAULT NULL COMMENT '更新时间',\n"+
                 "  quote_price_upd_time datetime(0) NULL DEFAULT NULL COMMENT '引用价格更新时间',\n"+
-                "  quote_price_customer_group_id bigint(20) NOT NULL DEFAULT 0 COMMENT '引用价格客户组id',\n" +
-                "  quote_price_customer_id bigint(20) NOT NULL DEFAULT 0 COMMENT '引用价格客户id',\n" +
                 "  quote_tenant_code varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '引用价格租户code',\n"+
                 "  is_quote smallint(6) NOT NULL COMMENT '是否引用 1 是 2否',\n"+
                 "  syn_status smallint(6) NULL DEFAULT NULL COMMENT '同步状态 0未同步 1同步成功 2同步异常 3引用价格表已被删除',\n"+
@@ -111,9 +109,9 @@ public class PriceListDao {
                 "            price_status,\n" +
                 "            partner_id,\n" +
                 "            customer_group_ids,\n"+
-                "            customer_group_name,\n"+
+                "            customer_group_names,\n"+
                 "            customer_ids,\n"+
-                "            customer_name,\n"+
+                "            customer_names,\n"+
                 "            price_name,\n" +
                 "            partner_name,\n" +
                 "            upd_time\n"+

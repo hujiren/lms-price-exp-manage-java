@@ -97,14 +97,14 @@ public class PriceExpDto implements Serializable {
     @ApiModelProperty(name = "customerGroupId" , value = "客户组id")
     private List<Long> customerGroupId;
 
-    @ApiModelProperty(name = "customerGroupName" , value = "客户组名称")
-    private String customerGroupName;
+    @ApiModelProperty(name = "customerGroupNames" , value = "客户组名称")
+    private String customerGroupNames;
 
     @ApiModelProperty(name = "customerIds" , value = "客户ids")
     private List<Long> customerIds;
 
-    @ApiModelProperty(name = "customerName" , value = "客户名称")
-    private String customerName;
+    @ApiModelProperty(name = "customerNames" , value = "客户名称")
+    private String customerNames;
 
     @ApiModelProperty(name = "saleRemark" , value = "销售备注")
     private String saleRemark;
