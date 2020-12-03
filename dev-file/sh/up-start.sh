@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #项目绝对路径
-projectPath="/Volumes/data/java/apl-sys"
+projectPath="/Volumes/data/java/apl-lms/apl-lms-price-exp-manage-java"
 
 #远程目标路径
 remoteRootPath="";
