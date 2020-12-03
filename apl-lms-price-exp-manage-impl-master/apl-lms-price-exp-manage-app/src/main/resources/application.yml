@@ -1,9 +1,7 @@
-server:
-  port: 9250
-
 spring:
   application:
     name: apl-lms-price-exp-manage-app
+
   thymeleaf:
     cache: false
 
