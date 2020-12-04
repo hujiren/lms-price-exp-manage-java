@@ -49,5 +49,5 @@ public interface PriceZoneDataService extends IService<PriceZoneDataListVo> {
      * @param zoneId
      * @return
      */
-    ResultUtil<Boolean> exportZone(HttpServletResponse response, Long zoneId);
+    void exportZone(HttpServletResponse response, Long zoneId) throws Exception;
 }

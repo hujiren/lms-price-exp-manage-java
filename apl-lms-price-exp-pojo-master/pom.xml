@@ -13,4 +13,62 @@
   </modules>
 
 
+  <!--从spring-web开始到swagger2都是属于原apl-lib中的依赖, 此处与本项目lib模块重复, 想办法解决-->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <mybatis-plus-boot-starter.version>3.2.0</mybatis-plus-boot-starter.version>
+    <jaxb-api.version>2.3.0</jaxb-api.version>
+    <apl-lms-common-pojo.version>1.0.0</apl-lms-common-pojo.version>
+    <apl-lib.version>1.0.0</apl-lib.version>
+  </properties>
+
+
+
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatis-plus-boot-starter.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>${jaxb-api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.apl</groupId>
+        <artifactId>apl-lms-common-pojo</artifactId>
+        <version>${apl-lms-common-pojo.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.apl</groupId>
+        <artifactId>apl-lib</artifactId>
+        <version>${apl-lib.version}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.6.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
 </project>

@@ -26,4 +26,5 @@ public class AxisPortraitUpdDto {
     @ApiModelProperty(name = "axisPortrait" , value = "首列数据", required = true)
     @NotEmpty(message = "首列数据不能为空")
     private List<List<String>> axisPortrait;
+
 }

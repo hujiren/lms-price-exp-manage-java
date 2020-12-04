@@ -35,6 +35,5 @@ public class DataSourceHealthConfig extends DataSourceHealthContributorAutoConfi
 
         return indicator;
 
-        //return null;
     }
 }

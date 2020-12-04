@@ -56,7 +56,6 @@ public class PriceExpRemarkServiceImpl extends ServiceImpl<PriceExpRemarkMapper,
     @Override
     public Boolean updateRemark(PriceExpRemarkPo priceExpRemarkPo) throws IOException {
         Long checkId = baseMapper.exists(priceExpRemarkPo.getId());
-
         Integer flag = 0;
         if(null!=checkId && checkId>0){
             flag = baseMapper.updateById(priceExpRemarkPo);

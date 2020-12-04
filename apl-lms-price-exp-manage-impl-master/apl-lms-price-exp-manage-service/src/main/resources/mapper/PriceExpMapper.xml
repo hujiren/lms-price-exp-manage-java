@@ -50,7 +50,7 @@
             and FIND_IN_SET(#{key.specialCommodity},special_commodity)
         </if>
         <if test="key.customerGroupId != null">
-            and FIND_IN_SET(#{key.customerGroupIds},customer_group_ids)
+            and FIND_IN_SET(#{key.customerGroupId},customer_group_ids)
         </if>
         <if test="key.customerId != null">
             and FIND_IN_SET(#{key.customerId},customer_ids)

@@ -936,6 +936,8 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
         priceExpMainPo.setQuotePriceId(quotePriceId);
         priceExpMainPo.setPriceDataId(priceDataId);
         priceExpMainPo.setIsQuote(2);
+        priceExpMainPo.setSynStatus(0);
+        priceExpMainPo.setQuoteTenantCode("");
 
         if (null == priceExpMainPo.getPriceCode())
             priceExpMainPo.setPriceCode("");
@@ -945,10 +947,6 @@ public class PriceExpServiceImpl extends ServiceImpl<PriceExpMapper, PriceExpMai
             priceExpMainPo.setStartWeight(0d);
         if (priceExpAddDto.getPricePublishedId() == null)
             priceExpMainPo.setPricePublishedId(0L);
-        if (null == priceExpMainPo.getQuoteTenantCode())
-            priceExpMainPo.setQuoteTenantCode("");
-        if (null == priceExpMainPo.getSynStatus())
-            priceExpMainPo.setSynStatus(0);
 
         if (null == priceExpAddDto.getPartnerId() || priceExpAddDto.getPartnerId() < 1
                 || null == priceExpAddDto.getPartnerName() || priceExpAddDto.getPartnerName().equals("")) {

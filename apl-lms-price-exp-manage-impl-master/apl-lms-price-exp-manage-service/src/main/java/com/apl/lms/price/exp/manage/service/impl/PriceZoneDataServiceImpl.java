@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -262,7 +261,7 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
      * @return
      */
     @Override
-    public ResultUtil<Boolean> exportZone(HttpServletResponse response,  Long zoneId){
+    public void exportZone(HttpServletResponse response,  Long zoneId) throws Exception {
 
         if(null==templateFileName || templateFileName.length()<2){
             throw new AplException(PriceZoneDataServiceCode.NO_VALID_FILE_WAS_FOUND.code, PriceZoneDataServiceCode.NO_VALID_FILE_WAS_FOUND.msg, null);
@@ -396,11 +395,9 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
             outFileName = URLEncoder.encode(outFileName, "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + outFileName);
 
-        } catch (IOException e) {
-            return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_FAIL.code, e.getCause().toString(), false);
-
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
+
         } finally {
 
             if(null!=newTempFileName) {
@@ -412,8 +409,6 @@ public class PriceZoneDataServiceImpl extends ServiceImpl<PriceZoneDataMapper, P
                 excelWriter.finish();
             }
         }
-
-        return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS);
     }
 
     //查找单元格

@@ -63,12 +63,11 @@ public class PriceZoneDataController {
     }
 
 
-
     @GetMapping(value = "/export-zone")
     @ApiOperation(value =  "导出分区" , notes = "导出分区")
     @ApiImplicitParam(name = "zoneId", value = "分区表id", required = true, paramType = "query")
-    public ResultUtil<Boolean> exportZone(HttpServletResponse response, Long zoneId){
+    public void exportZone(HttpServletResponse response, Long zoneId) throws Exception {
 
-        return priceZoneDataService.exportZone(response, zoneId);
+        priceZoneDataService.exportZone(response, zoneId);
     }
 }

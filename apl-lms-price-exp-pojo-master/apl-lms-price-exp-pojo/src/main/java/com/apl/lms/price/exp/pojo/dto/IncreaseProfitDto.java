@@ -1,5 +1,6 @@
 package com.apl.lms.price.exp.pojo.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.util.List;
 public class IncreaseProfitDto {
 
     @ApiModelProperty(name = "id", value = "价格表id", required = true)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     @ApiModelProperty(name = "addProfitWay", value = "添加利润方式 0不加 1单独加 2统一加", required = true)
@@ -23,4 +25,5 @@ public class IncreaseProfitDto {
 
     @ApiModelProperty(name = "increaseProfit", value = "增加的利润", required = true)
     private List<PriceExpProfitDto> increaseProfit;
+
 }
