@@ -1,6 +1,6 @@
 package com.apl.lms.price.exp.manage.service.impl;
 
-import com.apl.cache.AplCacheUtil;
+import com.apl.cache.AplCacheHelper;
 import com.apl.lib.constants.CommonStatusCode;
 import com.apl.lib.security.SecurityUser;
 import com.apl.lib.utils.CommonContextHolder;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class CacheServiceImpl implements CacheService {
 
     @Autowired
-    AplCacheUtil aplCacheUtil;
+    AplCacheHelper aplCacheHelper;
 
     @Autowired
     CacheMapper cacheMapper;
@@ -44,7 +44,7 @@ public class CacheServiceImpl implements CacheService {
         Map<String, PartnerCacheBo> maps = cacheMapper.addPartnerCache(keys, minKey, maxKey, securityUser.getInnerOrgId());
 
         if(null != maps && maps.size()>0) {
-            aplCacheUtil.opsForValue("priceManage").set(maps);
+            aplCacheHelper.opsForValue("priceManage").set(maps);
             return ResultUtil.APPRESULT(CommonStatusCode.SYSTEM_SUCCESS, true);
         }
 
