@@ -41,10 +41,10 @@ public class DatasourceAop {
                 token = CommonContextHolder.getRequest().getParameter("token");
             }
             //com.apl.cache.AplCacheUtil
-            if(null!=token && token.length()>0)
+            if(null !=token && token.length()>0 && token.indexOf("net_")!=0)
                 securityUser = CommonContextHolder.getSecurityUser(aplCacheHelper, token);
             else
-                securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper);
+                securityUser = SecurityUserNetService.getSecurityUser(aplCacheHelper, 1, token);
 
             CommonContextHolder.securityUserContextHolder.set(securityUser);
 
