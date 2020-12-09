@@ -10,24 +10,42 @@
 
     <parent>
         <groupId>com.apl</groupId>
-        <artifactId>apl-lms-price-exp-manage-impl-master</artifactId>
+        <artifactId>apl-dependency-management</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.apache.ignite</groupId>
-            <artifactId>ignite-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ignite</groupId>
-            <artifactId>ignite-spring</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
+            <version>2.2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.apl</groupId>
+            <artifactId>apl-lms-price-exp-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.apl</groupId>
+            <artifactId>apl-lms-price-exp-pojo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.apl</groupId>
+            <artifactId>apl-lms-common-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <scope>compile</scope>
+            <version>2.8.2</version>
         </dependency>
 
         <dependency>
@@ -37,22 +55,7 @@
 
         <dependency>
             <groupId>com.apl</groupId>
-            <artifactId>apl-lms-price-exp-lib</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.apl</groupId>
             <artifactId>apl-sys-lib</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.apl</groupId>
-            <artifactId>apl-lms-price-exp-pojo</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.apl</groupId>
-            <artifactId>apl-lms-common-lib</artifactId>
         </dependency>
 
         <dependency>
@@ -68,11 +71,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <scope>compile</scope>
         </dependency>
 
     </dependencies>
@@ -99,9 +97,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>

@@ -7,17 +7,12 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-<!--    <parent>-->
-<!--        <groupId>org.springframework.boot</groupId>-->
-<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--        <version>2.3.1.RELEASE</version>-->
-<!--        <relativePath/>-->
-<!--    </parent>-->
-<!--    <parent>-->
-<!--        <groupId>com.apl</groupId>-->
-<!--        <artifactId>apl-web-dependency-management</artifactId>-->
-<!--        <version>1.0.0</version>-->
-<!--    </parent>-->
+
+    <parent>
+        <groupId>com.apl</groupId>
+        <artifactId>apl-web-dependency-management</artifactId>
+        <version>1.0.0</version>
+    </parent>
 
     <dependencies>
 
@@ -31,13 +26,6 @@
             <groupId>com.apl</groupId>
             <artifactId>apl-lms-price-exp-manage-service</artifactId>
             <version>1.0.0</version>
-        </dependency>
-
-        <!-- 健康检查 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>2.2.3.RELEASE</version>
         </dependency>
 
     </dependencies>
