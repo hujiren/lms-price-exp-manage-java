@@ -15,7 +15,15 @@
     </parent>
 
     <dependencies>
+        <dependency>
+            <groupId>com.apl</groupId>
+            <artifactId>apl-service-dependency-parent</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>com.apl</groupId>
+            <artifactId>apl-sys-net</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -50,22 +58,12 @@
 
         <dependency>
             <groupId>com.apl</groupId>
-            <artifactId>apl-service-dependency-parent</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.apl</groupId>
             <artifactId>apl-sys-lib</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.apl</groupId>
             <artifactId>apl-shardingjdbc-mybatis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.apl</groupId>
-            <artifactId>apl-sys-net</artifactId>
         </dependency>
 
         <dependency>

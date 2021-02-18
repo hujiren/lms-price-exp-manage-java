@@ -112,7 +112,7 @@ public class UploadsAndDownLoadsServiceImpl implements UploadsAndDownLoadsServic
         response.setCharacterEncoding("utf-8");
         ExcelWriter excelWriter = null;
         String newTempFileName = null;
-        boolean IS_NO_CORRESPONDING_PRICE = false;
+        boolean IS_NO_CORRESPONDING_PRICE = false;//没有对应价格
 
         try {
 

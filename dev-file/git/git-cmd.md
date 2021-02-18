@@ -15,7 +15,9 @@
 
 从git库拉取代码
   git pull  -f origin master
-  
+
+解决远程仓库地址错误
+git remote set-url origin https://github.com/yourname/learngit.git   
   
  
   

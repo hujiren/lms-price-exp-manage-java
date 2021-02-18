@@ -42,7 +42,7 @@ public class LmsPriceExpManageApplication {
         //com.apl.shardingjdbc.config.ShardingDataSourceConfig
         //com.apl.tenant.AplTenantSqlParser
         //com.apl.shardingjdbc.algorithm.TenantShardingTableAlgorithm
-        //com.apl.db.adb.AdbHelper
+//        com.apl.db.adb.AdbHelper
         SpringApplication.run(LmsPriceExpManageApplication.class , args);
     }
 }
